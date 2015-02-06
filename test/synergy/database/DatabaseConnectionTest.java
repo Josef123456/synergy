@@ -10,8 +10,8 @@ public class DatabaseConnectionTest extends TestCase {
 
 	@Test
 	public void testDatabaseConnection() throws Exception {
-		DatabaseConnection db = new DatabaseConnection ();
-		assertEquals(db.count,2);
+		DatabaseConnection db =  DatabaseConnection.getInstance ();
+		assertEquals(db.hashCode (),2);
 	}
 
 }
