@@ -1,8 +1,9 @@
-package synergy;
+package synergy.Views;
 
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.IOException;
@@ -21,10 +22,10 @@ public class Main extends JFrame {
     static final int zoomMax = 30;
     static final int zoomInit = 15;
 
-
     public Main() throws IOException {
         super("InstaTag");
-        setSize(600, 500);
+        setSize(700, 600);
+        setMinimumSize(new Dimension(600, 500));
         setLocationRelativeTo(null);
         buildInterface();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,6 +43,13 @@ public class Main extends JFrame {
         mainPanel.add(BorderLayout.NORTH, northernPanel);
         mainPanel.add(BorderLayout.CENTER, photoMainPanel);
         mainPanel.add(BorderLayout.SOUTH, southPanel);
+
+        northernPanel.setBackground(Color.decode("#001E28"));
+        photoMainPanel.setBackground(Color.decode("#001E28"));
+        buttonsNorth.setBackground(Color.decode("#001E28"));
+        buttonsSouth.setBackground(Color.decode("#001E28"));
+        zoom.setBackground(Color.decode("#001E28"));
+
 
         add(mainPanel);
     }
@@ -115,6 +123,7 @@ public class Main extends JFrame {
 
         zoomSlider = new JSlider(JSlider.HORIZONTAL, zoomMin, zoomMax, zoomInit);
         sliderLabel = new JLabel("Zoom", JLabel.CENTER);
+        sliderLabel.setForeground(Color.WHITE);
         sliderLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         zoom.add(zoomSlider);
@@ -127,6 +136,13 @@ public class Main extends JFrame {
         buttonsSouth.add(exportButton);
         southPanel.add(zoom);
         southPanel.add(buttonsSouth);
+
+        importButton.addActionListener(new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ImportInterface();
+            }
+        });
 
     }
 
