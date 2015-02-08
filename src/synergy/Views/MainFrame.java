@@ -27,11 +27,15 @@ public class MainFrame extends JFrame{
     JPanel mainPanel;
     JPanel mainImagePanel;
     JPanel mainThumbnailPanel;
-
     JLabel mainImage;
+
+    JPanel mainGridPanel;
+    JPanel gridPanel;
 
     ArrayList<File> listOfImageFiles;
     TagPanel tagPanel;
+
+    boolean isMainView;
 
     public MainFrame(){
 
@@ -42,9 +46,17 @@ public class MainFrame extends JFrame{
         mainImage = new JLabel();
         mainImage.setPreferredSize(new Dimension(800, 600));
 
+        isMainView = true;
+
+
         setUpJMenuBar();
         setUpMainFrame();
         setMainImagePanel(null);
+
+
+
+
+
 
 
         tagPanel = new TagPanel(listOfImageFiles);
@@ -60,7 +72,9 @@ public class MainFrame extends JFrame{
 
     public void setUpJMenuBar(){
         JMenuBar menuBar = new JMenuBar();
+        JMenu viewMenu = new JMenu("View");
         JMenu fileMenu = new JMenu("File");
+
         JMenuItem importMenuItem = new JMenuItem("Import");
         JMenuItem exportMenuItem = new JMenuItem("Export");
         fileMenu.add(importMenuItem);
@@ -85,11 +99,50 @@ public class MainFrame extends JFrame{
                 System.out.println(tagPanel.listOfMetaData);
                 setImportedImages();
 
+
+
             }
 
         });
+
+
+        JMenuItem switchToMainView = new JMenuItem("Switch to Main View");
+        switchToMainView.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(isMainView == false){
+                    mainPanel.setVisible(true);
+                    mainGridPanel.setVisible(false);
+                    isMainView = true;
+                }
+
+            }
+        });
+
+        JMenuItem switchToGridView = new JMenuItem("Switch to Grid View");
+        switchToGridView.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(isMainView == true){
+                    setGridImages();
+                    mainGridPanel.setVisible(true);
+                    mainPanel.setVisible(false);
+                    isMainView = false;
+                }
+            }
+        });
+
+
+
+        viewMenu.add(switchToMainView);
+        viewMenu.add(switchToGridView);
         menuBar.add(fileMenu);
+        menuBar.add(viewMenu);
+
         add(menuBar, BorderLayout.NORTH);
+
     }
 
     public void setUpMainFrame(){
@@ -114,10 +167,49 @@ public class MainFrame extends JFrame{
 
     public void setImportedImages(){
         mainThumbnailPanel.removeAll();
-        mainThumbnailPanel.setLayout(new GridLayout(listOfImageFiles.size(), 1));
+        mainThumbnailPanel.setLayout(new GridLayout(0, 1));
+        setImagesToPanel(mainThumbnailPanel, 200, 200);
+        setImagesToPanel(gridPanel, 300, 300);
+        if(listOfImageFiles.size() > 0){
+            setMainImagePanel(listOfImageFiles.get(listOfImageFiles.size() - 1).toString());
+        }
+        this.validate();
+        this.repaint();
+    }
+
+    public void setMainImagePanel(String fileName){
+        if(fileName == null){
+            mainImage.setText("Please import files");
+        } else{
+            ImageIcon pic1Icon = new ImageIcon(fileName);
+            Image pic1img = pic1Icon.getImage();
+            Image newimg = pic1img.getScaledInstance(mainImage.getWidth(), mainImage.getHeight(),  java.awt.Image.SCALE_SMOOTH);
+            pic1Icon = new ImageIcon(newimg);
+            mainImage.setIcon(pic1Icon);
+        }
+    }
+
+
+    public void setGridImages(){
+        mainGridPanel = new JPanel();
+        gridPanel = new JPanel();
+        gridPanel.setLayout(new GridLayout(0, 3, 20, 20));
+        setImagesToPanel(gridPanel, 300, 300);
+        JScrollPane gridPanelPane = new JScrollPane(gridPanel);
+        gridPanelPane.setPreferredSize(new Dimension(1000, 600));
+        mainGridPanel.add(gridPanelPane, BorderLayout.CENTER);
+        add(mainGridPanel, BorderLayout.CENTER);
+        this.revalidate();
+        this.repaint();
+
+    }
+
+
+
+    public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight){
         for(int i = 0; i < listOfImageFiles.size(); i++){
             JLabel pic = new JLabel();
-            pic.setSize(200, 200);
+            pic.setSize(imageWidth, imageHeight);
             ImageIcon picIcon = new ImageIcon(listOfImageFiles.get(i).toString());
             Image picimg = picIcon.getImage();
             Image newimg = picimg.getScaledInstance(pic.getWidth(), pic.getHeight(),  java.awt.Image.SCALE_SMOOTH);
@@ -133,6 +225,11 @@ public class MainFrame extends JFrame{
                     // TODO Auto-generated method stub
                     setMainImagePanel(listOfImageFiles.get(index).toString());
                     tagPanel.setIndex(index);
+                    if(arg0.getClickCount() == 2 && isMainView == false){
+                        mainPanel.setVisible(true);
+                        mainGridPanel.setVisible(false);
+                        isMainView = true;
+                    }
                 }
 
                 @Override
@@ -161,39 +258,21 @@ public class MainFrame extends JFrame{
 
             });
 
-            mainThumbnailPanel.add(pic);
+            panel.add(pic);
         }
-        if(listOfImageFiles.size() > 0){
-            setMainImagePanel(listOfImageFiles.get(listOfImageFiles.size() - 1).toString());
-        }
-        this.validate();
-        this.repaint();
-    }
-
-    public void setImagesTest(){
-        JLabel pic1 = new JLabel();
-        pic1.setSize(1024, 768);
-        ImageIcon pic1Icon = new ImageIcon("D:\\Users\\Cham\\Documents\\seg2_backend\\SEGProject3\\oh well.jpg");
-        Image pic1img = pic1Icon.getImage();
-        Image newimg = pic1img.getScaledInstance(pic1.getWidth(), pic1.getHeight(),  java.awt.Image.SCALE_SMOOTH);
-        pic1Icon = new ImageIcon(newimg);
-        pic1.setIcon(pic1Icon);
-        mainImagePanel.add(pic1);
 
     }
 
-    public void setMainImagePanel(String fileName){
-        if(fileName == null){
-            mainImage.setText("Please import files");
-        } else{
-            ImageIcon pic1Icon = new ImageIcon(fileName);
-            Image pic1img = pic1Icon.getImage();
-            Image newimg = pic1img.getScaledInstance(mainImage.getWidth(), mainImage.getHeight(),  java.awt.Image.SCALE_SMOOTH);
-            pic1Icon = new ImageIcon(newimg);
-            mainImage.setIcon(pic1Icon);
-        }
+
+
+    public static void main(String args[]){
+        new MainFrame();
     }
 
 
 }
+
+
+
+
 
