@@ -1,45 +1,28 @@
 package synergy.database;
 
+import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.sun.javafx.tools.packager.Log;
+import org.h2.jdbc.JdbcConnection;
 
 import java.sql.*;
+
 
 /**
  * Created by alexstoick on 2/6/15.
  */
 public class DatabaseConnection {
-	private static DatabaseConnection ourInstance = new DatabaseConnection ();
+	private JdbcConnectionSource connection = null;
+	private final static String DATABASE_URL = "jdbc:h2:~/Desktop/synergy/db/h2.db";
 
-	public static DatabaseConnection getInstance () {
-		return ourInstance;
+	public JdbcConnectionSource getConnection () {
+		return connection;
 	}
 
-	private static Connection connection = null ;
-
-	public Boolean executeUpdateStatement( String SQLQuery ){
+	public DatabaseConnection() {
 		try {
-			connection.createStatement ().executeUpdate (SQLQuery);
-			return true;
-		} catch ( SQLException e ) {
-			Log.debug( e.toString () );
-			return false ;
-		}
-	}
-
-	public ResultSet executeQueryStatement ( String SQLQuery ) {
-		try {
-			ResultSet resultSet = connection.createStatement ().executeQuery (SQLQuery);
-			return resultSet;
-		} catch ( SQLException e ) {
-			Log.debug( e.toString () );
-		}
-		return null;
-	}
-
-	private DatabaseConnection () {
-		try {
-			connection = DriverManager.getConnection ("jdbc:sqlite:db/sample.db");
-		} catch (SQLException e) {
+			Class.forName("org.h2.Driver");
+			connection = new JdbcConnectionSource (DATABASE_URL);
+		} catch (Exception e) {
 			System.err.println (e.getMessage ());
 		}
 	}
