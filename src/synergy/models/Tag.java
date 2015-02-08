@@ -13,13 +13,49 @@ public class Tag {
 	@DatabaseField(columnName = COLUMN_TYPE)
 	private TagType type;
 
+	@DatabaseField(columnName = COLUMN_VALUE)
+	private String value;
+
 	public static final String _ID = "id";
-	public static final String COLUMN_TYPE = "tag_type" ;
+	public static final String COLUMN_TYPE = "tag_type";
+	public static final String COLUMN_VALUE = "value";
 
 	public enum TagType {
 		    KID, PLACE, EXTRA
 	}
 
 	public Tag(){
+	}
+
+	public int getID () {
+		return ID;
+	}
+
+	@Override
+	public String toString () {
+		return "Tag{" +
+				"ID=" + ID +
+				", type=" + type +
+				", value='" + value + '\'' +
+				'}';
+	}
+
+	@Override
+	public boolean equals (Object o) {
+		if ( this == o ) return true;
+		if ( !(o instanceof Tag) ) return false;
+
+		Tag tag = (Tag) o;
+
+		if ( ID != tag.ID ) return false;
+		if ( type != tag.type ) return false;
+		if ( !value.equals (tag.value) ) return false;
+
+		return true;
+	}
+
+	public Tag (TagType type, String value) {
+		this.type = type;
+		this.value = value;
 	}
 }

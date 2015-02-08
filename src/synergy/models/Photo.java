@@ -26,6 +26,35 @@ public class Photo {
 
 	}
 
+	public int getID () {
+		return ID;
+	}
+
+	@Override
+	public boolean equals (Object o) {
+		if ( this == o ) return true;
+		if ( !(o instanceof Photo) ) return false;
+
+		Photo photo = (Photo) o;
+
+		if ( ID != photo.ID ) return false;
+		if ( path != null ? !path.equals (photo.path) : photo.path != null ) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode () {
+		return 0;
+	}
+
+	@Override
+	public String toString () {
+		return "Photo{" +
+				"path='" + path + '\'' +
+				'}';
+	}
+
 	public Photo (String path) {
 		this.path = path;
 	}

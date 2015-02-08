@@ -12,7 +12,7 @@ import java.sql.*;
  */
 public class DatabaseConnection {
 	private JdbcConnectionSource connection = null;
-	private final static String DATABASE_URL = "jdbc:h2:db/sample.db";
+	private final static String DATABASE_URL = "jdbc:h2:~/Desktop/synergy/db/h2.db";
 
 	public JdbcConnectionSource getConnection () {
 		return connection;

@@ -8,16 +8,18 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
 import synergy.models.Photo;
-import synergy.models.PhotoTags;
+import synergy.models.PhotoTag;
 import synergy.models.Tag;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by alexstoick on 2/7/15.
  */
 public class PhotoDao {
 	private static PhotoDao ourInstance = new PhotoDao ();
+	private static PreparedQuery<Tag> tagsForPhotoQuery = null ;
 
 	public static PhotoDao getInstance () {
 		return ourInstance;
@@ -37,11 +39,23 @@ public class PhotoDao {
 		}
 	}
 
-	public PreparedQuery<Tag> makeTagsForPhotoQuery() throws SQLException {
-		QueryBuilder<PhotoTags, Integer>  photoTagsQueryBuilder = PhotoTagsDao.getInstance ().getQueryBuilder ();
-		photoTagsQueryBuilder.selectColumns (PhotoTags.COLUMN_PHOTO_ID);
+	public void create(Photo photo) throws Exception {
+		photoDao.createIfNotExists (photo);
+	}
+
+	public List<Tag> getTagsForPhoto(Photo photo) throws SQLException{
+		if ( tagsForPhotoQuery == null ) {
+			tagsForPhotoQuery = makeTagsForPhotoQuery ();
+		}
+		tagsForPhotoQuery.setArgumentHolderValue (0, photo);
+		return TagDao.getInstance ().query(tagsForPhotoQuery);
+	}
+
+	private PreparedQuery<Tag> makeTagsForPhotoQuery() throws SQLException {
+		QueryBuilder<PhotoTag, Integer>  photoTagsQueryBuilder = PhotoTagDao.getInstance ().getQueryBuilder ();
+		photoTagsQueryBuilder.selectColumns (PhotoTag.COLUMN_TAG_ID);
 		SelectArg postSelectArg = new SelectArg ();
-		photoTagsQueryBuilder.where().eq(PhotoTags.COLUMN_PHOTO_ID, postSelectArg);
+		photoTagsQueryBuilder.where().eq(PhotoTag.COLUMN_PHOTO_ID, postSelectArg);
 
 		QueryBuilder<Tag, Integer> tagQueryBuilder = TagDao.getInstance().getQueryBuilder ();
 		tagQueryBuilder.where().in(Tag._ID, photoTagsQueryBuilder);
