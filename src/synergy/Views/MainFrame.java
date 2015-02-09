@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 
-public class MainFrame extends JFrame{
+public class MainFrame extends JFrame {
     JFileChooser fileChooser;
     JPanel mainPanel;
     JPanel mainImagePanel;
@@ -37,7 +37,7 @@ public class MainFrame extends JFrame{
 
     boolean isMainView;
 
-    public MainFrame(){
+    public MainFrame() {
 
         fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(true);
@@ -54,11 +54,6 @@ public class MainFrame extends JFrame{
         setMainImagePanel(null);
 
 
-
-
-
-
-
         tagPanel = new TagPanel(listOfImageFiles);
         add(tagPanel, BorderLayout.EAST);
 
@@ -70,7 +65,7 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void setUpJMenuBar(){
+    public void setUpJMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu viewMenu = new JMenu("View");
         JMenu fileMenu = new JMenu("File");
@@ -80,7 +75,7 @@ public class MainFrame extends JFrame{
         fileMenu.add(importMenuItem);
         fileMenu.add(exportMenuItem);
 
-        importMenuItem.addActionListener(new ActionListener(){
+        importMenuItem.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
@@ -89,7 +84,7 @@ public class MainFrame extends JFrame{
                 System.out.println(returnValue);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File[] file = fileChooser.getSelectedFiles();
-                    for(int i = 0; i < file.length; i++){
+                    for (int i = 0; i < file.length; i++) {
                         listOfImageFiles.add(file[i]);
                     }
                 }
@@ -98,7 +93,6 @@ public class MainFrame extends JFrame{
                 tagPanel.initiateListOfMetaDataValues();
                 System.out.println(tagPanel.listOfMetaData);
                 setImportedImages();
-
 
 
             }
@@ -111,7 +105,7 @@ public class MainFrame extends JFrame{
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(isMainView == false){
+                if (isMainView == false) {
                     mainPanel.setVisible(true);
                     mainGridPanel.setVisible(false);
                     isMainView = true;
@@ -121,11 +115,11 @@ public class MainFrame extends JFrame{
         });
 
         JMenuItem switchToGridView = new JMenuItem("Switch to Grid View");
-        switchToGridView.addActionListener(new ActionListener(){
+        switchToGridView.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(isMainView == true){
+                if (isMainView == true) {
                     setGridImages();
                     mainGridPanel.setVisible(true);
                     mainPanel.setVisible(false);
@@ -133,7 +127,6 @@ public class MainFrame extends JFrame{
                 }
             }
         });
-
 
 
         viewMenu.add(switchToMainView);
@@ -145,7 +138,7 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void setUpMainFrame(){
+    public void setUpMainFrame() {
         mainPanel = new JPanel();
         mainImagePanel = new JPanel();
         mainImagePanel.add(mainImage);
@@ -165,32 +158,33 @@ public class MainFrame extends JFrame{
 
     }
 
-    public void setImportedImages(){
+    public void setImportedImages() {
         mainThumbnailPanel.removeAll();
         mainThumbnailPanel.setLayout(new GridLayout(0, 1));
         setImagesToPanel(mainThumbnailPanel, 200, 200);
         setImagesToPanel(gridPanel, 300, 300);
-        if(listOfImageFiles.size() > 0){
+        if (listOfImageFiles.size() > 0) {
             setMainImagePanel(listOfImageFiles.get(listOfImageFiles.size() - 1).toString());
         }
         this.validate();
         this.repaint();
     }
 
-    public void setMainImagePanel(String fileName){
-        if(fileName == null){
+    public void setMainImagePanel(String fileName) {
+        if (fileName == null) {
             mainImage.setText("Please import files");
-        } else{
+        } else {
             ImageIcon pic1Icon = new ImageIcon(fileName);
             Image pic1img = pic1Icon.getImage();
-            Image newimg = pic1img.getScaledInstance(mainImage.getWidth(), mainImage.getHeight(),  java.awt.Image.SCALE_SMOOTH);
+            Image newimg = pic1img.getScaledInstance(mainImage.getWidth(), mainImage.getHeight(),
+                    java.awt.Image.SCALE_SMOOTH);
             pic1Icon = new ImageIcon(newimg);
             mainImage.setIcon(pic1Icon);
         }
     }
 
 
-    public void setGridImages(){
+    public void setGridImages() {
         mainGridPanel = new JPanel();
         gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(0, 3, 20, 20));
@@ -205,27 +199,27 @@ public class MainFrame extends JFrame{
     }
 
 
-
-    public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight){
-        for(int i = 0; i < listOfImageFiles.size(); i++){
+    public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight) {
+        for (int i = 0; i < listOfImageFiles.size(); i++) {
             JLabel pic = new JLabel();
             pic.setSize(imageWidth, imageHeight);
             ImageIcon picIcon = new ImageIcon(listOfImageFiles.get(i).toString());
             Image picimg = picIcon.getImage();
-            Image newimg = picimg.getScaledInstance(pic.getWidth(), pic.getHeight(),  java.awt.Image.SCALE_SMOOTH);
+            Image newimg = picimg.getScaledInstance(pic.getWidth(), pic.getHeight(), java.awt
+                    .Image.SCALE_SMOOTH);
             picIcon = new ImageIcon(newimg);
             pic.setIcon(picIcon);
 
             final int index = i;
 
-            pic.addMouseListener(new MouseListener(){
+            pic.addMouseListener(new MouseListener() {
 
                 @Override
                 public void mouseClicked(MouseEvent arg0) {
                     // TODO Auto-generated method stub
                     setMainImagePanel(listOfImageFiles.get(index).toString());
                     tagPanel.setIndex(index);
-                    if(arg0.getClickCount() == 2 && isMainView == false){
+                    if (arg0.getClickCount() == 2 && isMainView == false) {
                         mainPanel.setVisible(true);
                         mainGridPanel.setVisible(false);
                         isMainView = true;
@@ -264,8 +258,7 @@ public class MainFrame extends JFrame{
     }
 
 
-
-    public static void main(String args[]){
+    public static void main(String args[]) {
         new MainFrame();
         //test
     }

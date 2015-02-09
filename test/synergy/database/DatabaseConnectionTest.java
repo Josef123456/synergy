@@ -17,7 +17,7 @@ public class DatabaseConnectionTest extends TestCase {
 	public void testDatabaseConnection() throws Exception {
 
 		Photo photo = new Photo ("/users/alexstoick/photos/test.jpg");
-		PhotoDao photoDao = PhotoDao.getInstance () ;
+		PhotoDAO photoDao = PhotoDAO.getInstance() ;
 		photoDao.create (photo);
 
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");

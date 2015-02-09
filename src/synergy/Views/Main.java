@@ -1,19 +1,41 @@
 package synergy.Views;
 
 
-import javax.swing.*;
-import java.awt.*;
+import net.sf.nachocalendar.components.DatePanel;
+import net.sf.nachocalendar.components.DayPanel;
+import net.sf.nachocalendar.components.MonthPanel;
+import net.sf.nachocalendar.model.DateSelectionModel;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
+
+import javax.swing.AbstractAction;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
 
 /**
  * Created by Josef on 02/02/2015.
  */
 public class Main extends JFrame {
 
-    private JPanel mainPanel, photoMainPanel, southPanel, northernPanel, buttonsNorth, zoom, buttonsSouth;
+    private JPanel mainPanel, photoMainPanel, southPanel, northernPanel, buttonsNorth, zoom,
+            buttonsSouth;
     private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton;
     private JSlider zoomSlider;
     private JTextField searchField;
@@ -37,7 +59,7 @@ public class Main extends JFrame {
         panelConstruct();
 
         northernConstruct();
-        photoMainAreaContruct();
+        calendarContruct();
         bottomConstruct();
 
         mainPanel.add(BorderLayout.NORTH, northernPanel);
@@ -65,11 +87,11 @@ public class Main extends JFrame {
         buttonsNorth = new JPanel(new FlowLayout(FlowLayout.TRAILING));
 
         //center panel for photos
-        photoMainPanel = new JPanel();
+        photoMainPanel = new JPanel(new BorderLayout());
 
         //southern panels
         southPanel = new JPanel(new GridLayout());
-        zoom = new JPanel(new GridLayout(2,0));
+        zoom = new JPanel(new GridLayout(2, 0));
         buttonsSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     }
 
@@ -96,7 +118,7 @@ public class Main extends JFrame {
             }
         });
 
-       //photo button according to Codrin's instructions.
+        //photo button according to Codrin's instructions.
         allPhotoButton = new JButton("All Photos");
         calendarButton = new JButton("Calendar");
         albumButton = new JButton("Album");
@@ -112,12 +134,29 @@ public class Main extends JFrame {
     This method inlcudes the search bar and will show the photos.
     For you to implement Codrin
      */
-    private void photoMainAreaContruct() {
+    private void calendarContruct() {
+        photoMainPanel.removeAll();
+        DatePanel datePanel = new DatePanel();
+        datePanel.setSelectionMode(DateSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        datePanel.setAutoscrolls(true);
 
+        MonthPanel monthPanel = (MonthPanel) datePanel.getComponent(1);
+        Component[] monthPanelComponents = ((JPanel) monthPanel.getComponent(0)).getComponents();
 
-
-
+        for (int i = 7; i < monthPanelComponents.length; i++) {
+            DayPanel dayPanel = (DayPanel) monthPanelComponents[i];
+            final MouseListener mouseListener = dayPanel.getMouseListeners()[0];
+            dayPanel.removeMouseListener(dayPanel.getMouseListeners()[0]);
+            dayPanel.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    mouseListener.mouseClicked(e);
+                }
+            });
+        }
+        photoMainPanel.add(datePanel);
     }
+
 
     private void bottomConstruct() {
 
