@@ -6,23 +6,23 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 
 
-public class MainFrame extends JFrame {
+public class PhotosPanel extends JPanel {
     JFileChooser fileChooser;
     JPanel mainPanel;
     JPanel mainImagePanel;
@@ -32,12 +32,18 @@ public class MainFrame extends JFrame {
     JPanel mainGridPanel;
     JPanel gridPanel;
 
-    ArrayList<File> listOfImageFiles;
+    public static ArrayList<File> listOfImageFiles;
     TagPanel tagPanel;
 
     boolean isMainView;
 
-    public MainFrame() {
+    public PhotosPanel() {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(true);
@@ -57,48 +63,19 @@ public class MainFrame extends JFrame {
         tagPanel = new TagPanel(listOfImageFiles);
         add(tagPanel, BorderLayout.EAST);
 
+        System.out.println(PhotosPanel.listOfImageFiles);
+        tagPanel.initiateListOfMetaDataValues();
+        System.out.println(tagPanel.listOfMetaData);
+        setImportedImages();
 
         setSize(500, 300);
-        pack();
         setVisible(true);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     }
 
     public void setUpJMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu viewMenu = new JMenu("View");
         JMenu fileMenu = new JMenu("File");
-
-        JMenuItem importMenuItem = new JMenuItem("Import");
-        JMenuItem exportMenuItem = new JMenuItem("Export");
-        fileMenu.add(importMenuItem);
-        fileMenu.add(exportMenuItem);
-
-        importMenuItem.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                // TODO Auto-generated method stub
-                int returnValue = fileChooser.showOpenDialog(MainFrame.this);
-                System.out.println(returnValue);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File[] file = fileChooser.getSelectedFiles();
-                    for (int i = 0; i < file.length; i++) {
-                        listOfImageFiles.add(file[i]);
-                    }
-                }
-
-                System.out.println(listOfImageFiles);
-                tagPanel.initiateListOfMetaDataValues();
-                System.out.println(tagPanel.listOfMetaData);
-                setImportedImages();
-
-
-            }
-
-        });
-
 
         JMenuItem switchToMainView = new JMenuItem("Switch to Main View");
         switchToMainView.addActionListener(new ActionListener() {
@@ -212,7 +189,7 @@ public class MainFrame extends JFrame {
 
             final int index = i;
 
-            pic.addMouseListener(new MouseListener() {
+            pic.addMouseListener(new MouseAdapter() {
 
                 @Override
                 public void mouseClicked(MouseEvent arg0) {
@@ -226,44 +203,11 @@ public class MainFrame extends JFrame {
                     }
                 }
 
-                @Override
-                public void mouseEntered(MouseEvent arg0) {
-                    // TODO Auto-generated method stub
-
-                }
-
-                @Override
-                public void mouseExited(MouseEvent arg0) {
-                    // TODO Auto-generated method stub
-
-                }
-
-                @Override
-                public void mousePressed(MouseEvent arg0) {
-                    // TODO Auto-generated method stub
-
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent arg0) {
-                    // TODO Auto-generated method stub
-
-                }
-
             });
-
             panel.add(pic);
         }
 
     }
-
-
-    public static void main(String args[]) {
-        new MainFrame();
-        //test
-    }
-
-
 }
 
 
