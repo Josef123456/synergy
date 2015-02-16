@@ -2,15 +2,19 @@ package synergy.Views;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
@@ -54,21 +58,19 @@ public class PhotosPanel extends JPanel {
 
         isMainView = true;
 
+        setGridImages();
+        mainGridPanel.setVisible(false);
 
         setUpJMenuBar();
         setUpMainFrame();
         setMainImagePanel(null);
 
 
+
         tagPanel = new TagPanel(listOfImageFiles);
         add(tagPanel, BorderLayout.EAST);
 
-        System.out.println(PhotosPanel.listOfImageFiles);
-        tagPanel.initiateListOfMetaDataValues();
-        System.out.println(tagPanel.listOfMetaData);
-        setImportedImages();
 
-        setSize(500, 300);
         setVisible(true);
     }
 
@@ -76,6 +78,36 @@ public class PhotosPanel extends JPanel {
         JMenuBar menuBar = new JMenuBar();
         JMenu viewMenu = new JMenu("View");
         JMenu fileMenu = new JMenu("File");
+
+        //for testing purposes
+/*        JMenuItem importMenuItem = new JMenuItem("Import");
+        JMenuItem exportMenuItem = new JMenuItem("Export");
+        fileMenu.add(importMenuItem);
+        fileMenu.add(exportMenuItem);
+
+        importMenuItem.addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                // TODO Auto-generated method stub
+                int returnValue = fileChooser.showOpenDialog(PhotosPanel.this);
+                System.out.println(returnValue);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File[] file = fileChooser.getSelectedFiles();
+                    for (int i = 0; i < file.length; i++) {
+                        listOfImageFiles.add(file[i]);
+                    }
+                }
+
+                System.out.println(listOfImageFiles);
+                tagPanel.initiateListOfMetaDataValues();
+                System.out.println(tagPanel.listOfMetaData);
+                setImportedImages();
+
+
+            }
+
+        });*/
 
         JMenuItem switchToMainView = new JMenuItem("Switch to Main View");
         switchToMainView.addActionListener(new ActionListener() {
@@ -177,17 +209,42 @@ public class PhotosPanel extends JPanel {
 
 
     public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight) {
-        for (int i = 0; i < listOfImageFiles.size(); i++) {
-            JLabel pic = new JLabel();
-            pic.setSize(imageWidth, imageHeight);
-            ImageIcon picIcon = new ImageIcon(listOfImageFiles.get(i).toString());
-            Image picimg = picIcon.getImage();
-            Image newimg = picimg.getScaledInstance(pic.getWidth(), pic.getHeight(), java.awt
-                    .Image.SCALE_SMOOTH);
-            picIcon = new ImageIcon(newimg);
-            pic.setIcon(picIcon);
+        final File checkBoxFile = new File("check box icon.png");
+        BufferedImage checkBoxImage = null;
+        try {
+            checkBoxImage = ImageIO.read(checkBoxFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
+        final int width = imageWidth;
+        final int height = imageHeight;
+
+
+        for (int i = 0; i < listOfImageFiles.size(); i++) {
             final int index = i;
+
+            final JLabel pic = new JLabel();
+
+
+            File imageFile = new File(listOfImageFiles.get(i).toString());
+            BufferedImage bufferedImage = null;
+            try {
+                bufferedImage = ImageIO.read(imageFile);
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+
+
+            BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_BGR);
+            final Graphics g = image.getGraphics();
+            g.drawImage(bufferedImage, 0, 0, imageWidth, imageHeight, null);
+
+            final BufferedImage finalBufferedImage = bufferedImage;
+            final BufferedImage finalCheckBoxImage = checkBoxImage;
+
+
 
             pic.addMouseListener(new MouseAdapter() {
 
@@ -196,6 +253,19 @@ public class PhotosPanel extends JPanel {
                     // TODO Auto-generated method stub
                     setMainImagePanel(listOfImageFiles.get(index).toString());
                     tagPanel.setIndex(index);
+
+                    if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == null){
+                        tagPanel.addToSelectedIndexList(index);
+                        g.drawImage(finalCheckBoxImage, 0, 0, 50, 50, null);
+                        pic.repaint();
+                    } else if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 1){
+                        tagPanel.removeFromSelectedIndexList(index);
+                        g.drawImage(finalBufferedImage, 0, 0, width, height, null);
+                        pic.repaint();
+
+                    }
+
+
                     if (arg0.getClickCount() == 2 && isMainView == false) {
                         mainPanel.setVisible(true);
                         mainGridPanel.setVisible(false);
@@ -204,13 +274,15 @@ public class PhotosPanel extends JPanel {
                 }
 
             });
+
+            pic.setIcon(new ImageIcon(image));
             panel.add(pic);
         }
 
     }
+
+    public static void main(String args[]){
+        new PhotosPanel();
+    }
 }
-
-
-
-
 

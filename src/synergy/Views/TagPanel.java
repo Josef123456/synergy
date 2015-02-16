@@ -17,17 +17,21 @@ import javax.swing.JTextField;
 public class TagPanel extends JPanel{
     ArrayList<File> listOfFiles;
     ArrayList<ArrayList<String>> listOfMetaData;
+    ArrayList<Integer> listOfSelectedIndex;
+
+
     JPanel locationPanel;
+    JPanel locationTags;
 
     int index;
 
     public TagPanel(ArrayList<File> listOfFiles){
         this.listOfFiles = listOfFiles;
         listOfMetaData = new ArrayList<ArrayList<String>>();
-
+        listOfSelectedIndex = new ArrayList<Integer>();
 
         setUpUI();
-        setLayout(new GridLayout(4,1));
+        setLayout(new GridLayout(2,1));
     }
 
     public void setUpUI(){
@@ -46,7 +50,7 @@ public class TagPanel extends JPanel{
             public void actionPerformed(ActionEvent arg0) {
                 // TODO Auto-generated method stub
                 listOfMetaData.get(index).add((String)locationTextField.getSelectedItem());
-                //updateLocationTags();
+                updateLocationTags();
                 System.out.println(listOfMetaData);
             }
 
@@ -58,19 +62,27 @@ public class TagPanel extends JPanel{
 
 
         locationPanel = new JPanel();
-        locationPanel.setLayout(new GridLayout(1, 2));
-        locationPanel.add(locationTextField);
-        locationPanel.add(addButtonLocation);
+        locationPanel.setLayout(new GridLayout(3, 1));
+
+        locationTags = new JPanel();
+
+
+        JPanel locationTagQuery = new JPanel();
+        locationTagQuery.setLayout(new GridLayout(1, 2));
+        locationTagQuery.add(locationTextField);
+        locationTagQuery.add(addButtonLocation);
 
         JPanel kidsPanel = new JPanel();
         kidsPanel.setLayout(new GridLayout(1, 2));
         kidsPanel.add(kidsTextField);
         kidsPanel.add(addButtonKids);
 
-        add(locationLabel);
+        locationPanel.add(locationLabel);
+        locationPanel.add(locationTagQuery);
+        locationPanel.add(locationTags);
         add(locationPanel);
 
-        add(kidsLabel);
+
         add(kidsPanel);
     }
 
@@ -78,16 +90,33 @@ public class TagPanel extends JPanel{
         this.index = index;
     }
 
+    public void addToSelectedIndexList(int index){
+        listOfSelectedIndex.set(index, 1);
+    }
+
+    public void removeFromSelectedIndexList(int index){
+        listOfSelectedIndex.set(index, null);
+    }
+
     public int getIndex(){
         return index;
     }
+
+    public ArrayList<Integer> getArrayOfSelectedIndex(){
+        return listOfSelectedIndex;
+    }
+
+
 
     public void initiateListOfMetaDataValues(){
         int metaDataSize = listOfMetaData.size();
         for(int i = 0; i < (listOfFiles.size() - metaDataSize); i++){
             listOfMetaData.add(new ArrayList<String>());
+            listOfSelectedIndex.add(null);
         }
     }
+
+
 
     public void updateLocationTags(){
         JPanel tagPanelLocation = new JPanel();
@@ -100,7 +129,10 @@ public class TagPanel extends JPanel{
             tagPanelLocation.add(label);
             tagPanelLocation.add(removeButton);
         }
-        locationPanel.add(tagPanelLocation);
+        locationTags.removeAll();
+        locationTags.add(tagPanelLocation);
+        locationTags.updateUI();
+
         this.revalidate();
         this.repaint();
     }
