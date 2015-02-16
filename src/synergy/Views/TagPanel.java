@@ -49,7 +49,12 @@ public class TagPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // TODO Auto-generated method stub
-                listOfMetaData.get(index).add((String)locationTextField.getSelectedItem());
+
+                for(int i = 0; i < listOfMetaData.size(); i++){
+                    if(listOfSelectedIndex.get(i) == 1){
+                        listOfMetaData.get(index).add((String)locationTextField.getSelectedItem());
+                    }
+                }
                 updateLocationTags();
                 System.out.println(listOfMetaData);
             }
@@ -95,7 +100,7 @@ public class TagPanel extends JPanel{
     }
 
     public void removeFromSelectedIndexList(int index){
-        listOfSelectedIndex.set(index, null);
+        listOfSelectedIndex.set(index, 0);
     }
 
     public int getIndex(){
@@ -112,7 +117,7 @@ public class TagPanel extends JPanel{
         int metaDataSize = listOfMetaData.size();
         for(int i = 0; i < (listOfFiles.size() - metaDataSize); i++){
             listOfMetaData.add(new ArrayList<String>());
-            listOfSelectedIndex.add(null);
+            listOfSelectedIndex.add(0);
         }
     }
 
@@ -133,7 +138,6 @@ public class TagPanel extends JPanel{
         locationTags.add(tagPanelLocation);
         locationTags.updateUI();
 
-        this.revalidate();
-        this.repaint();
+
     }
 }

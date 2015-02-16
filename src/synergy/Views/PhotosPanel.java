@@ -1,5 +1,6 @@
 package synergy.Views;
 
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -70,7 +72,6 @@ public class PhotosPanel extends JPanel {
         tagPanel = new TagPanel(listOfImageFiles);
         add(tagPanel, BorderLayout.EAST);
 
-
         setVisible(true);
     }
 
@@ -79,8 +80,7 @@ public class PhotosPanel extends JPanel {
         JMenu viewMenu = new JMenu("View");
         JMenu fileMenu = new JMenu("File");
 
-        //for testing purposes
-/*        JMenuItem importMenuItem = new JMenuItem("Import");
+        JMenuItem importMenuItem = new JMenuItem("Import");
         JMenuItem exportMenuItem = new JMenuItem("Export");
         fileMenu.add(importMenuItem);
         fileMenu.add(exportMenuItem);
@@ -107,7 +107,7 @@ public class PhotosPanel extends JPanel {
 
             }
 
-        });*/
+        });
 
         JMenuItem switchToMainView = new JMenuItem("Switch to Main View");
         switchToMainView.addActionListener(new ActionListener() {
@@ -209,7 +209,7 @@ public class PhotosPanel extends JPanel {
 
 
     public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight) {
-        final File checkBoxFile = new File("check box icon.png");
+        final File checkBoxFile = new File("C:\\Users\\Cham\\Pictures\\check box icon.png");
         BufferedImage checkBoxImage = null;
         try {
             checkBoxImage = ImageIO.read(checkBoxFile);
@@ -253,12 +253,15 @@ public class PhotosPanel extends JPanel {
                     // TODO Auto-generated method stub
                     setMainImagePanel(listOfImageFiles.get(index).toString());
                     tagPanel.setIndex(index);
+                    tagPanel.updateLocationTags();
 
-                    if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == null){
+                    if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 0){
+                        System.out.println(tagPanel.listOfSelectedIndex.get(index)+ " Index: "+ index);
                         tagPanel.addToSelectedIndexList(index);
                         g.drawImage(finalCheckBoxImage, 0, 0, 50, 50, null);
                         pic.repaint();
                     } else if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 1){
+                        System.out.println(tagPanel.listOfSelectedIndex.get(index));
                         tagPanel.removeFromSelectedIndexList(index);
                         g.drawImage(finalBufferedImage, 0, 0, width, height, null);
                         pic.repaint();
@@ -281,8 +284,14 @@ public class PhotosPanel extends JPanel {
 
     }
 
-    public static void main(String args[]){
-        new PhotosPanel();
+    public TagPanel getTagPanel(){
+        return tagPanel;
     }
+
+
 }
+
+
+
+
 

@@ -32,6 +32,9 @@ public class Main extends JFrame {
     private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton;
     private JTextField searchField;
 
+    private PhotosPanel photosPanel;
+    private TagPanel tagPanel;
+
     public Main() throws IOException {
         super("InstaTag");
         setSize(700, 600);
@@ -68,7 +71,11 @@ public class Main extends JFrame {
 
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(new CalendarPanel(), "CALENDAR");
-        cardPanel.add(new PhotosPanel(), "PHOTOS");
+
+
+        photosPanel = new PhotosPanel();
+        tagPanel = photosPanel.getTagPanel();
+        cardPanel.add(photosPanel, "PHOTOS");
 
         //northern panels
         northernPanel = new JPanel(new GridLayout(2, 0));
@@ -116,6 +123,11 @@ public class Main extends JFrame {
                         PhotosPanel.listOfImageFiles.add(file[i]);
                     }
                 }
+                System.out.println(PhotosPanel.listOfImageFiles);
+                tagPanel.initiateListOfMetaDataValues();
+                System.out.println(tagPanel.listOfMetaData);
+                photosPanel.setImportedImages();
+
             }
         });
 
