@@ -23,13 +23,16 @@ public class TagPanel extends JPanel{
     JPanel locationPanel;
     JPanel locationTags;
 
+    PhotosPanel photosPanel;
+
     int index;
 
-    public TagPanel(ArrayList<File> listOfFiles){
+    public TagPanel(ArrayList<File> listOfFiles, PhotosPanel photosPanel){
         this.listOfFiles = listOfFiles;
         listOfMetaData = new ArrayList<ArrayList<String>>();
         listOfSelectedIndex = new ArrayList<Integer>();
 
+        this.photosPanel = photosPanel;
         setUpUI();
         setLayout(new GridLayout(2,1));
     }
@@ -49,13 +52,19 @@ public class TagPanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 // TODO Auto-generated method stub
+                if(photosPanel.isMainView){
+                    listOfMetaData.get(getIndex()).add((String)locationTextField.getSelectedItem());
+                    updateLocationTags();
 
-                for(int i = 0; i < listOfMetaData.size(); i++){
-                    if(listOfSelectedIndex.get(i) == 1){
-                        listOfMetaData.get(index).add((String)locationTextField.getSelectedItem());
+                } else {
+                    for (int i = 0; i < listOfMetaData.size(); i++) {
+                        if (listOfSelectedIndex.get(i) == 1 && !listOfMetaData.get(i).contains((String) locationTextField.getSelectedItem())) {
+                            listOfMetaData.get(i).add((String) locationTextField.getSelectedItem());
+                        }
                     }
+                    updateLocationTags();
+
                 }
-                updateLocationTags();
                 System.out.println(listOfMetaData);
             }
 
@@ -126,13 +135,58 @@ public class TagPanel extends JPanel{
     public void updateLocationTags(){
         JPanel tagPanelLocation = new JPanel();
         tagPanelLocation.setLayout(new FlowLayout());
-        for(int i = 0; i < listOfMetaData.get(getIndex()).size(); i++){
-            JLabel label = new JLabel();
-            label.setText(listOfMetaData.get(getIndex()).get(i));
-            JButton removeButton = new JButton("-");
+        if(photosPanel.isMainView) {
+            for (int i = 0; i < listOfMetaData.get(getIndex()).size(); i++) {
+                JLabel label = new JLabel();
+                label.setText(listOfMetaData.get(getIndex()).get(i));
+                JButton removeButton = new JButton("-");
 
-            tagPanelLocation.add(label);
-            tagPanelLocation.add(removeButton);
+                tagPanelLocation.add(label);
+                tagPanelLocation.add(removeButton);
+            }
+        } else{
+            //GOOD LUCK UNDERSTANDING THIS HAHA - cham
+            ArrayList<String> listOfTags = new ArrayList<String>();
+            boolean tagExists = false;
+            for(int i = 0; i < listOfMetaData.size(); i++){
+                if(listOfSelectedIndex.get(i) == 1){
+                    tagExists = true;
+                    for(int j = 0; j < listOfMetaData.get(i).size();j++){
+                        listOfTags.add(listOfMetaData.get(i).get(j));
+
+                    }
+                    break;
+                }
+            }
+
+            for(int i = 0; i < listOfMetaData.size();i++){
+                for(int j = 0; j < listOfTags.size(); j++){
+                    if(listOfSelectedIndex.get(i) == 1 && !listOfMetaData.get(i).contains(listOfTags.get(j))){
+                        listOfTags.remove(j);
+                    }
+                }
+            }
+            System.out.println("List of tags: " + listOfTags);
+            if(tagExists && !listOfTags.isEmpty()) {
+                for (int i = 0; i < listOfTags.size(); i++) {
+                    JLabel label = new JLabel();
+                    label.setText(listOfTags.get(i));
+                    JButton removeButton = new JButton("-");
+
+                    tagPanelLocation.add(label);
+                    tagPanelLocation.add(removeButton);
+                }
+            } else if(tagExists && listOfTags.isEmpty()){
+                JLabel label = new JLabel();
+                label.setText("No common tags");
+                tagPanelLocation.add(label);
+            } else if(!tagExists){
+                    JLabel label = new JLabel();
+                    label.setText("No tags");
+                    tagPanelLocation.add(label);
+            }
+
+
         }
         locationTags.removeAll();
         locationTags.add(tagPanelLocation);

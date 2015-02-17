@@ -69,7 +69,7 @@ public class PhotosPanel extends JPanel {
 
 
 
-        tagPanel = new TagPanel(listOfImageFiles);
+        tagPanel = new TagPanel(listOfImageFiles, this);
         add(tagPanel, BorderLayout.EAST);
 
         setVisible(true);
@@ -117,7 +117,9 @@ public class PhotosPanel extends JPanel {
                 if (isMainView == false) {
                     mainPanel.setVisible(true);
                     mainGridPanel.setVisible(false);
+
                     isMainView = true;
+                    tagPanel.updateLocationTags();
                 }
 
             }
@@ -129,10 +131,10 @@ public class PhotosPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (isMainView == true) {
-                    setGridImages();
                     mainGridPanel.setVisible(true);
                     mainPanel.setVisible(false);
                     isMainView = false;
+                    tagPanel.updateLocationTags();
                 }
             }
         });
@@ -209,7 +211,7 @@ public class PhotosPanel extends JPanel {
 
 
     public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight) {
-        final File checkBoxFile = new File("C:\\Users\\Cham\\Pictures\\check box icon.png");
+        final File checkBoxFile = new File("check box icon.png");
         BufferedImage checkBoxImage = null;
         try {
             checkBoxImage = ImageIO.read(checkBoxFile);
@@ -256,14 +258,16 @@ public class PhotosPanel extends JPanel {
                     tagPanel.updateLocationTags();
 
                     if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 0){
-                        System.out.println(tagPanel.listOfSelectedIndex.get(index)+ " Index: "+ index);
                         tagPanel.addToSelectedIndexList(index);
+                        System.out.println("Selected Index List: " + tagPanel.listOfSelectedIndex);
                         g.drawImage(finalCheckBoxImage, 0, 0, 50, 50, null);
+                        tagPanel.updateLocationTags();
                         pic.repaint();
                     } else if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 1){
-                        System.out.println(tagPanel.listOfSelectedIndex.get(index));
                         tagPanel.removeFromSelectedIndexList(index);
+                        System.out.println("Selected Index List: " + tagPanel.listOfSelectedIndex);
                         g.drawImage(finalBufferedImage, 0, 0, width, height, null);
+                        tagPanel.updateLocationTags();
                         pic.repaint();
 
                     }
