@@ -39,6 +39,8 @@ public class PhotosPanel extends JPanel {
     JPanel gridPanel;
 
     public static ArrayList<File> listOfImageFiles;
+   int currentListSize;
+
     TagPanel tagPanel;
 
     boolean isMainView;
@@ -67,7 +69,7 @@ public class PhotosPanel extends JPanel {
         setUpMainFrame();
         setMainImagePanel(null);
 
-
+        currentListSize = 0;
 
         tagPanel = new TagPanel(listOfImageFiles, this);
         add(tagPanel, BorderLayout.EAST);
@@ -170,7 +172,7 @@ public class PhotosPanel extends JPanel {
     }
 
     public void setImportedImages() {
-        mainThumbnailPanel.removeAll();
+       // mainThumbnailPanel.removeAll();
         mainThumbnailPanel.setLayout(new GridLayout(0, 1));
         setImagesToPanel(mainThumbnailPanel, 200, 200);
         setImagesToPanel(gridPanel, 300, 300);
@@ -223,7 +225,7 @@ public class PhotosPanel extends JPanel {
         final int height = imageHeight;
 
 
-        for (int i = 0; i < listOfImageFiles.size(); i++) {
+        for (int i = currentListSize; i < listOfImageFiles.size(); i++) {
             final int index = i;
 
             final JLabel pic = new JLabel();

@@ -117,6 +117,7 @@ public class Main extends JFrame {
             public void actionPerformed(ActionEvent arg0) {
                 int returnValue = fileChooser.showOpenDialog(Main.this);
                 System.out.println(returnValue);
+                photosPanel.currentListSize = PhotosPanel.listOfImageFiles.size();
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File[] file = fileChooser.getSelectedFiles();
                     for (int i = 0; i < file.length; i++) {
