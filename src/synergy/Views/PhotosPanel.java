@@ -241,12 +241,12 @@ public class PhotosPanel extends JPanel {
                 e.printStackTrace();
             }
 
-            final BufferedImage finalBufferedImage = bufferedImage;
+            //final BufferedImage finalBufferedImage = bufferedImage;
             final BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_BGR);
             Graphics g = image.getGraphics();
             g.drawImage(bufferedImage, 0, 0, imageWidth, imageHeight, null);
             g.dispose();
-            bufferedImage.flush();
+            image.flush();
 
 
 
@@ -264,6 +264,7 @@ public class PhotosPanel extends JPanel {
                     if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 0){
                         tagPanel.addToSelectedIndexList(index);
                         System.out.println("Selected Index List: " + tagPanel.listOfSelectedIndex);
+                        //BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
                         Graphics g = image.getGraphics();
                         g.drawImage(finalCheckBoxImage, 0, 0, 50, 50, null);
                         g.dispose();
@@ -272,10 +273,20 @@ public class PhotosPanel extends JPanel {
                     } else if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 1){
                         tagPanel.removeFromSelectedIndexList(index);
                         System.out.println("Selected Index List: " + tagPanel.listOfSelectedIndex);
-                        Graphics g = image.getGraphics();
+                        File imageFile = new File(listOfImageFiles.get(index).toString());
+                        BufferedImage bufferedImage = null;
+                        try {
+                            bufferedImage = ImageIO.read(imageFile);
+                        } catch (IOException e) {
+                            // TODO Auto-generated catch block
+                            e.printStackTrace();
+                        }
 
-                        g.drawImage(finalBufferedImage, 0, 0, width, height, null);
+                        //BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_BGR);
+                        Graphics g = image.getGraphics();
+                        g.drawImage(bufferedImage, 0, 0, width, height, null);
                         g.dispose();
+                        bufferedImage.flush();
                         tagPanel.updateLocationTags();
                         pic.repaint();
 

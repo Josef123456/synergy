@@ -116,6 +116,10 @@ public class Main extends JFrame {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 int returnValue = fileChooser.showOpenDialog(Main.this);
+
+                long t1 = System.currentTimeMillis();
+
+
                 System.out.println(returnValue);
                 photosPanel.currentListSize = PhotosPanel.listOfImageFiles.size();
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
@@ -127,7 +131,12 @@ public class Main extends JFrame {
                 System.out.println(PhotosPanel.listOfImageFiles);
                 tagPanel.initiateListOfMetaDataValues();
                 System.out.println(tagPanel.listOfMetaData);
+                System.out.println("Number of files imported: " + PhotosPanel.listOfImageFiles.size());
                 photosPanel.setImportedImages();
+
+                long t2 = System.currentTimeMillis();
+
+                System.out.println(t2 - t1+ " milliseconds");
 
             }
         });
