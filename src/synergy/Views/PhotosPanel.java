@@ -38,6 +38,7 @@ public class PhotosPanel extends JPanel {
     JPanel mainGridPanel;
     JPanel gridPanel;
 
+   final File checkBoxFile = new File("check box icon.png");
     public static ArrayList<File> listOfImageFiles;
    int currentListSize;
 
@@ -179,8 +180,8 @@ public class PhotosPanel extends JPanel {
         if (listOfImageFiles.size() > 0) {
             setMainImagePanel(listOfImageFiles.get(listOfImageFiles.size() - 1).toString());
         }
-        this.validate();
-        this.repaint();
+        mainThumbnailPanel.updateUI();
+        gridPanel.updateUI();
     }
 
     public void setMainImagePanel(String fileName) {
@@ -206,14 +207,14 @@ public class PhotosPanel extends JPanel {
         gridPanelPane.setPreferredSize(new Dimension(1000, 600));
         mainGridPanel.add(gridPanelPane, BorderLayout.CENTER);
         add(mainGridPanel, BorderLayout.CENTER);
-        this.revalidate();
-        this.repaint();
+        mainGridPanel.updateUI();
 
     }
 
 
+
+
     public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight) {
-        final File checkBoxFile = new File("check box icon.png");
         BufferedImage checkBoxImage = null;
         try {
             checkBoxImage = ImageIO.read(checkBoxFile);
@@ -223,7 +224,7 @@ public class PhotosPanel extends JPanel {
 
         final int width = imageWidth;
         final int height = imageHeight;
-
+        final BufferedImage finalCheckBoxImage = checkBoxImage;
 
         for (int i = currentListSize; i < listOfImageFiles.size(); i++) {
             final int index = i;
@@ -240,13 +241,14 @@ public class PhotosPanel extends JPanel {
                 e.printStackTrace();
             }
 
-
-            BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_BGR);
-            final Graphics g = image.getGraphics();
-            g.drawImage(bufferedImage, 0, 0, imageWidth, imageHeight, null);
-
             final BufferedImage finalBufferedImage = bufferedImage;
-            final BufferedImage finalCheckBoxImage = checkBoxImage;
+            final BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_BGR);
+            Graphics g = image.getGraphics();
+            g.drawImage(bufferedImage, 0, 0, imageWidth, imageHeight, null);
+            g.dispose();
+            bufferedImage.flush();
+
+
 
 
 
@@ -262,13 +264,18 @@ public class PhotosPanel extends JPanel {
                     if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 0){
                         tagPanel.addToSelectedIndexList(index);
                         System.out.println("Selected Index List: " + tagPanel.listOfSelectedIndex);
+                        Graphics g = image.getGraphics();
                         g.drawImage(finalCheckBoxImage, 0, 0, 50, 50, null);
+                        g.dispose();
                         tagPanel.updateLocationTags();
                         pic.repaint();
                     } else if(isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 1){
                         tagPanel.removeFromSelectedIndexList(index);
                         System.out.println("Selected Index List: " + tagPanel.listOfSelectedIndex);
+                        Graphics g = image.getGraphics();
+
                         g.drawImage(finalBufferedImage, 0, 0, width, height, null);
+                        g.dispose();
                         tagPanel.updateLocationTags();
                         pic.repaint();
 
@@ -283,6 +290,7 @@ public class PhotosPanel extends JPanel {
                 }
 
             });
+
 
             pic.setIcon(new ImageIcon(image));
             panel.add(pic);
