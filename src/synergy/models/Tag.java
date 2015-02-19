@@ -10,10 +10,10 @@ import com.j256.ormlite.table.DatabaseTable;
 public class Tag {
 	@DatabaseField(generatedId = true, columnName = _ID)
 	private int ID;
-	@DatabaseField(columnName = COLUMN_TYPE)
+	@DatabaseField(columnName = COLUMN_TYPE, uniqueCombo = true)
 	private TagType type;
 
-	@DatabaseField(columnName = COLUMN_VALUE)
+	@DatabaseField(columnName = COLUMN_VALUE, uniqueCombo = true)
 	private String value;
 
 	public static final String _ID = "id";

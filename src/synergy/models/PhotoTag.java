@@ -11,10 +11,10 @@ public class PhotoTag {
 	@DatabaseField(generatedId = true, columnName = _ID)
 	private int ID;
 
-	@DatabaseField(foreign = true, columnName = COLUMN_PHOTO_ID)
+	@DatabaseField(foreign = true, columnName = COLUMN_PHOTO_ID, uniqueCombo = true)
 	Photo photo ;
 
-	@DatabaseField(foreign = true, columnName =  COLUMN_TAG_ID)
+	@DatabaseField(foreign = true, columnName =  COLUMN_TAG_ID, uniqueCombo = true)
 	Tag tag;
 
 	public static final String _ID = "id";

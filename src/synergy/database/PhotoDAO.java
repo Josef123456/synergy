@@ -18,11 +18,11 @@ import synergy.models.Tag;
 /**
  * Created by alexstoick on 2/7/15.
  */
-public class PhotoDAO {
-    private static PhotoDAO ourInstance = new PhotoDAO();
+public class PhotoDao {
+    private static PhotoDao ourInstance = new PhotoDao ();
     private static PreparedQuery<Tag> tagsForPhotoQuery = null;
 
-    public static PhotoDAO getInstance() {
+    public static PhotoDao getInstance() {
         return ourInstance;
     }
 
@@ -30,11 +30,11 @@ public class PhotoDAO {
 
     private static JdbcConnectionSource connection;
 
-    private PhotoDAO() {
+    private PhotoDao () {
         try {
             connection = new DatabaseConnection().getConnection();
             photoDao = DaoManager.createDao(connection, Photo.class);
-            TableUtils.createTableIfNotExists(connection, Photo.class);
+            TableUtils.createTableIfNotExists (connection, Photo.class);
         } catch (Exception e) {
             System.err.println(e.toString());
         }

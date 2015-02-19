@@ -36,6 +36,10 @@ public class PhotoTagDao {
 		photoTagDao.createIfNotExists (photoTag);
 	}
 
+	public void destroy(PhotoTag photoTag) throws Exception{
+		photoTagDao.delete (photoTag);
+	}
+
 	public QueryBuilder<PhotoTag, Integer> getQueryBuilder() {
 		return photoTagDao.queryBuilder ();
 	}

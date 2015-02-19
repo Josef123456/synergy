@@ -17,7 +17,7 @@ public class DatabaseConnectionTest extends TestCase {
 	public void testDatabaseConnection() throws Exception {
 
 		Photo photo = new Photo ("/users/alexstoick/photos/test.jpg");
-		PhotoDAO photoDao = PhotoDAO.getInstance() ;
+		PhotoDao photoDao = PhotoDao.getInstance () ;
 		photoDao.create (photo);
 
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
@@ -37,10 +37,9 @@ public class DatabaseConnectionTest extends TestCase {
 		System.out.println ( photoTag) ;
 		System.out.println ( photoTag2);
 
-		List<Tag> tags = photoDao.getTagsForPhoto(photo);
-		System.out.println(tags.get(0));
-		assertEquals(tags.size(), 2);
-		assertEquals(tags.get(0), tag);
-		assertEquals(tags.get(1), tag2);
+		Tag[] tags = photo.getTags ();
+		assertEquals(tags.length, 2);
+		assertEquals(tags[0], tag);
+		assertEquals(tags[1], tag2);
 	}
 }
