@@ -18,10 +18,10 @@ import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 import org.apache.commons.imaging.util.IoUtils;
 
-public class MetaDataTest {
+public class MetaData {
 
     public IImageMetadata metadata = null;
-    public String name, values;
+    public String name, values, userComment;
 
     public void getMetaData(File f) {
         try {
@@ -39,12 +39,18 @@ public class MetaDataTest {
                 values = item.toString();
                 //Only print out 'UserComment' tag and its values
                 //Remove string to return all meta-data tags
-                if (values.contains("UserComment")) {
-                    System.out.println(values);
+                if (values.contains("")) {
+                    userComment = values;
+                    System.out.println(userComment);
+
                 }
             }
+        } else {
+            System.out.println("Not a JPG file");
         }
+
     }
+
     /*
     Modified the example method from apache.commons.imagining library
      */
@@ -79,7 +85,7 @@ public class MetaDataTest {
                         .getOrCreateExifDirectory();
                 //Remove old field and replace with it with a new one.
                 exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
-                exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT,"LOC:Big Room");
+                exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, "LOC:Big Room");
 
             }
 
@@ -95,19 +101,7 @@ public class MetaDataTest {
         } finally {
             IoUtils.closeQuietly(canThrow, os);
         }
-    }
-
-    public static void main (String args[]) throws ImageWriteException, ImageReadException, IOException {
-        MetaDataTest data = new MetaDataTest();
-
-        //Original file used for modifying
-        File inputFile = new File("C:\\Users\\Amit\\Pictures\\4.jpg");
-        //Create a new output file of the modified image.
-        File outputFile = new File ("C:\\Users\\Amit\\Pictures\\output.jpg");
-
-        data.getMetaData(inputFile);
-        data.changeExifMetadata(inputFile,outputFile);
-        data.getMetaData(outputFile);
 
     }
+
 }
