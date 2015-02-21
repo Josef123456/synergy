@@ -18,19 +18,13 @@ public class MetaDataTest extends TestCase {
         MetaData image = new MetaData();
 
         //Original file used for modifying
-        File inputFile = new File("C:\\Users\\Amit\\Pictures\\test.jpg");
-        //Create a new output file of the modified image.
-        File outputFile = new File ("C:\\Users\\Amit\\Pictures\\output.jpg");
+        File inputFile = new File("C:\\Users\\Amit\\Pictures\\testcamimage.jpg");
 
-        image.changeExifMetadata(inputFile,outputFile);
-        image.getMetaData(outputFile);
-        String data = image.metadata.toString();
+        image.changeExifMetadata(inputFile);
+        image.getMetaData(inputFile);
 
         assertNotNull(image.values);
         assertNotNull(image.metadata);
-
-
-
 
     }
 

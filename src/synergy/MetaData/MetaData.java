@@ -17,6 +17,8 @@ import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 import org.apache.commons.imaging.util.IoUtils;
+import synergy.models.Photo;
+import synergy.models.Tag;
 
 public class MetaData {
 
@@ -39,14 +41,14 @@ public class MetaData {
                 values = item.toString();
                 //Only print out 'UserComment' tag and its values
                 //Remove string to return all meta-data tags
-                if (values.contains("")) {
+                if (values.contains("UserComment")) {
                     userComment = values;
                     System.out.println(userComment);
 
                 }
             }
         } else {
-            System.out.println("Not a JPG file");
+            System.out.println("Not a jpg file");
         }
 
     }
@@ -54,15 +56,16 @@ public class MetaData {
     /*
     Modified the example method from apache.commons.imagining library
      */
-    public void changeExifMetadata(final File jpegImageFile, final File dst)
+    public void changeExifMetadata(Photo photo)
             throws IOException, ImageReadException, ImageWriteException {
+	    final File inputFile = new File(photo.getPath ());
         OutputStream os = null;
         boolean canThrow = false;
         try {
             TiffOutputSet outputSet = null;
 
             // metadata can be null if none is attached to the jpg
-            final IImageMetadata metadata = Imaging.getMetadata(jpegImageFile);
+            final IImageMetadata metadata = Imaging.getMetadata(inputFile);
             final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
             if (null != jpegMetadata) {
                 // exif data can be null if none is found
@@ -78,30 +81,41 @@ public class MetaData {
             if (null == outputSet) {
                 outputSet = new TiffOutputSet();
             }
-            {
-                // TagInfo constants often contain a description of what
-                // directories are associated with a given tag.
-                final TiffOutputDirectory exifDirectory = outputSet
-                        .getOrCreateExifDirectory();
-                //Remove old field and replace with it with a new one.
-                exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
-                exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, "LOC:Big Room");
 
-            }
+            // TagInfo constants often contain a description of what
+            // directories are associated with a given tag.
+            final TiffOutputDirectory exifDirectory = outputSet
+                    .getOrCreateExifDirectory();
+            //Remove old field and replace with it with a new one.
+            exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
+	        Tag[] tags = photo.getTags();
+            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, encodeTags(tags) );
 
-            {
-
-            }
-            os = new FileOutputStream(dst);
+            File outputFile = new File("tmp2.jpg");
+            os = new FileOutputStream(outputFile);
             os = new BufferedOutputStream(os);
 
-            new ExifRewriter().updateExifMetadataLossless(jpegImageFile, os,
+            new ExifRewriter().updateExifMetadataLossless(inputFile, os,
                     outputSet);
+
+            //Rename output file to input file
+            File temp = inputFile;
+            inputFile.delete();
+            outputFile.renameTo(temp);
+
             canThrow = true;
         } finally {
             IoUtils.closeQuietly(canThrow, os);
         }
 
     }
+
+	private String encodeTags(Tag[] tags) {
+		String result = "";
+		for( Tag tag: tags) {
+			result += tag.getType () + " " +
+		}
+		return "";
+	}
 
 }

@@ -1,7 +1,10 @@
 package synergy.database;
 
 import junit.framework.TestCase;
+import org.junit.Before;
 import org.junit.Test;
+import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
 import synergy.models.Photo;
 import synergy.models.PhotoTag;
 import synergy.models.Tag;
@@ -11,24 +14,31 @@ import java.util.List;
 /**
  * Created by alexstoick on 2/4/15.
  */
-public class DatabaseConnectionTest extends TestCase {
+public class DatabaseConnectionTest {
+
+	private final static String FILEPATH = "/Users/alexstoick/Dropbox/edited photos/20150213-DSC01999.jpg";
+
+	@Before
+	public void emptyDatabaseTables() throws Exception {
+		PhotoDao.getInstance ().dropTable ();
+		TagDao.getInstance ().dropTable ();
+		PhotoTagDao.getInstance ().dropTable ();
+	}
 
 	@Test
 	public void testPhotoCreation() throws Exception {
-		Photo photo = new Photo ("/Users/alexstoick/Dropbox/edited photos/20140809-DSC_0602.JPG");
+		Photo photo = new Photo (FILEPATH);
 		photo.save ();
 		assertNotSame (-1, photo.getID ());
 	}
 
-	@Test
-	public void testTagCreation() throws Exception {
+	@Test public void testTagCreation() throws Exception {
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
 		assertNotSame (-1, tag.getID ());
 	}
 
-	@Test
-	public void testPhotoTagCreation() throws Exception {
+	@Test public void testPhotoTagCreation() throws Exception {
 		Photo photo = new Photo();
 		Tag tag = new Tag();
 		PhotoTag photoTag = new PhotoTag (photo,tag);
@@ -36,16 +46,14 @@ public class DatabaseConnectionTest extends TestCase {
 		assertNotSame (-1, photoTag.getID ());
 	}
 
-	@Test
-	public void testPhotoGetTags() throws Exception {
-		Photo photo = new Photo ("/Users/alexstoick/Dropbox/edited photos/20140809-DSC_0603.JPG");
+	@Test public void testPhotoGetTags() throws Exception {
+		Photo photo = new Photo (FILEPATH);
 		photo.save ();
 		assertEquals (0, photo.getTags ().length);
 	}
 
-	@Test
-	public void testPhotoAddTag() throws Exception {
-		Photo photo = new Photo ("/Users/alexstoick/Dropbox/edited photos/20140809-DSC_0615.JPG");
+	@Test public void testPhotoAddTag() throws Exception {
+		Photo photo = new Photo (FILEPATH);
 		photo.save ();
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
@@ -54,9 +62,8 @@ public class DatabaseConnectionTest extends TestCase {
 		assertEquals (tag, photo.getTags ()[0]);
 	}
 
-	@Test
-	public void testPhotoRemoveTag() throws Exception{
-		Photo photo = new Photo ("/Users/alexstoick/Dropbox/edited photos/20140809-DSC_0599.JPG");
+	@Test public void testPhotoRemoveTag() throws Exception{
+		Photo photo = new Photo (FILEPATH);
 		photo.save ();
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
@@ -68,9 +75,8 @@ public class DatabaseConnectionTest extends TestCase {
 	}
 
 
-	@Test
-	public void testDatabaseConnection() throws Exception {
-		Photo photo = new Photo ("/Users/alexstoick/Dropbox/edited photos/20140809-DSC_0602.JPG");
+	@Test public void testDatabaseConnection() throws Exception {
+		Photo photo = new Photo (FILEPATH);
 		photo.save ();
 
 		System.out.println(photo);

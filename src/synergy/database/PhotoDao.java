@@ -42,6 +42,14 @@ public class PhotoDao {
 
 	public void dropTable() throws SQLException {
 		TableUtils.dropTable (connection, Photo.class, true );
+		TableUtils.createTableIfNotExists (connection, Photo.class);
+	}
+
+	public List<Photo> getUniqueDates() throws SQLException {
+		QueryBuilder<Photo, Integer> qb = photoDao.queryBuilder ();
+		qb.selectColumns (Photo.COLUMN_DATE);
+		qb.groupBy (Photo.COLUMN_DATE);
+		return photoDao.query(qb.prepare ());
 	}
 
     public void createOrUpdate(Photo photo) throws Exception {
