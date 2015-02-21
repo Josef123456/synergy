@@ -17,11 +17,26 @@ public class TestMain extends JFrame {
     MainPhotoPanel mainPhotoPanel;
     ThumbnailPanel thumbnailPanel;
     TagPanelView tagPanelView;
+    GridViewPanel gridViewPanel;
+
+    JPanel cardViews;
+    CardLayout cardLayout;
+
+    final static String GRID_VIEW = "GRID";
+    final static String MAIN_VIEW = "MAIN VIEW";
 
     public TestMain(){
+
         mainPhotoPanel = new MainPhotoPanel();
         thumbnailPanel = new ThumbnailPanel(mainPhotoPanel);
         tagPanelView = new TagPanelView();
+        gridViewPanel = new GridViewPanel();
+
+        cardViews = new JPanel();
+
+
+
+
         setUpJMenu();
         setUpUI();
 
@@ -30,10 +45,21 @@ public class TestMain extends JFrame {
     public void setUpUI(){
         JScrollPane scrollPane = new JScrollPane(thumbnailPanel);
         scrollPane.setPreferredSize(new Dimension(200, 600));
-        add(scrollPane, BorderLayout.WEST);
-        add(mainPhotoPanel, BorderLayout.CENTER);
-        add(tagPanelView, BorderLayout.EAST);
 
+        add(scrollPane, BorderLayout.WEST);
+
+        JScrollPane gridScrollPane = new JScrollPane(gridViewPanel);
+        gridScrollPane.setPreferredSize(new Dimension(800, 600));
+
+        cardViews.setLayout(new CardLayout());
+        cardViews.add(gridScrollPane, GRID_VIEW);
+        cardViews.add(mainPhotoPanel, MAIN_VIEW);
+
+        cardLayout = (CardLayout) cardViews.getLayout();
+
+        add(cardViews, BorderLayout.CENTER);
+
+        add(tagPanelView, BorderLayout.EAST);
 
         pack();
         setVisible(true);
@@ -48,8 +74,10 @@ public class TestMain extends JFrame {
 
         JMenuItem importMenuItem = new JMenuItem("Import");
         JMenuItem exportMenuItem = new JMenuItem("Export");
+
         fileMenu.add(importMenuItem);
         fileMenu.add(exportMenuItem);
+
         final JFileChooser fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(true);
 
@@ -64,14 +92,44 @@ public class TestMain extends JFrame {
                     for (int i = 0; i < file.length; i++) {
                         StaticObjects.LIST_OF_IMAGE_FILES.add(file[i]);
                     }
+                    initiateListOfMetaDataValues();
+                    mainPhotoPanel.setMainImage(0);
+                    mainPhotoPanel.updateUI();
+
+                    thumbnailPanel.setUpImages();
+                    gridViewPanel.setUpImages();
+
                 }
-                initiateListOfMetaDataValues();
-                mainPhotoPanel.setMainImage(0);
-                mainPhotoPanel.updateUI();
-                thumbnailPanel.setUpImages();
+
+
             }
 
         });
+
+        JMenuItem viewGridViewMenu = new JMenuItem("Switch to grid view");
+
+        viewGridViewMenu.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e) {
+               cardLayout.next(cardViews);
+
+
+            }
+        });
+
+        JMenuItem viewMainViewMenu = new JMenuItem("Switch to main view");
+        viewMainViewMenu.addActionListener(new ActionListener(){
+
+
+            public void actionPerformed(ActionEvent e) {
+               cardLayout.next(cardViews);
+
+
+            }
+        });
+
+        viewMenu.add(viewMainViewMenu);
+        viewMenu.add(viewGridViewMenu);
+
 
         menuBar.add(fileMenu);
         menuBar.add(viewMenu);

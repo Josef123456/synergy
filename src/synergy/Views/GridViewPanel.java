@@ -16,7 +16,8 @@ public class GridViewPanel extends JPanel {
     }
 
     public void setUpUI(){
-        setPreferredSize(new Dimension(1000, 600));
+       // setPreferredSize(new Dimension(1000, 600));
+        setLayout(new GridLayout(0, 3));
 
     }
 
