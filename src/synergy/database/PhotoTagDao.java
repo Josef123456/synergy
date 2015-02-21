@@ -49,6 +49,7 @@ public class PhotoTagDao {
 
 	public void dropTable() throws SQLException {
 		TableUtils.dropTable (connection, PhotoTag.class, true );
+		TableUtils.createTableIfNotExists (connection, PhotoTag.class);
 	}
 
 	public void destroy(PhotoTag photoTag) throws Exception{

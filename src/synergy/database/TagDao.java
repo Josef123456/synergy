@@ -37,6 +37,7 @@ public class TagDao {
 
 	public void dropTable() throws SQLException {
 		TableUtils.dropTable (connection, Tag.class, true );
+		TableUtils.createTableIfNotExists (connection, Tag.class);
 	}
 
 	public void createOrUpdate(Tag tag) throws Exception {
