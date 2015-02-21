@@ -17,6 +17,8 @@ import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 import org.apache.commons.imaging.util.IoUtils;
+import synergy.models.Photo;
+import synergy.models.Tag;
 
 public class MetaData {
 
@@ -54,8 +56,9 @@ public class MetaData {
     /*
     Modified the example method from apache.commons.imagining library
      */
-    public void changeExifMetadata(final File inputFile)
+    public void changeExifMetadata(Photo photo)
             throws IOException, ImageReadException, ImageWriteException {
+	    final File inputFile = new File(photo.getPath ());
         OutputStream os = null;
         boolean canThrow = false;
         try {
@@ -85,7 +88,8 @@ public class MetaData {
                     .getOrCreateExifDirectory();
             //Remove old field and replace with it with a new one.
             exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
-            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, "LOC:Big Room");
+	        Tag[] tags = photo.getTags();
+            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, encodeTags(tags) );
 
             File outputFile = new File("tmp2.jpg");
             os = new FileOutputStream(outputFile);
@@ -105,5 +109,13 @@ public class MetaData {
         }
 
     }
+
+	private String encodeTags(Tag[] tags) {
+		String result = "";
+		for( Tag tag: tags) {
+			result += tag.getType () + " " +
+		}
+		return "";
+	}
 
 }
