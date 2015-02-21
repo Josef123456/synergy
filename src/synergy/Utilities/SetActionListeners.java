@@ -1,5 +1,7 @@
 package synergy.Utilities;
 
+import synergy.Views.GridViewPanel;
+import synergy.Views.TagPanelView;
 import synergy.Views.ThumbnailPanel;
 
 import javax.swing.*;
@@ -11,8 +13,16 @@ import java.awt.event.MouseEvent;
  */
 public class SetActionListeners {
     ThumbnailPanel thumbnailPanel;
+    GridViewPanel gridViewPanel;
+    TagPanelView tagPanelView;
+
     public SetActionListeners(ThumbnailPanel thumbnailPanel){
         this.thumbnailPanel = thumbnailPanel;
+    }
+
+    public SetActionListeners(GridViewPanel gridViewPanel, TagPanelView tagPanelView){
+        this.gridViewPanel = gridViewPanel;
+        this.tagPanelView = tagPanelView;
     }
 
     public void setThumbnailPanelListener(JLabel label, int i){
@@ -20,7 +30,18 @@ public class SetActionListeners {
         label.addMouseListener(new MouseAdapter(){
             public void mouseClicked(MouseEvent arg0) {
                 thumbnailPanel.getMainPhotoPanel().setMainImage(index);
+                StaticObjects.SELECTED_INDEX = index;
             }
         });
+    }
+
+    public void setGridViewPanelListener(JLabel label, int i){
+        final int index = i;
+        label.addMouseListener(new MouseAdapter(){
+           public void mouseClicked(MouseEvent arg0){
+               tagPanelView.updateLocationMainPanelTags(index);
+           }
+        });
+
     }
 }

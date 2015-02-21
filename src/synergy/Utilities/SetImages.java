@@ -10,17 +10,22 @@ import java.io.File;
  */
 public class SetImages {
     JPanel panel;
+    Photo photo;
 
     public SetImages(JPanel panel){
         this.panel = panel;
     }
 
     public void setImagesToPanel(JLabel pic, int index, int width, int height){
-        Photo photo = new Photo(StaticObjects.LIST_OF_IMAGE_FILES.get(index).toString());
+        photo = new Photo(StaticObjects.LIST_OF_IMAGE_FILES.get(index).toString());
         DisplayPhoto image = new DisplayPhoto(photo.getPath());
         ImageIcon icon = new ImageIcon(image.getBufferedImage(width, height));
         pic.setIcon(icon);
         panel.add(pic);
+    }
+
+    public Photo getPhoto(){
+        return photo;
     }
 
 }
