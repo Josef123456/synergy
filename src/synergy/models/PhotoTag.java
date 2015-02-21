@@ -2,6 +2,7 @@ package synergy.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import synergy.database.PhotoTagDao;
 
 /**
  * Created by alexstoick on 2/7/15.
@@ -24,12 +25,48 @@ public class PhotoTag {
 	public PhotoTag () {
 	}
 
+	public Photo getPhoto () {
+		return photo;
+	}
+
+	public Tag getTag () {
+		return tag;
+	}
+
+	public void setID (int ID) {
+		this.ID = ID;
+	}
+
+	public int getID () {
+		return ID;
+	}
+
+	public void destroy() {
+		try {
+			System.out.println(this);
+			PhotoTagDao.getInstance ().destroy (this);
+		} catch ( Exception e ) {
+			System.err.println (e);
+			e.printStackTrace ();
+		}
+	}
+
+	public void save() {
+		try {
+			PhotoTagDao.getInstance ().createOrUpdate (this);
+		} catch ( Exception e ) {
+			System.err.println(e);
+			e.printStackTrace ();
+		}
+	}
+
 	@Override
 	public String toString () {
-		return "PhotoTag{" +
-				"photo=" + photo.getID() +
+		return "\nPhotoTag{" +
+				"ID=" + ID +
+				", photo=" + photo +
 				", tag=" + tag +
-				'}';
+				"{\n";
 	}
 
 	public PhotoTag (Photo photo, Tag tag) {

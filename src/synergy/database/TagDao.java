@@ -35,8 +35,16 @@ public class TagDao {
 		}
 	}
 
-	public void create(Tag tag) throws Exception {
-		tagDao.createIfNotExists (tag);
+	public void dropTable() throws SQLException {
+		TableUtils.dropTable (connection, Tag.class, true );
+	}
+
+	public void createOrUpdate(Tag tag) throws Exception {
+		List<Tag> tags = tagWithTypeAndValue (tag.getType(), tag.getValue());
+		if ( tags.size() > 0 ) {
+			tag.setID (tags.get (0).getID ());
+		}
+		tagDao.createOrUpdate (tag);
 	}
 
 	public List<Tag> query(PreparedQuery<Tag> query) throws SQLException{
@@ -45,5 +53,12 @@ public class TagDao {
 
 	public QueryBuilder<Tag, Integer> getQueryBuilder() {
 		return tagDao.queryBuilder ();
+	}
+
+	private List<Tag> tagWithTypeAndValue(Tag.TagType type, String value) throws SQLException{
+		QueryBuilder<Tag, Integer> qb = tagDao.queryBuilder ();
+		qb.where().eq (Tag.COLUMN_TYPE, type);
+		qb.where().eq (Tag.COLUMN_VALUE, value);
+		return tagDao.query(qb.prepare ());
 	}
 }

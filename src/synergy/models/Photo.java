@@ -22,7 +22,7 @@ import java.util.List;
 public class Photo {
 
 	@DatabaseField(generatedId=true, columnName = _ID)
-	private int ID;
+	private int ID = -1;
 	@DatabaseField(canBeNull = false, columnName =  COLUMN_PATH, unique = true)
 	private String path;
 	@DatabaseField(canBeNull = false, columnName = COLUMN_DATE)
@@ -39,9 +39,17 @@ public class Photo {
 		try {
 			Path p = Paths.get (path);
 			BasicFileAttributes attr = Files.readAttributes (p, BasicFileAttributes.class);
-			System.out.println ("creationTime: " + attr.creationTime ());
 			FileTime createdAt = attr.creationTime ();
 			this.date = new Date(createdAt.toMillis ());
+		} catch ( Exception e ) {
+			System.err.println(e);
+			e.printStackTrace ();
+		}
+	}
+
+	public void save() {
+		try {
+			PhotoDao.getInstance ().createOrUpdate (this);
 		} catch ( Exception e ) {
 			System.err.println(e);
 			e.printStackTrace ();
@@ -60,6 +68,10 @@ public class Photo {
 		return date;
 	}
 
+	public void setID (int ID) {
+		this.ID = ID;
+	}
+
 	public Tag[] getTags () {
 		try {
 			List<Tag> tags = PhotoDao.getInstance ().getTagsForPhoto (this);
@@ -72,24 +84,16 @@ public class Photo {
 	}
 
 	public void addTag(Tag tag) {
-		try {
-			TagDao.getInstance ().create (tag);
-			PhotoTag photoTag = new PhotoTag (this, tag);
-			PhotoTagDao.getInstance ().create(photoTag);
-		} catch ( Exception e ) {
-			System.err.println(e);
-			e.printStackTrace ();
-		}
+		tag.save();
+		PhotoTag photoTag = new PhotoTag (this, tag);
+		photoTag.save();
+		System.out.println(photoTag);
 	}
 
 	public void removeTag(Tag tag){
-		try {
-			PhotoTag photoTag = new PhotoTag (this, tag);
-			PhotoTagDao.getInstance ().destroy(photoTag);
-		} catch ( Exception e ) {
-			System.err.println (e);
-			e.printStackTrace ();
-		}
+		PhotoTag photoTag = new PhotoTag (this, tag);
+		photoTag.save();
+		photoTag.destroy();
 	}
 
 	@Override
@@ -112,9 +116,10 @@ public class Photo {
 
 	@Override
 	public String toString () {
-		return "Photo{" +
-				"path='" + path + '\'' +
-				'}';
+		return "\nPhoto{" +
+				"ID=" + ID +
+				", path='" + path + '\'' +
+				", date=" + date +
+				"{\n";
 	}
-
 }

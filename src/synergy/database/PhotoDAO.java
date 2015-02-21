@@ -40,8 +40,16 @@ public class PhotoDao {
         }
     }
 
-    public void create(Photo photo) throws Exception {
-        photoDao.createIfNotExists(photo);
+	public void dropTable() throws SQLException {
+		TableUtils.dropTable (connection, Photo.class, true );
+	}
+
+    public void createOrUpdate(Photo photo) throws Exception {
+	    List<Photo> photos = photoWithPath (photo.getPath ());
+	    if(photos.size() > 0 ) {
+		    photo.setID (photos.get (0).getID ());
+	    }
+	    photoDao.createOrUpdate (photo);
     }
 
     public List<Tag> getTagsForPhoto(Photo photo) throws SQLException {
@@ -51,6 +59,12 @@ public class PhotoDao {
         tagsForPhotoQuery.setArgumentHolderValue(0, photo);
         return TagDao.getInstance().query(tagsForPhotoQuery);
     }
+
+	private List<Photo> photoWithPath(String path) throws SQLException {
+		QueryBuilder<Photo, Integer> qb = photoDao.queryBuilder ();
+		qb.where ().eq (Photo.COLUMN_PATH, path);
+		return photoDao.query(qb.prepare ());
+	}
 
     private PreparedQuery<Tag> makeTagsForPhotoQuery() throws SQLException {
         QueryBuilder<PhotoTag, Integer> photoTagsQueryBuilder = PhotoTagDao.getInstance()

@@ -8,7 +8,8 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
  */
 public class DatabaseConnection {
     private JdbcConnectionSource connection = null;
-    private final static String DATABASE_URL = "jdbc:h2:~/Desktop/synergy/db/h2.db";
+//    public final static String DATABASE_URL = "jdbc:h2:~/Desktop/synergy/db/h2.db";
+    public final static String DATABASE_URL = "jdbc:h2:mem:db";
 
     public JdbcConnectionSource getConnection() {
         return connection;

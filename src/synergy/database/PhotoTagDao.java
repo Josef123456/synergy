@@ -7,6 +7,9 @@ import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.table.TableUtils;
 import synergy.models.PhotoTag;
 
+import java.sql.SQLException;
+import java.util.List;
+
 /**
  * Created by alexstoick on 2/7/15.
  */
@@ -32,8 +35,20 @@ public class PhotoTagDao {
 		}
 	}
 
-	public void create(PhotoTag photoTag) throws Exception{
-		photoTagDao.createIfNotExists (photoTag);
+	public void createOrUpdate(PhotoTag photoTag) throws Exception {
+		List<PhotoTag> photoTags = photoTagsWithPhotoIdAndTagId(
+				photoTag.getPhoto ().getID (),
+				photoTag.getTag ().getID ()
+		);
+		if ( photoTags.size () > 0 ) {
+			photoTag.setID(photoTags.get (0).getID());
+		}
+		photoTagDao.createOrUpdate (photoTag);
+
+	}
+
+	public void dropTable() throws SQLException {
+		TableUtils.dropTable (connection, PhotoTag.class, true );
 	}
 
 	public void destroy(PhotoTag photoTag) throws Exception{
@@ -42,5 +57,12 @@ public class PhotoTagDao {
 
 	public QueryBuilder<PhotoTag, Integer> getQueryBuilder() {
 		return photoTagDao.queryBuilder ();
+	}
+
+	private List<PhotoTag> photoTagsWithPhotoIdAndTagId(int photoID, int tagID) throws SQLException {
+		QueryBuilder<PhotoTag, Integer> qb = photoTagDao.queryBuilder ();
+		qb.where ().eq(PhotoTag.COLUMN_PHOTO_ID, photoID);
+		qb.where ().eq(PhotoTag.COLUMN_TAG_ID, tagID);
+		return photoTagDao.query(qb.prepare ());
 	}
 }

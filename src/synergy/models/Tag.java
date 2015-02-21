@@ -2,6 +2,7 @@ package synergy.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import synergy.database.TagDao;
 
 /**
  * Created by alexstoick on 2/6/15.
@@ -27,17 +28,38 @@ public class Tag {
 	public Tag(){
 	}
 
+	public void save() {
+		try {
+			TagDao.getInstance ().createOrUpdate (this);
+		} catch ( Exception e ) {
+			System.err.println (e);
+			e.printStackTrace ();
+		}
+	}
+
+	public void setID (int ID) {
+		this.ID = ID;
+	}
+
+	public TagType getType () {
+		return type;
+	}
+
+	public String getValue () {
+		return value;
+	}
+
 	public int getID () {
 		return ID;
 	}
 
 	@Override
 	public String toString () {
-		return "Tag{" +
+		return "\nTag{" +
 				"ID=" + ID +
 				", type=" + type +
 				", value='" + value + '\'' +
-				'}';
+				"}\n";
 	}
 
 	@Override
