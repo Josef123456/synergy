@@ -1,22 +1,22 @@
 package synergy.database;
 
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
+
 import synergy.models.Photo;
 import synergy.models.PhotoTag;
 import synergy.models.Tag;
 
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by alexstoick on 2/4/15.
  */
 public class DatabaseConnectionTest {
 
-	private final static String FILEPATH = "/Users/alexstoick/Dropbox/edited photos/20150213-DSC01999.jpg";
+	private final static String DIR_PATH = "/Users/alexstoick/Dropbox/edited photos/";
+	private final static String FILE_PATH = DIR_PATH + "20150213-DSC01999.jpg";
 
 	@Before
 	public void emptyDatabaseTables() throws Exception {
@@ -25,9 +25,17 @@ public class DatabaseConnectionTest {
 		PhotoTagDao.getInstance ().dropTable ();
 	}
 
-	@Test
-	public void testPhotoCreation() throws Exception {
-		Photo photo = new Photo (FILEPATH);
+	@Test public void testUniqueDates() throws Exception {
+		Photo photo = new Photo(FILE_PATH);
+		photo.save();
+		photo = new Photo(DIR_PATH + "20150209-_DSC0727.jpg");
+		photo.save();
+		Date[] dates = Photo.getUniqueDates();
+		assertEquals (2, dates.length);
+	}
+
+	@Test public void testPhotoCreation() throws Exception {
+		Photo photo = new Photo (FILE_PATH);
 		photo.save ();
 		assertNotSame (-1, photo.getID ());
 	}
@@ -47,13 +55,13 @@ public class DatabaseConnectionTest {
 	}
 
 	@Test public void testPhotoGetTags() throws Exception {
-		Photo photo = new Photo (FILEPATH);
+		Photo photo = new Photo (FILE_PATH);
 		photo.save ();
 		assertEquals (0, photo.getTags ().length);
 	}
 
 	@Test public void testPhotoAddTag() throws Exception {
-		Photo photo = new Photo (FILEPATH);
+		Photo photo = new Photo (FILE_PATH);
 		photo.save ();
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
@@ -63,7 +71,7 @@ public class DatabaseConnectionTest {
 	}
 
 	@Test public void testPhotoRemoveTag() throws Exception{
-		Photo photo = new Photo (FILEPATH);
+		Photo photo = new Photo (FILE_PATH);
 		photo.save ();
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
@@ -76,7 +84,7 @@ public class DatabaseConnectionTest {
 
 
 	@Test public void testDatabaseConnection() throws Exception {
-		Photo photo = new Photo (FILEPATH);
+		Photo photo = new Photo (FILE_PATH);
 		photo.save ();
 
 		System.out.println(photo);

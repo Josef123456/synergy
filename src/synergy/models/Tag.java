@@ -28,6 +28,11 @@ public class Tag {
 	public Tag(){
 	}
 
+	public Tag (TagType type, String value) {
+		this.type = type;
+		this.value = value;
+	}
+
 	public void save() {
 		try {
 			TagDao.getInstance ().createOrUpdate (this);
@@ -53,6 +58,11 @@ public class Tag {
 		return ID;
 	}
 
+	public static Photo[] getPhotosForTag(Tag tag) {
+		// TODO: implement this
+		return null;
+	}
+
 	@Override
 	public String toString () {
 		return "\nTag{" +
@@ -76,8 +86,5 @@ public class Tag {
 		return true;
 	}
 
-	public Tag (TagType type, String value) {
-		this.type = type;
-		this.value = value;
-	}
+
 }

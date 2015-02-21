@@ -13,7 +13,9 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by alexstoick on 2/6/15.
@@ -96,6 +98,29 @@ public class Photo {
 		photoTag.destroy();
 	}
 
+	public static Date[] getUniqueDates() {
+		try {
+			List<Photo> photos = PhotoDao.getInstance ().getUniqueDates ();
+			Set<Date> datesSet = new HashSet<> ();
+			for(Photo tmp: photos) {
+				Date date = tmp.getDate ();
+				System.out.println (date);
+				Date tmpDate =new Date (date.getYear (), date.getMonth (), date.getDate ());
+				System.out.println (tmpDate);
+				datesSet.add (tmpDate);
+			}
+			return datesSet.toArray (new Date[datesSet.size ()]);
+		} catch ( Exception e ) {
+			System.err.println (e) ;
+			e.printStackTrace ();
+		}
+		return new Date[0];
+	}
+
+	public static Photo[] getPhotosForDate(Date date){
+		//TODO: impelement this
+		return null;
+	}
 	@Override
 	public boolean equals (Object o) {
 		if ( this == o ) return true;
@@ -120,6 +145,6 @@ public class Photo {
 				"ID=" + ID +
 				", path='" + path + '\'' +
 				", date=" + date +
-				"{\n";
+				"}\n";
 	}
 }

@@ -66,7 +66,7 @@ public class PhotoTag {
 				"ID=" + ID +
 				", photo=" + photo +
 				", tag=" + tag +
-				"{\n";
+				"}\n";
 	}
 
 	public PhotoTag (Photo photo, Tag tag) {
