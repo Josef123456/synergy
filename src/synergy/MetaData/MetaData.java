@@ -39,14 +39,14 @@ public class MetaData {
                 values = item.toString();
                 //Only print out 'UserComment' tag and its values
                 //Remove string to return all meta-data tags
-                if (values.contains("")) {
+                if (values.contains("UserComment")) {
                     userComment = values;
                     System.out.println(userComment);
 
                 }
             }
         } else {
-            System.out.println("Not a JPG file");
+            System.out.println("Not a jpg file");
         }
 
     }
@@ -54,7 +54,7 @@ public class MetaData {
     /*
     Modified the example method from apache.commons.imagining library
      */
-    public void changeExifMetadata(final File jpegImageFile, final File dst)
+    public void changeExifMetadata(final File inputFile, final File outputFile)
             throws IOException, ImageReadException, ImageWriteException {
         OutputStream os = null;
         boolean canThrow = false;
@@ -62,7 +62,7 @@ public class MetaData {
             TiffOutputSet outputSet = null;
 
             // metadata can be null if none is attached to the jpg
-            final IImageMetadata metadata = Imaging.getMetadata(jpegImageFile);
+            final IImageMetadata metadata = Imaging.getMetadata(inputFile);
             final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
             if (null != jpegMetadata) {
                 // exif data can be null if none is found
@@ -88,15 +88,19 @@ public class MetaData {
                 exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, "LOC:Big Room");
 
             }
-
             {
-
             }
-            os = new FileOutputStream(dst);
+            os = new FileOutputStream(outputFile);
             os = new BufferedOutputStream(os);
 
-            new ExifRewriter().updateExifMetadataLossless(jpegImageFile, os,
+            new ExifRewriter().updateExifMetadataLossless(inputFile, os,
                     outputSet);
+
+            //Rename output file to input file
+            File temp = inputFile;
+            inputFile.delete();
+            outputFile.renameTo(temp);
+
             canThrow = true;
         } finally {
             IoUtils.closeQuietly(canThrow, os);
