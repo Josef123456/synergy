@@ -45,7 +45,7 @@ public class DatabaseConnectionTest extends TestCase {
 
 	@Test
 	public void testPhotoAddTag() throws Exception {
-		Photo photo = new Photo ("/Users/alexstoick/Dropbox/edited photos/20140809-DSC_0602.JPG");
+		Photo photo = new Photo ("/Users/alexstoick/Dropbox/edited photos/20140809-DSC_0615.JPG");
 		photo.save ();
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
@@ -70,7 +70,6 @@ public class DatabaseConnectionTest extends TestCase {
 
 	@Test
 	public void testDatabaseConnection() throws Exception {
-
 		Photo photo = new Photo ("/Users/alexstoick/Dropbox/edited photos/20140809-DSC_0602.JPG");
 		photo.save ();
 
