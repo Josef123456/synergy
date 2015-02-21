@@ -54,7 +54,7 @@ public class MetaData {
     /*
     Modified the example method from apache.commons.imagining library
      */
-    public void changeExifMetadata(final File inputFile, final File outputFile)
+    public void changeExifMetadata(final File inputFile)
             throws IOException, ImageReadException, ImageWriteException {
         OutputStream os = null;
         boolean canThrow = false;
@@ -78,18 +78,16 @@ public class MetaData {
             if (null == outputSet) {
                 outputSet = new TiffOutputSet();
             }
-            {
-                // TagInfo constants often contain a description of what
-                // directories are associated with a given tag.
-                final TiffOutputDirectory exifDirectory = outputSet
-                        .getOrCreateExifDirectory();
-                //Remove old field and replace with it with a new one.
-                exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
-                exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, "LOC:Big Room");
 
-            }
-            {
-            }
+            // TagInfo constants often contain a description of what
+            // directories are associated with a given tag.
+            final TiffOutputDirectory exifDirectory = outputSet
+                    .getOrCreateExifDirectory();
+            //Remove old field and replace with it with a new one.
+            exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
+            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, "LOC:Big Room");
+
+            File outputFile = new File("tmp2.jpg");
             os = new FileOutputStream(outputFile);
             os = new BufferedOutputStream(os);
 
