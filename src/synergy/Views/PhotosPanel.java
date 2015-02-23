@@ -59,7 +59,7 @@ public class PhotosPanel extends JPanel {
         listOfImageFiles = new ArrayList<File>();
 
         mainImage = new JLabel();
-        mainImage.setPreferredSize(new Dimension(800, 600));
+        mainImage.setPreferredSize(new Dimension(600, 480));
 
         isMainView = true;
 
@@ -73,6 +73,7 @@ public class PhotosPanel extends JPanel {
         currentListSize = 0;
 
         tagPanel = new TagPanel(listOfImageFiles, this);
+        tagPanel.setPreferredSize(new Dimension(200, 480));
         add(tagPanel, BorderLayout.EAST);
 
         setVisible(true);
@@ -160,7 +161,7 @@ public class PhotosPanel extends JPanel {
 
         mainThumbnailPanel = new JPanel();
         JScrollPane scrollPane = new JScrollPane(mainThumbnailPanel);
-        scrollPane.setPreferredSize(new Dimension(200, 600));
+        scrollPane.setPreferredSize(new Dimension(120, 480));
         mainThumbnailPanel.setLayout(new GridLayout(2, 1));
 
         mainPanel.add(scrollPane, BorderLayout.WEST);
@@ -172,8 +173,8 @@ public class PhotosPanel extends JPanel {
 
     public void setImportedImages() {
         mainThumbnailPanel.setLayout(new GridLayout(0, 1));
-        setImagesToPanel(mainThumbnailPanel, 200, 200);
-        setImagesToPanel(gridPanel, 300, 300);
+        setImagesToPanel(mainThumbnailPanel, 120, 120);
+        setImagesToPanel(gridPanel, 200, 200);
         if (listOfImageFiles.size() > 0) {
             setMainImagePanel(listOfImageFiles.get(listOfImageFiles.size() - 1).toString());
         }
@@ -199,9 +200,9 @@ public class PhotosPanel extends JPanel {
         mainGridPanel = new JPanel();
         gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(0, 3, 20, 20));
-        setImagesToPanel(gridPanel, 300, 300);
+        setImagesToPanel(gridPanel, 200, 200);
         gridPanelPane = new JScrollPane(gridPanel);
-        gridPanelPane.setPreferredSize(new Dimension(1000, 600));
+        gridPanelPane.setPreferredSize(new Dimension(720, 480));
         mainGridPanel.add(gridPanelPane, BorderLayout.CENTER);
         add(mainGridPanel, BorderLayout.CENTER);
         mainGridPanel.updateUI();

@@ -77,7 +77,7 @@ public class Main extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
 
         cardPanel = new JPanel(new CardLayout());
-        //cardPanel.add(new CalendarPanel(), "CALENDAR");
+        cardPanel.add(new CalendarPanel(), "CALENDAR");
 
 
         photosPanel = new PhotosPanel();

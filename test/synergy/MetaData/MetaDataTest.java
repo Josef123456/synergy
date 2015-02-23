@@ -20,7 +20,7 @@ public class MetaDataTest extends TestCase {
         //Original file used for modifying
         File inputFile = new File("C:\\Users\\Amit\\Pictures\\testcamimage.jpg");
 
-        image.changeExifMetadata(inputFile);
+        //image.changeExifMetadata(inputFile);
         image.getMetaData(inputFile);
 
         assertNotNull(image.values);
