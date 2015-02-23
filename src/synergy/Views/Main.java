@@ -1,6 +1,8 @@
 package synergy.Views;
 
 
+import synergy.models.Photo;
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -14,6 +16,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -28,6 +31,8 @@ import javax.swing.UIManager;
  * Created by Josef on 02/02/2015.
  */
 public class Main extends JFrame {
+
+    public static ArrayList<Photo> PHOTO_ARRAY = new ArrayList<Photo>();
 
     private JPanel mainPanel, northernPanel, buttonsNorth, cardPanel;
     private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton, gridPhotoButton;
@@ -130,13 +135,16 @@ public class Main extends JFrame {
                     File[] file = fileChooser.getSelectedFiles();
                     for (int i = 0; i < file.length; i++) {
                         PhotosPanel.listOfImageFiles.add(file[i]);
+                        Photo photo = new Photo(file[i].toString());
+                        photo.save();
+                        PHOTO_ARRAY.add(photo);
                     }
+                    System.out.println(PhotosPanel.listOfImageFiles);
+                    tagPanel.initiateListOfMetaDataValues();
+                    System.out.println("Number of files imported: " + PhotosPanel.listOfImageFiles.size());
+                    photosPanel.setImportedImages();
                 }
-                System.out.println(PhotosPanel.listOfImageFiles);
-                tagPanel.initiateListOfMetaDataValues();
-                System.out.println(tagPanel.listOfMetaData);
-                System.out.println("Number of files imported: " + PhotosPanel.listOfImageFiles.size());
-                photosPanel.setImportedImages();
+
 
                 long t2 = System.currentTimeMillis();
 

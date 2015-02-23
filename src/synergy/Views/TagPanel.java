@@ -1,5 +1,7 @@
 package synergy.Views;
 
+import synergy.models.Tag;
+
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -50,14 +52,18 @@ public class TagPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent arg0) {
 
+                Tag tag = new Tag(Tag.TagType.PLACE, (String) locationTextField.getSelectedItem());
+                tag.save();
                 if (photosPanel.isMainView) {
                     listOfMetaData.get(getIndex()).add((String) locationTextField.getSelectedItem());
+                    Main.PHOTO_ARRAY.get(getIndex()).addTag(tag);
                     updateLocationTags();
 
                 } else {
                     for (int i = 0; i < listOfMetaData.size(); i++) {
                         if (listOfSelectedIndex.get(i) == 1 && !listOfMetaData.get(i).contains(locationTextField.getSelectedItem())) {
                             listOfMetaData.get(i).add((String) locationTextField.getSelectedItem());
+                            Main.PHOTO_ARRAY.get(i).addTag(tag);
                         }
                     }
                     updateLocationTags();
@@ -133,6 +139,7 @@ public class TagPanel extends JPanel {
                 final int index = i;
                 JLabel label = new JLabel();
                 label.setText(listOfMetaData.get(getIndex()).get(i));
+                final String stringTag = label.getText();
                 final JButton removeButton = new JButton("-");
 
 
@@ -142,6 +149,9 @@ public class TagPanel extends JPanel {
                 removeButton.addActionListener(new ActionListener() {
 
                     public void actionPerformed(ActionEvent arg0) {
+                        Tag photoTag = new Tag(Tag.TagType.PLACE, stringTag);
+                        photoTag.save();
+                        Main.PHOTO_ARRAY.get(getIndex()).removeTag(photoTag);
                         listOfMetaData.get(getIndex()).remove(index);
                         updateLocationTags();
                     }
@@ -176,15 +186,19 @@ public class TagPanel extends JPanel {
                     label.setText(listOfTags.get(i));
                     JButton removeButton = new JButton("-");
 
-                    final String tag = listOfTags.get(i);
+                    final String stringTag = listOfTags.get(i);
 
                     removeButton.addActionListener(new ActionListener() {
 
                         public void actionPerformed(ActionEvent arg0) {
+                            Tag photoTag = new Tag(Tag.TagType.PLACE, stringTag);
+                            photoTag.save();
+
                             for (int i = 0; i < listOfMetaData.size(); i++) {
                                 for (int j = 0; j < listOfMetaData.get(i).size(); j++) {
-                                    if (listOfSelectedIndex.get(i) == 1 && listOfMetaData.get(i).get(j).equals(tag)) {
+                                    if (listOfSelectedIndex.get(i) == 1 && listOfMetaData.get(i).get(j).equals(stringTag)) {
                                         listOfMetaData.get(i).remove(j);
+                                        Main.PHOTO_ARRAY.get(i).removeTag(photoTag);
                                         updateLocationTags();
                                     }
                                 }
