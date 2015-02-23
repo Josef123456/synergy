@@ -82,6 +82,16 @@ public class DatabaseConnectionTest {
 		assertEquals (0, photo.getTags ().length);
 	}
 
+	@Test public void testPhotosForDate() throws Exception {
+		Photo photo = new Photo(FILE_PATH);
+		photo.save ();
+		System.out.println(photo);
+		Date date = new Date(115,1,21);
+		System.out.println(date);
+		Photo[] photos = Photo.getPhotosForDate (date);
+		assertEquals (1, photos.length);
+	}
+
 
 	@Test public void testDatabaseConnection() throws Exception {
 		Photo photo = new Photo (FILE_PATH);

@@ -118,8 +118,14 @@ public class Photo {
 	}
 
 	public static Photo[] getPhotosForDate(Date date){
-		//TODO: impelement this
-		return null;
+		try {
+			List<Photo> photos = PhotoDao.getInstance ().getPhotosForDate (date);
+			return photos.toArray (new Photo[ photos.size () ]);
+		} catch ( Exception e ) {
+			System.err.println(e);
+			e.printStackTrace ();
+		}
+		return new Photo[0];
 	}
 	@Override
 	public boolean equals (Object o) {
