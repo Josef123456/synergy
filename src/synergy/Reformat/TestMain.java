@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by Cham on 19/02/2015.
  */
-public class TestMain extends JFrame {
+class TestMain extends JFrame {
 
     MainPhotoPanel mainPhotoPanel;
     ThumbnailPanel thumbnailPanel;

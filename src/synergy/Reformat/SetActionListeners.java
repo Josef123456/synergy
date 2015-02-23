@@ -1,8 +1,9 @@
-package synergy.Utilities;
+package synergy.Reformat;
 
 import synergy.Reformat.GridViewPanel;
 import synergy.Reformat.TagPanelView;
 import synergy.Reformat.ThumbnailPanel;
+import synergy.Utilities.StaticObjects;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;
@@ -11,7 +12,7 @@ import java.awt.event.MouseEvent;
 /**
  * Created by Cham on 19/02/2015.
  */
-public class SetActionListeners {
+class SetActionListeners {
     ThumbnailPanel thumbnailPanel;
     GridViewPanel gridViewPanel;
     TagPanelView tagPanelView;

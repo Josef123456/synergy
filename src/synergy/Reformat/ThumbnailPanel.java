@@ -1,6 +1,5 @@
 package synergy.Reformat;
 
-import synergy.Utilities.SetActionListeners;
 import synergy.Utilities.SetImages;
 import synergy.Utilities.StaticObjects;
 
@@ -10,7 +9,7 @@ import java.awt.*;
 /**
  * Created by Cham on 19/02/2015.
  */
-public class ThumbnailPanel extends JPanel {
+class ThumbnailPanel extends JPanel {
     MainPhotoPanel mainPhotoPanel;
 
     public ThumbnailPanel(MainPhotoPanel mainPhotoPanel){

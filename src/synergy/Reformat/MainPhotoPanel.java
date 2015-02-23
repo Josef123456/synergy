@@ -13,7 +13,7 @@ import java.io.File;
 /**
  * Created by Cham on 19/02/2015.
  */
-public class MainPhotoPanel extends JPanel {
+class MainPhotoPanel extends JPanel {
     JLabel mainImage;
 
     public MainPhotoPanel(){

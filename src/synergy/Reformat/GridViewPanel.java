@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * Created by Cham on 20/02/2015.
  */
-public class GridViewPanel extends JPanel {
+class GridViewPanel extends JPanel {
 
     public GridViewPanel(){
         setUpUI();
