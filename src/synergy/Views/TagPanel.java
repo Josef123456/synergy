@@ -94,7 +94,7 @@ public class TagPanel extends JPanel {
         add(locationPanel);
 
 
-        add(kidsPanel);
+        //add(kidsPanel);
     }
 
     public void setIndex(int index) {
@@ -130,12 +130,23 @@ public class TagPanel extends JPanel {
         tagPanelLocation.setLayout(new FlowLayout());
         if (photosPanel.isMainView) {
             for (int i = 0; i < listOfMetaData.get(getIndex()).size(); i++) {
+                final int index = i;
                 JLabel label = new JLabel();
                 label.setText(listOfMetaData.get(getIndex()).get(i));
-                JButton removeButton = new JButton("-");
+                final JButton removeButton = new JButton("-");
+
 
                 tagPanelLocation.add(label);
                 tagPanelLocation.add(removeButton);
+
+                removeButton.addActionListener(new ActionListener() {
+
+                    public void actionPerformed(ActionEvent arg0) {
+                        listOfMetaData.get(getIndex()).remove(index);
+                        updateLocationTags();
+                    }
+
+                });
             }
         } else {
             ArrayList<String> listOfTags = new ArrayList<String>();
@@ -164,6 +175,23 @@ public class TagPanel extends JPanel {
                     JLabel label = new JLabel();
                     label.setText(listOfTags.get(i));
                     JButton removeButton = new JButton("-");
+
+                    final String tag = listOfTags.get(i);
+
+                    removeButton.addActionListener(new ActionListener() {
+
+                        public void actionPerformed(ActionEvent arg0) {
+                            for (int i = 0; i < listOfMetaData.size(); i++) {
+                                for (int j = 0; j < listOfMetaData.get(i).size(); j++) {
+                                    if (listOfSelectedIndex.get(i) == 1 && listOfMetaData.get(i).get(j).equals(tag)) {
+                                        listOfMetaData.get(i).remove(j);
+                                        updateLocationTags();
+                                    }
+                                }
+                            }
+                        }
+
+                    });
 
                     tagPanelLocation.add(label);
                     tagPanelLocation.add(removeButton);

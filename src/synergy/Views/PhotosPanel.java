@@ -33,6 +33,7 @@ public class PhotosPanel extends JPanel {
     JPanel mainImagePanel;
     JPanel mainThumbnailPanel;
     JLabel mainImage;
+    JScrollPane gridPanelPane;
 
     JPanel mainGridPanel;
     JPanel gridPanel;
@@ -65,7 +66,7 @@ public class PhotosPanel extends JPanel {
         setGridImages();
         mainGridPanel.setVisible(false);
 
-        setUpJMenuBar();
+        //setUpJMenuBar();
         setUpMainFrame();
         setMainImagePanel(null);
 
@@ -197,7 +198,7 @@ public class PhotosPanel extends JPanel {
         gridPanel = new JPanel();
         gridPanel.setLayout(new GridLayout(0, 3, 20, 20));
         setImagesToPanel(gridPanel, 300, 300);
-        JScrollPane gridPanelPane = new JScrollPane(gridPanel);
+        gridPanelPane = new JScrollPane(gridPanel);
         gridPanelPane.setPreferredSize(new Dimension(1000, 600));
         mainGridPanel.add(gridPanelPane, BorderLayout.CENTER);
         add(mainGridPanel, BorderLayout.CENTER);
@@ -289,6 +290,23 @@ public class PhotosPanel extends JPanel {
 
     public TagPanel getTagPanel() {
         return tagPanel;
+    }
+
+    public void setIsMainView(boolean b) {
+        if (isMainView && !b) {
+            mainGridPanel.setVisible(true);
+            mainPanel.setVisible(false);
+            isMainView = false;
+            tagPanel.updateLocationTags();
+        }
+
+        if (!isMainView && b) {
+            mainPanel.setVisible(true);
+            mainGridPanel.setVisible(false);
+
+            isMainView = true;
+            tagPanel.updateLocationTags();
+        }
     }
 
 

@@ -1,5 +1,6 @@
 package synergy.Views;
 
+
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -29,11 +30,12 @@ import javax.swing.UIManager;
 public class Main extends JFrame {
 
     private JPanel mainPanel, northernPanel, buttonsNorth, cardPanel;
-    private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton;
+    private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton, gridPhotoButton;
     private JTextField searchField;
 
     private PhotosPanel photosPanel;
     private TagPanel tagPanel;
+
 
     public Main() throws IOException {
         super("InstaTag");
@@ -70,12 +72,13 @@ public class Main extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
 
         cardPanel = new JPanel(new CardLayout());
-        cardPanel.add(new CalendarPanel(), "CALENDAR");
+        //cardPanel.add(new CalendarPanel(), "CALENDAR");
 
 
         photosPanel = new PhotosPanel();
         tagPanel = photosPanel.getTagPanel();
         cardPanel.add(photosPanel, "PHOTOS");
+
 
         //northern panels
         northernPanel = new JPanel(new GridLayout(2, 0));
@@ -103,6 +106,7 @@ public class Main extends JFrame {
         });
 
         allPhotoButton = new JButton("All Photos");
+        gridPhotoButton = new JButton("Grid Photos");
         calendarButton = new JButton("Calendar");
         albumButton = new JButton("Album");
         importButton = new JButton("Import");
@@ -136,7 +140,7 @@ public class Main extends JFrame {
 
                 long t2 = System.currentTimeMillis();
 
-                System.out.println(t2 - t1+ " milliseconds");
+                System.out.println(t2 - t1 + " milliseconds");
 
             }
         });
@@ -154,6 +158,16 @@ public class Main extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
                 cardLayout.show(cardPanel, "PHOTOS");
+                photosPanel.setIsMainView(true);
+            }
+        });
+
+        gridPhotoButton.addActionListener(new ActionListener() {
+
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
+                cardLayout.show(cardPanel, "PHOTOS");
+                photosPanel.setIsMainView(false);
             }
         });
 
@@ -167,6 +181,8 @@ public class Main extends JFrame {
         buttonsNorth.add(calendarButton);
         buttonsNorth.add(Box.createHorizontalStrut(5));
         buttonsNorth.add(allPhotoButton);
+        buttonsNorth.add(Box.createHorizontalStrut(5));
+        buttonsNorth.add(gridPhotoButton);
         buttonsNorth.add(Box.createHorizontalStrut(5));
         northernPanel.add(buttonsNorth);
         buttonsNorth.add(Box.createHorizontalStrut(7));
