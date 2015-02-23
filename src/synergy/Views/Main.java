@@ -72,19 +72,13 @@ public class Main extends JFrame {
     }
 
     private void panelConstruct() {
-
         //main panel for all panels
         mainPanel = new JPanel(new BorderLayout());
-
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(new CalendarPanel(), "CALENDAR");
-
-
         photosPanel = new PhotosPanel();
         tagPanel = photosPanel.getTagPanel();
         cardPanel.add(photosPanel, "PHOTOS");
-
-
         //northern panels
         northernPanel = new JPanel(new GridLayout(2, 0));
         buttonsNorth = new JPanel();
@@ -92,7 +86,6 @@ public class Main extends JFrame {
     }
 
     private void northernConstruct() {
-
         //search part
         searchField = new JTextField("Search", 10);
         searchField.setBackground(new Color(204, 204, 204));
@@ -121,13 +114,10 @@ public class Main extends JFrame {
         fileChooser.setMultiSelectionEnabled(true);
 
         importButton.addActionListener(new ActionListener() {
-
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 int returnValue = fileChooser.showOpenDialog(Main.this);
-
                 long t1 = System.currentTimeMillis();
-
 
                 System.out.println(returnValue);
                 photosPanel.currentListSize = PhotosPanel.listOfImageFiles.size();
@@ -144,12 +134,8 @@ public class Main extends JFrame {
                     System.out.println("Number of files imported: " + PhotosPanel.listOfImageFiles.size());
                     photosPanel.setImportedImages();
                 }
-
-
                 long t2 = System.currentTimeMillis();
-
                 System.out.println(t2 - t1 + " milliseconds");
-
             }
         });
 
@@ -198,7 +184,6 @@ public class Main extends JFrame {
         for (Component jButton : buttonsNorth.getComponents()) {
             setComponentFont(jButton);
         }
-
     }
 
     public void setComponentFont(Component component) {

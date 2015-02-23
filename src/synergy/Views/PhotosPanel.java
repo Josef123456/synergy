@@ -101,13 +101,10 @@ public class PhotosPanel extends JPanel {
                         listOfImageFiles.add(file[i]);
                     }
                 }
-
                 System.out.println(listOfImageFiles);
                 tagPanel.initiateListOfMetaDataValues();
                 System.out.println(tagPanel.listOfMetaData);
                 setImportedImages();
-
-
             }
 
         });
@@ -120,12 +117,10 @@ public class PhotosPanel extends JPanel {
                 if (!isMainView) {
                     mainPanel.setVisible(true);
                     mainGridPanel.setVisible(false);
-
                     isMainView = true;
                     tagPanel.updateLocationTags();
                     tagPanel.updateChildrenTags();
                 }
-
             }
         });
 
@@ -151,7 +146,6 @@ public class PhotosPanel extends JPanel {
         menuBar.add(viewMenu);
 
         add(menuBar, BorderLayout.NORTH);
-
     }
 
     public void setUpMainFrame() {
@@ -168,7 +162,6 @@ public class PhotosPanel extends JPanel {
         mainPanel.add(mainImagePanel, BorderLayout.CENTER);
 
         add(mainPanel, BorderLayout.CENTER);
-
     }
 
     public void setImportedImages() {
@@ -226,7 +219,6 @@ public class PhotosPanel extends JPanel {
 
             final JLabel pic = new JLabel();
 
-
             File imageFile = new File(listOfImageFiles.get(i).toString());
             BufferedImage bufferedImage = null;
             try {
@@ -278,7 +270,6 @@ public class PhotosPanel extends JPanel {
 
                     }
 
-
                     if (arg0.getClickCount() == 2 && isMainView == false) {
                         mainPanel.setVisible(true);
                         mainGridPanel.setVisible(false);
@@ -291,7 +282,6 @@ public class PhotosPanel extends JPanel {
             pic.setIcon(new ImageIcon(image));
             panel.add(pic);
         }
-
     }
 
     public TagPanel getTagPanel() {
@@ -316,8 +306,6 @@ public class PhotosPanel extends JPanel {
             tagPanel.updateChildrenTags();
         }
     }
-
-
 }
 
 

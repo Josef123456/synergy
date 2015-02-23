@@ -23,7 +23,7 @@ class GridViewPanel extends JPanel {
 
     public void setUpImages(){
         SetImages setImages = new SetImages(this);
-        for(int i = 0; i < StaticObjects.LIST_OF_IMAGE_FILES.size(); i++){
+        for(int i = 0; i < StaticObjects.LIST_OF_PHOTOS.size(); i++){
             final JLabel pic = new JLabel();
             setImages.setImagesToPanel(pic, i, 300, 300);
         }

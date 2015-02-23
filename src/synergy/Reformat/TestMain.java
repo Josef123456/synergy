@@ -90,7 +90,7 @@ class TestMain extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File[] file = fileChooser.getSelectedFiles();
                     for (int i = 0; i < file.length; i++) {
-                        StaticObjects.LIST_OF_IMAGE_FILES.add(file[i]);
+                        StaticObjects.LIST_OF_PHOTOS.add(file[i]);
                     }
                     initiateListOfMetaDataValues();
                     mainPhotoPanel.setMainImage(0);
@@ -138,7 +138,7 @@ class TestMain extends JFrame {
 
     public void initiateListOfMetaDataValues() {
         int metaDataSize = StaticObjects.LIST_OF_METADATA.size();
-        for (int i = 0; i < (StaticObjects.LIST_OF_IMAGE_FILES.size() - metaDataSize); i++) {
+        for (int i = 0; i < (StaticObjects.LIST_OF_PHOTOS.size() - metaDataSize); i++) {
             StaticObjects.LIST_OF_METADATA.add(new ArrayList<String>());
             StaticObjects.LIST_OF_SELECTED_INDEX.add(0);
         }

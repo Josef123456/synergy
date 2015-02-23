@@ -26,7 +26,7 @@ class ThumbnailPanel extends JPanel {
     public void setUpImages(){
         SetImages setImages = new SetImages(this);
         SetActionListeners actionListeners = new SetActionListeners(this);
-        for(int i = 0; i < StaticObjects.LIST_OF_IMAGE_FILES.size();i++){
+        for(int i = 0; i < StaticObjects.LIST_OF_PHOTOS.size();i++){
             final JLabel pic = new JLabel();
             pic.setPreferredSize(new Dimension(200, 200));
             setImages.setImagesToPanel(pic, i, 200, 200);

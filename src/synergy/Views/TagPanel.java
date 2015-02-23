@@ -139,13 +139,9 @@ public class TagPanel extends JPanel {
 
         });
 
-
-
-
         childrenPanel = new JPanel();
         childrenPanel.setLayout(new GridLayout(3, 1));
         childrenTags = new JPanel();
-
 
         JPanel childrenTagQuery = new JPanel();
         childrenTagQuery.setLayout(new GridLayout(1, 2));
@@ -197,7 +193,6 @@ public class TagPanel extends JPanel {
                 label.setText(listOfMetaData.get(getIndex()).get(i));
                 final String stringTag = label.getText();
                 final JButton removeButton = new JButton("-");
-
 
                 tagPanelLocation.add(label);
                 tagPanelLocation.add(removeButton);
@@ -262,7 +257,6 @@ public class TagPanel extends JPanel {
                         }
 
                     });
-
                     tagPanelLocation.add(label);
                     tagPanelLocation.add(removeButton);
                 }
@@ -376,5 +370,4 @@ public class TagPanel extends JPanel {
         childrenTags.add(tagPanelChildren);
         childrenTags.updateUI();
     }
-
 }

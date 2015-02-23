@@ -33,23 +33,19 @@ public class CalendarPanel extends JPanel {
     }
 
     private void buildInterface() {
-
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         panelConstruct();
-        calendarContruct();
+        calendarConstruct ();
         bottomConstruct();
-
         this.add(BorderLayout.CENTER, photoMainPanel);
         this.add(BorderLayout.SOUTH, southPanel);
     }
 
     private void panelConstruct() {
-
         photoMainPanel = new JPanel(new BorderLayout());
         southPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -57,8 +53,7 @@ public class CalendarPanel extends JPanel {
         southPanel.setBackground(Color.decode("#001E28"));
     }
 
-    private void calendarContruct() {
-
+    private void calendarConstruct () {
         photoMainPanel.removeAll();
         DatePanel datePanel = new DatePanel();
         datePanel.setSelectionMode(DateSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -89,7 +84,6 @@ public class CalendarPanel extends JPanel {
                     mouseListener.mouseClicked(e);
                 }
             });
-
             photoMainPanel.add(datePanel);
         }
     }
@@ -98,7 +92,5 @@ public class CalendarPanel extends JPanel {
         component.setFont(new Font("Tahoma", Font.PLAIN, 15));
     }
 
-    private void bottomConstruct() {
-
-    }
+    private void bottomConstruct() {}
 }
