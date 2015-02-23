@@ -122,6 +122,7 @@ public class PhotosPanel extends JPanel {
 
                     isMainView = true;
                     tagPanel.updateLocationTags();
+                    tagPanel.updateChildrenTags();
                 }
 
             }
@@ -137,6 +138,7 @@ public class PhotosPanel extends JPanel {
                     mainPanel.setVisible(false);
                     isMainView = false;
                     tagPanel.updateLocationTags();
+                    tagPanel.updateChildrenTags();
                 }
             }
         });
@@ -244,6 +246,7 @@ public class PhotosPanel extends JPanel {
                     setMainImagePanel(listOfImageFiles.get(index).toString());
                     tagPanel.setIndex(index);
                     tagPanel.updateLocationTags();
+                    tagPanel.updateChildrenTags();
 
                     if (isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 0) {
                         tagPanel.addToSelectedIndexList(index);
@@ -252,6 +255,7 @@ public class PhotosPanel extends JPanel {
                         g.drawImage(finalCheckBoxImage, 0, 0, 50, 50, null);
                         g.dispose();
                         tagPanel.updateLocationTags();
+                        tagPanel.updateChildrenTags();
                         pic.repaint();
                     } else if (isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 1) {
                         tagPanel.removeFromSelectedIndexList(index);
@@ -268,6 +272,7 @@ public class PhotosPanel extends JPanel {
                         g.dispose();
                         bufferedImage.flush();
                         tagPanel.updateLocationTags();
+                        tagPanel.updateChildrenTags();
                         pic.repaint();
 
                     }
@@ -298,6 +303,7 @@ public class PhotosPanel extends JPanel {
             mainPanel.setVisible(false);
             isMainView = false;
             tagPanel.updateLocationTags();
+            tagPanel.updateChildrenTags();
         }
 
         if (!isMainView && b) {
@@ -306,6 +312,7 @@ public class PhotosPanel extends JPanel {
 
             isMainView = true;
             tagPanel.updateLocationTags();
+            tagPanel.updateChildrenTags();
         }
     }
 
