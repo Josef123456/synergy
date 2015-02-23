@@ -93,6 +93,7 @@ public class Photo {
 	}
 
 	public void removeTag(Tag tag){
+		tag.save();
 		PhotoTag photoTag = new PhotoTag (this, tag);
 		photoTag.save();
 		photoTag.destroy();

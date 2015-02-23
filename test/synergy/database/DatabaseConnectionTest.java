@@ -78,7 +78,7 @@ public class DatabaseConnectionTest {
 		photo.addTag (tag);
 		assertEquals (1, photo.getTags ().length);
 		assertEquals (tag, photo.getTags ()[0]);
-		photo.removeTag (tag);
+		photo.removeTag (new Tag (Tag.TagType.PLACE, "main room"));
 		assertEquals (0, photo.getTags ().length);
 	}
 
