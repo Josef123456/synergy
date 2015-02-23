@@ -1,8 +1,8 @@
 package synergy.Utilities;
 
-import synergy.Views.GridViewPanel;
-import synergy.Views.TagPanelView;
-import synergy.Views.ThumbnailPanel;
+import synergy.Reformat.GridViewPanel;
+import synergy.Reformat.TagPanelView;
+import synergy.Reformat.ThumbnailPanel;
 
 import javax.swing.*;
 import java.awt.event.MouseAdapter;

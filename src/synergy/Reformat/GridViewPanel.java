@@ -1,4 +1,4 @@
-package synergy.Views;
+package synergy.Reformat;
 
 import synergy.Utilities.SetImages;
 import synergy.Utilities.StaticObjects;

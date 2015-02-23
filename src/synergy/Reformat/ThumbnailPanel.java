@@ -1,9 +1,8 @@
-package synergy.Views;
+package synergy.Reformat;
 
 import synergy.Utilities.SetActionListeners;
 import synergy.Utilities.SetImages;
 import synergy.Utilities.StaticObjects;
-import synergy.models.Photo;
 
 import javax.swing.*;
 import java.awt.*;
