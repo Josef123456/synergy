@@ -85,6 +85,7 @@ public class Photo {
 	public List<Tag> getLocationTags() {
 		List<Tag> allTags = getTags ();
 		List<Tag> locationTags = new ArrayList<> ();
+		System.out.println(allTags.size ());
 		for(Tag tag:allTags) {
 			if ( tag.getType () == Tag.TagType.PLACE )
 				locationTags.add (tag);

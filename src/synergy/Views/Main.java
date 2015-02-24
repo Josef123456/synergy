@@ -33,15 +33,11 @@ import javax.swing.UIManager;
  */
 public class Main extends JFrame {
 
-    public static ArrayList<Photo> PHOTO_ARRAY = new ArrayList<Photo>();
-
     private JPanel mainPanel, northernPanel, buttonsNorth, cardPanel;
     private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton, gridPhotoButton;
     private JTextField searchField;
 
     private PhotosPanel photosPanel;
-    private TagPanel tagPanel;
-
 
     public Main() throws IOException {
         super("InstaTag");
@@ -74,7 +70,6 @@ public class Main extends JFrame {
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(new CalendarPanel(), "CALENDAR");
         photosPanel = new PhotosPanel();
-        tagPanel = photosPanel.getTagPanel();
         cardPanel.add(photosPanel, "PHOTOS");
         //northern panels
         northernPanel = new JPanel(new GridLayout(2, 0));
@@ -93,8 +88,9 @@ public class Main extends JFrame {
 
 	private void addActionListenerToImportButton () {
 		final JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setMultiSelectionEnabled(true);
-		StaticObjects.LIST_OF_PHOTOS.addAll (Photo.getAllPhotos ());
+		fileChooser.setMultiSelectionEnabled (true);
+		System.out.println (Photo.getAllPhotos ().size ());
+		photosPanel.setPhotos ((ArrayList<Photo>) Photo.getAllPhotos ());
 
 		importButton.addActionListener(new ActionListener() {
 			@Override
@@ -104,19 +100,14 @@ public class Main extends JFrame {
 				long t1 = System.currentTimeMillis();
 
 				System.out.println(returnValue);
-				photosPanel.currentListSize = PhotosPanel.listOfImageFiles.size();
 				if (returnValue == JFileChooser.APPROVE_OPTION) {
 					File[] file = fileChooser.getSelectedFiles();
 					for (int i = 0; i < file.length; i++) {
-						PhotosPanel.listOfImageFiles.add(file[i]);
 						Photo photo = new Photo(file[i].toString());
-						photo.save();
-						PHOTO_ARRAY.add(photo);
+						photo.save ();
 					}
-					System.out.println(PhotosPanel.listOfImageFiles);
-					tagPanel.initiateListOfMetaDataValues();
-					System.out.println("Number of files imported: " + PhotosPanel.listOfImageFiles.size());
-					photosPanel.setImportedImages();
+					photosPanel.setPhotos ((ArrayList<Photo>) Photo.getAllPhotos ());
+					System.out.println ("Number of files imported: " + Photo.getAllPhotos ().size ());
 				}
 				long t2 = System.currentTimeMillis();
 				System.out.println(t2 - t1 + " milliseconds");

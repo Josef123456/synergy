@@ -57,7 +57,7 @@ public class DatabaseConnectionTest {
 	@Test public void testPhotoGetTags() throws Exception {
 		Photo photo = new Photo (FILE_PATH);
 		photo.save ();
-		assertEquals (0, photo.getTags ().length);
+		assertEquals (0, photo.getTags ().size ());
 	}
 
 	@Test public void testPhotoAddTag() throws Exception {
@@ -66,8 +66,8 @@ public class DatabaseConnectionTest {
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
 		photo.addTag (tag);
-		assertEquals (1, photo.getTags ().length);
-		assertEquals (tag, photo.getTags ()[0]);
+		assertEquals (1, photo.getTags ().size());
+		assertEquals (tag, photo.getTags ().get(0));
 	}
 
 	@Test public void testPhotoRemoveTag() throws Exception{
@@ -76,10 +76,10 @@ public class DatabaseConnectionTest {
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
 		photo.addTag (tag);
-		assertEquals (1, photo.getTags ().length);
-		assertEquals (tag, photo.getTags ()[0]);
+		assertEquals (1, photo.getTags ().size());
+		assertEquals (tag, photo.getTags ().get(0));
 		photo.removeTag (new Tag (Tag.TagType.PLACE, "main room"));
-		assertEquals (0, photo.getTags ().length);
+		assertEquals (0, photo.getTags ().size());
 	}
 
 	@Test public void testPhotosForDate() throws Exception {
@@ -97,27 +97,22 @@ public class DatabaseConnectionTest {
 		Photo photo = new Photo (FILE_PATH);
 		photo.save ();
 
+		Photo photo2 = new Photo(DIR_PATH+"20150209-_DSC0727.jpg");
+		photo2.save();
+
 		System.out.println(photo);
 
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
-		tag.save();
-
-		System.out.println(tag);
-
 		Tag tag2 = new Tag(Tag.TagType.EXTRA, "playing with block");
-		tag2.save();
 
 		photo.addTag (tag);
 		photo.addTag (tag2);
 
-		Tag[] tags = photo.getTags ();
-		assertEquals(2, tags.length);
-		assertEquals(tag, tags[0]);
-		assertEquals(tag2, tags[1] );
+		List<Tag> tags = photo.getTags ();
+		assertEquals(2, tags.size());
+		assertEquals(tag, tags.get(0));
+		assertEquals(tag2, tags.get(1) );
 
-		photo.removeTag (tag);
-		tags = photo.getTags ();
-		assertEquals(1, tags.length);
-		assertEquals(tag2, tags[0] );
+		assertEquals (0, photo2.getTags ().size ());
 	}
 }

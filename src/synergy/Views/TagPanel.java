@@ -7,10 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -18,9 +15,6 @@ import javax.swing.JPanel;
 
 
 public class TagPanel extends JPanel {
-	private ArrayList<Photo> photos;
-
-
 	private JButton addLocationTagButton = new JButton("+");
 	private final JComboBox<String> locationTextField = new JComboBox<String>();
 
@@ -35,9 +29,7 @@ public class TagPanel extends JPanel {
 
     PhotosPanel photosPanel;
 
-    public TagPanel(ArrayList<Photo> photos, PhotosPanel photosPanel) {
-        this.photos = photos;
-
+    public TagPanel(PhotosPanel photosPanel) {
         this.photosPanel = photosPanel;
         setUpUILocation();
         setUpUIChildren();
@@ -49,9 +41,10 @@ public class TagPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
+				System.out.println ( Arrays.toString(selectedIndexes) + " location");
 				Tag tag = new Tag (Tag.TagType.PLACE, (String) locationTextField.getSelectedItem ());
 				for ( int i = 0 ; i < selectedIndexes.length ; ++i ) {
-					photos.get (selectedIndexes[ i ]).addTag (tag);
+					photosPanel.getPhotos ().get (selectedIndexes[ i ]).addTag (tag);
 				}
 				updateLocationTags ();
 			}
@@ -66,7 +59,7 @@ public class TagPanel extends JPanel {
 				final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
 				Tag tag = new Tag(Tag.TagType.KID, (String) childrenTextField.getSelectedItem());
 				for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
-					photos.get(selectedIndexes[i]).addTag (tag);
+					photosPanel.getPhotos ().get (selectedIndexes[ i ]).addTag (tag);
 				}
 				updateChildrenTags();
 			}
@@ -127,10 +120,12 @@ public class TagPanel extends JPanel {
 
         Set<Tag> tagSet = new HashSet<> ();
 	    final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
+	    System.out.println ( "Selected Indexes: " + Arrays.toString(selectedIndexes));
+	    System.out.println( photosPanel.getPhotos ().get (0).getID ());
 	    for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
-		    tagSet.addAll (photos.get (i).getLocationTags ());
+		    tagSet.addAll (photosPanel.getPhotos ().get (selectedIndexes[i]).getLocationTags ());
 	    }
-	    System.out.println ("List of tags: " + tagSet);
+	    System.out.println ("List of location tags: " + tagSet ) ;
 	    Tag[] tagArray = tagSet.toArray (new Tag[tagSet.size()]);
 
 	    if ( tagArray.length > 0 )  {
@@ -143,8 +138,9 @@ public class TagPanel extends JPanel {
 				    public void actionPerformed(ActionEvent arg0) {
 					    Tag tag = new Tag(Tag.TagType.PLACE, tagValue);
 					    for( int i = 0 ; i < selectedIndexes.length ; ++ i ) {
-						    photos.get(i).removeTag (tag);
+						    photosPanel.getPhotos ().get(selectedIndexes[i]).removeTag (tag);
 					    }
+					    updateLocationTags ();
 				    }
 			    });
 			    tagPanelLocation.add(label);
@@ -163,9 +159,9 @@ public class TagPanel extends JPanel {
 	    Set<Tag> tagSet = new HashSet<> ();
 	    final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
 	    for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
-		    tagSet.addAll (photos.get (i).getChildTags ());
+		    tagSet.addAll (photosPanel.getPhotos ().get (selectedIndexes[i]).getChildTags ());
 	    }
-	    System.out.println ("List of tags: " + tagSet);
+	    System.out.println ("List of children tags: " + tagSet);
 	    Tag[] tagArray = tagSet.toArray (new Tag[tagSet.size()]);
 
 	    if ( tagArray.length > 0 )  {
@@ -178,8 +174,9 @@ public class TagPanel extends JPanel {
 				    public void actionPerformed(ActionEvent arg0) {
 					    Tag tag = new Tag(Tag.TagType.KID, tagValue);
 					    for( int i = 0 ; i < selectedIndexes.length ; ++ i ) {
-						    photos.get(i).removeTag (tag);
+						    photosPanel.getPhotos ().get(selectedIndexes[i]).removeTag (tag);
 					    }
+					    updateChildrenTags ();
 				    }
 			    });
 			    tagPanelLocation.add(label);

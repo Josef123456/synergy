@@ -41,7 +41,7 @@ public class PhotosPanel extends JPanel {
 
     boolean isMainView;
 
-	private ArrayList<Photo> photos;
+	private ArrayList<Photo> photos = new ArrayList<> ();
 	private Set<Integer> selectedIndexes = new HashSet<> ();
 
 	private BufferedImage finalCheckBoxImage = null;
@@ -64,7 +64,7 @@ public class PhotosPanel extends JPanel {
         setUpMainFrame();
         setMainImagePanel(null);
 
-        tagPanel = new TagPanel(photos, this);
+        tagPanel = new TagPanel(this);
         tagPanel.setPreferredSize(new Dimension(200, 480));
         add(tagPanel, BorderLayout.EAST);
         setVisible(true);
@@ -93,12 +93,14 @@ public class PhotosPanel extends JPanel {
         add(mainPanel, BorderLayout.CENTER);
     }
 
-    public void setImportedImages() {
+    private void setImportedImages() {
         mainThumbnailPanel.setLayout(new GridLayout(0, 1));
         setImagesToPanel(mainThumbnailPanel, 120, 120);
         setImagesToPanel(gridPanel, 200, 200);
         if (photos.size() > 0) {
             setMainImagePanel(photos.get(photos.size ()-1).getPath ());
+	        selectedIndexes.add(photos.size()-1);
+	        tagPanel.update();
         }
         mainThumbnailPanel.updateUI();
         gridPanel.updateUI();
@@ -108,12 +110,17 @@ public class PhotosPanel extends JPanel {
         if (fileName == null) {
             mainImage.setText("Please import files");
         } else {
+	        long t1 = System.currentTimeMillis();
             ImageIcon pic1Icon = new ImageIcon(fileName);
             Image pic1img = pic1Icon.getImage();
-            Image newImg = pic1img.getScaledInstance(mainImage.getWidth(), mainImage.getHeight(),
-                    java.awt.Image.SCALE_SMOOTH);
+            Image newImg = pic1img.getScaledInstance(640, 480,java.awt.Image.SCALE_SMOOTH);
             pic1Icon = new ImageIcon(newImg);
-            mainImage.setIcon(pic1Icon);
+            mainImage.setIcon (pic1Icon);
+	        mainImage.setText("");
+	        long t2 = System.currentTimeMillis();
+	        System.out.println("For loading main image: " +
+			        (t2 - t1) + " milliseconds" +
+			        "{" + 640 + ", " + 480 + "}");
         }
     }
 
@@ -129,11 +136,13 @@ public class PhotosPanel extends JPanel {
         mainGridPanel.updateUI();
     }
 
-	private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final Graphics g,
-	                                            final int width, final int height) {
+	private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final Graphics g) {
 		pic.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				setMainImagePanel(photos.get(currentIndex).getPath ());
+				if ( isMainView ) {
+					selectedIndexes.removeAll (selectedIndexes);
+				}
 				selectedIndexes.add (currentIndex);
 				tagPanel.update ();
 
@@ -163,41 +172,33 @@ public class PhotosPanel extends JPanel {
 	}
 
     public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight) {
-        final int width = imageWidth;
-        final int height = imageHeight;
 
         for (int i = 0; i < photos.size(); i++) {
             final int currentIndex = i;
-
             final JLabel pic = new JLabel();
-
-            File imageFile = new File(photos.get(i).getPath ());
-            BufferedImage bufferedImage = null;
-            try {
-                bufferedImage = ImageIO.read(imageFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            final BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_BGR);
-            Graphics g = image.getGraphics();
-            g.drawImage(bufferedImage, 0, 0, imageWidth, imageHeight, null);
+	        long t1 = System.currentTimeMillis();
+	        String fileName = photos.get(i).getPath ();
+	        ImageIcon pic1Icon = new ImageIcon(fileName);
+	        Image pic1img = pic1Icon.getImage();
+	        Image newImg = pic1img.getScaledInstance(imageWidth, imageHeight,java.awt.Image.SCALE_SMOOTH);
+            final BufferedImage finalImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics g = finalImage.getGraphics();
+            g.drawImage(newImg, 0, 0, imageWidth, imageHeight, null);
             g.dispose();
-            image.flush();
-	        addMouseListenerToPictureLabel(pic, currentIndex,g, imageWidth, imageHeight);
-
-
-            pic.setIcon(new ImageIcon(photos.get(i).getPath ()));
+	        finalImage.flush();
+	        long t2 = System.currentTimeMillis();
+	        System.out.println("For loading grid image (" + i + "):" +
+			        (t2 - t1) + " milliseconds" +
+			        "{" + imageHeight + ", " + imageWidth + "}");
+	        addMouseListenerToPictureLabel (pic, currentIndex, g);
+            pic.setIcon(new ImageIcon(newImg));
             panel.add(pic);
         }
     }
 
-    public TagPanel getTagPanel() {
-        return tagPanel;
-    }
-
 	public void setPhotos (ArrayList<Photo> photos) {
 		this.photos = photos;
+		setImportedImages ();
 	}
 
     public void setIsMainView(boolean b) {
@@ -214,6 +215,10 @@ public class PhotosPanel extends JPanel {
             tagPanel.update ();
         }
     }
+
+	public ArrayList<Photo> getPhotos () {
+		return photos;
+	}
 
 	public Integer[] getSelectedIndexesAsArray () {
 		return selectedIndexes.toArray (new Integer[ selectedIndexes.size () ]);
