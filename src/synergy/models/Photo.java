@@ -85,11 +85,21 @@ public class Photo {
 		return null;
 	}
 
+	public static List<Photo> getAllPhotos() {
+		try {
+			return PhotoDao.getInstance ().getAllPhotos ();
+		} catch ( Exception e ) {
+			System.err.println(e);
+			e.printStackTrace ();
+		}
+		return null;
+	}
+
 	public void addTag(Tag tag) {
 		tag.save();
 		PhotoTag photoTag = new PhotoTag (this, tag);
 		photoTag.save();
-		System.out.println(photoTag);
+		System.out.println (photoTag);
 	}
 
 	public void removeTag(Tag tag){
