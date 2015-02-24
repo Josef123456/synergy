@@ -1,4 +1,4 @@
-package synergy.Views;
+package synergy.Reformat;
 
 import synergy.Utilities.StaticObjects;
 import synergy.models.Photo;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 /**
  * Created by Cham on 21/02/2015.
  */
-public class TagPanelView extends JPanel {
+class TagPanelView extends JPanel {
 
     JPanel locationPanel;
     JPanel locationTags;

@@ -1,52 +1,52 @@
 package synergy.Views;
 
 
+import synergy.models.Photo;
+
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
 
 public class PhotosPanel extends JPanel {
-    JFileChooser fileChooser;
-    JPanel mainPanel;
-    JPanel mainImagePanel;
-    JPanel mainThumbnailPanel;
-    JLabel mainImage;
-    JScrollPane gridPanelPane;
+	private JPanel mainPanel;
+	private JPanel mainImagePanel;
+	private JPanel mainThumbnailPanel;
+	private JLabel mainImage;
+	private JScrollPane gridPanelPane;
 
-    JPanel mainGridPanel;
-    JPanel gridPanel;
+    private JPanel mainGridPanel;
+	private JPanel gridPanel;
 
     final File checkBoxFile = new File("check box icon.png");
-    public static ArrayList<File> listOfImageFiles;
-    int currentListSize;
 
-    TagPanel tagPanel;
+    private TagPanel tagPanel;
 
     boolean isMainView;
 
-    public PhotosPanel() {
+	private ArrayList<Photo> photos = new ArrayList<> ();
+	private Set<Integer> selectedIndexes = new HashSet<> ();
+
+	private BufferedImage finalCheckBoxImage = null;
+
+	public PhotosPanel() {
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -54,105 +54,28 @@ public class PhotosPanel extends JPanel {
             e.printStackTrace();
         }
 
-        fileChooser = new JFileChooser();
-        fileChooser.setMultiSelectionEnabled(true);
-        listOfImageFiles = new ArrayList<File>();
-
         mainImage = new JLabel();
         mainImage.setPreferredSize(new Dimension(600, 480));
-
         isMainView = true;
 
         setGridImages();
         mainGridPanel.setVisible(false);
 
-        //setUpJMenuBar();
         setUpMainFrame();
         setMainImagePanel(null);
 
-        currentListSize = 0;
-
-        tagPanel = new TagPanel(listOfImageFiles, this);
+        tagPanel = new TagPanel(this);
         tagPanel.setPreferredSize(new Dimension(200, 480));
         add(tagPanel, BorderLayout.EAST);
-
         setVisible(true);
-    }
 
-    public void setUpJMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
-        JMenu viewMenu = new JMenu("View");
-        JMenu fileMenu = new JMenu("File");
+		try {
+			finalCheckBoxImage = ImageIO.read(checkBoxFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-        JMenuItem importMenuItem = new JMenuItem("Import");
-        JMenuItem exportMenuItem = new JMenuItem("Export");
-        fileMenu.add(importMenuItem);
-        fileMenu.add(exportMenuItem);
-
-        importMenuItem.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                int returnValue = fileChooser.showOpenDialog(PhotosPanel.this);
-                System.out.println(returnValue);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File[] file = fileChooser.getSelectedFiles();
-                    for (int i = 0; i < file.length; i++) {
-                        listOfImageFiles.add(file[i]);
-                    }
-                }
-
-                System.out.println(listOfImageFiles);
-                tagPanel.initiateListOfMetaDataValues();
-                System.out.println(tagPanel.listOfMetaData);
-                setImportedImages();
-
-
-            }
-
-        });
-
-        JMenuItem switchToMainView = new JMenuItem("Switch to Main View");
-        switchToMainView.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isMainView) {
-                    mainPanel.setVisible(true);
-                    mainGridPanel.setVisible(false);
-
-                    isMainView = true;
-                    tagPanel.updateLocationTags();
-                    tagPanel.updateChildrenTags();
-                }
-
-            }
-        });
-
-        JMenuItem switchToGridView = new JMenuItem("Switch to Grid View");
-        switchToGridView.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (isMainView) {
-                    mainGridPanel.setVisible(true);
-                    mainPanel.setVisible(false);
-                    isMainView = false;
-                    tagPanel.updateLocationTags();
-                    tagPanel.updateChildrenTags();
-                }
-            }
-        });
-
-
-        viewMenu.add(switchToMainView);
-        viewMenu.add(switchToGridView);
-        menuBar.add(fileMenu);
-        menuBar.add(viewMenu);
-
-        add(menuBar, BorderLayout.NORTH);
-
-    }
+	}
 
     public void setUpMainFrame() {
         mainPanel = new JPanel();
@@ -168,15 +91,16 @@ public class PhotosPanel extends JPanel {
         mainPanel.add(mainImagePanel, BorderLayout.CENTER);
 
         add(mainPanel, BorderLayout.CENTER);
-
     }
 
-    public void setImportedImages() {
+    private void setImportedImages() {
         mainThumbnailPanel.setLayout(new GridLayout(0, 1));
         setImagesToPanel(mainThumbnailPanel, 120, 120);
         setImagesToPanel(gridPanel, 200, 200);
-        if (listOfImageFiles.size() > 0) {
-            setMainImagePanel(listOfImageFiles.get(listOfImageFiles.size() - 1).toString());
+        if (photos.size() > 0) {
+            setMainImagePanel(photos.get(photos.size ()-1).getPath ());
+	        selectedIndexes.add(photos.size()-1);
+	        tagPanel.update();
         }
         mainThumbnailPanel.updateUI();
         gridPanel.updateUI();
@@ -186,15 +110,19 @@ public class PhotosPanel extends JPanel {
         if (fileName == null) {
             mainImage.setText("Please import files");
         } else {
+	        long t1 = System.currentTimeMillis();
             ImageIcon pic1Icon = new ImageIcon(fileName);
             Image pic1img = pic1Icon.getImage();
-            Image newimg = pic1img.getScaledInstance(mainImage.getWidth(), mainImage.getHeight(),
-                    java.awt.Image.SCALE_SMOOTH);
-            pic1Icon = new ImageIcon(newimg);
-            mainImage.setIcon(pic1Icon);
+            Image newImg = pic1img.getScaledInstance(640, 480,java.awt.Image.SCALE_SMOOTH);
+            pic1Icon = new ImageIcon(newImg);
+            mainImage.setIcon (pic1Icon);
+	        mainImage.setText("");
+	        long t2 = System.currentTimeMillis();
+	        System.out.println("For loading main image: " +
+			        (t2 - t1) + " milliseconds" +
+			        "{" + 640 + ", " + 480 + "}");
         }
     }
-
 
     public void setGridImages() {
         mainGridPanel = new JPanel();
@@ -208,116 +136,108 @@ public class PhotosPanel extends JPanel {
         mainGridPanel.updateUI();
     }
 
+	private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final Image finalImage,  final int imageWidth, final int imageHeight) {
+		pic.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				setMainImagePanel(photos.get(currentIndex).getPath ());
+				if ( isMainView ) {
+					selectedIndexes.removeAll (selectedIndexes);
+					selectedIndexes.add (currentIndex);
+				}
 
-    public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight) {
-        BufferedImage checkBoxImage = null;
-        try {
-            checkBoxImage = ImageIO.read(checkBoxFile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        final int width = imageWidth;
-        final int height = imageHeight;
-        final BufferedImage finalCheckBoxImage = checkBoxImage;
-
-        for (int i = currentListSize; i < listOfImageFiles.size(); i++) {
-            final int index = i;
-
-            final JLabel pic = new JLabel();
-
-
-            File imageFile = new File(listOfImageFiles.get(i).toString());
-            BufferedImage bufferedImage = null;
-            try {
-                bufferedImage = ImageIO.read(imageFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            final BufferedImage image = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_BGR);
-            Graphics g = image.getGraphics();
-            g.drawImage(bufferedImage, 0, 0, imageWidth, imageHeight, null);
-            g.dispose();
-            image.flush();
-
-            pic.addMouseListener(new MouseAdapter() {
-
-                public void mouseClicked(MouseEvent arg0) {
-                    setMainImagePanel(listOfImageFiles.get(index).toString());
-                    tagPanel.setIndex(index);
-                    tagPanel.updateLocationTags();
-                    tagPanel.updateChildrenTags();
-
-                    if (isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 0) {
-                        tagPanel.addToSelectedIndexList(index);
-                        System.out.println("Selected Index List: " + tagPanel.listOfSelectedIndex);
-                        Graphics g = image.getGraphics();
-                        g.drawImage(finalCheckBoxImage, 0, 0, 50, 50, null);
+				if ( isMainView == false ) {
+					System.out.println(currentIndex);
+					if ( !selectedIndexes.contains (currentIndex) ) {
+						selectedIndexes.add (currentIndex);
+						System.out.println ("Adding Selected Index List: " + selectedIndexes);
+                        final BufferedImage finalBufferedImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+                        Graphics g = finalBufferedImage.getGraphics ();
+                        g.drawImage(finalImage, 0, 0, imageWidth, imageHeight, null);
+						g.drawImage (finalCheckBoxImage, 0, 0, 50, 50, null);
+						g.dispose ();
+                        pic.setIcon(new ImageIcon(finalBufferedImage));
+                        finalBufferedImage.flush();
+                        tagPanel.update ();
+						pic.repaint ();
+					} else {
+						selectedIndexes.remove (currentIndex);
+						System.out.println ("Removing Selected Index List: " + selectedIndexes);
+                        final BufferedImage finalBufferedImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+                        Graphics g = finalBufferedImage.getGraphics ();
+                        g.drawImage(finalImage, 0, 0, imageWidth, imageHeight, null);
                         g.dispose();
-                        tagPanel.updateLocationTags();
-                        tagPanel.updateChildrenTags();
-                        pic.repaint();
-                    } else if (isMainView == false && tagPanel.listOfSelectedIndex.get(index) == 1) {
-                        tagPanel.removeFromSelectedIndexList(index);
-                        System.out.println("Selected Index List: " + tagPanel.listOfSelectedIndex);
-                        File imageFile = new File(listOfImageFiles.get(index).toString());
-                        BufferedImage bufferedImage = null;
-                        try {
-                            bufferedImage = ImageIO.read(imageFile);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        Graphics g = image.getGraphics();
-                        g.drawImage(bufferedImage, 0, 0, width, height, null);
-                        g.dispose();
-                        bufferedImage.flush();
-                        tagPanel.updateLocationTags();
-                        tagPanel.updateChildrenTags();
-                        pic.repaint();
+                        pic.setIcon(new ImageIcon(finalBufferedImage));
+                        finalBufferedImage.flush();
+                        tagPanel.update ();
+						pic.repaint ();
+					}
+					if ( arg0.getClickCount () == 2 ) {
+						mainPanel.setVisible (true);
+						mainGridPanel.setVisible (false);
+						isMainView = true;
+					}
+				}
+				tagPanel.update ();
+			}
+		});
+	}
 
-                    }
+    public void setImagesToPanel(final JPanel panel, final int imageWidth, final int imageHeight) {
 
+	    //TODO: refactor this mess
+        for (int i = 0; i < photos.size(); ++i) {
+	        final int currentIndex = i;
+	        // TODO: get this into it's own class
+	        Runnable runnable = new Runnable () {
+		        @Override
+		        public void run () {
+			        final int index = currentIndex;
+			        final JLabel pic = new JLabel ();
+			        String fileName = photos.get (index).getPath ();
+			        ImageIcon pic1Icon = new ImageIcon (fileName);
+			        Image pic1img = pic1Icon.getImage ();
+			        Image newImg = pic1img.getScaledInstance (imageWidth, imageHeight, java.awt.Image.SCALE_SMOOTH);
+			        addMouseListenerToPictureLabel (pic, index, newImg, imageWidth, imageHeight);
+			        pic.setIcon (new ImageIcon (newImg));
+			        panel.add (pic);
+		        }
+	        };
+	        //TODO: god please...
+	        new Thread(runnable).start ();
 
-                    if (arg0.getClickCount() == 2 && isMainView == false) {
-                        mainPanel.setVisible(true);
-                        mainGridPanel.setVisible(false);
-                        isMainView = true;
-                    }
-                }
-
-            });
-
-            pic.setIcon(new ImageIcon(image));
-            panel.add(pic);
         }
-
     }
 
-    public TagPanel getTagPanel() {
-        return tagPanel;
-    }
+	public void setPhotos (ArrayList<Photo> photos) {
+		this.photos = photos;
+		setImportedImages ();
+	}
 
     public void setIsMainView(boolean b) {
         if (isMainView && !b) {
             mainGridPanel.setVisible(true);
             mainPanel.setVisible(false);
             isMainView = false;
-            tagPanel.updateLocationTags();
-            tagPanel.updateChildrenTags();
         }
-
         if (!isMainView && b) {
             mainPanel.setVisible(true);
             mainGridPanel.setVisible(false);
-
             isMainView = true;
-            tagPanel.updateLocationTags();
-            tagPanel.updateChildrenTags();
         }
+	    tagPanel.update ();
     }
 
+	public ArrayList<Photo> getPhotos () {
+		return photos;
+	}
 
+	public void setNoSelection() {
+		selectedIndexes.removeAll (selectedIndexes);
+	}
+
+	public Integer[] getSelectedIndexesAsArray () {
+		return selectedIndexes.toArray (new Integer[ selectedIndexes.size () ]);
+	}
 }
 
 

@@ -1,4 +1,4 @@
-package synergy.Views;
+package synergy.Reformat;
 
 import synergy.Utilities.SetImages;
 import synergy.Utilities.StaticObjects;
@@ -9,7 +9,7 @@ import java.awt.*;
 /**
  * Created by Cham on 20/02/2015.
  */
-public class GridViewPanel extends JPanel {
+class GridViewPanel extends JPanel {
 
     public GridViewPanel(){
         setUpUI();
@@ -23,7 +23,7 @@ public class GridViewPanel extends JPanel {
 
     public void setUpImages(){
         SetImages setImages = new SetImages(this);
-        for(int i = 0; i < StaticObjects.LIST_OF_IMAGE_FILES.size(); i++){
+        for(int i = 0; i < StaticObjects.LIST_OF_PHOTOS.size(); i++){
             final JLabel pic = new JLabel();
             setImages.setImagesToPanel(pic, i, 300, 300);
         }

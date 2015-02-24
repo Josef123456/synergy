@@ -3,10 +3,11 @@ package synergy.MetaData;
 /**
  * Created by Amit on 07/02/2015.
  */
+import java.io.*;
+import java.util.List;
 
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.ImageWriteException;
-import org.apache.commons.imaging.Imaging;
+
+import org.apache.commons.imaging.*;
 import org.apache.commons.imaging.common.IImageMetadata;
 import org.apache.commons.imaging.common.IImageMetadata.IImageMetadataItem;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 
+import synergy.Utilities.TagEncoder;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
@@ -65,7 +67,7 @@ public class MetaData {
      */
     public void changeExifMetadata(Photo photo)
             throws IOException, ImageReadException, ImageWriteException {
-        final File inputFile = new File(photo.getPath());
+	    final File inputFile = new File(photo.getPath ());
         OutputStream os = null;
         boolean canThrow = false;
         try {
@@ -95,8 +97,7 @@ public class MetaData {
                     .getOrCreateExifDirectory();
             //Remove old field and replace with it with a new one.
             exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
-            Tag[] tags = photo.getTags();
-            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, encodeTags(tags));
+            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, TagEncoder.encodeTagArray (photo.getTags()));
 
             File outputFile = new File("tmp2.jpg");
             os = new FileOutputStream(outputFile);
@@ -117,12 +118,12 @@ public class MetaData {
 
     }
 
-    private String encodeTags(Tag[] tags) {
-        String result = "";
-        for (Tag tag : tags) {
-            result += tag.getType() + " ";
-        }
-        return "";
-    }
+	private String encodeTags(Tag[] tags) {
+		String result = "";
+		for( Tag tag: tags) {
+			result += tag.getType () + " ";
+		}
+		return "";
+	}
 
 }

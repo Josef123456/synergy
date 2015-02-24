@@ -1,9 +1,7 @@
-package synergy.Views;
+package synergy.Reformat;
 
-import synergy.Utilities.SetActionListeners;
 import synergy.Utilities.SetImages;
 import synergy.Utilities.StaticObjects;
-import synergy.models.Photo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +9,7 @@ import java.awt.*;
 /**
  * Created by Cham on 19/02/2015.
  */
-public class ThumbnailPanel extends JPanel {
+class ThumbnailPanel extends JPanel {
     MainPhotoPanel mainPhotoPanel;
 
     public ThumbnailPanel(MainPhotoPanel mainPhotoPanel){
@@ -28,7 +26,7 @@ public class ThumbnailPanel extends JPanel {
     public void setUpImages(){
         SetImages setImages = new SetImages(this);
         SetActionListeners actionListeners = new SetActionListeners(this);
-        for(int i = 0; i < StaticObjects.LIST_OF_IMAGE_FILES.size();i++){
+        for(int i = 0; i < StaticObjects.LIST_OF_PHOTOS.size();i++){
             final JLabel pic = new JLabel();
             pic.setPreferredSize(new Dimension(200, 200));
             setImages.setImagesToPanel(pic, i, 200, 200);

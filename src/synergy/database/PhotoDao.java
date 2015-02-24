@@ -73,6 +73,10 @@ public class PhotoDao {
 	    photoDao.createOrUpdate (photo);
     }
 
+	public List<Photo> getAllPhotos() throws SQLException {
+		return photoDao.queryForAll ();
+	}
+
     public List<Tag> getTagsForPhoto(Photo photo) throws SQLException {
         if (tagsForPhotoQuery == null) {
             tagsForPhotoQuery = makeTagsForPhotoQuery();

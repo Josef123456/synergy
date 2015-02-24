@@ -1,4 +1,4 @@
-package synergy.Views;
+package synergy.Reformat;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by Josef on 03/02/2015.
  */
-public class ImportInterface extends JFrame {
+class ImportInterface extends JFrame {
 
     private JPanel mainPanel, leftbarPanel, rightPhotoPanel, southPanel, zoom, buttonsSouth;
     private JButton cancelButton, importButton, calendarButton, albumButton, allPhotoButton;
@@ -25,7 +25,6 @@ public class ImportInterface extends JFrame {
 
 
     public ImportInterface() {
-
         super("Import");
         setSize(600, 500);
         setResizable(false);
@@ -34,33 +33,24 @@ public class ImportInterface extends JFrame {
         setBackground(new Color(1.0f,1.0f,1.0f,0.5f));
         setVisible(true);
         buildinterface();
-
     }
-
 
     private void buildinterface() {
         panelConstruct();
-        bottomConstruct();
-
+        bottomConstruct ();
         mainPanel.add(BorderLayout.SOUTH, southPanel);
         add(mainPanel);
     }
-
 
     private void panelConstruct() {
         mainPanel = new JPanel(new BorderLayout());
         leftbarPanel = new JPanel();
         rightPhotoPanel = new JPanel();
-
-
         //southern panels
         southPanel = new JPanel(new GridLayout());
         zoom = new JPanel(new GridLayout(2,0));
         buttonsSouth = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     }
-
-
-
 
     private void bottomConstruct() {
 
@@ -88,23 +78,17 @@ public class ImportInterface extends JFrame {
             }
         });
 
-        //Codrin here is the FileChooser
         importButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 filter = new FileNameExtensionFilter("Bilder",
                         "gif", "png", "jpg");
                 chooser = new JFileChooser("c:/programmierung/beispieldateien");
-                // Filter wird unserem JFileChooser hinzugefügt
                 chooser.addChoosableFileFilter(filter);
-                // Erzeugung eines neuen Frames mit dem Titel "Dateiauswahl"
                 importJFrame = new JFrame("Dateiauswahl");
-                // Wir setzen die Breite auf 450 und die Höhe auf 300 Pixel
                 importJFrame.setSize(450,300);
-                // Hole dir den ContentPane und füge diesem unseren JColorChooser hinzu
                 importJFrame.getContentPane().add(chooser);
                 importJFrame.setLocationRelativeTo(null);
-                // Wir lassen unseren Frame anzeigen
                 importJFrame.setVisible(true);
             }
         });
