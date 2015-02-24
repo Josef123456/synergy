@@ -1,9 +1,6 @@
 package synergy.Views;
 
 
-import synergy.Utilities.StaticObjects;
-import synergy.models.Photo;
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -36,7 +33,8 @@ import synergy.models.Photo;
 public class Main extends JFrame {
 
     private JPanel mainPanel, northernPanel, buttonsNorth, cardPanel;
-    private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton, gridPhotoButton;
+    private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton,
+            gridPhotoButton;
     private JTextField searchField;
 
     private PhotosPanel photosPanel;
@@ -70,7 +68,6 @@ public class Main extends JFrame {
         //main panel for all panels
         mainPanel = new JPanel(new BorderLayout());
         cardPanel = new JPanel(new CardLayout());
-        cardPanel.add(new CalendarPanel(), "CALENDAR");
         cardPanel.add(new CalendarAreaPanel(), "CALENDAR");
 
 
@@ -82,127 +79,129 @@ public class Main extends JFrame {
         buttonsNorth.setLayout(new BoxLayout(buttonsNorth, BoxLayout.LINE_AXIS));
     }
 
-	private void createButtons() {
-		allPhotoButton = new JButton("All Photos");
-		gridPhotoButton = new JButton("Grid Photos");
-		calendarButton = new JButton("Calendar");
-		albumButton = new JButton("Album");
-		importButton = new JButton("Import");
-		exportButton = new JButton("Export");
-	}
+    private void createButtons() {
+        allPhotoButton = new JButton("All Photos");
+        gridPhotoButton = new JButton("Grid Photos");
+        calendarButton = new JButton("Calendar");
+        albumButton = new JButton("Album");
+        importButton = new JButton("Import");
+        exportButton = new JButton("Export");
+    }
 
-	private void addActionListenerToImportButton () {
-		final JFileChooser fileChooser = new JFileChooser();
-		fileChooser.setMultiSelectionEnabled (true);
-		System.out.println (Photo.getAllPhotos ().size ());
-		photosPanel.setPhotos ((ArrayList<Photo>) Photo.getAllPhotos ());
+    private void addActionListenerToImportButton() {
+        final JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setMultiSelectionEnabled(true);
+        System.out.println(Photo.getAllPhotos().size());
+        photosPanel.setPhotos((ArrayList<Photo>) Photo.getAllPhotos());
 
-		importButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
+        importButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
 
-				int returnValue = fileChooser.showOpenDialog(Main.this);
-				long t1 = System.currentTimeMillis();
+                int returnValue = fileChooser.showOpenDialog(Main.this);
+                long t1 = System.currentTimeMillis();
 
-				System.out.println(returnValue);
-				if (returnValue == JFileChooser.APPROVE_OPTION) {
-					File[] file = fileChooser.getSelectedFiles();
-					for (int i = 0; i < file.length; i++) {
-						Photo photo = new Photo(file[i].toString());
-						photo.save ();
-					}
-					photosPanel.setPhotos ((ArrayList<Photo>) Photo.getAllPhotos ());
-					System.out.println ("Number of files imported: " + Photo.getAllPhotos ().size ());
-				}
-				long t2 = System.currentTimeMillis();
-				System.out.println(t2 - t1 + " milliseconds");
-			}
-		});
-	}
+                System.out.println(returnValue);
+                if (returnValue == JFileChooser.APPROVE_OPTION) {
+                    File[] file = fileChooser.getSelectedFiles();
+                    for (int i = 0; i < file.length; i++) {
+                        Photo photo = new Photo(file[i].toString());
+                        photo.save();
+                    }
+                    photosPanel.setPhotos((ArrayList<Photo>) Photo.getAllPhotos());
+                    System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
+                }
+                long t2 = System.currentTimeMillis();
+                System.out.println(t2 - t1 + " milliseconds");
+            }
+        });
+    }
 
-	private void addActionListenerToCalendarButton () {
-		calendarButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
-				cardLayout.show(cardPanel, "CALENDAR");
-			}
-		});
-	}
+    private void addActionListenerToCalendarButton() {
+        calendarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
+                cardLayout.show(cardPanel, "CALENDAR");
+            }
+        });
+    }
 
-	private void addActionListenerToAllPhotoButton (){
-		allPhotoButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
-				cardLayout.show(cardPanel, "PHOTOS");
-				photosPanel.setIsMainView(true);
-			}
-		});
-	}
+    private void addActionListenerToAllPhotoButton() {
+        allPhotoButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                photosPanel.setPhotos((ArrayList<Photo>) Photo.getAllPhotos());
+                CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
+                cardLayout.show(cardPanel, "PHOTOS");
+                photosPanel.setIsMainView(true);
+            }
+        });
+    }
 
-	private void addActionListenerToGridPhotoButton () {
-		gridPhotoButton.addActionListener(new ActionListener() {
+    private void addActionListenerToGridPhotoButton() {
+        gridPhotoButton.addActionListener(new ActionListener() {
 
-			public void actionPerformed(ActionEvent e) {
-				CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
-				cardLayout.show(cardPanel, "PHOTOS");
-				photosPanel.setNoSelection();
-				photosPanel.setIsMainView(false);
-			}
-		});
-	}
+            public void actionPerformed(ActionEvent e) {
+                CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
+                cardLayout.show(cardPanel, "PHOTOS");
+                photosPanel.setNoSelection();
+                photosPanel.setIsMainView(false);
+            }
+        });
+    }
 
-	private void addActionListeners(){
-		addActionListenerToImportButton ();
-		addActionListenerToAllPhotoButton ();
-		addActionListenerToCalendarButton ();
-		addActionListenerToGridPhotoButton ();
-	}
+    private void addActionListeners() {
+        addActionListenerToImportButton();
+        addActionListenerToAllPhotoButton();
+        addActionListenerToCalendarButton();
+        addActionListenerToGridPhotoButton();
+    }
 
-	private void addButtonsToLayout() {
-		buttonsNorth.add(Box.createHorizontalStrut(7));
-		buttonsNorth.add(importButton);
-		buttonsNorth.add(Box.createHorizontalStrut(5));
-		buttonsNorth.add(exportButton);
-		buttonsNorth.add(Box.createHorizontalGlue());
-		buttonsNorth.add(albumButton);
-		buttonsNorth.add(Box.createHorizontalStrut(5));
-		buttonsNorth.add(calendarButton);
-		buttonsNorth.add(Box.createHorizontalStrut(5));
-		buttonsNorth.add(allPhotoButton);
-		buttonsNorth.add(Box.createHorizontalStrut(5));
-		buttonsNorth.add(gridPhotoButton);
-		buttonsNorth.add(Box.createHorizontalStrut(5));
-		northernPanel.add(buttonsNorth);
-		buttonsNorth.add(Box.createHorizontalStrut(7));
-		for (Component jButton : buttonsNorth.getComponents()) {
-			setComponentFont(jButton);
-		}
-	}
+    private void addButtonsToLayout() {
+        buttonsNorth.add(Box.createHorizontalStrut(7));
+        buttonsNorth.add(importButton);
+        buttonsNorth.add(Box.createHorizontalStrut(5));
+        buttonsNorth.add(exportButton);
+        buttonsNorth.add(Box.createHorizontalGlue());
+        buttonsNorth.add(albumButton);
+        buttonsNorth.add(Box.createHorizontalStrut(5));
+        buttonsNorth.add(calendarButton);
+        buttonsNorth.add(Box.createHorizontalStrut(5));
+        buttonsNorth.add(allPhotoButton);
+        buttonsNorth.add(Box.createHorizontalStrut(5));
+        buttonsNorth.add(gridPhotoButton);
+        buttonsNorth.add(Box.createHorizontalStrut(5));
+        northernPanel.add(buttonsNorth);
+        buttonsNorth.add(Box.createHorizontalStrut(7));
+        for (Component jButton : buttonsNorth.getComponents()) {
+            setComponentFont(jButton);
+        }
+    }
 
-	private void addSearchField() {
-		searchField = new JTextField("Search", 10);
-		searchField.setBackground(new Color(204, 204, 204));
-		searchField.setFont(new Font("Tahoma", 2, 24));
-		northernPanel.add(searchField);
-		searchField.addFocusListener(new FocusListener() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				searchField.setText("Search");
-			}
-			@Override
-			public void focusGained(FocusEvent e) {
-				searchField.setText("");
-			}
-		});
-	}
+    private void addSearchField() {
+        searchField = new JTextField("Search", 10);
+        searchField.setBackground(new Color(204, 204, 204));
+        searchField.setFont(new Font("Tahoma", 2, 24));
+        northernPanel.add(searchField);
+        searchField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                searchField.setText("Search");
+            }
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                searchField.setText("");
+            }
+        });
+    }
 
     private void northernConstruct() {
-		addSearchField ();
-	    createButtons();
-	    addActionListeners();
-	    addButtonsToLayout();
+        addSearchField();
+        createButtons();
+        addActionListeners();
+        addButtonsToLayout();
     }
 
     private void setComponentFont(Component component) {

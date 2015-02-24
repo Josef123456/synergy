@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import synergy.models.Photo;
 import synergy.models.PhotoTag;
@@ -108,7 +109,7 @@ public class DatabaseConnectionTest {
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		Tag tag2 = new Tag(Tag.TagType.EXTRA, "playing with block");
 
-		photo.addTag (tag);
+		photo.addTag(tag);
 		photo.addTag (tag2);
 
 		List<Tag> tags = photo.getTags ();

@@ -5,11 +5,15 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
@@ -124,6 +128,15 @@ public class CalendarAreaPanel extends JPanel {
     }
 
     private void bottomConstruct() {
+        JButton buttonGetPhotos = new JButton("Get Photos");
+        southPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
+        buttonGetPhotos.setFont(new Font("Tahoma", Font.PLAIN, 15));
+        buttonGetPhotos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
+            }
+        });
+        southPanel.add(buttonGetPhotos);
     }
 }

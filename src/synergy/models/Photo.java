@@ -14,7 +14,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.*;
 
 import synergy.database.PhotoDao;
 
@@ -86,6 +85,37 @@ public class Photo {
 		}
 		return null;
 	}
+
+    public List<Tag> getLocationTags() {
+        List<Tag> allTags = getTags ();
+        List<Tag> locationTags = new ArrayList<> ();
+        System.out.println(allTags.size ());
+        for(Tag tag:allTags) {
+            if ( tag.getType () == Tag.TagType.PLACE )
+                locationTags.add (tag);
+        }
+        return locationTags;
+    }
+
+    public List<Tag> getChildTags() {
+        List<Tag> allTags = getTags ();
+        List<Tag> childTags = new ArrayList<> ();
+        for(Tag tag:allTags) {
+            if ( tag.getType () == Tag.TagType.KID )
+                childTags.add(tag);
+        }
+        return childTags;
+    }
+
+    public static List<Photo> getAllPhotos() {
+        try {
+            return PhotoDao.getInstance ().getAllPhotos ();
+        } catch ( Exception e ) {
+            System.err.println(e);
+            e.printStackTrace ();
+        }
+        return null;
+    }
 
 	public void addTag(Tag tag) {
 		tag.save();
