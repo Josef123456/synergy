@@ -139,60 +139,71 @@ public class PhotosPanel extends JPanel {
 	private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final Graphics g) {
 		pic.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
-				setMainImagePanel(photos.get(currentIndex).getPath ());
-				if ( isMainView ) {
-					selectedIndexes.removeAll (selectedIndexes);
-				}
-				selectedIndexes.add (currentIndex);
-				tagPanel.update ();
+			setMainImagePanel(photos.get(currentIndex).getPath ());
+			if ( isMainView ) {
+				selectedIndexes.removeAll (selectedIndexes);
+			}
+			selectedIndexes.add (currentIndex);
+			tagPanel.update ();
 
-				if ( isMainView == false ) {
-					if ( !selectedIndexes.contains (currentIndex) ) {
-						selectedIndexes.add (currentIndex);
-						System.out.println ("Selected Index List: " + selectedIndexes);
-						g.drawImage (finalCheckBoxImage, 0, 0, 50, 50, null);
-						g.dispose ();
-						tagPanel.update ();
-						pic.repaint ();
-					} else {
-						selectedIndexes.remove (currentIndex);
-						System.out.println ("Selected Index List: " + selectedIndexes);
-						tagPanel.update ();
-						pic.repaint ();
+			if ( isMainView == false ) {
+				if ( !selectedIndexes.contains (currentIndex) ) {
+					selectedIndexes.add (currentIndex);
+					System.out.println ("Selected Index List: " + selectedIndexes);
+					g.drawImage (finalCheckBoxImage, 0, 0, 50, 50, null);
+					g.dispose ();
+					tagPanel.update ();
+					pic.repaint ();
+				} else {
+					selectedIndexes.remove (currentIndex);
+					System.out.println ("Selected Index List: " + selectedIndexes);
+					tagPanel.update ();
+					pic.repaint ();
 
-					}
-					if ( arg0.getClickCount () == 2 ) {
-						mainPanel.setVisible (true);
-						mainGridPanel.setVisible (false);
-						isMainView = true;
-					}
 				}
+				if ( arg0.getClickCount () == 2 ) {
+					mainPanel.setVisible (true);
+					mainGridPanel.setVisible (false);
+					isMainView = true;
+				}
+			}
 			}
 		});
 	}
 
-    public void setImagesToPanel(JPanel panel, int imageWidth, int imageHeight) {
+    public void setImagesToPanel(final JPanel panel, final int imageWidth, final int imageHeight) {
 
-        for (int i = 0; i < photos.size(); i++) {
-            final int currentIndex = i;
-            final JLabel pic = new JLabel();
-	        long t1 = System.currentTimeMillis();
-	        String fileName = photos.get(i).getPath ();
-	        ImageIcon pic1Icon = new ImageIcon(fileName);
-	        Image pic1img = pic1Icon.getImage();
-	        Image newImg = pic1img.getScaledInstance(imageWidth, imageHeight,java.awt.Image.SCALE_SMOOTH);
-            final BufferedImage finalImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-            Graphics g = finalImage.getGraphics();
-            g.drawImage(newImg, 0, 0, imageWidth, imageHeight, null);
-            g.dispose();
-	        finalImage.flush();
-	        long t2 = System.currentTimeMillis();
-	        System.out.println("For loading grid image (" + i + "):" +
-			        (t2 - t1) + " milliseconds" +
-			        "{" + imageHeight + ", " + imageWidth + "}");
-	        addMouseListenerToPictureLabel (pic, currentIndex, g);
-            pic.setIcon(new ImageIcon(newImg));
-            panel.add(pic);
+	    //TODO: refactor this mess
+        for (int i = 0; i < photos.size(); ++i) {
+	        final int currentIndex = i;
+	        // TODO: get this into it's own class
+	        Runnable runnable = new Runnable () {
+		        @Override
+		        public void run () {
+			        final int index = currentIndex;
+			        final JLabel pic = new JLabel ();
+			        long t1 = System.currentTimeMillis ();
+			        String fileName = photos.get (index).getPath ();
+			        ImageIcon pic1Icon = new ImageIcon (fileName);
+			        Image pic1img = pic1Icon.getImage ();
+			        Image newImg = pic1img.getScaledInstance (imageWidth, imageHeight, java.awt.Image.SCALE_SMOOTH);
+			        final BufferedImage finalImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+			        Graphics g = finalImage.getGraphics ();
+			        g.drawImage (newImg, 0, 0, imageWidth, imageHeight, null);
+			        g.dispose ();
+			        finalImage.flush ();
+			        long t2 = System.currentTimeMillis ();
+			        System.out.println ("For loading grid image (" + index + "):" +
+					        (t2 - t1) + " milliseconds" +
+					        "{" + imageHeight + ", " + imageWidth + "}");
+			        addMouseListenerToPictureLabel (pic, index, g);
+			        pic.setIcon (new ImageIcon (newImg));
+			        panel.add (pic);
+		        }
+	        };
+	        //TODO: god please...
+	        new Thread(runnable).start ();
+
         }
     }
 
