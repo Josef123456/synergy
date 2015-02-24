@@ -2,6 +2,7 @@ package synergy.Reformat;
 
 import synergy.Utilities.DisplayPhoto;
 import synergy.Utilities.StaticObjects;
+import synergy.models.Photo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -26,10 +27,8 @@ class MainPhotoPanel extends JPanel {
 
 
     public void setMainImage(int i){
-        DisplayPhoto photo = new DisplayPhoto(StaticObjects.LIST_OF_PHOTOS.get(i));
-        BufferedImage image = photo.getBufferedImage(mainImage.getWidth(), mainImage.getHeight());
-        mainImage.setIcon(new ImageIcon(image));
-        image.flush();
+        Photo photo = StaticObjects.LIST_OF_PHOTOS.get(i);
+        mainImage.setIcon(new ImageIcon(photo.getPath()));
     }
 
 

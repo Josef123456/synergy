@@ -66,7 +66,6 @@ public class PhotosPanel extends JPanel {
         setGridImages();
         mainGridPanel.setVisible(false);
 
-        //setUpJMenuBar();
         setUpMainFrame();
         setMainImagePanel(null);
 
@@ -77,75 +76,6 @@ public class PhotosPanel extends JPanel {
         add(tagPanel, BorderLayout.EAST);
 
         setVisible(true);
-    }
-
-    public void setUpJMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
-        JMenu viewMenu = new JMenu("View");
-        JMenu fileMenu = new JMenu("File");
-
-        JMenuItem importMenuItem = new JMenuItem("Import");
-        JMenuItem exportMenuItem = new JMenuItem("Export");
-        fileMenu.add(importMenuItem);
-        fileMenu.add(exportMenuItem);
-
-        importMenuItem.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent arg0) {
-                int returnValue = fileChooser.showOpenDialog(PhotosPanel.this);
-                System.out.println(returnValue);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File[] file = fileChooser.getSelectedFiles();
-                    for (int i = 0; i < file.length; i++) {
-                        listOfImageFiles.add(file[i]);
-                    }
-                }
-                System.out.println(listOfImageFiles);
-                tagPanel.initiateListOfMetaDataValues();
-                System.out.println(tagPanel.listOfMetaData);
-                setImportedImages();
-            }
-
-        });
-
-        JMenuItem switchToMainView = new JMenuItem("Switch to Main View");
-        switchToMainView.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (!isMainView) {
-                    mainPanel.setVisible(true);
-                    mainGridPanel.setVisible(false);
-                    isMainView = true;
-                    tagPanel.updateLocationTags();
-                    tagPanel.updateChildrenTags();
-                }
-            }
-        });
-
-        JMenuItem switchToGridView = new JMenuItem("Switch to Grid View");
-        switchToGridView.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (isMainView) {
-                    mainGridPanel.setVisible(true);
-                    mainPanel.setVisible(false);
-                    isMainView = false;
-                    tagPanel.updateLocationTags();
-                    tagPanel.updateChildrenTags();
-                }
-            }
-        });
-
-
-        viewMenu.add(switchToMainView);
-        viewMenu.add(switchToGridView);
-        menuBar.add(fileMenu);
-        menuBar.add(viewMenu);
-
-        add(menuBar, BorderLayout.NORTH);
     }
 
     public void setUpMainFrame() {
@@ -234,7 +164,6 @@ public class PhotosPanel extends JPanel {
             image.flush();
 
             pic.addMouseListener(new MouseAdapter() {
-
                 public void mouseClicked(MouseEvent arg0) {
                     setMainImagePanel(listOfImageFiles.get(index).toString());
                     tagPanel.setIndex(index);
@@ -276,7 +205,6 @@ public class PhotosPanel extends JPanel {
                         isMainView = true;
                     }
                 }
-
             });
 
             pic.setIcon(new ImageIcon(image));

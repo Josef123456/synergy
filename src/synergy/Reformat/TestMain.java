@@ -1,6 +1,7 @@
 package synergy.Reformat;
 
 import synergy.Utilities.StaticObjects;
+import synergy.models.Photo;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,7 +91,7 @@ class TestMain extends JFrame {
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
                     File[] file = fileChooser.getSelectedFiles();
                     for (int i = 0; i < file.length; i++) {
-                        StaticObjects.LIST_OF_PHOTOS.add(file[i]);
+                        StaticObjects.LIST_OF_PHOTOS.add(new Photo (file[i].getPath()));
                     }
                     initiateListOfMetaDataValues();
                     mainPhotoPanel.setMainImage(0);
