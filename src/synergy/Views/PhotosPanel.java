@@ -139,34 +139,36 @@ public class PhotosPanel extends JPanel {
 	private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final Graphics g) {
 		pic.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
-			setMainImagePanel(photos.get(currentIndex).getPath ());
-			if ( isMainView ) {
-				selectedIndexes.removeAll (selectedIndexes);
-			}
-			selectedIndexes.add (currentIndex);
-			tagPanel.update ();
-
-			if ( isMainView == false ) {
-				if ( !selectedIndexes.contains (currentIndex) ) {
+				setMainImagePanel(photos.get(currentIndex).getPath ());
+				if ( isMainView ) {
+					selectedIndexes.removeAll (selectedIndexes);
 					selectedIndexes.add (currentIndex);
-					System.out.println ("Selected Index List: " + selectedIndexes);
-					g.drawImage (finalCheckBoxImage, 0, 0, 50, 50, null);
-					g.dispose ();
-					tagPanel.update ();
-					pic.repaint ();
-				} else {
-					selectedIndexes.remove (currentIndex);
-					System.out.println ("Selected Index List: " + selectedIndexes);
-					tagPanel.update ();
-					pic.repaint ();
+				}
 
+				if ( isMainView == false ) {
+					System.out.println(currentIndex);
+					if ( !selectedIndexes.contains (currentIndex) ) {
+						selectedIndexes.add (currentIndex);
+						System.out.println ("Adding Selected Index List: " + selectedIndexes);
+						g.drawImage (finalCheckBoxImage, 0, 0, 50, 50, null);
+						g.dispose ();
+						tagPanel.update ();
+						pic.repaint ();
+						pic.setText ("selected");
+					} else {
+						selectedIndexes.remove (currentIndex);
+						System.out.println ("Removing Selected Index List: " + selectedIndexes);
+						tagPanel.update ();
+						pic.repaint ();
+						pic.setText ("");
+					}
+					if ( arg0.getClickCount () == 2 ) {
+						mainPanel.setVisible (true);
+						mainGridPanel.setVisible (false);
+						isMainView = true;
+					}
 				}
-				if ( arg0.getClickCount () == 2 ) {
-					mainPanel.setVisible (true);
-					mainGridPanel.setVisible (false);
-					isMainView = true;
-				}
-			}
+				tagPanel.update ();
 			}
 		});
 	}
@@ -217,18 +219,21 @@ public class PhotosPanel extends JPanel {
             mainGridPanel.setVisible(true);
             mainPanel.setVisible(false);
             isMainView = false;
-            tagPanel.update ();
         }
         if (!isMainView && b) {
             mainPanel.setVisible(true);
             mainGridPanel.setVisible(false);
             isMainView = true;
-            tagPanel.update ();
         }
+	    tagPanel.update ();
     }
 
 	public ArrayList<Photo> getPhotos () {
 		return photos;
+	}
+
+	public void setNoSelection() {
+		selectedIndexes.removeAll (selectedIndexes);
 	}
 
 	public Integer[] getSelectedIndexesAsArray () {

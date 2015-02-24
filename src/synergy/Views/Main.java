@@ -142,6 +142,7 @@ public class Main extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
 				cardLayout.show(cardPanel, "PHOTOS");
+				photosPanel.setNoSelection();
 				photosPanel.setIsMainView(false);
 			}
 		});
