@@ -17,6 +17,7 @@ import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 import org.apache.commons.imaging.util.IoUtils;
+import synergy.Utilities.TagEncoder;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
@@ -89,7 +90,7 @@ public class MetaData {
             //Remove old field and replace with it with a new one.
             exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
 	        Tag[] tags = photo.getTags();
-            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, encodeTags(tags) );
+            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, TagEncoder.encodeTagArray (tags));
 
             File outputFile = new File("tmp2.jpg");
             os = new FileOutputStream(outputFile);
@@ -109,13 +110,4 @@ public class MetaData {
         }
 
     }
-
-	private String encodeTags(Tag[] tags) {
-		String result = "";
-		for( Tag tag: tags) {
-			result += tag.getType () + " " +
-		}
-		return "";
-	}
-
 }
