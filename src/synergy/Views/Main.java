@@ -1,8 +1,6 @@
 package synergy.Views;
 
 
-import synergy.models.Photo;
-
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
@@ -26,6 +24,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
+
+import synergy.models.Photo;
 
 /**
  * Created by Josef on 02/02/2015.
@@ -77,7 +77,7 @@ public class Main extends JFrame {
         mainPanel = new JPanel(new BorderLayout());
 
         cardPanel = new JPanel(new CardLayout());
-        cardPanel.add(new CalendarPanel(), "CALENDAR");
+        cardPanel.add(new CalendarAreaPanel(), "CALENDAR");
 
 
         photosPanel = new PhotosPanel();
@@ -145,11 +145,10 @@ public class Main extends JFrame {
                     photosPanel.setImportedImages();
                 }
 
-
                 long t2 = System.currentTimeMillis();
-
                 System.out.println(t2 - t1 + " milliseconds");
 
+                cardPanel.getComponent(0).repaint();
             }
         });
 

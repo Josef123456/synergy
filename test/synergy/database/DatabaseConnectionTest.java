@@ -2,13 +2,16 @@ package synergy.database;
 
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import synergy.models.Photo;
 import synergy.models.PhotoTag;
 import synergy.models.Tag;
 
-import java.util.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 
 /**
  * Created by alexstoick on 2/4/15.
@@ -30,8 +33,8 @@ public class DatabaseConnectionTest {
 		photo.save();
 		photo = new Photo(DIR_PATH + "20150209-_DSC0727.jpg");
 		photo.save();
-		Date[] dates = Photo.getUniqueDates();
-		assertEquals (2, dates.length);
+		ArrayList<Date> dates = Photo.getUniqueDates();
+		assertEquals (2, dates.size());
 	}
 
 	@Test public void testPhotoCreation() throws Exception {
