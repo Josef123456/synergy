@@ -12,10 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by alexstoick on 2/6/15.
@@ -74,15 +71,35 @@ public class Photo {
 		this.ID = ID;
 	}
 
-	public Tag[] getTags () {
+	public List<Tag> getTags () {
 		try {
 			List<Tag> tags = PhotoDao.getInstance ().getTagsForPhoto (this);
-			return tags.toArray (new Tag[tags.size ()]);
+			return tags;
 		} catch ( Exception e ) {
 			System.err.println (e);
 			e.printStackTrace ();
 		}
 		return null;
+	}
+
+	public List<Tag> getLocationTags() {
+		List<Tag> allTags = getTags ();
+		List<Tag> locationTags = new ArrayList<> ();
+		for(Tag tag:allTags) {
+			if ( tag.getType () == Tag.TagType.PLACE )
+				locationTags.add (tag);
+		}
+		return locationTags;
+	}
+
+	public List<Tag> getChildTags() {
+		List<Tag> allTags = getTags ();
+		List<Tag> childTags = new ArrayList<> ();
+		for(Tag tag:allTags) {
+			if ( tag.getType () == Tag.TagType.KID )
+				childTags.add(tag);
+		}
+		return childTags;
 	}
 
 	public static List<Photo> getAllPhotos() {

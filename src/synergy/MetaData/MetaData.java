@@ -89,8 +89,7 @@ public class MetaData {
                     .getOrCreateExifDirectory();
             //Remove old field and replace with it with a new one.
             exifDirectory.removeField(ExifTagConstants.EXIF_TAG_USER_COMMENT);
-	        Tag[] tags = photo.getTags();
-            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, TagEncoder.encodeTagArray (tags));
+            exifDirectory.add(ExifTagConstants.EXIF_TAG_USER_COMMENT, TagEncoder.encodeTagArray (photo.getTags()));
 
             File outputFile = new File("tmp2.jpg");
             os = new FileOutputStream(outputFile);
