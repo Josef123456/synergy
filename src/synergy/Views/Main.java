@@ -70,7 +70,7 @@ public class Main extends JFrame {
         //main panel for all panels
         mainPanel = new JPanel(new BorderLayout());
         cardPanel = new JPanel(new CardLayout());
-        cardPanel.add(new CalendarPanel(), "CALENDAR");
+        //cardPanel.add(new CalendarPanel(), "CALENDAR");
         cardPanel.add(new CalendarAreaPanel(), "CALENDAR");
 
 

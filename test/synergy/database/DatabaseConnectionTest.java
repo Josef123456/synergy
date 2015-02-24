@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import synergy.models.Photo;
 import synergy.models.PhotoTag;
