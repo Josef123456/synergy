@@ -15,6 +15,7 @@ import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -70,7 +71,6 @@ public class Main extends JFrame {
         cardPanel = new JPanel(new CardLayout());
         cardPanel.add(new CalendarAreaPanel(), "CALENDAR");
 
-
         photosPanel = new PhotosPanel();
         cardPanel.add(photosPanel, "PHOTOS");
         //northern panels
@@ -92,7 +92,7 @@ public class Main extends JFrame {
         final JFileChooser fileChooser = new JFileChooser();
         fileChooser.setMultiSelectionEnabled(true);
         System.out.println(Photo.getAllPhotos().size());
-        photosPanel.setPhotos((ArrayList<Photo>) Photo.getAllPhotos());
+        photosPanel.setPhotos(Photo.getAllPhotos());
 
         importButton.addActionListener(new ActionListener() {
             @Override
@@ -108,7 +108,7 @@ public class Main extends JFrame {
                         Photo photo = new Photo(file[i].toString());
                         photo.save();
                     }
-                    photosPanel.setPhotos((ArrayList<Photo>) Photo.getAllPhotos());
+                    photosPanel.setPhotos(Photo.getAllPhotos());
                     System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
                 }
                 long t2 = System.currentTimeMillis();
@@ -131,9 +131,12 @@ public class Main extends JFrame {
         allPhotoButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                photosPanel.setPhotos((ArrayList<Photo>) Photo.getAllPhotos());
+	            List<Photo> allPhotos = Photo.getAllPhotos();
+	            if ( !photosPanel.getPhotos ().equals (allPhotos) ) {
+		            photosPanel.setPhotos (allPhotos);
+	            }
                 CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
-                cardLayout.show(cardPanel, "PHOTOS");
+                cardLayout.show (cardPanel, "PHOTOS");
                 photosPanel.setIsMainView(true);
             }
         });

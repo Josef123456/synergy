@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
@@ -42,7 +43,6 @@ public class PhotosPanel extends JPanel {
     boolean isMainView;
 
     private ArrayList<Photo> photos = new ArrayList<>();
-    private ArrayList<Photo> photosForDisplay = new ArrayList<>();
     private Set<Integer> selectedIndexes = new HashSet<>();
 
     private BufferedImage finalCheckBoxImage = null;
@@ -96,6 +96,8 @@ public class PhotosPanel extends JPanel {
 
     private void setImportedImages() {
         mainThumbnailPanel.setLayout(new GridLayout(0, 1));
+	    mainThumbnailPanel.removeAll();
+	    gridPanel.removeAll();
         setImagesToPanel(mainThumbnailPanel, 120, 120);
         setImagesToPanel(gridPanel, 200, 200);
         if (photos.size() > 0) {
@@ -188,7 +190,6 @@ public class PhotosPanel extends JPanel {
     }
 
     public void setImagesToPanel(final JPanel panel, final int imageWidth, final int imageHeight) {
-
         //TODO: refactor this mess
         for (int i = 0; i < photos.size(); ++i) {
             final int currentIndex = i;
@@ -210,16 +211,11 @@ public class PhotosPanel extends JPanel {
             };
             //TODO: god please...
             new Thread(runnable).start();
-
         }
     }
 
-    public void setPhotosForDisplay(ArrayList<Photo> photos) {
-
-    }
-
-    public void setPhotos(ArrayList<Photo> photos) {
-        this.photos = photos;
+    public void setPhotos(List<Photo> photos) {
+        this.photos = (ArrayList<Photo>) photos;
         setImportedImages();
     }
 
