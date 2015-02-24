@@ -136,7 +136,7 @@ public class PhotosPanel extends JPanel {
         mainGridPanel.updateUI();
     }
 
-	private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final Graphics g) {
+	private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final Image finalImage,  final int imageWidth, final int imageHeight) {
 		pic.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				setMainImagePanel(photos.get(currentIndex).getPath ());
@@ -150,17 +150,26 @@ public class PhotosPanel extends JPanel {
 					if ( !selectedIndexes.contains (currentIndex) ) {
 						selectedIndexes.add (currentIndex);
 						System.out.println ("Adding Selected Index List: " + selectedIndexes);
+                        final BufferedImage finalBufferedImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+                        Graphics g = finalBufferedImage.getGraphics ();
+                        g.drawImage(finalImage, 0, 0, imageWidth, imageHeight, null);
 						g.drawImage (finalCheckBoxImage, 0, 0, 50, 50, null);
 						g.dispose ();
-						tagPanel.update ();
+                        pic.setIcon(new ImageIcon(finalBufferedImage));
+                        finalBufferedImage.flush();
+                        tagPanel.update ();
 						pic.repaint ();
-						pic.setText ("selected");
 					} else {
 						selectedIndexes.remove (currentIndex);
 						System.out.println ("Removing Selected Index List: " + selectedIndexes);
-						tagPanel.update ();
+                        final BufferedImage finalBufferedImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
+                        Graphics g = finalBufferedImage.getGraphics ();
+                        g.drawImage(finalImage, 0, 0, imageWidth, imageHeight, null);
+                        g.dispose();
+                        pic.setIcon(new ImageIcon(finalBufferedImage));
+                        finalBufferedImage.flush();
+                        tagPanel.update ();
 						pic.repaint ();
-						pic.setText ("");
 					}
 					if ( arg0.getClickCount () == 2 ) {
 						mainPanel.setVisible (true);
@@ -184,21 +193,11 @@ public class PhotosPanel extends JPanel {
 		        public void run () {
 			        final int index = currentIndex;
 			        final JLabel pic = new JLabel ();
-			        long t1 = System.currentTimeMillis ();
 			        String fileName = photos.get (index).getPath ();
 			        ImageIcon pic1Icon = new ImageIcon (fileName);
 			        Image pic1img = pic1Icon.getImage ();
 			        Image newImg = pic1img.getScaledInstance (imageWidth, imageHeight, java.awt.Image.SCALE_SMOOTH);
-			        final BufferedImage finalImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_RGB);
-			        Graphics g = finalImage.getGraphics ();
-			        g.drawImage (newImg, 0, 0, imageWidth, imageHeight, null);
-			        g.dispose ();
-			        finalImage.flush ();
-			        long t2 = System.currentTimeMillis ();
-			        System.out.println ("For loading grid image (" + index + "):" +
-					        (t2 - t1) + " milliseconds" +
-					        "{" + imageHeight + ", " + imageWidth + "}");
-			        addMouseListenerToPictureLabel (pic, index, g);
+			        addMouseListenerToPictureLabel (pic, index, newImg, imageWidth, imageHeight);
 			        pic.setIcon (new ImageIcon (newImg));
 			        panel.add (pic);
 		        }
