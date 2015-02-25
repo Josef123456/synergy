@@ -4,6 +4,8 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import synergy.database.TagDao;
 
+import java.util.List;
+
 /**
  * Created by alexstoick on 2/6/15.
  */
@@ -58,7 +60,12 @@ public class Tag {
 		return ID;
 	}
 
-	public static Photo[] getPhotosForTag(Tag tag) {
+	public static List<Photo> getPhotosForTag(Tag tag) {
+		// TODO: implement this
+		return null;
+	}
+
+	public static List<Tag> getSuggestedTagsForString(String text) {
 		// TODO: implement this
 		return null;
 	}

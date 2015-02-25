@@ -86,6 +86,11 @@ public class Photo {
 		return null;
 	}
 
+	public List<Tag> getSuggestedTags() {
+		//TODO: implement this
+		return null;
+	}
+
     public List<Tag> getLocationTags() {
         List<Tag> allTags = getTags ();
         List<Tag> locationTags = new ArrayList<> ();
