@@ -5,7 +5,9 @@ import com.j256.ormlite.dao.DaoManager;
 import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
+import com.j256.ormlite.stmt.SelectArg;
 import com.j256.ormlite.table.TableUtils;
+import synergy.models.Photo;
 import synergy.models.PhotoTag;
 import synergy.models.Tag;
 
@@ -17,7 +19,7 @@ import java.util.List;
  */
 public class TagDao {
 	private static TagDao ourInstance = new TagDao ();
-
+	private static PreparedQuery<Photo> photosForTagQuery = null;
 	public static TagDao getInstance () {
 		return ourInstance;
 	}
@@ -61,5 +63,27 @@ public class TagDao {
 		qb.where().eq (Tag.COLUMN_TYPE, type);
 		qb.where().eq (Tag.COLUMN_VALUE, value);
 		return tagDao.query(qb.prepare ());
+	}
+
+	private PreparedQuery<Photo> makePhotosForTagQuery() throws SQLException{
+
+		QueryBuilder<PhotoTag, Integer> photoTagsQueryBuilder = PhotoTagDao.getInstance()
+				.getQueryBuilder();
+		photoTagsQueryBuilder.selectColumns(PhotoTag.COLUMN_PHOTO_ID);
+		SelectArg postSelectArg = new SelectArg();
+		photoTagsQueryBuilder.where().eq(PhotoTag.COLUMN_TAG_ID, postSelectArg);
+
+		QueryBuilder<Photo, Integer> photoQueryBuilder = PhotoDao.getInstance().getQueryBuilder();
+		photoQueryBuilder .where().in(Photo._ID, photoTagsQueryBuilder);
+
+		return photoQueryBuilder.prepare();
+	}
+
+	public List<Photo> getPhotosForTag(Tag tag) throws SQLException {
+		if (photosForTagQuery == null ) {
+			photosForTagQuery = makePhotosForTagQuery();
+		}
+		photosForTagQuery.setArgumentHolderValue(0, tag);
+		return PhotoDao.getInstance().query(photosForTagQuery);
 	}
 }

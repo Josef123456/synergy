@@ -57,10 +57,8 @@ public class PhotoDao {
 
 	public List<Photo> getPhotosForDate(Date date) throws SQLException {
 		QueryBuilder<Photo, Integer> qb = photoDao.queryBuilder ();
-		System.out.println(date);
 		Date startOfDay = new Date(date.getYear (), date.getMonth (), date.getDate (),0,0,0);
 		Date endOfDay = new Date(date.getYear (), date.getMonth (), date.getDate (),23,59,59);
-		System.out.println(startOfDay + " " + endOfDay);
 		qb.where ().between (Photo.COLUMN_DATE, startOfDay, endOfDay);
 		return photoDao.query (qb.prepare ());
 	}
@@ -75,6 +73,14 @@ public class PhotoDao {
 
 	public List<Photo> getAllPhotos() throws SQLException {
 		return photoDao.queryForAll ();
+	}
+
+	public List<Photo> query(PreparedQuery<Photo> preparedQuery) throws SQLException {
+		return photoDao.query (preparedQuery);
+	}
+
+	public QueryBuilder<Photo,Integer> getQueryBuilder() {
+		return photoDao.queryBuilder ();
 	}
 
     public List<Tag> getTagsForPhoto(Photo photo) throws SQLException {
