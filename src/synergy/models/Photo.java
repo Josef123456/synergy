@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import synergy.SuggestionEngine.Engine;
 import synergy.database.PhotoDao;
 
 /**
@@ -87,8 +88,7 @@ public class Photo {
 	}
 
 	public List<Tag> getSuggestedTags() {
-		//TODO: implement this
-		return null;
+		return Engine.suggest(this);
 	}
 
     public List<Tag> getLocationTags() {
