@@ -30,7 +30,8 @@ public class PhotoGridView extends JPanel {
     //@TODO: Fix the UI for the top panel(it should be at the top not at the side)
     public void setTopPanel() {
         topPanel = new JPanel();
-        topPanel.setLayout(new FlowLayout());
+        topPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
 
         JButton zoomIn = new JButton("Zoom in");
         JButton zoomOut = new JButton("Zoom out");
@@ -52,7 +53,19 @@ public class PhotoGridView extends JPanel {
         topPanel.add(zoomIn);
         topPanel.add(zoomOut);
 
-        add(topPanel, BorderLayout.NORTH);
+        //@TODO: Implement the buttonSwitchViews
+
+        JPanel panelSwitchViews = new JPanel();
+        panelSwitchViews.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        JButton buttonSwitchViews = new JButton("Switch Views");
+        panelSwitchViews.add(buttonSwitchViews);
+
+        JPanel mainTopPanel = new JPanel();
+        mainTopPanel.setLayout(new BorderLayout());
+        mainTopPanel.add(topPanel, BorderLayout.WEST);
+        mainTopPanel.add(panelSwitchViews, BorderLayout.EAST);
+        add(mainTopPanel, BorderLayout.NORTH);
+
     }
 
     public void setMainPanelUI() {
