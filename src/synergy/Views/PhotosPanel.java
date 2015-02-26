@@ -95,14 +95,16 @@ public class PhotosPanel extends JPanel {
     }
 
     private void setImportedImages() {
+        //@TODO: PhotoGridPanel on the thumbnail panel
         mainThumbnailPanel.setLayout(new GridLayout(0, 1));
-	    mainThumbnailPanel.removeAll();
-	    //gridPanel.removeAll();
+        mainThumbnailPanel.removeAll();
         setImagesToPanel(mainThumbnailPanel, 120, 120);
+
+        gridPanel.getMainPanel().removeAll();
+        gridPanel.getZoomedOutPanel().removeAll();
+
         gridPanel.setMainImageToPanel(200, 200);
         gridPanel.setGridImageSize(50, 50);
-
-
 
         if (photos.size() > 0) {
             setMainImagePanel(photos.get(photos.size() - 1).getPath());
