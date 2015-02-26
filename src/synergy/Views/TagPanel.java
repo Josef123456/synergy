@@ -1,10 +1,8 @@
 package synergy.Views;
 
-import synergy.models.Photo;
 import synergy.models.Tag;
 
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -15,11 +13,18 @@ import javax.swing.JPanel;
 
 
 public class TagPanel extends JPanel {
-	private JButton addLocationTagButton = new JButton("+");
-	private final JComboBox<String> locationTextField = new JComboBox<String>();
+
+    private JLabel room1Label = new JLabel("Room 1");
+    private JLabel room2Label = new JLabel("Room 2");
+
+    private JButton addRoom1TagButton = new JButton("+");
+	private JButton addRoom2TagButton = new JButton("+");
+	//private final JComboBox<String> locationTextField = new JComboBox<String>();
 
 	private JButton addChildTagButton = new JButton("+");
-	final JComboBox<String> childrenTextField = new JComboBox<String>();
+	final JComboBox<String> childrenComboBox = new JComboBox<String>();
+
+    private JButton editDateButton = new JButton("Edit");
 
 	private JPanel locationPanel;
 	private JPanel locationTags;
@@ -27,37 +32,56 @@ public class TagPanel extends JPanel {
 	private JPanel childrenPanel;
 	private JPanel childrenTags;
 
+    private JPanel datePanel;
+
     PhotosPanel photosPanel;
 
     public TagPanel(PhotosPanel photosPanel) {
         this.photosPanel = photosPanel;
         setUpUILocation();
         setUpUIChildren();
-        setLayout(new GridLayout(2, 1));
+        setUpUIDate();
+        setLayout(new GridLayout(3, 1));
+
     }
 
-	private void addActionListenerToLocationTagButton () {
-		addLocationTagButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
-				System.out.println ( Arrays.toString(selectedIndexes) + " location");
-				Tag tag = new Tag (Tag.TagType.PLACE, (String) locationTextField.getSelectedItem ());
-				for ( int i = 0 ; i < selectedIndexes.length ; ++i ) {
-					photosPanel.getPhotos ().get (selectedIndexes[ i ]).addTag (tag);
-				}
-				updateLocationTags ();
-			}
-		});
+	private void addActionListenerToLocationTagButton2() {
+		addRoom2TagButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray();
+                System.out.println(Arrays.toString(selectedIndexes) + " location");
+                Tag tag = new Tag(Tag.TagType.PLACE, (String) room2Label.getText());
+                for (int i = 0; i < selectedIndexes.length; ++i) {
+                    photosPanel.getPhotos().get(selectedIndexes[i]).addTag(tag);
+                }
+                updateLocationTags();
+            }
+        });
 	}
 
-	private void addActionListenerToChildTagButton() {
+    private void addActionListenerToLocationTagButton1 () {
+        addRoom1TagButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray();
+                System.out.println(Arrays.toString(selectedIndexes) + " location");
+                Tag tag = new Tag(Tag.TagType.PLACE, (String) room1Label.getText());
+                for (int i = 0; i < selectedIndexes.length; ++i) {
+                    photosPanel.getPhotos().get(selectedIndexes[i]).addTag(tag);
+                }
+                updateLocationTags();
+            }
+        });
+    }
+
+    private void addActionListenerToChildTagButton() {
 		addChildTagButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
-				Tag tag = new Tag(Tag.TagType.KID, (String) childrenTextField.getSelectedItem());
+				Tag tag = new Tag(Tag.TagType.KID, (String) childrenComboBox.getSelectedItem());
 				for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
 					photosPanel.getPhotos ().get (selectedIndexes[ i ]).addTag (tag);
 				}
@@ -68,29 +92,36 @@ public class TagPanel extends JPanel {
 
     private void setUpUILocation() {
         JLabel locationLabel = new JLabel("Location");
-        locationTextField.setEditable(true);
+        //locationTextField.setEditable(true);
 
-	    addActionListenerToLocationTagButton();
+	    addActionListenerToLocationTagButton2();
+        addActionListenerToLocationTagButton1();
 
         locationPanel = new JPanel();
         locationPanel.setLayout(new GridLayout(3, 1));
         locationTags = new JPanel();
 
+
         JPanel locationTagQuery = new JPanel();
-        locationTagQuery.setLayout(new GridLayout(1, 2));
-        locationTagQuery.add(locationTextField);
-        locationTagQuery.add(addLocationTagButton);
+        locationTagQuery.setLayout(new FlowLayout());
+        //locationTagQuery.add(locationTextField);
+        locationTagQuery.add(room1Label);
+        locationTagQuery.add(addRoom1TagButton);
+        locationTagQuery.add(room2Label);
+        locationTagQuery.add(addRoom2TagButton);
 
         locationPanel.add(locationLabel);
         locationPanel.add(locationTagQuery);
         locationPanel.add(locationTags);
+
+
         add(locationPanel);
     }
 
     public void setUpUIChildren(){
         JLabel childrenLabel = new JLabel("Children");
 
-        childrenTextField.setEditable(true);
+        childrenComboBox.setEditable(true);
 
 	    addActionListenerToChildTagButton();
 
@@ -100,13 +131,26 @@ public class TagPanel extends JPanel {
 
         JPanel childrenTagQuery = new JPanel();
         childrenTagQuery.setLayout(new GridLayout(1, 2));
-        childrenTagQuery.add(childrenTextField);
+        childrenTagQuery.add(childrenComboBox);
         childrenTagQuery.add(addChildTagButton);
 
         childrenPanel.add(childrenLabel);
         childrenPanel.add(childrenTagQuery);
         childrenPanel.add(childrenTags);
         add(childrenPanel);
+    }
+
+    public void setUpUIDate(){
+        JLabel dateLabel = new JLabel("Date here");
+
+        datePanel = new JPanel();
+        datePanel.setLayout(new GridLayout(1,2));
+
+        datePanel.add(dateLabel);
+        datePanel.add(editDateButton);
+        add(datePanel);
+        //@TODO: add panel between date and children to regularise format? add date.
+
     }
 
 	public void update() {
