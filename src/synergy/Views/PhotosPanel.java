@@ -34,7 +34,7 @@ public class PhotosPanel extends JPanel {
     private JScrollPane gridPanelPane;
 
     private JPanel mainGridPanel;
-    private JPanel gridPanel;
+    private PhotoGridView gridPanel;
 
     final File checkBoxFile = new File("check box icon.png");
 
@@ -97,9 +97,9 @@ public class PhotosPanel extends JPanel {
     private void setImportedImages() {
         mainThumbnailPanel.setLayout(new GridLayout(0, 1));
 	    mainThumbnailPanel.removeAll();
-	    gridPanel.removeAll();
+	    //gridPanel.removeAll();
         setImagesToPanel(mainThumbnailPanel, 120, 120);
-        setImagesToPanel(gridPanel, 200, 200);
+        gridPanel.setImageToPanel(200, 200);
         if (photos.size() > 0) {
             setMainImagePanel(photos.get(photos.size() - 1).getPath());
             selectedIndexes.removeAll(selectedIndexes);
@@ -130,14 +130,10 @@ public class PhotosPanel extends JPanel {
 
     public void setGridImages() {
         mainGridPanel = new JPanel();
-        gridPanel = new JPanel();
-        gridPanel.setLayout(new GridLayout(0, 3, 20, 20));
-        setImagesToPanel(gridPanel, 200, 200);
-        gridPanelPane = new JScrollPane(gridPanel);
-        gridPanelPane.setPreferredSize(new Dimension(720, 480));
-        mainGridPanel.add(gridPanelPane, BorderLayout.CENTER);
+        gridPanel = new PhotoGridView(this);
+        gridPanel.getMainPanel().setLayout(new GridLayout(0, 3));
+        mainGridPanel.add(gridPanel, BorderLayout.CENTER);
         add(mainGridPanel, BorderLayout.CENTER);
-        mainGridPanel.updateUI();
     }
 
     private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final
