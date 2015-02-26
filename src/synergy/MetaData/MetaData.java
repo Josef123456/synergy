@@ -3,7 +3,6 @@ package synergy.MetaData;
 /**
  * Created by Amit on 07/02/2015.
  */
-import java.io.*;
 import java.util.List;
 
 
@@ -50,7 +49,7 @@ public class MetaData {
                 values = item.toString();
                 //Only print out 'UserComment' tag and its values
                 //Remove string to return all meta-data tags
-                if (values.contains("UserComment")) {
+                if (values.contains("")) {
                     userComment = values;
                     System.out.println(userComment);
 
@@ -62,11 +61,7 @@ public class MetaData {
 
     }
 
-    /*
-    Modified the example method from apache.commons.imagining library
-     */
-    public void changeExifMetadata(Photo photo)
-            throws IOException, ImageReadException, ImageWriteException {
+    public void changeExifMetadata(Photo photo) throws IOException, ImageReadException, ImageWriteException {
 	    final File inputFile = new File(photo.getPath ());
         OutputStream os = null;
         boolean canThrow = false;
