@@ -99,7 +99,11 @@ public class PhotosPanel extends JPanel {
 	    mainThumbnailPanel.removeAll();
 	    //gridPanel.removeAll();
         setImagesToPanel(mainThumbnailPanel, 120, 120);
-        gridPanel.setImageToPanel(200, 200);
+        gridPanel.setMainImageToPanel(200, 200);
+        gridPanel.setGridImageSize(50, 50);
+
+
+
         if (photos.size() > 0) {
             setMainImagePanel(photos.get(photos.size() - 1).getPath());
             selectedIndexes.removeAll(selectedIndexes);
@@ -136,7 +140,7 @@ public class PhotosPanel extends JPanel {
         add(mainGridPanel, BorderLayout.CENTER);
     }
 
-    private void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final
+    public void addMouseListenerToPictureLabel(final JLabel pic, final int currentIndex, final
     Image finalImage, final int imageWidth, final int imageHeight) {
         pic.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent arg0) {

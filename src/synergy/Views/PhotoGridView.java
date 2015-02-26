@@ -11,14 +11,16 @@ import java.awt.image.BufferedImage;
  */
 public class PhotoGridView extends JPanel {
     private PhotoGridPanel mainPanel;
+    private PhotoGridPanel zoomedOutPanel;
     private PhotosPanel photosPanel;
     private JPanel topPanel;
 
+    private JPanel cards;
+
     public PhotoGridView(PhotosPanel photosPanel){
-        mainPanel = new PhotoGridPanel(photosPanel);
         this.photosPanel = photosPanel;
         setUpUI();
-        setVisible(true);
+
     }
 
     public void setUpUI(){
@@ -37,32 +39,39 @@ public class PhotoGridView extends JPanel {
 
         zoomIn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                int width = mainPanel.getWidth();
-                mainPanel.setLayout(new GridLayout(0, width/200));
-                setGridImageSize(200, 200);
+                CardLayout c1 = (CardLayout) cards.getLayout();
+                c1.show(cards, "MAIN");
             }
         });
 
         zoomOut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e) {
-                int width = mainPanel.getWidth();
-                System.out.println(width);
-                mainPanel.setLayout(new GridLayout(0, width/50));
                 setGridImageSize(50, 50);
+                CardLayout c1 = (CardLayout) cards.getLayout();
+                c1.show(cards, "ZOOMED OUT");
             }
         });
         topPanel.add(zoomIn);
         topPanel.add(zoomOut);
+
         add(topPanel, BorderLayout.NORTH);
     }
 
     public void setMainPanelUI(){
-        int width = this.getWidth()/3;
-        mainPanel.setImages(width, width);
-        add(mainPanel.getScrollPane(720, 480), BorderLayout.CENTER);
+        cards = new JPanel();
+        cards.setLayout(new CardLayout());
+
+        mainPanel = new PhotoGridPanel(photosPanel);
+        zoomedOutPanel = new PhotoGridPanel(photosPanel);
+
+
+        cards.add(mainPanel.getScrollPane(720, 480), "MAIN");
+        cards.add(zoomedOutPanel.getScrollPane(720, 480), "ZOOMED OUT");
+
+        add(cards, BorderLayout.CENTER);
     }
 
-    public void setImageToPanel(int width, int height){
+    public void setMainImageToPanel(int width, int height){
         mainPanel.setImages(width, height);
     }
 
@@ -72,11 +81,16 @@ public class PhotoGridView extends JPanel {
 
     public void setGridImageSize(int row, int column){
         Component[] labelArray =  mainPanel.getComponents();
+        zoomedOutPanel.setLayout(new GridLayout(0, 720/50));
+        zoomedOutPanel.removeAll();
         for(int i = 0; i < labelArray.length; i++){
+            System.out.println(labelArray[i].toString());
             JLabel label = (JLabel) labelArray[i];
+            JLabel zoomedLabel = new JLabel();
             Image image = iconToImage(label.getIcon());
-            label.setIcon(new ImageIcon(getScaledImage(image, row, column)));
-            labelArray[i] = label;
+            zoomedLabel.setIcon(new ImageIcon(getScaledImage(image, row, column)));
+            photosPanel.addMouseListenerToPictureLabel(zoomedLabel, i, image, row, column);
+            zoomedOutPanel.add(zoomedLabel);
         }
     }
 
