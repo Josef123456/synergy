@@ -21,7 +21,6 @@ import java.util.List;
  */
 public class Date {
 
-    public String photoPath;
     public String replacementDate;
     public String originalTime, name, values;
     private static final String TIME24HOURS_PATTERN = "([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]";
@@ -57,7 +56,8 @@ public class Date {
                 if (name.contains("DateTimeOriginal")) {
                     String parts[] = values.split(" ");
                     originalTime = parts[2].substring(0,parts[2].length()-1);
-                    System.out.println(originalTime);
+                  //System.out.println(values);
+                  //System.out.println(originalTime);
 
                 }
             }
@@ -68,23 +68,15 @@ public class Date {
         final TiffOutputDirectory exifDirectory = tiffOutputSet.getOrCreateExifDirectory();
         exifDirectory.removeField(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL);
         exifDirectory.add(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL,newDate+" "+originalTime);
-
         File outputFile = new File("C:\\Users\\Amit\\Pictures\\Output\\output.jpg");
         os = new FileOutputStream(outputFile);
         os = new BufferedOutputStream(os);
-
         new ExifRewriter().updateExifMetadataLossless(inputFile, os,tiffOutputSet);
 
         //Rename output file to input file
         File temp = inputFile;
         inputFile.delete();
         outputFile.renameTo(temp);
-
     }
 
-    public static void main (String args[]) throws ImageWriteException, ImageReadException, IOException {
-        Date date = new Date();
-        Photo p = new Photo("C:\\Users\\Amit\\Pictures\\4.jpg");
-        date.changeDate(p,"2016:02:23");
-    }
 }
