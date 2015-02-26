@@ -1,15 +1,14 @@
 package synergy.Views;
 
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import synergy.models.Tag;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 
 public class TagPanel extends JPanel {
@@ -22,7 +21,8 @@ public class TagPanel extends JPanel {
 	//private final JComboBox<String> locationTextField = new JComboBox<String>();
 
 	private JButton addChildTagButton = new JButton("+");
-	final JComboBox<String> childrenComboBox = new JComboBox<String>();
+    private String[] mockChildrenData = {"John", "John Jones", "John James", "John George", "Billy", "Jacob", "Ronald", "Alicia", "Jonah", "Freddie", "Daniel", "David", "Harry", "Harrison", "Isaac", "Toby", "Tom", "Jill"};
+	final JComboBox childrenComboBox = new JComboBox<String>(mockChildrenData);
 
     private JButton editDateButton = new JButton("Edit");
 
@@ -42,6 +42,7 @@ public class TagPanel extends JPanel {
         setUpUIChildren();
         setUpUIDate();
         setLayout(new GridLayout(3, 1));
+        AutoComplete();
 
     }
 
@@ -230,5 +231,12 @@ public class TagPanel extends JPanel {
 	    childrenTags.removeAll ();
 	    childrenTags.add(tagPanelLocation);
 	    childrenTags.updateUI();
+    }
+    private void AutoComplete() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                AutoCompleteSupport<String> support = AutoCompleteSupport.install(childrenComboBox, GlazedLists.eventListOf(mockChildrenData));
+            }
+        });
     }
 }
