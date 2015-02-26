@@ -1,11 +1,7 @@
 package synergy.Views;
 
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridLayout;
-import java.awt.Image;
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -17,11 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.UIManager;
+import javax.swing.*;
+import javax.swing.border.Border;
 
 import synergy.models.Photo;
 
@@ -36,6 +29,8 @@ public class PhotosPanel extends JPanel {
     private PhotoGridView gridPanel;
 
     final File checkBoxFile = new File("check box icon.png");
+    final Border greenBorder = BorderFactory.createLineBorder(Color.green);
+
 
     private TagPanel tagPanel;
 
@@ -74,7 +69,6 @@ public class PhotosPanel extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public void setUpMainFrame() {
@@ -94,11 +88,10 @@ public class PhotosPanel extends JPanel {
     }
 
     private void setImportedImages() {
-        //@TODO: PhotoGridPanel on the thumbnail panel
+
         mainThumbnailPanel.setLayout(new GridLayout(1, 0));
-
-
         mainThumbnailPanel.getMainPanel().removeAll();
+
         gridPanel.getMainPanel().removeAll();
         gridPanel.getZoomedOutPanel().removeAll();
 
@@ -137,7 +130,7 @@ public class PhotosPanel extends JPanel {
     public void setGridImages() {
         mainGridPanel = new JPanel();
         gridPanel = new PhotoGridView(this);
-        gridPanel.getMainPanel().setLayout(new GridLayout(0, 3));
+        gridPanel.getMainPanel().setLayout(new GridLayout(0, 3, 5, 5));
         mainGridPanel.add(gridPanel, BorderLayout.CENTER);
         add(mainGridPanel, BorderLayout.CENTER);
     }
@@ -157,26 +150,28 @@ public class PhotosPanel extends JPanel {
                     if (!selectedIndexes.contains(currentIndex)) {
                         selectedIndexes.add(currentIndex);
                         System.out.println("Adding Selected Index List: " + selectedIndexes);
-                        final BufferedImage finalBufferedImage = new BufferedImage(imageWidth,
+                        /*final BufferedImage finalBufferedImage = new BufferedImage(imageWidth,
                                 imageHeight, BufferedImage.TYPE_INT_RGB);
                         Graphics g = finalBufferedImage.getGraphics();
                         g.drawImage(finalImage, 0, 0, imageWidth, imageHeight, null);
                         g.drawImage(finalCheckBoxImage, 0, 0, 50, 50, null);
                         g.dispose();
                         pic.setIcon(new ImageIcon(finalBufferedImage));
-                        finalBufferedImage.flush();
+                        finalBufferedImage.flush();*/
+                        pic.setBorder(greenBorder);
                         tagPanel.update();
                         pic.repaint();
                     } else {
                         selectedIndexes.remove(currentIndex);
                         System.out.println("Removing Selected Index List: " + selectedIndexes);
-                        final BufferedImage finalBufferedImage = new BufferedImage(imageWidth,
+                        /*final BufferedImage finalBufferedImage = new BufferedImage(imageWidth,
                                 imageHeight, BufferedImage.TYPE_INT_RGB);
                         Graphics g = finalBufferedImage.getGraphics();
                         g.drawImage(finalImage, 0, 0, imageWidth, imageHeight, null);
                         g.dispose();
                         pic.setIcon(new ImageIcon(finalBufferedImage));
-                        finalBufferedImage.flush();
+                        finalBufferedImage.flush();*/
+                        pic.setBorder(null);
                         tagPanel.update();
                         pic.repaint();
                     }
@@ -200,15 +195,15 @@ public class PhotosPanel extends JPanel {
                 @Override
                 public void run() {
                     final int index = currentIndex;
-                    final JLabel pic = new JLabel();
+                    final JLabel picLabel = new JLabel();
                     String fileName = photos.get(index).getPath();
                     ImageIcon pic1Icon = new ImageIcon(fileName);
                     Image pic1img = pic1Icon.getImage();
                     Image newImg = pic1img.getScaledInstance(imageWidth, imageHeight, java.awt
                             .Image.SCALE_SMOOTH);
-                    addMouseListenerToPictureLabel(pic, index, newImg, imageWidth, imageHeight);
-                    pic.setIcon(new ImageIcon(newImg));
-                    panel.add(pic);
+                    addMouseListenerToPictureLabel(picLabel, index, newImg, imageWidth, imageHeight);
+                    picLabel.setIcon(new ImageIcon(newImg));
+                    panel.add(picLabel);
                 }
             };
             //TODO: god please...

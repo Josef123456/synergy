@@ -13,7 +13,6 @@ public class ThumbnailView extends JPanel {
     public ThumbnailView(PhotosPanel photosPanel){
         this.photosPanel = photosPanel;
         setUpUI();
-
     }
     public void setUpUI(){
         mainPanel = new PhotoGridPanel(photosPanel);
