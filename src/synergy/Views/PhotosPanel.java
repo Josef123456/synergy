@@ -29,9 +29,8 @@ import synergy.models.Photo;
 public class PhotosPanel extends JPanel {
     private JPanel mainPanel;
     private JPanel mainImagePanel;
-    private JPanel mainThumbnailPanel;
+    private ThumbnailView mainThumbnailPanel;
     private JLabel mainImage;
-    private JScrollPane gridPanelPane;
 
     private JPanel mainGridPanel;
     private PhotoGridView gridPanel;
@@ -80,29 +79,30 @@ public class PhotosPanel extends JPanel {
 
     public void setUpMainFrame() {
         mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
         mainImagePanel = new JPanel();
         mainImagePanel.add(mainImage);
 
-        mainThumbnailPanel = new JPanel();
-        JScrollPane scrollPane = new JScrollPane(mainThumbnailPanel);
-        scrollPane.setPreferredSize(new Dimension(120, 480));
-        mainThumbnailPanel.setLayout(new GridLayout(2, 1));
+        mainThumbnailPanel = new ThumbnailView(this);
 
-        mainPanel.add(scrollPane, BorderLayout.WEST);
+        mainThumbnailPanel.setLayout(new GridLayout(1, 0));
+
         mainPanel.add(mainImagePanel, BorderLayout.CENTER);
+        mainPanel.add(mainThumbnailPanel, BorderLayout.SOUTH);
 
         add(mainPanel, BorderLayout.CENTER);
     }
 
     private void setImportedImages() {
         //@TODO: PhotoGridPanel on the thumbnail panel
-        mainThumbnailPanel.setLayout(new GridLayout(0, 1));
-        mainThumbnailPanel.removeAll();
-        setImagesToPanel(mainThumbnailPanel, 120, 120);
+        mainThumbnailPanel.setLayout(new GridLayout(1, 0));
 
+
+        mainThumbnailPanel.getMainPanel().removeAll();
         gridPanel.getMainPanel().removeAll();
         gridPanel.getZoomedOutPanel().removeAll();
 
+        mainThumbnailPanel.setMainImageToPanel(120, 120);
         gridPanel.setMainImageToPanel(200, 200);
         gridPanel.setGridImageSize(50, 50);
 

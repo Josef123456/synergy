@@ -19,6 +19,7 @@ public class PhotoGridView extends JPanel {
 
     public PhotoGridView(PhotosPanel photosPanel) {
         this.photosPanel = photosPanel;
+        setLayout(new BorderLayout());
         setUpUI();
     }
 
