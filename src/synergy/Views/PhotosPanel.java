@@ -77,8 +77,10 @@ public class PhotosPanel extends JPanel {
 
         JPanel northMainPanel = new JPanel();
         northMainPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        JButton switchViewButton = new JButton("Switch Views");
-        northMainPanel.add(switchViewButton);
+        JButton switchToGridViewButton = new JButton("Grid View");
+        northMainPanel.add(switchToGridViewButton);
+        JButton switchToMainViewButton = new JButton("Main View");
+        northMainPanel.add(switchToMainViewButton);
 
         mainImagePanel = new JPanel();
         mainImagePanel.add(mainImage);
