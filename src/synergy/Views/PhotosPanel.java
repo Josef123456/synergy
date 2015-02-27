@@ -74,13 +74,21 @@ public class PhotosPanel extends JPanel {
     public void setUpMainFrame() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
+
+        JPanel northMainPanel = new JPanel();
+        northMainPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        JButton switchViewButton = new JButton("Switch Views");
+        northMainPanel.add(switchViewButton);
+
         mainImagePanel = new JPanel();
         mainImagePanel.add(mainImage);
+
 
         mainThumbnailPanel = new ThumbnailView(this);
 
         mainThumbnailPanel.setLayout(new GridLayout(1, 0));
 
+        mainPanel.add(northMainPanel, BorderLayout.NORTH);
         mainPanel.add(mainImagePanel, BorderLayout.CENTER);
         mainPanel.add(mainThumbnailPanel, BorderLayout.SOUTH);
 
