@@ -6,7 +6,10 @@ import synergy.models.Tag;
 import java.util.Arrays;
 import java.util.List;
 
+
 public class Engine {
+
+    protected static List<Photo> historicalPhotos;
 
     /**
      *Method takes a photo and returns a list of possible tags.
@@ -18,6 +21,13 @@ public class Engine {
      * @return
      */
     public static List<Tag> suggest(Photo p){
-        return SimpleEngine.simpleSuggest(p);
+        return SimpleDateEngine.suggest(p);
+    }
+
+    /**
+     * Prepares the engine by fetching the required data.
+     */
+    public static void prepare(){
+        List<Photo> historicalPhotos = Photo.getAllPhotos(); // fetches all photos from database to be analysed.
     }
 }
