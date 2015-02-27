@@ -57,8 +57,10 @@ public class PhotoGridView extends JPanel {
 
         JPanel panelSwitchViews = new JPanel();
         panelSwitchViews.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        JButton buttonSwitchViews = new JButton("Switch Views");
-        panelSwitchViews.add(buttonSwitchViews);
+        JButton buttonMainSwitchViews = new JButton("Main View");
+        panelSwitchViews.add(buttonMainSwitchViews);
+        JButton buttonGridSwitchViews = new JButton("Grid View");
+        panelSwitchViews.add(buttonGridSwitchViews);
 
         JPanel mainTopPanel = new JPanel();
         mainTopPanel.setLayout(new BorderLayout());
