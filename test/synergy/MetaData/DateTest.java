@@ -15,11 +15,11 @@ public class DateTest extends TestCase {
     public void testDateChange() throws ImageWriteException, ImageReadException, IOException {
         Date date = new Date();
 
-        Photo testPhoto = new Photo("C:\\Users\\Amit\\Pictures\\inputfile.jpg");
-        String replacementDate = "2015:01:23";
+        // //"C:\Users\Amit\Pictures\testcamimage.jpg"
+        Photo testPhoto = new Photo("C:\\Users\\Amit\\Pictures\\testcamimage.jpg");
+        String replacementDate = "2018:01:23";
         date.changeDate(testPhoto,replacementDate);
 
         assertEquals(date.replacementDate,replacementDate);
-        assertNotNull(date.metadata);
     }
 }

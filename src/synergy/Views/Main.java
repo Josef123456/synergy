@@ -14,8 +14,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -100,11 +105,28 @@ public class Main extends JFrame {
 
                 int returnValue = fileChooser.showOpenDialog(Main.this);
                 long t1 = System.currentTimeMillis();
+                CopyOption[] options = new CopyOption[]{
+                        StandardCopyOption.REPLACE_EXISTING,
+                        StandardCopyOption.COPY_ATTRIBUTES,
+                };
 
                 System.out.println(returnValue);
                 if (returnValue == JFileChooser.APPROVE_OPTION) {
+
                     File[] file = fileChooser.getSelectedFiles();
+
                     for (int i = 0; i < file.length; i++) {
+
+                        //Copies the current file in the array to a new directory
+                        String fileName = file[i].getName();
+                        Path inputDir = Paths.get(file[i].getPath());
+                        Path outputDir = Paths.get("photos\\" + fileName);
+                        try {
+                            java.nio.file.Files.copy(inputDir,outputDir, options);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                         Photo photo = new Photo(file[i].toString());
                         photo.save();
                     }

@@ -18,7 +18,9 @@ public class MetaDataTest extends TestCase {
         MetaData image = new MetaData();
 
         //Original file used for modifying
-        File inputFile = new File("C:\\Users\\Amit\\Pictures\\inputfile.jpg");
+        //"C:\Users\Amit\Pictures\testcamimage.jpg"
+
+        File inputFile = new File("photos\\testcamimage.jpg");
 
         //image.changeExifMetadata(inputFile);
         image.getMetaData(inputFile);
