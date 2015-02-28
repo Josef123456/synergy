@@ -4,20 +4,22 @@ import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;
 import synergy.models.Tag;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import javax.swing.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 
 public class TagPanel extends JPanel {
 
-    private JLabel room1Label = new JLabel("Room 1");
-    private JLabel room2Label = new JLabel("Room 2");
+    //private JLabel room1Label = new JLabel("Room 1");
+    //private JLabel room2Label = new JLabel("Room 2");
 
-    private JButton addRoom1TagButton = new JButton("+");
-	private JButton addRoom2TagButton = new JButton("+");
+    private JButton addRoom1TagButton = new JButton("Room 1");
+	private JButton addRoom2TagButton = new JButton("Room 2");
 	//private final JComboBox<String> locationTextField = new JComboBox<String>();
 
 	private JButton addChildTagButton = new JButton("+");
@@ -52,7 +54,7 @@ public class TagPanel extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray();
                 System.out.println(Arrays.toString(selectedIndexes) + " location");
-                Tag tag = new Tag(Tag.TagType.PLACE, (String) room2Label.getText());
+                Tag tag = new Tag(Tag.TagType.PLACE, (String) addRoom2TagButton.getText());
                 for (int i = 0; i < selectedIndexes.length; ++i) {
                     photosPanel.getPhotos().get(selectedIndexes[i]).addTag(tag);
                 }
@@ -67,7 +69,7 @@ public class TagPanel extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray();
                 System.out.println(Arrays.toString(selectedIndexes) + " location");
-                Tag tag = new Tag(Tag.TagType.PLACE, (String) room1Label.getText());
+                Tag tag = new Tag(Tag.TagType.PLACE, (String) addRoom1TagButton.getText());
                 for (int i = 0; i < selectedIndexes.length; ++i) {
                     photosPanel.getPhotos().get(selectedIndexes[i]).addTag(tag);
                 }
@@ -106,9 +108,9 @@ public class TagPanel extends JPanel {
         JPanel locationTagQuery = new JPanel();
         locationTagQuery.setLayout(new FlowLayout());
         //locationTagQuery.add(locationTextField);
-        locationTagQuery.add(room1Label);
+        //locationTagQuery.add(room1Label);
         locationTagQuery.add(addRoom1TagButton);
-        locationTagQuery.add(room2Label);
+        //locationTagQuery.add(room2Label);
         locationTagQuery.add(addRoom2TagButton);
 
         locationPanel.add(locationLabel);
