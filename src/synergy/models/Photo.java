@@ -123,6 +123,7 @@ public class Photo {
     }
 
 	public void addTag(Tag tag) {
+		this.save ();
 		tag.save();
 		PhotoTag photoTag = new PhotoTag (this, tag);
 		photoTag.save();
@@ -130,6 +131,7 @@ public class Photo {
 	}
 
     public void removeTag(Tag tag) {
+	    this.save();
         tag.save();
         PhotoTag photoTag = new PhotoTag(this, tag);
         photoTag.save();

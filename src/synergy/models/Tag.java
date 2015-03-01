@@ -62,6 +62,7 @@ public class Tag {
 	}
 
 	public static List<Photo> getPhotosForTag(Tag tag) {
+		tag.save();
 		try {
 			return TagDao.getInstance ().getPhotosForTag(tag);
 		} catch (SQLException e) {
