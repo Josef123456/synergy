@@ -4,6 +4,7 @@ import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
 import synergy.database.TagDao;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -61,7 +62,12 @@ public class Tag {
 	}
 
 	public static List<Photo> getPhotosForTag(Tag tag) {
-		// TODO: implement this
+		try {
+			return TagDao.getInstance ().getPhotosForTag(tag);
+		} catch (SQLException e) {
+			System.err.println(e);
+			e.printStackTrace ();
+		}
 		return null;
 	}
 
