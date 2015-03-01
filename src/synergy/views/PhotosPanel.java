@@ -1,4 +1,4 @@
-package synergy.Views;
+package synergy.views;
 
 
 import java.awt.*;

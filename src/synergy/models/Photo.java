@@ -15,7 +15,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import synergy.SuggestionEngine.Engine;
+import synergy.engines.suggestion.Engine;
 import synergy.database.PhotoDao;
 
 /**

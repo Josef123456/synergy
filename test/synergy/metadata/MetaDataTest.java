@@ -1,9 +1,8 @@
-package synergy.MetaData;
+package synergy.metadata;
 
 import junit.framework.TestCase;
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.ImageWriteException;
-import synergy.MetaData.MetaData;
 
 import java.io.File;
 import java.io.IOException;

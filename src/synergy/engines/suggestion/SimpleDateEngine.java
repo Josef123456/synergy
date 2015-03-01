@@ -1,10 +1,9 @@
-package synergy.SuggestionEngine;
+package synergy.engines.suggestion;
 
-import synergy.Utilities.DateComparator;
+import synergy.utilities.DateComparator;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 

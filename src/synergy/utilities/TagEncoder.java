@@ -1,4 +1,4 @@
-package synergy.Utilities;
+package synergy.utilities;
 
 import synergy.models.Tag;
 

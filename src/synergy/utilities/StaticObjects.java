@@ -1,8 +1,7 @@
-package synergy.Utilities;
+package synergy.utilities;
 
 import synergy.models.Photo;
 
-import java.io.File;
 import java.util.ArrayList;
 
 /**

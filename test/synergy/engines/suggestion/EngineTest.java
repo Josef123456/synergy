@@ -1,4 +1,4 @@
-package synergy.Engine;
+package synergy.engines.suggestion;
 
 import org.junit.Test;
 

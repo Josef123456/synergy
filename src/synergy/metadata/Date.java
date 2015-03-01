@@ -1,4 +1,4 @@
-package synergy.MetaData;
+package synergy.metadata;
 
 import org.apache.commons.imaging.common.IImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
@@ -7,13 +7,10 @@ import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
-import synergy.Utilities.TagEncoder;
 import synergy.models.Photo;
 import org.apache.commons.imaging.*;
 
 import java.io.*;
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 /**

@@ -1,4 +1,4 @@
-package synergy.Views;
+package synergy.views;
 
 import ca.odell.glazedlists.GlazedLists;
 import ca.odell.glazedlists.swing.AutoCompleteSupport;

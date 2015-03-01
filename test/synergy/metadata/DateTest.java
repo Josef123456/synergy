@@ -1,4 +1,4 @@
-package synergy.MetaData;
+package synergy.metadata;
 
 import junit.framework.TestCase;
 import org.apache.commons.imaging.ImageReadException;

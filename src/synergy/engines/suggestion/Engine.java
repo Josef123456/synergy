@@ -1,9 +1,8 @@
-package synergy.SuggestionEngine;
+package synergy.engines.suggestion;
 
 import synergy.models.Photo;
 import synergy.models.Tag;
 
-import java.util.Arrays;
 import java.util.List;
 
 
