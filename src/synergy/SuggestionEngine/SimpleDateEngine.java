@@ -12,75 +12,87 @@ import java.util.concurrent.*;
  * Created by sari on 27/02/15.
  */
 public class SimpleDateEngine {
-
+    static int photoIndex; //the index of the current photo
     /**
      * This method finds the nearest photo that contains tags and returns the contained tags.
      *
      * @param p
      * @return
      */
-    public static List<Tag> suggest(Photo p){
-        final int photoIndex= Engine.historicalPhotos.indexOf(p); //the index of the current photo
+    public static List<Tag> suggest(final Photo p){
 
-        Photo pastFoundPhoto; //the nearest tagged photo found in the past
-        Photo futureFoundPhoto = null; // the nearest tagged photo found in the future
+        Photo photoFoundOnRight = null;
+        Photo photoFoundOnLeft = null;
 
-        final ExecutorService service;
-        final Future<Photo> findOnRight;
-        service = Executors.newFixedThreadPool(1);
-
-        //Finds futureFoundPhoto
-        findOnRight = service.submit(new Callable() {
+        final ExecutorService service = Executors.newFixedThreadPool(1);
+        final Future<Photo> findOnRightTask = service.submit(new Callable(){
             @Override
-            public Photo call() throws Exception {
-
-                int index = photoIndex+1;
-                while(Engine.historicalPhotos.get(index).getChildTags().isEmpty() && index < Engine.historicalPhotos.size()-1){
-                    index++;
-                }
-                if(!Engine.historicalPhotos.get(index).getChildTags().isEmpty()){ //if it has tags
-                    return Engine.historicalPhotos.get(index); //return the photo
-                }
-
-                return null; // nothing was found
-
+            public Photo call() throws Exception{
+                return findTaggedPhotoOnRight(p);
             }
+
         });
 
-        //Finds pastFoundPhoto
-        int index = photoIndex;
-        while (Engine.historicalPhotos.get(index).getChildTags().isEmpty() && index>0){
-            index--;
-        }
-        if(!Engine.historicalPhotos.get(index).getChildTags().isEmpty()){
-            pastFoundPhoto = Engine.historicalPhotos.get(index);
-        }
-        else
-            pastFoundPhoto = null;
-
-
         try {
-            futureFoundPhoto = findOnRight.get();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
+            photoFoundOnLeft = findTaggedPhotoOnLeft(p);
+            photoFoundOnRight = findOnRightTask.get();
+        }
+        catch (Exception e){
+            System.err.println(e);
         }
 
-        if(pastFoundPhoto.equals(null)){
-            if(!futureFoundPhoto.equals(null))
-                return futureFoundPhoto.getChildTags();
+
+        if(photoFoundOnLeft.equals(null)){
+            if(!photoFoundOnRight.equals(null))
+                return photoFoundOnRight.getChildTags();
         }
         else {
-            if(futureFoundPhoto.equals(null))
-               return pastFoundPhoto.getChildTags();
+            if(photoFoundOnRight.equals(null))
+               return photoFoundOnLeft.getChildTags();
             else
-                return DateComparator.getClosestPhoto(p, futureFoundPhoto, pastFoundPhoto).getChildTags();
-
+                return DateComparator.getClosestPhoto(p, photoFoundOnRight, photoFoundOnLeft).getChildTags();
         }
 
         return null;
 
+    }
+
+    /**
+     * Finds the closest tagged photo on the right of this photo(future or past depending on the order it was sorted).
+     * @return
+     */
+    private static Photo findTaggedPhotoOnRight(Photo p){
+
+        int index =  Engine.historicalPhotos.indexOf(p)+1;
+
+        while(Engine.historicalPhotos.get(index).getChildTags().isEmpty() && index < Engine.historicalPhotos.size()-1){
+            index++;
+        }
+
+        if(!Engine.historicalPhotos.get(index).getChildTags().isEmpty()){ //if it has tags
+            return Engine.historicalPhotos.get(index); //return the photo
+        }
+
+        return null; // nothing was found
+    }
+
+    /**
+     *  Finds the closest tagged photo on the left of this photo(future or past depending on the order it was sorted)
+     * @return
+     */
+    private static Photo findTaggedPhotoOnLeft(Photo p){
+
+        int index =  Engine.historicalPhotos.indexOf(p)-1;
+
+        while (Engine.historicalPhotos.get(index).getChildTags().isEmpty() && index>0){
+            index--;
+        }
+
+        if(!Engine.historicalPhotos.get(index).getChildTags().isEmpty()){
+            return Engine.historicalPhotos.get(index);
+        }
+
+        return null;
     }
 
 
