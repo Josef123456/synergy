@@ -138,7 +138,7 @@ public interface DateSelectionModel {
      * Sets the selected Dates.
      * @return selected Dates.
      */
-    Object[] getSelectedDates();
+    Date[] getSelectedDates();
     
     /**
      * Sets the selected Date.

@@ -221,7 +221,7 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
      * 
      * @see synergy.nachocalendar.model.DateSelectionModel#getSelectedDates()
      */
-    public Object[] getSelectedDates() {
+    public Date[] getSelectedDates() {
         return model.getSelectedDates();
     }
 
@@ -243,8 +243,8 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
         fireDateSelectionListenerValueChanged(new DateSelectionEvent(this));
     }
     
-    private static Object[] getDates(Date from, Date to) {
-        List retorno = new ArrayList();
+    private static Date[] getDates(Date from, Date to) {
+        List<Date> retorno = new ArrayList<Date>();
         Calendar cal = new GregorianCalendar();
         cal.setTime(from);
         while ((to.after(cal.getTime())) || (CalendarUtils.isSameDay(to, cal.getTime()))) {
@@ -252,7 +252,7 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
             cal.add(Calendar.DAY_OF_YEAR, 1);
         }
         Collections.sort(retorno);
-        return retorno.toArray();
+        return (Date[]) retorno.toArray();
     }
     
     /* (non-Javadoc)
@@ -390,8 +390,8 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
          * 
          * @see net.sf.nachocalendar.model.DateSelectionModel#getSelectedDates()
          */
-        public Object[] getSelectedDates() {
-            return new Object[] {selection};
+        public Date[] getSelectedDates() {
+            return new Date[] {selection};
         }
 
         /*
@@ -575,7 +575,7 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
          * 
          * @see net.sf.nachocalendar.model.DateSelectionModel#getSelectedDates()
          */
-        public Object[] getSelectedDates() {
+        public Date[] getSelectedDates() {
             return getDates(from, to);
         }
 
@@ -629,14 +629,14 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
     }
 
     private static class MultipleInterval implements DateSelectionModel {
-        private List selection;
+        private List<Date> selection;
 
         private Calendar calendar;
 
         private Date leadSelection;
 
         MultipleInterval() {
-            selection = new ArrayList();
+            selection = new ArrayList<Date>();
             calendar = new GregorianCalendar();
         }
 
@@ -719,7 +719,7 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
             if ((from == null) || (to == null))
                 return;
 
-            Object[] dates = getDates(from, to);
+            Date[] dates = getDates(from, to);
             
             for (int i = 0; i < dates.length; i++) {
                 Iterator it = selection.iterator();
@@ -799,9 +799,9 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
          * 
          * @see net.sf.nachocalendar.model.DateSelectionModel#getSelectedDates()
          */
-        public Object[] getSelectedDates() {
+        public Date[] getSelectedDates() {
             Collections.sort(selection);
-            return selection.toArray();
+            return selection.toArray(new Date[selection.size()]);
         }
 
         /*
