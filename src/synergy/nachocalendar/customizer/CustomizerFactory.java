@@ -41,7 +41,7 @@ public class CustomizerFactory {
      * @throws org.xml.sax.SAXException
      * @throws javax.xml.parsers.ParserConfigurationException
      */
-    public CustomizerFactory(File config) throws FileNotFoundException, IOException,
+    public CustomizerFactory(File config) throws IOException,
             SAXException, ParserConfigurationException {
         if (config.getName().toLowerCase().endsWith(".properties")) {
             setter = new DirectSetter(new PropertiesCustomizer(new FileInputStream(config)));

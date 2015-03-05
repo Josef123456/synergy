@@ -723,7 +723,7 @@ public class DefaultDateSelectionModel implements DateSelectionModel {
             
             for (int i = 0; i < dates.length; i++) {
                 Iterator it = selection.iterator();
-                Date d = (Date) dates[i];
+                Date d = dates[i];
                 while (it.hasNext()) {
                     Date dd = (Date) it.next();
                     if (CalendarUtils.isSameDay(d, dd)) {

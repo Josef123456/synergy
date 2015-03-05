@@ -54,7 +54,7 @@ public class TagPanel extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray();
                 System.out.println(Arrays.toString(selectedIndexes) + " location");
-                Tag tag = new Tag(Tag.TagType.PLACE, (String) addRoom2TagButton.getText());
+                Tag tag = new Tag(Tag.TagType.PLACE, addRoom2TagButton.getText());
                 for (int i = 0; i < selectedIndexes.length; ++i) {
                     photosPanel.getPhotos().get(selectedIndexes[i]).addTag(tag);
                 }
@@ -69,7 +69,7 @@ public class TagPanel extends JPanel {
             public void actionPerformed(ActionEvent arg0) {
                 final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray();
                 System.out.println(Arrays.toString(selectedIndexes) + " location");
-                Tag tag = new Tag(Tag.TagType.PLACE, (String) addRoom1TagButton.getText());
+                Tag tag = new Tag(Tag.TagType.PLACE, addRoom1TagButton.getText());
                 for (int i = 0; i < selectedIndexes.length; ++i) {
                     photosPanel.getPhotos().get(selectedIndexes[i]).addTag(tag);
                 }

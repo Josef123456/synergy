@@ -1,8 +1,9 @@
 package synergy.newViews;
 
-import org.controlsfx.control.GridCell;
-import org.controlsfx.control.GridView;
-import org.controlsfx.control.cell.ImageGridCell;
+
+import controlsfx.controlsfx.control.GridCell;
+import controlsfx.controlsfx.control.GridView;
+import controlsfx.controlsfx.control.cell.ImageGridCell;
 import org.imgscalr.Scalr;
 
 import java.awt.image.BufferedImage;
@@ -19,6 +20,7 @@ import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
@@ -28,13 +30,14 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.util.Callback;
 import synergy.models.Photo;
 
+
 /**
  * Created by iHack1337 on 3/2/2015.
  */
 public class PhotoGrid extends GridView<Image> {
 
     ObservableList<Image> displayedImagesList;
-    ArrayList<Image> imageArrayList;
+    static ArrayList<Image> imageArrayList;
     GridView<Image> photosGrid;
 
     public PhotoGrid(ObservableList imagesList) {
@@ -51,6 +54,7 @@ public class PhotoGrid extends GridView<Image> {
                     @Override
                     public void handle(MouseEvent event) {
                         if (imageCell.getBorder() == null) {
+
                             BorderStroke[] borderStrokeArray = new BorderStroke[4];
                             for (int i = 0; i < 4; i++)
                                 borderStrokeArray[i] = new BorderStroke(javafx.scene.paint.Color
@@ -58,6 +62,7 @@ public class PhotoGrid extends GridView<Image> {
                                         new Insets(-5, -5, -5, -5));
                             imageCell.setBorder(new Border(borderStrokeArray));
                         } else {
+
                             imageCell.setBorder(null);
                         }
                     }
@@ -85,7 +90,7 @@ public class PhotoGrid extends GridView<Image> {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    BufferedImage scaledImage = Scalr.resize(initialImage, 400);
+                    BufferedImage scaledImage = Scalr.resize(initialImage, 350);
                     initialImage.flush();
                     WritableImage writableImage = null;
 
@@ -108,6 +113,20 @@ public class PhotoGrid extends GridView<Image> {
                             displayedImagesList.add(finalWi);
                         }
                     });
+
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            ImageView imageView = new ImageView(finalWi);
+                            imageView.setPreserveRatio(true);
+                            imageView.setSmooth(true);
+                            Main.gridPane.add(imageView, Main.column, Main.row);
+                            Main.column = (Main.column + 1) % 4;
+                            if (Main.column == 0)
+                                Main.row = Main.row + 1;
+                        }
+                    });
+
                     System.out.println(photo.getPath() + " " + photosGrid.getItems().size());
                 }
                 return null;

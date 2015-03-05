@@ -15,14 +15,20 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
@@ -37,9 +43,12 @@ public class Main extends Application {
     ObservableList<Image> displayedImagesList;
     ArrayList<Image> imageArrayList;
     BorderPane root;
+    static GridPane gridPane;
+    static int column = 0;
+    static int row = 0;
 
     public void start(final Stage primaryStage) {
-        this.primaryStage = primaryStage;
+        Main.primaryStage = primaryStage;
         root = new BorderPane();
         root.setId("background");
 
@@ -106,6 +115,23 @@ public class Main extends Application {
 
     public void initGridArea() {
         displayedImagesList = FXCollections.observableArrayList(new ArrayList<Image>());
+
+        gridPane = new GridPane();
+        gridPane.setHgap(20);
+        gridPane.setVgap(20);
+
+        ScrollPane scrollPane = new ScrollPane(gridPane);
+        scrollPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+        gridPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
+        scrollPane.setFitToWidth(true);
+        gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+//                System.out.println(gridPane.getRow);
+            }
+        });
+//        root.setCenter(scrollPane);
+
         photosGrid = new PhotoGrid(displayedImagesList);
         root.setCenter(photosGrid);
     }

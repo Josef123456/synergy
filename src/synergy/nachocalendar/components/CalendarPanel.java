@@ -1108,7 +1108,7 @@ public class CalendarPanel extends JPanel implements ChangeListener {
         dateSelectionModel.setSelectedDates(dates);
         refreshSelection();
         repaint();
-        showMonth((Date) dateSelectionModel.getSelectedDates()[0]);
+        showMonth(dateSelectionModel.getSelectedDates()[0]);
     }
     
     /**
