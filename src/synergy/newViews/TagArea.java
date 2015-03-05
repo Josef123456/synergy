@@ -11,15 +11,26 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Random;
 
 /**
  *
  */
 public class TagArea extends StackPane {
     GridPane layoutGridPane;
-    HBox locationPane, childrenPane;
-    FlowPane locationTags, childrenTags;
+    HBox locationPane, childrenPane; //This is an HBox pane with a textfield and an "add" button
+    FlowPane locationTags, childrenTags; //These are where the tags are displayed
     ToggleButton locationA, locationB;
+    FlowPane childrenSuggestion;
+    Label childrenSuggestionLabel;
+
+    final String[] array = {"Cham", "Mike", "Tobi", "Alex", "Sari", "Codrin", "Josef", "Amit"};
 
 
     public TagArea() {
@@ -29,8 +40,8 @@ public class TagArea extends StackPane {
 
     public void setUpUI() {
         layoutGridPane = new GridPane();
-        layoutGridPane.setHgap(10);
-        layoutGridPane.setVgap(10);
+        layoutGridPane.setHgap(30);
+        layoutGridPane.setVgap(30);
         layoutGridPane.setPadding(new Insets(0, 0, 20, 0));
 
         setUpLocationPanel();
@@ -40,14 +51,21 @@ public class TagArea extends StackPane {
 
     public void setGridPaneLayout() {
         //Locations
-        layoutGridPane.add(new Label("Location"), 0, 0);
+        Label labelLocation = new Label("Location");
+        labelLocation.setFont(new Font("Arial", 30));
+        labelLocation.setTextFill(Color.DARKGRAY);
+        layoutGridPane.add(labelLocation, 0, 0);
         layoutGridPane.add(locationPane, 0, 1);
         layoutGridPane.add(locationTags, 0, 2);
 
         //Children
-        layoutGridPane.add(new Label("Children"), 0, 3);
+        Label labelChildren = new Label("Children");
+        labelChildren.setFont(new Font("Arial", 30));
+        labelChildren.setTextFill(Color.DARKGRAY);
+        layoutGridPane.add(labelChildren, 0, 3);
         layoutGridPane.add(childrenPane, 0, 4);
         layoutGridPane.add(childrenTags, 0, 5);
+        layoutGridPane.add(childrenSuggestion, 0 , 6);
     }
 
     public void setUpLocationPanel() {
@@ -68,20 +86,26 @@ public class TagArea extends StackPane {
     }
 
     public void setUpChildrenPanel() {
+        childrenTags = new FlowPane(10, 10);
+
+
         childrenPane = new HBox();
         childrenPane.setSpacing(10);
 
-        childrenTags = new FlowPane();
         final TextField childrenTextField = new TextField();
         Button addChildrenTagButton = new Button("+");
 
         EventHandler childrenEventHandler = new EventHandler() {
             public void handle(Event event) {
                 HBox hBox = new HBox();
-                hBox.getChildren().add(new Label(childrenTextField.getText()));
+                Label label = new Label(childrenTextField.getText());
+                label.setFont(new Font("Arial", 20));
+                label.setTextFill(Color.GRAY);
+                hBox.getChildren().add(label);
                 hBox.getChildren().add(new Button("-"));
-                childrenTags.getChildren().add(hBox);
                 childrenTextField.setText("");
+                childrenTags.getChildren().add(hBox);
+                setSuggestions();
 
                 /*final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
                 Tag tag = new Tag(Tag.TagType.KID, (String) childrenComboBox.getSelectedItem());
@@ -97,6 +121,48 @@ public class TagArea extends StackPane {
 
         childrenPane.getChildren().add(childrenTextField);
         childrenPane.getChildren().add(addChildrenTagButton);
+
+        childrenSuggestion = new FlowPane(10, 10);
+        childrenSuggestionLabel = new Label("Suggestions: ");
+        childrenSuggestionLabel.setFont(new Font("Arial", 15));
+        childrenSuggestionLabel.setTextFill(Color.DARKGRAY);
+        childrenSuggestion.getChildren().add(childrenSuggestionLabel);
+        setSuggestions();
+
+    }
+
+    public void setSuggestions(){
+        childrenSuggestion.getChildren().retainAll(childrenSuggestionLabel);
+        String[] suggestions = getSuggestions();
+        for(int i = 0; i < suggestions.length; i++){
+            HBox hBox = new HBox();
+            Label suggestion = new Label(suggestions[i]+ " ");
+            suggestion.setFont(new Font("Arial", 20));
+            suggestion.setTextFill(Color.GRAY);
+            Button addButton = new Button("+");
+            addButton.setOnAction(new EventHandler() {
+                public void handle(Event event) {
+                    HBox hBox = new HBox();
+                    Label label = new Label(suggestion.getText());
+                    label.setFont(new Font("Arial", 20));
+                    label.setTextFill(Color.GRAY);
+                    hBox.getChildren().add(label);
+                    hBox.getChildren().add(new Button("-"));
+                    childrenTags.getChildren().add(hBox);
+                    setSuggestions();
+
+                    /*final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
+                    Tag tag = new Tag(Tag.TagType.KID, (String) childrenComboBox.getSelectedItem());
+                    for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
+                        photosPanel.getPhotos ().get (selectedIndexes[ i ]).addTag (tag);
+                    }
+                    updateChildrenTags();*/
+                }
+            });
+            hBox.getChildren().add(suggestion);
+            hBox.getChildren().add(addButton);
+            childrenSuggestion.getChildren().add(hBox);
+        }
     }
 
     public void addLocationEventHandler(final ToggleButton location) {
@@ -175,5 +241,17 @@ public class TagArea extends StackPane {
 
             }
         }*/
+    }
+
+    //testing with sample suggestions
+    public String[] getSuggestions(){
+        Random random = new Random();
+        String[] suggestions = new String[random.nextInt(8)];
+        ArrayList<String> arrayList = new ArrayList<String>(Arrays.asList(array));
+        Collections.shuffle(arrayList);
+        for(int i = 0; i < suggestions.length; i++){
+            suggestions[i] = arrayList.get(i);
+        }
+        return suggestions;
     }
 }
