@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 
 /**
@@ -16,6 +17,21 @@ public class TagTest extends BaseTest {
 		Tag tag = new Tag (Tag.TagType.PLACE, "main room");
 		tag.save();
 		assertNotSame (-1, tag.getID ());
+	}
+
+	@Test public void testSuggestedTagsForString() throws Exception {
+		Tag tag = new Tag(Tag.TagType.KID, "Sari");
+		tag.save ();
+		tag = new Tag(Tag.TagType.KID, "Josef");
+		tag.save();
+
+		tag = new Tag(Tag.TagType.KID, "Safdj");
+		tag.save();
+
+		List<Tag> suggestions = Tag.getSuggestedTagsForString("sa");
+		assertNotNull (suggestions);
+		assertEquals(2,suggestions.size ());
+		assertEquals(tag, suggestions.get (0));
 	}
 
 	@Test public void testPhotosForTag() throws Exception {

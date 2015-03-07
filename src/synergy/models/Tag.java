@@ -73,7 +73,12 @@ public class Tag {
 	}
 
 	public static List<Tag> getSuggestedTagsForString(String text) {
-		// TODO: implement this
+		try {
+			return TagDao.getInstance ().tagWithValueLike (text);
+		} catch(SQLException e) {
+			System.err.println(e);
+			e.printStackTrace ();
+		}
 		return null;
 	}
 
