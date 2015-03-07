@@ -9,10 +9,14 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -34,9 +38,6 @@ public class Main extends Application {
     ObservableList<Image> displayedImagesList;
     ArrayList<Image> imageArrayList;
     BorderPane root;
-    static GridPane gridPane;
-    static int column = 0;
-    static int row = 0;
 
     public void start(final Stage primaryStage) {
         Main.primaryStage = primaryStage;
@@ -113,23 +114,6 @@ public class Main extends Application {
 
     public void initGridArea() {
         displayedImagesList = FXCollections.observableArrayList(new ArrayList<Image>());
-
-        gridPane = new GridPane();
-        gridPane.setHgap(20);
-        gridPane.setVgap(20);
-
-        ScrollPane scrollPane = new ScrollPane(gridPane);
-        scrollPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-        gridPane.setBackground(new Background(new BackgroundFill(Color.BLACK, null, null)));
-        scrollPane.setFitToWidth(true);
-        gridPane.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-//                System.out.println(gridPane.getRow);
-            }
-        });
-//        root.setCenter(scrollPane);
-
         photosGrid = new PhotoGrid(displayedImagesList);
         root.setCenter(photosGrid);
     }
@@ -153,14 +137,21 @@ public class Main extends Application {
             @Override
             public void handle(ActionEvent event) {
                 List<File> list = fileChooser.showOpenMultipleDialog(primaryStage);
+                ArrayList<Photo> lastImported = new ArrayList<Photo>();
                 long t1 = System.currentTimeMillis();
 
                 if (list != null) {
                     for (File file : list) {
                         Photo photo = new Photo(file.toString());
                         photo.save();
+                        lastImported.add(photo);
                     }
-                    photosGrid.setGridPhotos(Photo.getAllPhotos());
+
+                    if (photosGrid.getItems().size() == 0)
+                        photosGrid.setGridPhotos(Photo.getAllPhotos());
+                    else
+                        photosGrid.setGridPhotos(lastImported);
+
                     System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
                 }
 

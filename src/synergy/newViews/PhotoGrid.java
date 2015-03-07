@@ -1,9 +1,8 @@
 package synergy.newViews;
 
 
-import controlsfx.controlsfx.control.GridCell;
-import controlsfx.controlsfx.control.GridView;
-import controlsfx.controlsfx.control.cell.ImageGridCell;
+import com.bric.image.jpeg.JPEGMetaData;
+
 import org.imgscalr.Scalr;
 
 import java.awt.image.BufferedImage;
@@ -13,14 +12,16 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
+import controlsfx.controlsfx.control.GridCell;
+import controlsfx.controlsfx.control.GridView;
+import controlsfx.controlsfx.control.cell.ImageGridCell;
+import controlsfx.impl.org.controlsfx.skin.GridRowSkin;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.MouseEvent;
@@ -37,24 +38,36 @@ import synergy.models.Photo;
 public class PhotoGrid extends GridView<Image> {
 
     ObservableList<Image> displayedImagesList;
-    static ArrayList<Image> imageArrayList;
-    GridView<Image> photosGrid;
+    static ArrayList<Image> qualityImageArrayList;
+    static ArrayList<Photo> displayedPhotoList = new ArrayList<>();
+    public static ArrayList<Image> selectedImages = new ArrayList<>();
+    public static GridView<Image> photosGrid;
 
     public PhotoGrid(ObservableList imagesList) {
         displayedImagesList = imagesList;
         photosGrid = this;
         this.setItems(displayedImagesList);
 
+        photosGrid.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+//                System.out.println("REGISTERED CLICK at " + event.getX());
+                System.out.println("REGISTERED EVENT AT " + event.getSceneX() + " " + event
+                        .getSceneY());
+                GridRowSkin.gridRowSkin.getNodeAtCoordinates();
+            }
+        });
+
         this.setCellFactory(new Callback<GridView<Image>, GridCell<Image>>() {
             @Override
             public GridCell<Image> call(GridView<Image> param) {
                 final ImageGridCell imageCell = new ImageGridCell();
                 imageCell.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
                     @Override
                     public void handle(MouseEvent event) {
                         if (imageCell.getBorder() == null) {
 
+                            selectedImages.add(imageCell.getItem());
                             BorderStroke[] borderStrokeArray = new BorderStroke[4];
                             for (int i = 0; i < 4; i++)
                                 borderStrokeArray[i] = new BorderStroke(javafx.scene.paint.Color
@@ -62,7 +75,7 @@ public class PhotoGrid extends GridView<Image> {
                                         new Insets(-5, -5, -5, -5));
                             imageCell.setBorder(new Border(borderStrokeArray));
                         } else {
-
+                            selectedImages.remove(imageCell.getItem());
                             imageCell.setBorder(null);
                         }
                     }
@@ -70,20 +83,51 @@ public class PhotoGrid extends GridView<Image> {
                 return imageCell;
             }
         });
+
+//        this.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+
         this.setCellHeight(300);
         this.setCellWidth(300);
     }
 
     public void setGridPhotos(final List<Photo> photos) {
-        (new Thread(new Task() {
+        Thread setPhotosThread = new Thread(new Task() {
             @Override
             protected Object call() throws Exception {
+                for (Photo photo : photos) {
+                    BufferedImage initialThumbNail = null;
+                    try {
+                        initialThumbNail = JPEGMetaData.getThumbnail(new File(photo.getPath()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    WritableImage writableImage = null;
 
-                ObservableList<Photo> observablePhotoList = FXCollections.observableArrayList
-                        (photos);
-                imageArrayList = new ArrayList<>();
+                    if (initialThumbNail != null) {
+                        writableImage = new WritableImage(initialThumbNail.getWidth(),
+                                initialThumbNail.getHeight());
+                        PixelWriter pw = writableImage.getPixelWriter();
+                        for (int x = 0; x < initialThumbNail.getWidth(); x++) {
+                            for (int y = 0; y < initialThumbNail.getHeight(); y++) {
+                                pw.setArgb(x, y, initialThumbNail.getRGB(x, y));
+                            }
+                        }
+                    }
 
-                for (Photo photo : observablePhotoList) {
+
+                    final WritableImage finalWi = writableImage;
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            displayedImagesList.add(finalWi);
+                            displayedPhotoList.add(photo);
+                        }
+                    });
+                    System.out.println(photo.getPath() + " " + photosGrid.getItems().size());
+                }
+
+                qualityImageArrayList = new ArrayList<>();
+                for (Photo photo : photos) {
                     BufferedImage initialImage = null;
                     try {
                         initialImage = ImageIO.read(new File(photo.getPath()));
@@ -105,36 +149,39 @@ public class PhotoGrid extends GridView<Image> {
                         }
                     }
 
+                    qualityImageArrayList.add(writableImage);
+
                     final WritableImage finalWi = writableImage;
-                    imageArrayList.add(writableImage);
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            displayedImagesList.add(finalWi);
-                        }
-                    });
 
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            ImageView imageView = new ImageView(finalWi);
-                            imageView.setPreserveRatio(true);
-                            imageView.setSmooth(true);
-                            Main.gridPane.add(imageView, Main.column, Main.row);
-                            Main.column = (Main.column + 1) % 4;
-                            if (Main.column == 0)
-                                Main.row = Main.row + 1;
-                        }
-                    });
+                    for (int i = 0; i < displayedPhotoList.size(); ++i) {
+                        final int  j = i;
+                        Photo currentPhoto = displayedPhotoList.get(i);
+                        if (currentPhoto.getPath() == photo.getPath()) {
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    displayedImagesList.remove(j);
+                                    displayedImagesList.add(j, finalWi);
 
-                    System.out.println(photo.getPath() + " " + photosGrid.getItems().size());
+                                }
+                            });
+                            break;
+                        }
+                    }
+
+                    System.out.println("Replaced " + photo.getPath() + " " + photosGrid.getItems
+                            ().size());
                 }
                 return null;
             }
-        })).start();
+        });
+
+        setPhotosThread.setDaemon(true);
+        setPhotosThread.start();
     }
 
-    public void setSelectionListener() {
-//        photosGrid.getCellFactory().
+    public void setDisplayPhotos() {
+
     }
+
 }

@@ -30,15 +30,18 @@ import com.sun.javafx.collections.MappingChange;
 import com.sun.javafx.collections.NonIterableChange;
 import com.sun.javafx.scene.control.ReadOnlyUnbackedObservableList;
 import com.sun.javafx.scene.control.SelectedCellsMap;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import controlsfx.controlsfx.control.spreadsheet.SpreadsheetCell;
+import controlsfx.controlsfx.control.spreadsheet.SpreadsheetView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.NamedArg;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.collections.WeakListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.WeakEventHandler;
@@ -51,8 +54,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import javafx.util.Pair;
-import controlsfx.controlsfx.control.spreadsheet.SpreadsheetCell;
-import controlsfx.controlsfx.control.spreadsheet.SpreadsheetView;
 
 /**
  *
@@ -188,7 +189,6 @@ public class SpreadsheetViewSelectionModel extends
 
         cellsView.setOnMouseDragged(new WeakEventHandler<>(onMouseDragEventHandler));
 
-        //Code for 8u40
         selectedCellsMap = new SelectedCellsMap<TablePosition<ObservableList<SpreadsheetCell>, ?>>(c -> handleSelectedCellsListChangeEvent(c)) {
             @Override
             public boolean isCellSelectionEnabled() {

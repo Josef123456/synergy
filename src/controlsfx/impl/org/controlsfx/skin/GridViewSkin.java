@@ -40,8 +40,9 @@ import javafx.collections.ObservableList;
 import javafx.collections.WeakListChangeListener;
 import javafx.util.Callback;
 
-public class GridViewSkin<T> extends VirtualContainerBase<GridView<T>, BehaviorBase<GridView<T>>, GridRow<T>> {
-    
+public class GridViewSkin<T> extends VirtualContainerBase<GridView<T>, BehaviorBase<GridView<T>>,
+        GridRow<T>> {
+
     static {
         // refer to ControlsFXControl for why this is necessary
         StyleManager.getInstance().addUserAgentStylesheet(
@@ -49,18 +50,20 @@ public class GridViewSkin<T> extends VirtualContainerBase<GridView<T>, BehaviorB
     }
 
     private final ListChangeListener<T> gridViewItemsListener = new ListChangeListener<T>() {
-        @Override public void onChanged(Change<? extends T> change) {
+        @Override
+        public void onChanged(Change<? extends T> change) {
             updateRowCount();
             getSkinnable().requestLayout();
         }
     };
 
-    private final WeakListChangeListener<T> weakGridViewItemsListener = new WeakListChangeListener<>(gridViewItemsListener);
+    private final WeakListChangeListener<T> weakGridViewItemsListener = new
+            WeakListChangeListener<>(gridViewItemsListener);
 
     @SuppressWarnings("rawtypes")
     public GridViewSkin(GridView<T> control) {
         super(control, new BehaviorBase<>(control, Collections.<KeyBinding>emptyList()));
-        
+
         updateGridViewItems();
 
         flow.setId("virtual-flow"); //$NON-NLS-1$
@@ -68,7 +71,8 @@ public class GridViewSkin<T> extends VirtualContainerBase<GridView<T>, BehaviorB
         flow.setVertical(true);
         flow.setFocusTraversable(getSkinnable().isFocusTraversable());
         flow.setCreateCell(new Callback<VirtualFlow, GridRow<T>>() {
-            @Override public GridRow<T> call(VirtualFlow flow) {
+            @Override
+            public GridRow<T> call(VirtualFlow flow) {
                 return GridViewSkin.this.createCell();
             }
         });
@@ -82,13 +86,16 @@ public class GridViewSkin<T> extends VirtualContainerBase<GridView<T>, BehaviorB
         registerChangeListener(control.parentProperty(), "PARENT"); //$NON-NLS-1$
         registerChangeListener(control.cellHeightProperty(), "CELL_HEIGHT"); //$NON-NLS-1$
         registerChangeListener(control.cellWidthProperty(), "CELL_WIDTH"); //$NON-NLS-1$
-        registerChangeListener(control.horizontalCellSpacingProperty(), "HORIZONZAL_CELL_SPACING"); //$NON-NLS-1$
-        registerChangeListener(control.verticalCellSpacingProperty(), "VERTICAL_CELL_SPACING"); //$NON-NLS-1$
+        registerChangeListener(control.horizontalCellSpacingProperty(),
+                "HORIZONZAL_CELL_SPACING"); //$NON-NLS-1$
+        registerChangeListener(control.verticalCellSpacingProperty(), "VERTICAL_CELL_SPACING");
+        //$NON-NLS-1$
         registerChangeListener(control.widthProperty(), "WIDTH_PROPERTY"); //$NON-NLS-1$
         registerChangeListener(control.heightProperty(), "HEIGHT_PROPERTY"); //$NON-NLS-1$
     }
 
-    @Override protected void handleControlPropertyChanged(String p) {
+    @Override
+    protected void handleControlPropertyChanged(String p) {
         super.handleControlPropertyChanged(p);
         if (p == "ITEMS") { //$NON-NLS-1$
             updateGridViewItems();
@@ -127,77 +134,89 @@ public class GridViewSkin<T> extends VirtualContainerBase<GridView<T>, BehaviorB
         getSkinnable().requestLayout();
     }
 
-    @Override protected void updateRowCount() {
+    @Override
+    protected void updateRowCount() {
         if (flow == null)
             return;
 
         int oldCount = flow.getCellCount();
         int newCount = getItemCount();
-        
+
         if (newCount != oldCount) {
             flow.setCellCount(newCount);
             flow.recreateCells();
+            flow.reconfigureCells();
         } else {
             flow.reconfigureCells();
         }
         updateRows(newCount);
     }
 
-    @Override protected void layoutChildren(double x, double y, double w, double h) {
+    @Override
+    protected void layoutChildren(double x, double y, double w, double h) {
         double x1 = getSkinnable().getInsets().getLeft();
         double y1 = getSkinnable().getInsets().getTop();
-        double w1 = getSkinnable().getWidth() - (getSkinnable().getInsets().getLeft() + getSkinnable().getInsets().getRight());
-        double h1 = getSkinnable().getHeight() - (getSkinnable().getInsets().getTop() + getSkinnable().getInsets().getBottom());
+        double w1 = getSkinnable().getWidth() - (getSkinnable().getInsets().getLeft() +
+                getSkinnable().getInsets().getRight());
+        double h1 = getSkinnable().getHeight() - (getSkinnable().getInsets().getTop() +
+                getSkinnable().getInsets().getBottom());
 
         flow.resizeRelocate(x1, y1, w1, h1);
     }
 
-    @Override public GridRow<T> createCell() {
+    @Override
+    public GridRow<T> createCell() {
         GridRow<T> row = new GridRow<>();
         row.updateGridView(getSkinnable());
         return row;
     }
 
     /**
-     *  Returns the number of row needed to display the whole set of cells
-     *  @return GridView row count
+     * Returns the number of row needed to display the whole set of cells
+     *
+     * @return GridView row count
      */
-    @Override public int getItemCount() {
+    @Override
+    public int getItemCount() {
         final ObservableList<?> items = getSkinnable().getItems();
         // Fix for #98 : int division should be cast to get the result as
         // double and ceiled to get the max int of it (as we are looking for
         // the max number of necessary row)
-        return items == null ? 0 : (int)Math.ceil((double)items.size() / computeMaxCellsInRow());
+        return items == null ? 0 : (int) Math.ceil((double) items.size() / computeMaxCellsInRow());
     }
 
     /**
-     *  Returns the max number of cell per row
-     *  @return Max cell number per row 
+     * Returns the max number of cell per row
+     *
+     * @return Max cell number per row
      */
     public int computeMaxCellsInRow() {
         return Math.max((int) Math.floor(computeRowWidth() / computeCellWidth()), 1);
     }
 
     /**
-     *  Returns the width of a row
-     *  (should be GridView.width - GridView.Scrollbar.width)
-     *  @return Computed width of a row 
+     * Returns the width of a row
+     * (should be GridView.width - GridView.Scrollbar.width)
+     *
+     * @return Computed width of a row
      */
     protected double computeRowWidth() {
         // Fix for #98 : width calculation should take the scrollbar size
         // into account
-        
+
         // TODO: need to figure out how to get the real scrollbar width and
         // replace the 18 value
         return getSkinnable().getWidth() - 18;
     }
 
     /**
-     *  Returns the width of a cell
-     *  @return Computed width of a cell 
+     * Returns the width of a cell
+     *
+     * @return Computed width of a cell
      */
     protected double computeCellWidth() {
-        return getSkinnable().cellWidthProperty().doubleValue() + (getSkinnable().horizontalCellSpacingProperty().doubleValue() * 2);
+        return getSkinnable().cellWidthProperty().doubleValue() + (getSkinnable()
+                .horizontalCellSpacingProperty().doubleValue() * 2);
     }
 
     protected void updateRows(int rowCount) {
@@ -223,9 +242,10 @@ public class GridViewSkin<T> extends VirtualContainerBase<GridView<T>, BehaviorB
 
         return true;
     }
-    
-    @Override protected double computeMinHeight(double height, double topInset, double rightInset, double bottomInset,
-            double leftInset) {
+
+    @Override
+    protected double computeMinHeight(double height, double topInset, double rightInset, double
+            bottomInset, double leftInset) {
         return 0;
     }
 }
