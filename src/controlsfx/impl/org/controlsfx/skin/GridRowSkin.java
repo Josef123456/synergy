@@ -110,7 +110,7 @@ public class GridRowSkin<T> extends CellSkinBase<GridRow<T>, BehaviorBase<GridRo
                     }
                     cell.updateIndex(cellIndex);
 
-                    if (PhotoGrid.selectedImages.contains(cell.getItem())) {
+                    if (PhotoGrid.getSelectedImages().contains(cell.getItem())) {
                         if (cell.getBorder() == null) {
                             BorderStroke[] borderStrokeArray = new BorderStroke[4];
                             for (int i = 0; i < 4; i++) {
