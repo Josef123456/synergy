@@ -189,13 +189,13 @@ public class SpreadsheetViewSelectionModel extends
         cellsView.setOnMouseDragged(new WeakEventHandler<>(onMouseDragEventHandler));
 
         //Code for 8u40
-//        selectedCellsMap = new SelectedCellsMap<TablePosition<ObservableList<SpreadsheetCell>, ?>>(c -> handleSelectedCellsListChangeEvent(c)) {
-//            @Override
-//            public boolean isCellSelectionEnabled() {
-//                return SpreadsheetViewSelectionModel.this.isCellSelectionEnabled();
-//            }
-//        };
-         selectedCellsMap = new SelectedCellsMap<>(new WeakListChangeListener<>(listChangeListener));
+        selectedCellsMap = new SelectedCellsMap<TablePosition<ObservableList<SpreadsheetCell>, ?>>(c -> handleSelectedCellsListChangeEvent(c)) {
+            @Override
+            public boolean isCellSelectionEnabled() {
+                return SpreadsheetViewSelectionModel.this.isCellSelectionEnabled();
+            }
+        };
+//         selectedCellsMap = new SelectedCellsMap<>(new WeakListChangeListener<>(listChangeListener));
          
 
         selectedCellsSeq = new ReadOnlyUnbackedObservableList<TablePosition<ObservableList<SpreadsheetCell>, ?>>() {

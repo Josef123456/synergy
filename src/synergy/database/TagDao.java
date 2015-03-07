@@ -58,6 +58,13 @@ public class TagDao {
 		return tagDao.queryBuilder ();
 	}
 
+	public List<Tag> tagWithValueLike(String value) throws SQLException {
+		QueryBuilder<Tag, Integer> qb = tagDao.queryBuilder ();
+		qb.where().raw ( "UPPER(" + Tag.COLUMN_VALUE + ") LIKE UPPER('" + value + "%')");
+		qb.orderBy ( Tag.COLUMN_VALUE, true );
+		return tagDao.query (qb.prepare ());
+	}
+
 	private List<Tag> tagWithTypeAndValue(Tag.TagType type, String value) throws SQLException{
 		QueryBuilder<Tag, Integer> qb = tagDao.queryBuilder ();
 		qb.where().eq (Tag.COLUMN_TYPE, type);
