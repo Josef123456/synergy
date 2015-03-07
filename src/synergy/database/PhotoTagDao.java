@@ -62,8 +62,8 @@ public class PhotoTagDao {
 
 	private List<PhotoTag> photoTagsWithPhotoIdAndTagId(int photoID, int tagID) throws SQLException {
 		QueryBuilder<PhotoTag, Integer> qb = photoTagDao.queryBuilder ();
-		qb.where ().eq(PhotoTag.COLUMN_PHOTO_ID, photoID);
-		qb.where ().eq(PhotoTag.COLUMN_TAG_ID, tagID);
+        System.out.println(photoID);
+		qb.where ().eq(PhotoTag.COLUMN_PHOTO_ID, photoID).and().eq(PhotoTag.COLUMN_TAG_ID, tagID);
 		return photoTagDao.query(qb.prepare ());
 	}
 }
