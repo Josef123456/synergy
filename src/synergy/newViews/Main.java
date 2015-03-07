@@ -1,13 +1,7 @@
 package synergy.newViews;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Application;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -20,20 +14,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.models.Photo;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -94,7 +85,8 @@ public class Main extends Application {
         leftButtonsBox.getChildren().add(rightButtonsBox);
         HBox.setHgrow(leftButtonsBox, Priority.ALWAYS);
 
-        final TextField searchField = new TextField("Search");
+        //Previous implementation of the search field
+        /*final TextField searchField = new TextField("Search");
         searchField.setId("searching");
         searchField.setMinHeight(45);
         searchField.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
@@ -106,7 +98,13 @@ public class Main extends Application {
                     System.out.println(arg0.getClass().toString());
                 }
             }
-        });
+        });*/
+
+        final SearchField searchField = new SearchField();
+        TextField textField = searchField.getTextField();
+        textField.setId("searching");
+        textField.setMinHeight(45);
+        textField.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
 
         toolBar.getItems().addAll(leftButtonsBox, rightButtonsBox);
         topPane.getChildren().addAll(toolBar, searchField);
