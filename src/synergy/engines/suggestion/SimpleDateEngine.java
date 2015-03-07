@@ -1,11 +1,14 @@
 package synergy.engines.suggestion;
 
-import synergy.utilities.DateComparator;
 import synergy.models.Photo;
 import synergy.models.Tag;
+import synergy.utilities.DateComparator;
 
 import java.util.List;
-import java.util.concurrent.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by sari on 27/02/15.
@@ -44,14 +47,63 @@ public class SimpleDateEngine {
 
 
         if(photoFoundOnLeft == null){
-            if(photoFoundOnRight != null)
-                return photoFoundOnRight.getChildTags();
+            if(photoFoundOnRight != null) {
+                List<Tag> tagsToReturn;
+                tagsToReturn = photoFoundOnRight.getChildTags();
+                while (tagsToReturn.size() < 3){
+                    photoFoundOnRight = findTaggedPhotoOnRight(photoFoundOnRight);
+                    //System.out.println("TAGSTORETURN SIZE" + tagsToReturn.size());
+                    if(photoFoundOnRight == null)
+                        return tagsToReturn;
+                    tagsToReturn.addAll(photoFoundOnRight.getChildTags());
+                }
+                return tagsToReturn;
+
+
+            }
         }
         else {
-            if(photoFoundOnRight == null)
-               return photoFoundOnLeft.getChildTags();
-            else
-                return DateComparator.getClosestPhoto(p, photoFoundOnRight, photoFoundOnLeft).getChildTags();
+            if(photoFoundOnRight == null) {
+                List<Tag> tagsToReturn;
+                tagsToReturn = photoFoundOnLeft.getChildTags();
+                while (tagsToReturn.size() < 3){
+                    photoFoundOnLeft = findTaggedPhotoOnLeft(photoFoundOnLeft);
+                    if(photoFoundOnLeft == null)
+                        return tagsToReturn;
+                    tagsToReturn.addAll(photoFoundOnRight.getChildTags());
+                }
+                return tagsToReturn;
+            }
+            else {
+
+                List<Tag> tagsToReturn;
+                Photo closestPhoto = DateComparator.getClosestPhoto(p, photoFoundOnRight, photoFoundOnLeft);
+                tagsToReturn = closestPhoto.getChildTags();
+
+                while(tagsToReturn.size() < 3) {
+                    Photo nextPhotoOnRight = findTaggedPhotoOnRight(closestPhoto);
+                    Photo nextPhotoOnLeft = findTaggedPhotoOnLeft(closestPhoto);
+
+                    if (nextPhotoOnLeft == null){
+                        if (nextPhotoOnRight != null) {
+                            closestPhoto = nextPhotoOnRight;
+                        } else
+                            return tagsToReturn;
+                    }
+                    else {
+                        if (nextPhotoOnRight == null) {
+                            closestPhoto = nextPhotoOnRight;
+                        } else {
+                            closestPhoto = DateComparator.getClosestPhoto(closestPhoto, nextPhotoOnRight, nextPhotoOnLeft);
+                        }
+                    }
+                    if(closestPhoto == null)
+                        return tagsToReturn;
+                    tagsToReturn.addAll(closestPhoto.getChildTags());
+                }
+
+                return tagsToReturn;
+            }
         }
 
         return null;
@@ -87,6 +139,7 @@ public class SimpleDateEngine {
     private static Photo findTaggedPhotoOnLeft(Photo p){
 
         int index =  Engine.historicalPhotos.indexOf(p)-1;
+        System.out.println(index +" "+Engine.historicalPhotos.indexOf(p));
 
         if(index == -1)
             return null;
@@ -95,7 +148,8 @@ public class SimpleDateEngine {
         while (Engine.historicalPhotos.get(index).getChildTags().isEmpty() && index>0){
             index--;
         }
-
+        Photo photo = Engine.historicalPhotos.get(index);
+        System.out.println("LLLEEEEFFFFTTT" + photo.getChildTags()+ " "+ index+" "+ photo);
         if(!Engine.historicalPhotos.get(index).getChildTags().isEmpty()){
             return Engine.historicalPhotos.get(index);
         }
