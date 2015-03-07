@@ -9,9 +9,11 @@ import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.util.*;
+import java.util.Date;
 
 import synergy.engines.suggestion.Engine;
 import synergy.database.PhotoDao;
+import synergy.metadata.*;
 
 /**
  * Created by alexstoick on 2/6/15.
@@ -40,7 +42,11 @@ public class Photo {
 	        int year = Integer.parseInt (dateParts[0]);
 	        int month = Integer.parseInt(dateParts[1]);
 	        int day = Integer.parseInt(dateParts[2]);
-            this.date = new Date(year, month, day);
+	        String[] timeParts = synergy.metadata.Date.getTime (path).split(":");
+	        int hour = Integer.parseInt(timeParts[0]);
+	        int minute = Integer.parseInt(timeParts[1]);
+	        int second = Integer.parseInt(timeParts[2]);
+            this.date = new Date(year, month-1, day, hour, minute, second);
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
