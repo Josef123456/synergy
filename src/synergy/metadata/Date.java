@@ -18,54 +18,48 @@ import java.util.List;
  */
 public class Date {
 
-    public String replacementDate;
-    public String originalTime, name, values;
-    private static final String TIME24HOURS_PATTERN = "([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]";
-    public IImageMetadata metadata = null;
+	private static String getDateAndTime(String path) throws IOException, ImageReadException, ImageWriteException {
 
-    public void changeDate(Photo photo, String newDate) throws IOException, ImageReadException, ImageWriteException {
+		File inputFile = new File(path);
+		JpegImageMetadata jpegMetadata = (JpegImageMetadata) Imaging.getMetadata(inputFile);
+		List<IImageMetadata.IImageMetadataItem> items = jpegMetadata.getItems ();
+		for ( int i = 0 ; i < items.size () ; i++ ) {
+			final IImageMetadata.IImageMetadataItem item = items.get (i);
+			String name = item.toString ().substring (0, item.toString ().indexOf (":"));
+			String values = item.toString ().substring (0);
+			if ( name.contains ("DateTimeOriginal") ) {
+				String dateAndTime = values.split ("\'")[ 1 ];
+				return dateAndTime;
+			}
+		}
+		return null;
+	}
 
-        replacementDate = newDate;
-        File inputFile = new File(photo.getPath ());
-        OutputStream os = null;
-        TiffOutputSet tiffOutputSet = null;
-        IImageMetadata metaData = Imaging.getMetadata(inputFile);
-        JpegImageMetadata jpegMetadata = (JpegImageMetadata) metaData;
+	public static String getTime(String path) throws IOException, ImageReadException, ImageWriteException {
+		return getDateAndTime (path).split (" ")[1];
+	}
+	public static String getDate(String path) throws IOException, ImageReadException, ImageWriteException {
+		return getDateAndTime (path).split (" ")[0];
+	}
 
-        if (null != jpegMetadata) {
-            final TiffImageMetadata exif = jpegMetadata.getExif();
-            if (null != exif) {
-                tiffOutputSet = exif.getOutputSet();
-            }
-        }
-        if (null == tiffOutputSet) {
-            tiffOutputSet = new TiffOutputSet();
-        }
+    public static void changeDate(String path, String newDate) throws IOException, ImageReadException, ImageWriteException {
 
-        if (metaData instanceof JpegImageMetadata) {
-            final TiffOutputDirectory exifDirectory = tiffOutputSet.getOrCreateExifDirectory();
-            final List<IImageMetadata.IImageMetadataItem> items = jpegMetadata.getItems();
-
-            for (int i = 0; i < items.size(); i++) {
-                final IImageMetadata.IImageMetadataItem item = items.get(i);
-                name = item.toString().substring(0, item.toString().indexOf(":"));
-                values = item.toString().substring(0);
-                if (name.contains("DateTimeOriginal")) {
-                    String parts[] = values.split(" ");
-                    originalTime = parts[2].substring(0,parts[2].length()-1);
-                  //System.out.println(values);
-                  //System.out.println(originalTime);
-
-                }
-            }
-        } else {
-            System.out.println("Not a jpg file");
-        }
+        OutputStream os;
+	    File inputFile = new File(path);
+	    JpegImageMetadata jpegMetadata = (JpegImageMetadata) Imaging.getMetadata(inputFile);
+	    TiffOutputSet tiffOutputSet = null;
+	    if (null != jpegMetadata) {
+		    TiffImageMetadata exif = jpegMetadata.getExif();
+		    if (null != exif) {
+			    tiffOutputSet = exif.getOutputSet();
+		    }
+	    }
 
         final TiffOutputDirectory exifDirectory = tiffOutputSet.getOrCreateExifDirectory();
         exifDirectory.removeField(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL);
+	    String originalTime = getTime(path);
         exifDirectory.add(ExifTagConstants.EXIF_TAG_DATE_TIME_ORIGINAL,newDate+" "+originalTime);
-        File outputFile = new File("C:\\Users\\Amit\\Pictures\\Output\\output.jpg");
+        File outputFile = new File("tmp.jgp");
         os = new FileOutputStream(outputFile);
         os = new BufferedOutputStream(os);
         new ExifRewriter().updateExifMetadataLossless(inputFile, os,tiffOutputSet);

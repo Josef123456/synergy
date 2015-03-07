@@ -8,12 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import synergy.engines.suggestion.Engine;
 import synergy.database.PhotoDao;
@@ -41,10 +36,11 @@ public class Photo {
     public Photo(String path) {
         this.path = path;
         try {
-            Path p = Paths.get(path);
-            BasicFileAttributes attr = Files.readAttributes(p, BasicFileAttributes.class);
-            FileTime createdAt = attr.creationTime();
-            this.date = new Date(createdAt.toMillis());
+            String[] dateParts = synergy.metadata.Date.getDate (path).split(":");
+	        int year = Integer.parseInt (dateParts[0]);
+	        int month = Integer.parseInt(dateParts[1]);
+	        int day = Integer.parseInt(dateParts[2]);
+            this.date = new Date(year, month, day);
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
