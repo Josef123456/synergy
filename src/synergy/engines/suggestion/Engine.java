@@ -8,7 +8,7 @@ import java.util.List;
 
 public class Engine {
 
-    protected static List<Photo> historicalPhotos;
+    public static List<Photo> historicalPhotos;
 
     /**
      *Method takes a photo and returns a list of possible tags.
@@ -27,6 +27,7 @@ public class Engine {
      * Prepares the engine by fetching the required data.
      */
     public static void prepare(){
-        List<Photo> historicalPhotos = Photo.getAllPhotos(); // fetches all photos from database to be analysed.
+        historicalPhotos = Photo.getAllPhotos(); // fetches all photos from database to be analysed.
+        System.out.println(historicalPhotos);
     }
 }

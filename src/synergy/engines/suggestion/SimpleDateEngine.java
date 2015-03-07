@@ -22,7 +22,6 @@ public class SimpleDateEngine {
 
         Photo photoFoundOnRight = null;
         Photo photoFoundOnLeft = null;
-
         final ExecutorService service = Executors.newFixedThreadPool(1);
         final Future<Photo> findOnRightTask = service.submit(new Callable(){
             @Override
@@ -35,18 +34,21 @@ public class SimpleDateEngine {
         try {
             photoFoundOnLeft = findTaggedPhotoOnLeft(p);
             photoFoundOnRight = findOnRightTask.get();
+
+            System.out.println("PHOTO FOUND ON LEFT: " + photoFoundOnLeft);
+            System.out.println("PHOTO FOUND ON RIGHT: " + photoFoundOnRight);
         }
         catch (Exception e){
             System.err.println(e);
         }
 
 
-        if(photoFoundOnLeft.equals(null)){
-            if(!photoFoundOnRight.equals(null))
+        if(photoFoundOnLeft == null){
+            if(photoFoundOnRight != null)
                 return photoFoundOnRight.getChildTags();
         }
         else {
-            if(photoFoundOnRight.equals(null))
+            if(photoFoundOnRight == null)
                return photoFoundOnLeft.getChildTags();
             else
                 return DateComparator.getClosestPhoto(p, photoFoundOnRight, photoFoundOnLeft).getChildTags();
@@ -63,6 +65,9 @@ public class SimpleDateEngine {
     private static Photo findTaggedPhotoOnRight(Photo p){
 
         int index =  Engine.historicalPhotos.indexOf(p)+1;
+
+        if(index == Engine.historicalPhotos.size())
+            return null;
 
         while(Engine.historicalPhotos.get(index).getChildTags().isEmpty() && index < Engine.historicalPhotos.size()-1){
             index++;
@@ -82,6 +87,10 @@ public class SimpleDateEngine {
     private static Photo findTaggedPhotoOnLeft(Photo p){
 
         int index =  Engine.historicalPhotos.indexOf(p)-1;
+
+        if(index == -1)
+            return null;
+
 
         while (Engine.historicalPhotos.get(index).getChildTags().isEmpty() && index>0){
             index--;
