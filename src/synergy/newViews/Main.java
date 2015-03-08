@@ -12,14 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
@@ -104,8 +97,9 @@ public class Main extends Application {
         final SearchField searchField = new SearchField();
         TextField textField = searchField.getTextField();
         textField.setId("searching");
-        textField.setMinHeight(45);
         textField.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
+
+        searchField.setAllMinHeight(45);
 
         toolBar.getItems().addAll(leftButtonsBox, rightButtonsBox);
         topPane.getChildren().addAll(toolBar, searchField);
