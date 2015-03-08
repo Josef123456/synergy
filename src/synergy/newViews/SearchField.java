@@ -1,10 +1,18 @@
 package synergy.newViews;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Cham on 06/03/2015.
@@ -19,7 +27,10 @@ public class SearchField extends HBox {
     HBox buttonPane;
     ToggleButton locationA, locationB;
 
+    Set<String> listOfSearch;
+
     public SearchField(){
+        listOfSearch = new HashSet<String>();
         setUpUI();
     }
 
@@ -36,9 +47,53 @@ public class SearchField extends HBox {
     public void setUpTextFieldAndSearch(){
         fieldAndSearch = new HBox();
         textField = new TextField();
-
         searchButton = new Button("Search");
+
+        EventHandler eventHandler = new EventHandler(){
+            public void handle(Event event) {
+                listOfSearch.add(textField.getText());
+                textField.requestFocus(); // get focus first
+                textField.getCaretPosition();
+                textField.selectNextWord();
+
+            }
+        };
+
+        EventHandler<MouseEvent> mouseEvent = new EventHandler<MouseEvent>(){
+
+            @Override
+            public void handle(MouseEvent event) {
+                if(textField.getCaretPosition() == textField.getLength()){
+
+                } else {
+                    textField.previousWord();
+                    textField.selectNextWord();
+                }
+
+            }
+        };
+
+        EventHandler<KeyEvent> keyEventHandler = new EventHandler<KeyEvent>(){
+            @Override
+            public void handle(KeyEvent event) {
+                int position = textField.getCaretPosition();
+                System.out.println(position + textField.getText(position - 1, position));
+                if(event.getCode().equals(KeyCode.SPACE)){
+
+                }
+                if(!event.getCode().equals(KeyCode.BACK_SPACE)){
+
+                } else if(event.getCode().equals(KeyCode.BACK_SPACE) && !textField.getText(position, position).equals(" ")){
+                    textField.selectPreviousWord();
+                }
+            }
+        };
+
+        searchButton.setOnAction(eventHandler);
+        textField.setOnMouseReleased(mouseEvent);
+        textField.setOnKeyReleased(keyEventHandler);
         fieldAndSearch.getChildren().add(textField);
+
         fieldAndSearch.getChildren().add(searchButton);
     }
 
