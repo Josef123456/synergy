@@ -30,11 +30,6 @@ import com.sun.javafx.collections.MappingChange;
 import com.sun.javafx.collections.NonIterableChange;
 import com.sun.javafx.scene.control.ReadOnlyUnbackedObservableList;
 import com.sun.javafx.scene.control.SelectedCellsMap;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import controlsfx.controlsfx.control.spreadsheet.SpreadsheetCell;
 import controlsfx.controlsfx.control.spreadsheet.SpreadsheetView;
 import javafx.animation.KeyFrame;
@@ -45,15 +40,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.WeakEventHandler;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumnBase;
-import javafx.scene.control.TablePosition;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Duration;
 import javafx.util.Pair;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  *
@@ -190,7 +185,7 @@ public class SpreadsheetViewSelectionModel extends
         cellsView.setOnMouseDragged(new WeakEventHandler<>(onMouseDragEventHandler));
 
         selectedCellsMap = new SelectedCellsMap<TablePosition<ObservableList<SpreadsheetCell>, ?>>(c -> handleSelectedCellsListChangeEvent(c)) {
-            @Override
+            //@Override
             public boolean isCellSelectionEnabled() {
                 return SpreadsheetViewSelectionModel.this.isCellSelectionEnabled();
             }

@@ -32,6 +32,8 @@ public class SearchField extends HBox {
     public SearchField(){
         listOfSearch = new HashSet<String>();
         setUpUI();
+        getStyleClass().setAll("button-bar");
+        getStyleClass().add("gridSearch");
     }
 
     public void setUpUI(){

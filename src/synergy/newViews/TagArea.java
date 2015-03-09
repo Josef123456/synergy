@@ -28,7 +28,7 @@ public class TagArea extends StackPane {
     FlowPane locationTags, childrenTags; //These are where the tags are displayed
     ToggleButton locationA, locationB;
     FlowPane childrenSuggestion;
-    Label childrenSuggestionLabel;
+    Button childrenSuggestionLabel;
 
     final String[] array = {"Cham", "Mike", "Tobi", "Alex", "Sari", "Codrin", "Josef", "Amit"};
 
@@ -36,6 +36,7 @@ public class TagArea extends StackPane {
     public TagArea() {
         setUpUI();
         getChildren().add(layoutGridPane);
+        getStyleClass().setAll("toggle-button");
     }
 
     public void setUpUI() {
@@ -74,11 +75,12 @@ public class TagArea extends StackPane {
 
         locationTags = new FlowPane();
 
-        locationA = new ToggleButton("Location A");
+        Button locationA = new Button("Location A");
         locationB = new ToggleButton("Location B");
+        locationA.getStyleClass().add("firstButton");
 
         addLocationEventHandler(locationA);
-        addLocationEventHandler(locationB);
+        //addLocationEventHandler(locationB);
 
         locationPane.getChildren().add(locationA);
         locationPane.getChildren().add(locationB);
@@ -123,7 +125,7 @@ public class TagArea extends StackPane {
         childrenPane.getChildren().add(addChildrenTagButton);
 
         childrenSuggestion = new FlowPane(10, 10);
-        childrenSuggestionLabel = new Label("Suggestions: ");
+        childrenSuggestionLabel = new Button("Suggestions: ");
         childrenSuggestionLabel.setFont(new Font("Arial", 15));
         childrenSuggestionLabel.setTextFill(Color.DARKGRAY);
         childrenSuggestion.getChildren().add(childrenSuggestionLabel);
@@ -165,7 +167,7 @@ public class TagArea extends StackPane {
         }
     }
 
-    public void addLocationEventHandler(final ToggleButton location) {
+    public void addLocationEventHandler(final Button location) {
        /* location.setOnAction(new EventHandler() {
 
             @Override

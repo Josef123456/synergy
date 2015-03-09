@@ -25,7 +25,7 @@ import java.util.List;
 
 public class Main extends Application {
 
-    Button importBtn, exportBtn, allPhotosBtn, calendarViewBtn;
+    Button importBtn, exportBtn, allPhotosBtn, printingViewBtn;
     private static Stage primaryStage;
     PhotoGrid photosGrid;
     ObservableList<Image> displayedImagesList;
@@ -42,7 +42,7 @@ public class Main extends Application {
         initTagArea();
         addEventHandlers();
 
-        Scene scene = new Scene(root, 800, 600);
+        Scene scene = new Scene(root, 1000, 600);
         primaryStage.setTitle("Instatag");
         primaryStage.setScene(scene);
         primaryStage.setMinHeight(400);
@@ -61,18 +61,18 @@ public class Main extends Application {
         HBox leftButtonsBox = new HBox();
         leftButtonsBox.getStyleClass().setAll("button-bar");
         importBtn = new Button("Import");
-        setupButtonStyle(importBtn, "" + importBtn);
+        setupButtonStyle(importBtn, "firstButton");
         exportBtn = new Button("Export");
-        setupButtonStyle(exportBtn, "" + exportBtn);
+        setupButtonStyle(exportBtn, "secondButton");
         leftButtonsBox.getChildren().addAll(importBtn, exportBtn);
 
         HBox rightButtonsBox = new HBox();
         rightButtonsBox.getStyleClass().setAll("button-bar");
         allPhotosBtn = new Button("Photos");
-        setupButtonStyle(allPhotosBtn, "" + allPhotosBtn);
-        calendarViewBtn = new Button("Calendar");
-        setupButtonStyle(allPhotosBtn, "" + allPhotosBtn);
-        rightButtonsBox.getChildren().addAll(allPhotosBtn, calendarViewBtn);
+        setupButtonStyle(allPhotosBtn, "firstButton");
+        printingViewBtn = new Button("Printing");
+        setupButtonStyle(printingViewBtn, "" + printingViewBtn);
+        rightButtonsBox.getChildren().addAll(allPhotosBtn, printingViewBtn);
 
         leftButtonsBox.setAlignment(Pos.CENTER_LEFT);
         rightButtonsBox.setAlignment(Pos.CENTER_RIGHT);
@@ -113,7 +113,7 @@ public class Main extends Application {
     }
 
     public void initTagArea() {
-        TagArea tagArea = new TagArea();
+        TaggingArea tagArea = new TaggingArea();
         root.setRight(tagArea);
     }
 
