@@ -50,6 +50,7 @@ public class SearchField extends HBox {
         fieldAndSearch = new HBox();
         textField = new TextField();
         searchButton = new Button("Search");
+        searchButton.setStyle("-fx-text-fill: antiquewhite");
 
         EventHandler eventHandler = new EventHandler(){
             public void handle(Event event) {

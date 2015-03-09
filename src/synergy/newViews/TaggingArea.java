@@ -48,13 +48,13 @@ public class TaggingArea extends BorderPane {
         button1.setStyle("-fx-text-fill: antiquewhite");
         button2.setStyle("-fx-text-fill: antiquewhite");
 
-        locationText = new Text("Location:");
+        locationText = new Text(" Location:");
         locationText.setId("leftText");
         locationText.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
         boxLocation.getChildren().addAll(button1, button2);
-        gridLocation.add(locationText, 1, 0);
-        gridLocation.add(boxLocation, 2, 0);
+        gridLocation.add(locationText, 0, 0);
+        gridLocation.add(boxLocation, 1, 0);
 
 
         return gridLocation;
@@ -118,7 +118,7 @@ public class TaggingArea extends BorderPane {
 
         vBoxSuggestion = new VBox();
 
-        childrenSuggestionLabel = new Label("Suggestions: ");
+        childrenSuggestionLabel = new Label(" Suggestions: ");
         childrenSuggestionLabel.setStyle("-fx-text-fill: antiquewhite");
         childrenSuggestionLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
 
@@ -136,14 +136,12 @@ public class TaggingArea extends BorderPane {
             buttonName.setOnAction(new EventHandler() {
                 public void handle(Event event) {
                     childrenTextField.setText("");
-                    childrenTags.getChildren().add(hBox);
                     HBox hBox = new HBox();
                     Button buttonNames = new Button(suggestion + " -");
                     buttonNames.setMinWidth(95.0);
                     buttonNames.setStyle("-fx-text-fill: antiquewhite");
                     hBox.getChildren().addAll(buttonNames);
                     childrenTags.getChildren().add(hBox);
-                    //setSuggestions();
 
                     /*final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
                     Tag tag = new Tag(Tag.TagType.KID, (String) childrenComboBox.getSelectedItem());
