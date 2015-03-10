@@ -1,9 +1,11 @@
 package synergy.newViews;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.controlsfx.control.cell.ImageGridCell;
-import controlsfx.impl.org.controlsfx.skin.GridRowSkin;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -15,9 +17,6 @@ import javafx.scene.layout.BorderStrokeStyle;
 import synergy.models.Photo;
 import synergy.tasks.ThumbnailLoaderTask;
 
-import java.util.ArrayList;
-import java.util.List;
-
 
 /**
  * Created by iHack1337 on 3/2/2015.
@@ -26,22 +25,21 @@ public class PhotoGrid extends GridView<Image> {
 
     private static ArrayList<Image> selectedImages = new ArrayList<>();
     private static GridView<Image> photosGrid;
-	private static ObservableList<Image> displayedImagesList;
-	private static ArrayList<Photo> displayedPhotosList = new ArrayList<> ();
+    private static ObservableList<Image> displayedImagesList;
 
-	public static ArrayList<Photo> getDisplayedPhotosList () {
-		return displayedPhotosList;
-	}
+    public static GridView<Image> getPhotosGrid() {
+        return photosGrid;
+    }
 
-	public static ObservableList<Image> getDisplayedImagesList () {
-		return displayedImagesList;
-	}
+    public static ObservableList<Image> getDisplayedImagesList() {
+        return displayedImagesList;
+    }
 
-	public static ArrayList<Image> getSelectedImages () {
-		return selectedImages;
-	}
+    public static ArrayList<Image> getSelectedImages() {
+        return selectedImages;
+    }
 
-	public PhotoGrid(ObservableList imagesList) {
+    public PhotoGrid(ObservableList imagesList) {
         displayedImagesList = imagesList;
         photosGrid = this;
         this.setItems(displayedImagesList);
@@ -51,7 +49,7 @@ public class PhotoGrid extends GridView<Image> {
             public void handle(MouseEvent event) {
                 System.out.println("REGISTERED EVENT AT " + event.getSceneX() + " " + event
                         .getSceneY());
-                GridRowSkin.gridRowSkin.getNodeAtCoordinates();
+//                GridRowSkin.gridRowSkin.getNodeAtCoordinates();
             }
         });
 
@@ -79,9 +77,8 @@ public class PhotoGrid extends GridView<Image> {
         this.setCellWidth(300);
     }
 
-    public void setGridPhotos(final List<Photo> photos) {
-
-        Thread setPhotosThread = new Thread(new ThumbnailLoaderTask (photos));
+    public void setGridPhotos(final List<Photo> photosToDisplay) {
+        Thread setPhotosThread = new Thread(new ThumbnailLoaderTask(photosToDisplay));
         setPhotosThread.setDaemon(true);
         setPhotosThread.start();
     }
