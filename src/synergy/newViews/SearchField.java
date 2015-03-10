@@ -5,7 +5,6 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -22,10 +21,9 @@ public class SearchField extends HBox {
     HBox fieldAndSearch;
 
     TextField textField;
-    Button searchButton;
+    Button searchButton,locationA, locationB;
 
     HBox buttonPane;
-    ToggleButton locationA, locationB;
 
     Set<String> listOfSearch;
 
@@ -107,8 +105,10 @@ public class SearchField extends HBox {
 
     public void setUpLocationButtons(){
         buttonPane = new HBox();
-        locationA = new ToggleButton("Location A");
-        locationB = new ToggleButton("Location B");
+        locationA = new Button("Location A");
+        locationB = new Button("Location B");
+       locationA.setStyle("-fx-text-fill: antiquewhite");
+       locationB.setStyle("-fx-text-fill: antiquewhite");
 
         buttonPane.getChildren().add(locationA);
         buttonPane.getChildren().add(locationB);
@@ -126,8 +126,4 @@ public class SearchField extends HBox {
         locationA.setMinHeight(height);
         locationB.setMinHeight(height);
     }
-
-
-
-
 }

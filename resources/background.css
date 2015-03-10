@@ -24,13 +24,13 @@
     -fx-background-color: -darkest-black,
     -dark-highlight,
     linear-gradient(to bottom, -light-black 2%, -dark-black 98%);
-    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+    /*-fx-background-insets: 0, 1 1 1 0, 2 1 1 1;*/
     -fx-background-radius: 0;
     -fx-padding: 0.4em 1.833333em 0.4em 1.833333em;
 }
 
 .button-bar .button.firstButton {
-    -fx-background-insets: 0, 1, 2 1 1 1;
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 3 0 0 3, 2 0 0 2, 2 0 0 2;
 }
 
@@ -40,7 +40,7 @@
 }
 
 .button-bar .button.thirdButton {
-    -fx-background-insets: 0, 1, 2 1 1 1;
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 3 3 3 3, 2 2 2 2, 2 2 2 2;
 }
 

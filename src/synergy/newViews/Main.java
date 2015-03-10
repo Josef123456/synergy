@@ -37,9 +37,10 @@ public class Main extends Application {
         root = new BorderPane();
         root.setId("background");
 
-        initButtonArea();
-        initGridArea();
-        initTagArea();
+        topArea();
+        centerArea();
+        rightArea();
+        bottomArea();
         addEventHandlers();
 
         Scene scene = new Scene(root, 1000, 600);
@@ -52,7 +53,7 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    public void initButtonArea() {
+    public void topArea() {
         final VBox topPane = new VBox();
         final ToolBar toolBar = new ToolBar();
         Region spacer = new Region();
@@ -71,7 +72,7 @@ public class Main extends Application {
         allPhotosBtn = new Button("Photos");
         setupButtonStyle(allPhotosBtn, "firstButton");
         printingViewBtn = new Button("Printing");
-        setupButtonStyle(printingViewBtn, "" + printingViewBtn);
+        setupButtonStyle(printingViewBtn, "secondButton");
         rightButtonsBox.getChildren().addAll(allPhotosBtn, printingViewBtn);
 
         leftButtonsBox.setAlignment(Pos.CENTER_LEFT);
@@ -106,15 +107,19 @@ public class Main extends Application {
         root.setTop(topPane);
     }
 
-    public void initGridArea() {
+    public void centerArea() {
         displayedImagesList = FXCollections.observableArrayList(new ArrayList<Image>());
         photosGrid = new PhotoGrid(displayedImagesList);
         root.setCenter(photosGrid);
     }
 
-    public void initTagArea() {
+    public void rightArea() {
         TaggingArea tagArea = new TaggingArea();
         root.setRight(tagArea);
+    }
+    public void bottomArea() {
+        ThumbnailArea thumbnail = new ThumbnailArea();
+        root.setBottom(thumbnail);
     }
 
     public void setupButtonStyle(Button btn, String buttonName) {

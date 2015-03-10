@@ -1,12 +1,15 @@
 package synergy.newViews;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -21,9 +24,9 @@ import java.util.Random;
  */
 
 public class TaggingArea extends BorderPane {
-    GridPane gridLocation, gridSuggestion, gridNorthern;
+    GridPane gridLocation, gridDate, gridNorthern;
     VBox vBoxChildren, vBoxSuggestion;
-    FlowPane  childrenTags,childrenSuggestions ;
+    FlowPane childrenTags, childrenSuggestions;
     HBox childrenPane, boxLocation;//This is an HBox pane with a textfield and an "add" button
     Button button1, button2, addChildrenTagButton;
     Text locationText, childrenText;
@@ -32,7 +35,7 @@ public class TaggingArea extends BorderPane {
     final String[] array = {"Cham", "Mike", "Tobi", "Alex", "Sari", "Codrin", "Josef", "Amit"};
 
     public TaggingArea() {
-        setCenter(returnGridPane(locationGridPane(), childrenVboxPane(), suggestionGRidPane(),dateGRidPane()));
+        setCenter(returnGridPane(locationGridPane(), childrenVboxPane(), suggestionGRidPane(), dateGRidPane()));
         getStyleClass().setAll("button-bar");
     }
 
@@ -47,6 +50,31 @@ public class TaggingArea extends BorderPane {
         button2 = new Button("LocationB");
         button1.setStyle("-fx-text-fill: antiquewhite");
         button2.setStyle("-fx-text-fill: antiquewhite");
+        DropShadow shadow1 = new DropShadow();
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                button1.setEffect(shadow1);
+                button2.setEffect(null);
+                gridLocation.setEffect(shadow1);
+                vBoxChildren.setEffect(shadow1);
+                vBoxSuggestion.setEffect(shadow1);
+                gridDate.setEffect(shadow1);
+            }
+        });
+        DropShadow shadow2 = new DropShadow();
+        shadow2.setColor(Color.ANTIQUEWHITE);
+        button2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                button1.setEffect(null);
+                button2.setEffect(shadow2);
+                gridLocation.setEffect(shadow2);
+                vBoxChildren.setEffect(shadow2);
+                vBoxSuggestion.setEffect(shadow2);
+                gridDate.setEffect(shadow2);
+            }
+        });
 
         locationText = new Text(" Location:");
         locationText.setId("leftText");
@@ -131,7 +159,7 @@ public class TaggingArea extends BorderPane {
         for (int i = 0; i < suggestions.length; i++) {
             HBox hBox = new HBox();
             String suggestion = (suggestions[i] + " ");
-            Button buttonName = new Button(suggestion+" +");
+            Button buttonName = new Button(suggestion + " +");
             buttonName.setStyle("-fx-text-fill: antiquewhite");
             buttonName.setOnAction(new EventHandler() {
                 public void handle(Event event) {
@@ -163,19 +191,19 @@ public class TaggingArea extends BorderPane {
 
     private GridPane dateGRidPane() {
 
-        gridSuggestion = new GridPane();
-        gridSuggestion.getStyleClass().add("grid");
+        gridDate = new GridPane();
+        gridDate.getStyleClass().add("grid");
 
         childrenSuggestionLabel = new Label("Date: ");
         childrenSuggestionLabel.setStyle("-fx-text-fill: antiquewhite");
         childrenSuggestionLabel.setFont(Font.font("Arial", FontWeight.BOLD, 20));
-        gridSuggestion.add(childrenSuggestionLabel, 1, 0);
+        gridDate.add(childrenSuggestionLabel, 1, 0);
 
-        return gridSuggestion;
+        return gridDate;
     }
 
 
-    private VBox returnGridPane(GridPane grid1, VBox box2, VBox box3,GridPane grid4) {
+    private VBox returnGridPane(GridPane grid1, VBox box2, VBox box3, GridPane grid4) {
 
         VBox hb = new VBox(10);
         hb.getStyleClass().add("hbox");
@@ -200,7 +228,6 @@ public class TaggingArea extends BorderPane {
     /**
      * Cham, this is your bit. I Just copy pasted the thing you have
      * commented out.
-     *
      */
 //    public void setSuggestions(){
 //        childrenSuggestion.getChildren().retainAll(childrenSuggestionLabel);
@@ -235,7 +262,6 @@ public class TaggingArea extends BorderPane {
 //            childrenSuggestion.getChildren().add(hBox);
 //        }
 //    }
-
     public void addLocationEventHandler(final Button location) {
        /* location.setOnAction(new EventHandler() {
 
