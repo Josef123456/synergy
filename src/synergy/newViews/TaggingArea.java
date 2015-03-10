@@ -24,14 +24,15 @@ import java.util.Random;
  */
 
 public class TaggingArea extends BorderPane {
-    GridPane gridLocation, gridDate, gridNorthern;
-    VBox vBoxChildren, vBoxSuggestion;
-    FlowPane childrenTags, childrenSuggestions;
-    HBox childrenPane, boxLocation;//This is an HBox pane with a textfield and an "add" button
-    Button button1, button2, addChildrenTagButton;
-    Text locationText, childrenText;
-    Label childrenSuggestionLabel;
-    TextField childrenTextField;
+
+    private GridPane gridLocation, gridDate, gridNorthern;
+    private VBox vBoxChildren, vBoxSuggestion;
+    private FlowPane childrenTags, childrenSuggestions;
+    private HBox childrenPane, boxLocation;//This is an HBox pane with a textfield and an "add" button
+    private Button button1, button2, addChildrenTagButton;
+    private Text locationText, childrenText;
+    private Label childrenSuggestionLabel;
+    private TextField childrenTextField;
     final String[] array = {"Cham", "Mike", "Tobi", "Alex", "Sari", "Codrin", "Josef", "Amit"};
 
     public TaggingArea() {
@@ -87,7 +88,6 @@ public class TaggingArea extends BorderPane {
 
         return gridLocation;
     }
-
     private VBox childrenVboxPane() {
 
         vBoxChildren = new VBox();

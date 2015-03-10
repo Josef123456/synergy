@@ -41,6 +41,10 @@
 
 .button-bar .button.thirdButton {
     -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+}
+
+.button-bar .button.fourthButton {
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 3 3 3 3, 2 2 2 2, 2 2 2 2;
 }
 
@@ -54,6 +58,7 @@
     -fx-text-fill: antiquewhite;
     -fx-background-color: rgba(34, 34, 34, 0.83);
 }
+
 .toggle-button toggleButton {
     -fx-background-color: -darkest-black,
     -dark-highlight,
@@ -61,6 +66,7 @@
     -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 0;
 }
+
 .grid {
     -fx-background-color: linear-gradient(to bottom, derive(-fx-base, -30%), derive(-fx-base, -60%)),
     linear-gradient(to bottom, -light-black 2%, -dark-black 98%);
@@ -70,21 +76,25 @@
     -fx-hgap: 10;
     -fx-vgap: 10;
 }
+
 .hbox {
     -fx-background-color: -dark-black 85%;
     -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
     -fx-padding: 15;
     -fx-spacing: 10;
 }
-.gridSearch{
-    -fx-background-color:linear-gradient(to bottom, derive(-fx-base, -30%), derive(-fx-base, -60%)),
+
+.gridSearch {
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-base, -30%), derive(-fx-base, -60%)),
     linear-gradient(to bottom, -light-black 2%, -dark-black 98%);
     -fx-padding: 15;
     -fx-spacing: 10;
 }
-#leftText{
+
+#leftText {
     -fx-fill: antiquewhite;
 }
+
 .scroll-pane {
     -fx-background-color: -transparent;
     -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);

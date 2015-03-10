@@ -25,12 +25,18 @@ import java.util.List;
 
 public class Main extends Application {
 
-    Button importBtn, exportBtn, allPhotosBtn, printingViewBtn;
+    private Button importBtn, exportBtn, allPhotosBtn, printingViewBtn, trashBtn;
+    private ToolBar toolBar;
+    private VBox topPane;
+    private HBox leftButtonsBox, rightButtonsBox;
+    private Region spacer;
+    private SearchField searchField;
+    private TextField textField;
     private static Stage primaryStage;
-    PhotoGrid photosGrid;
-    ObservableList<Image> displayedImagesList;
-    ArrayList<Image> imageArrayList;
-    BorderPane root;
+    private PhotoGrid photosGrid;
+    private ObservableList<Image> displayedImagesList;
+    private ArrayList<Image> imageArrayList;
+    private BorderPane root;
 
     public void start(final Stage primaryStage) {
         Main.primaryStage = primaryStage;
@@ -54,12 +60,12 @@ public class Main extends Application {
     }
 
     public void topArea() {
-        final VBox topPane = new VBox();
-        final ToolBar toolBar = new ToolBar();
-        Region spacer = new Region();
+        topPane = new VBox();
+        toolBar = new ToolBar();
+        spacer = new Region();
         spacer.getStyleClass().setAll("spacer");
 
-        HBox leftButtonsBox = new HBox();
+        leftButtonsBox = new HBox();
         leftButtonsBox.getStyleClass().setAll("button-bar");
         importBtn = new Button("Import");
         setupButtonStyle(importBtn, "firstButton");
@@ -67,13 +73,18 @@ public class Main extends Application {
         setupButtonStyle(exportBtn, "secondButton");
         leftButtonsBox.getChildren().addAll(importBtn, exportBtn);
 
-        HBox rightButtonsBox = new HBox();
+        rightButtonsBox = new HBox();
         rightButtonsBox.getStyleClass().setAll("button-bar");
+
         allPhotosBtn = new Button("Photos");
         setupButtonStyle(allPhotosBtn, "firstButton");
+
         printingViewBtn = new Button("Printing");
-        setupButtonStyle(printingViewBtn, "secondButton");
-        rightButtonsBox.getChildren().addAll(allPhotosBtn, printingViewBtn);
+        setupButtonStyle(printingViewBtn, "thirdButton");
+
+        trashBtn = new Button("Trash");
+        setupButtonStyle(trashBtn, "secondButton");
+        rightButtonsBox.getChildren().addAll(allPhotosBtn, printingViewBtn, trashBtn);
 
         leftButtonsBox.setAlignment(Pos.CENTER_LEFT);
         rightButtonsBox.setAlignment(Pos.CENTER_RIGHT);
@@ -94,9 +105,8 @@ public class Main extends Application {
                 }
             }
         });*/
-
-        final SearchField searchField = new SearchField();
-        TextField textField = searchField.getTextField();
+        searchField = new SearchField();
+        textField = searchField.getTextField();
         textField.setId("searching");
         textField.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
 
@@ -117,6 +127,7 @@ public class Main extends Application {
         TaggingArea tagArea = new TaggingArea();
         root.setRight(tagArea);
     }
+
     public void bottomArea() {
         ThumbnailArea thumbnail = new ThumbnailArea();
         root.setBottom(thumbnail);
@@ -145,15 +156,14 @@ public class Main extends Application {
                         photo.save();
                         lastImported.add(photo);
                     }
-
-                    if (photosGrid.getItems().size() == 0)
+                    if (photosGrid.getItems().size() == 0) {
                         photosGrid.setGridPhotos(Photo.getAllPhotos());
-                    else
+                    }
+                    else {
                         photosGrid.setGridPhotos(lastImported);
-
+                    }
                     System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
                 }
-
                 long t2 = System.currentTimeMillis();
                 System.out.println(t2 - t1 + " milliseconds");
             }
@@ -167,8 +177,7 @@ public class Main extends Application {
         addEventHandlerToImport();
         addEventHandlerToExport();
     }
-
     public static void main(String[] args) {
-        launch();
+        Application.launch();
     }
 }

@@ -1,22 +1,20 @@
 package synergy.newViews;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.ToolBar;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 /**
  * Created by Josef on 09/03/2015.
  */
 public class ThumbnailArea extends VBox {
 
-    GridPane bottomgrid;
-    Button gridView, fullView;
-    VBox boxslider;
-    Label zoom;
+    private Button gridViewBtn, fullViewBtn, deleteBtn;
+    private HBox centerbox, rightBox;
+    private ToolBar toolbarBottom;
 
     public ThumbnailArea() {
         getStyleClass().setAll("button-bar");
@@ -26,34 +24,42 @@ public class ThumbnailArea extends VBox {
     /**
      * Whoever is working on thumbnailView. please insert code inside this method.
      */
-    public void thumbnailView(){
+    public void thumbnailView() {
 
     }
 
-    public GridPane bottomArea() {
-        bottomgrid = new GridPane();
 
-        zoom = new Label("                     Zoom");
-        zoom.setFont(Font.font("Arial", FontWeight.BOLD, 10));
-        zoom.setStyle("-fx-text-fill: antiquewhite");
+    public ToolBar bottomArea() {
 
-        Slider slider = new Slider(0, 1, 0.5);
+        toolbarBottom = new ToolBar();
+        gridViewBtn = new Button("Grid");
+        setupButtonStyle(gridViewBtn, "firstButton");
 
-        boxslider = new VBox();
-        boxslider.getChildren().addAll(zoom, slider);
+        fullViewBtn = new Button("Full");
+        setupButtonStyle(fullViewBtn, "secondButton");
 
-        gridView = new Button("Grid");
-        gridView.setStyle("-fx-text-fill: antiquewhite");
-        gridView.setMinWidth(130);
-        fullView = new Button("Full");
-        fullView.setStyle("-fx-text-fill: antiquewhite");
-        fullView.setMinWidth(130);
+        deleteBtn = new Button("Delete");
+        setupButtonStyle(deleteBtn, "fourthButton");
 
-        bottomgrid.add(boxslider, 0, 0);
-        bottomgrid.add(gridView, 3, 0);
-        bottomgrid.add(fullView, 4, 0);
+        centerbox = new HBox();
+        centerbox.getChildren().addAll(gridViewBtn, fullViewBtn);
+        centerbox.setAlignment(Pos.CENTER_LEFT);
 
+        rightBox = new HBox();
+        rightBox.getChildren().add(deleteBtn);
+        rightBox.setAlignment(Pos.CENTER_RIGHT);
 
-        return bottomgrid;
+        centerbox.getChildren().addAll(rightBox);
+        HBox.setHgrow(centerbox, Priority.ALWAYS);
+
+        toolbarBottom.getItems().addAll(centerbox, deleteBtn);
+
+        return toolbarBottom;
+    }
+
+    public void setupButtonStyle(Button btn, String buttonName) {
+        btn.setStyle("-fx-text-fill: antiquewhite");
+        btn.getStyleClass().add(buttonName);
+        btn.setMinWidth(130);
     }
 }
