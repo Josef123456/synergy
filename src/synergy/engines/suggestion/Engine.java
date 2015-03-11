@@ -3,7 +3,10 @@ package synergy.engines.suggestion;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 public class Engine {
@@ -20,7 +23,10 @@ public class Engine {
      * @return
      */
     public static List<Tag> suggest(Photo p){
-        return SimpleDateEngine.suggest(p);
+        List<Tag> unfilteredTags = SimpleDateEngine.suggest(p);
+        Set<Tag> filteredTags = new HashSet<>();
+        filteredTags.addAll(unfilteredTags);
+        return new ArrayList<>(filteredTags);
     }
 
     /**

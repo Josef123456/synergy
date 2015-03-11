@@ -2,15 +2,16 @@ package synergy.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import synergy.database.RelationshipDao;
 
 @DatabaseTable(tableName = "relationships")
 public class Relationship {
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int ID = -1;
-    @DatabaseField(canBeNull = false, columnName = COLUMN_KID1)
+    @DatabaseField(canBeNull = false, columnName = COLUMN_KID1,uniqueCombo = true)
     private Tag kid1Tag;
-    @DatabaseField(canBeNull = false, columnName = COLUMN_KID2)
+    @DatabaseField(canBeNull = false, columnName = COLUMN_KID2,uniqueCombo = true)
     private Tag kid2Tag;
     @DatabaseField(canBeNull = false, columnName = COLUMN_OCCURRENCES)
     private int occurrences;
@@ -26,14 +27,18 @@ public class Relationship {
         occurrences = 0;
     }
 
+    public Relationship(){
+
+    }
+
 
     public void save() {
-/*        try {
-            PhotoDao.getInstance().createOrUpdate(this);
+        try {
+            RelationshipDao.getInstance().createOrUpdate(this);
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
-        }*/
+        }
     }
 
     public int getID() {
