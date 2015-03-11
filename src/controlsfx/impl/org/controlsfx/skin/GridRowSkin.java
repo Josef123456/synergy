@@ -133,7 +133,6 @@ public class GridRowSkin<T> extends CellSkinBase<GridRow<T>, BehaviorBase<GridRo
             // this one, we need to remove the extra cells that remain
             getChildren().remove(cacheIndex, getChildren().size());
         }
-
     }
 
     private GridCell<T> createCell() {
