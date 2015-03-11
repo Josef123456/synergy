@@ -3,6 +3,7 @@ package synergy.models;
 import org.junit.Before;
 import synergy.database.PhotoDao;
 import synergy.database.PhotoTagDao;
+import synergy.database.RelationshipDao;
 import synergy.database.TagDao;
 
 /**
@@ -17,6 +18,7 @@ public class BaseTest {
 		PhotoDao.getInstance ().dropTable ();
 		TagDao.getInstance ().dropTable ();
 		PhotoTagDao.getInstance ().dropTable ();
+		RelationshipDao.getInstance ().dropTable ();
 	}
 
 }

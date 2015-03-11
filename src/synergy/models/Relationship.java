@@ -9,30 +9,41 @@ public class Relationship {
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int ID = -1;
-    @DatabaseField(canBeNull = false, columnName = COLUMN_KID1,uniqueCombo = true)
+    @DatabaseField(foreign = true, canBeNull = false, columnName = COLUMN_KID1_ID,uniqueCombo = true)
     private Tag kid1Tag;
-    @DatabaseField(canBeNull = false, columnName = COLUMN_KID2,uniqueCombo = true)
+    @DatabaseField(foreign = true, canBeNull = false, columnName = COLUMN_KID2_ID,uniqueCombo = true)
     private Tag kid2Tag;
-    @DatabaseField(canBeNull = false, columnName = COLUMN_OCCURRENCES)
-    private int occurrences;
+	// Set default value to 0
+    @DatabaseField(canBeNull = false, columnName = COLUMN_OCCURRENCES, defaultValue = "0")
+    private int occurrences = -1 ;
 
-    public static final String COLUMN_KID1 = "KID1";
-    public static final String COLUMN_KID2 = "KID2";
+    public static final String COLUMN_KID1_ID = "kid1";
+    public static final String COLUMN_KID2_ID = "kid2";
     public static final String _ID = "ID";
-    public static final String COLUMN_OCCURRENCES = "Occurrences";
+    public static final String COLUMN_OCCURRENCES = "occurrences";
 
     public Relationship(Tag kid1Tag, Tag kid2Tag) {
+	    kid1Tag.save();
+	    kid2Tag.save();
         this.kid1Tag = kid1Tag;
         this.kid2Tag = kid2Tag;
-        occurrences = 0;
+	    // Throw exception is tag is not of type kid
     }
 
-    public Relationship(){
+    public Relationship() { }
 
-    }
+	public void increaseOccurences() {
+		System.out.println(getID ());
+		save ();
+		++ occurrences ;
+		save ();
+	}
 
+	public void setOccurrences (int occurrences) {
+		this.occurrences = occurrences;
+	}
 
-    public void save() {
+	public void save() {
         try {
             RelationshipDao.getInstance().createOrUpdate(this);
         } catch (Exception e) {
@@ -49,7 +60,9 @@ public class Relationship {
 
     public Tag getKid2() { return kid2Tag; }
 
-    public int getOccurrences() { return occurrences; }
+    public int getOccurrences() {
+	    return occurrences;
+    }
 
     public void setID(int ID) {
         this.ID = ID;
