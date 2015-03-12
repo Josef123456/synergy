@@ -127,7 +127,7 @@ public class Main extends Application {
     }
 
     public void bottomArea() {
-        ThumbnailArea thumbnail = new ThumbnailArea();
+        BottomArea thumbnail = new BottomArea();
         root.setBottom(thumbnail);
     }
 

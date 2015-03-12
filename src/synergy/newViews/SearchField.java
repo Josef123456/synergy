@@ -5,6 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -15,18 +16,13 @@ import java.util.Set;
  * Created by Cham on 06/03/2015.
  */
 public class SearchField extends HBox {
-    DatePicker datePicker;
 
-    HBox queryFieldAndSearch; //this is where the Button, TextField and Search Button go
-    HBox searchQueryButtons;
-    ComboBox comboBox;
-    Button searchButton;
-
-    HBox buttonPane; // This is where LocationA and LocationB button goes
-    Button locationA, locationB;
-
-    Set<String> listOfSearch;
-    int minHeight;
+    private DatePicker datePicker;
+    private HBox queryFieldAndSearch, searchQueryButtons, buttonPane;
+    private ComboBox comboBox;
+    private ToggleButton searchButton,locationA, locationB;
+    private Set<String> listOfSearch;
+    private int minHeight;
 
     private String[] mockChildrenData = {"John", "John Jones", "John James", "John George", "Billy", "Jacob", "Ronald", "Alicia", "Jonah", "Freddie", "Daniel", "David", "Harry", "Harrison", "Isaac", "Toby", "Tom", "Jill"};
 
@@ -59,8 +55,8 @@ public class SearchField extends HBox {
         comboBox.setOnKeyReleased(autoComplete);
         comboBox.setMaxWidth(Double.MAX_VALUE);
         queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
-        searchButton = new Button("Search");
-        searchButton.setStyle("-fx-text-fill: antiquewhite");
+        searchButton = new ToggleButton("Search");
+       searchButton.getStyleClass().add("toggle-button");
 
         EventHandler eventHandler = new EventHandler(){
             public void handle(Event event) {
@@ -90,10 +86,8 @@ public class SearchField extends HBox {
 
     public void setUpLocationButtons(){
         buttonPane = new HBox();
-        locationA = new Button("Location A");
-        locationB = new Button("Location B");
-        locationA.setStyle("-fx-text-fill: antiquewhite");
-        locationB.setStyle("-fx-text-fill: antiquewhite");
+        locationA = new ToggleButton("Location A");
+        locationB = new ToggleButton("Location B");
 
         buttonPane.getChildren().add(locationA);
         buttonPane.getChildren().add(locationB);
