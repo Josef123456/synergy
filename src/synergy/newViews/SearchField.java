@@ -3,10 +3,7 @@ package synergy.newViews;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -25,21 +22,21 @@ public class SearchField extends HBox {
     Button searchButton;
 
     HBox buttonPane; // This is where LocationA and LocationB button goes
-    Button locationA, locationB;
+    ToggleButton locationA, locationB;
 
     Set<String> listOfSearch;
     int minHeight;
 
     private String[] mockChildrenData = {"John", "John Jones", "John James", "John George", "Billy", "Jacob", "Ronald", "Alicia", "Jonah", "Freddie", "Daniel", "David", "Harry", "Harrison", "Isaac", "Toby", "Tom", "Jill"};
 
-    public SearchField(){
+    public SearchField() {
         listOfSearch = new HashSet<String>();
         setUpUI();
         getStyleClass().setAll("button-bar");
         getStyleClass().add("gridSearch");
     }
 
-    public void setUpUI(){
+    public void setUpUI() {
         setUpTextFieldAndSearch();
         setUpDatePicker();
         setUpLocationButtons();
@@ -49,12 +46,12 @@ public class SearchField extends HBox {
         getChildren().add(queryFieldAndSearch);
     }
 
-    public void setUpTextFieldAndSearch(){
+    public void setUpTextFieldAndSearch() {
         queryFieldAndSearch = new HBox();
 
         searchQueryButtons = new HBox();
         comboBox = new ComboBox();
-        for(String childName: mockChildrenData){
+        for (String childName : mockChildrenData) {
             comboBox.getItems().add(childName);
         }
         AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
@@ -64,7 +61,7 @@ public class SearchField extends HBox {
         searchButton = new Button("Search");
         searchButton.setStyle("-fx-text-fill: antiquewhite");
 
-        EventHandler eventHandler = new EventHandler(){
+        EventHandler eventHandler = new EventHandler() {
             public void handle(Event event) {
                 System.out.println(event.getEventType());
                 listOfSearch.add((String) comboBox.getValue());
@@ -75,10 +72,11 @@ public class SearchField extends HBox {
             }
         };
         comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if(newValue != null) {
+            if (newValue != null) {
                 System.out.println(newValue.toString());
                 System.out.println(observable.toString());
                 updateQueries((String) comboBox.getValue());
+                updateSearchDatabase();
 
             }
         });
@@ -92,31 +90,48 @@ public class SearchField extends HBox {
         queryFieldAndSearch.getChildren().add(searchButton);
     }
 
-    public void setUpDatePicker(){
+    public void setUpDatePicker() {
         datePicker = new DatePicker();
+        datePicker.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                updateSearchDatabase();
+            }
+        });
 
     }
 
-    public TextField getDatePickerTextField(){
+    public TextField getDatePickerTextField() {
         return datePicker.getEditor();
     }
 
-    public void setUpLocationButtons(){
+    public void setUpLocationButtons() {
         buttonPane = new HBox();
-        locationA = new Button("Location A");
-        locationB = new Button("Location B");
-        locationA.setStyle("-fx-text-fill: antiquewhite");
-        locationB.setStyle("-fx-text-fill: antiquewhite");
+        locationA = new ToggleButton("Location A");
+        locationB = new ToggleButton("Location B");
+        //locationA.setStyle("-fx-text-fill: antiquewhite");
+        //locationB.setStyle("-fx-text-fill: antiquewhite");
+
+        EventHandler eventHandler = new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(ActionEvent event) {
+                updateSearchDatabase();
+            }
+        };
+
+        locationA.setOnAction(eventHandler);
+        locationB.setOnAction(eventHandler);
 
         buttonPane.getChildren().add(locationA);
         buttonPane.getChildren().add(locationB);
     }
 
-    public void updateQueries(String addedQuery){
+    public void updateQueries(String addedQuery) {
         System.out.println(addedQuery);
-        if(listOfSearch.contains(addedQuery)){
+        if (listOfSearch.contains(addedQuery)) {
 
-        } else{
+        } else {
             listOfSearch.add((String) comboBox.getValue());
             Button queryButton = new Button(comboBox.getValue() + " - ");
             queryButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -133,11 +148,11 @@ public class SearchField extends HBox {
         }
     }
 
-    public ComboBox getComboBox(){
+    public ComboBox getComboBox() {
         return comboBox;
     }
 
-    public void setAllMinHeight(int height){
+    public void setAllMinHeight(int height) {
         this.minHeight = height;
         datePicker.setMinHeight(height - 5);
         buttonPane.setMinHeight(height);
@@ -148,4 +163,11 @@ public class SearchField extends HBox {
     }
 
 
+    public void updateSearchDatabase() {
+        Set listOfSearchedField = listOfSearch;
+        boolean isLocationA = locationA.isPressed();
+        boolean isLocationB = locationB.isPressed();
+        String date = getDatePickerTextField().getText();
+        //@TODO: placeholder for alex
+    }
 }

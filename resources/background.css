@@ -59,6 +59,10 @@
     -fx-background-color: rgba(34, 34, 34, 0.83);
 }
 
+.comboBox comboBox{
+    -fx-text-fill: antiquewhite;
+    -fx-background-color: rgba(34, 34, 34, 0.83);
+}
 .toggle-button toggleButton {
     -fx-background-color: -darkest-black,
     -dark-highlight,
@@ -104,9 +108,9 @@
     -fx-padding: 15;
     -fx-spacing: 10;
 }
-.toggle-button {
+/*.toggle-button {
     -fx-text-fill: antiquewhite;
     -fx-font: bold;
     -fx-background-color: #292929;
     -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
-}
+}*/
