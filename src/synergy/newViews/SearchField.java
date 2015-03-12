@@ -1,10 +1,12 @@
 package synergy.newViews;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
@@ -72,7 +74,14 @@ public class SearchField extends HBox {
                 searchQueryButtons.getChildren().add(queryButton);
             }
         };
-        //comboBox.itemsProperty().addListener();
+        comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if(newValue != null) {
+                System.out.println(newValue.toString());
+                System.out.println(observable.toString());
+                updateQueries((String) comboBox.getValue());
+
+            }
+        });
 
         //searchButton.setOnAction(eventHandler);
         //comboBox.setOnAction(eventHandler);
@@ -88,6 +97,10 @@ public class SearchField extends HBox {
 
     }
 
+    public TextField getDatePickerTextField(){
+        return datePicker.getEditor();
+    }
+
     public void setUpLocationButtons(){
         buttonPane = new HBox();
         locationA = new Button("Location A");
@@ -99,16 +112,37 @@ public class SearchField extends HBox {
         buttonPane.getChildren().add(locationB);
     }
 
+    public void updateQueries(String addedQuery){
+        System.out.println(addedQuery);
+        if(listOfSearch.contains(addedQuery)){
+
+        } else{
+            listOfSearch.add((String) comboBox.getValue());
+            Button queryButton = new Button(comboBox.getValue() + " - ");
+            queryButton.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    listOfSearch.remove(queryButton.getText());
+                    searchQueryButtons.getChildren().remove(queryButton);
+                }
+            });
+            queryButton.setMinHeight(minHeight);
+            queryButton.setStyle("-fx-text-fill: antiquewhite");
+            searchQueryButtons.getChildren().add(queryButton);
+
+        }
+    }
+
     public ComboBox getComboBox(){
         return comboBox;
     }
 
     public void setAllMinHeight(int height){
         this.minHeight = height;
-        datePicker.setMinHeight(height);
+        datePicker.setMinHeight(height - 5);
         buttonPane.setMinHeight(height);
         searchButton.setMinHeight(height);
-        comboBox.setMinHeight(height);
+        comboBox.setMinHeight(height - 5);
         locationA.setMinHeight(height);
         locationB.setMinHeight(height);
     }
