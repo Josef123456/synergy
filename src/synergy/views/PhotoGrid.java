@@ -1,4 +1,4 @@
-package synergy.newViews;
+package synergy.views;
 
 
 import java.util.ArrayList;

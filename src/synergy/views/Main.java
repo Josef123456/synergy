@@ -1,135 +1,170 @@
 package synergy.views;
 
 
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.CopyOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
-
-
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.UIManager;
-
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import synergy.models.Photo;
 
-/**
- * Created by Josef on 02/02/2015.
- */
-public class Main extends JFrame {
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
-    private JPanel mainPanel, northernPanel, buttonsNorth, cardPanel;
-    private JButton importButton, exportButton, calendarButton, albumButton, allPhotoButton,
-            gridPhotoButton;
-    private JTextField searchField;
+public class Main extends Application {
 
-    private PhotosPanel photosPanel;
+    private Button importBtn, exportBtn, allPhotosBtn, printingViewBtn, trashBtn;
+    private ToolBar toolBar;
+    private VBox topPane;
+    private HBox leftButtonsBox, rightButtonsBox;
+    private Region spacer;
+    private SearchField searchField;
+    private ComboBox comboBox;
+    private static Stage primaryStage;
+    private PhotoGrid photosGrid;
+    private ObservableList<Image> displayedImagesList;
+    private ArrayList<Image> imageArrayList;
+    private BorderPane root;
 
-    public Main() throws IOException {
-        super("InstaTag");
-        setSize(700, 600);
-        setMinimumSize(new Dimension(600, 500));
-        setLocationRelativeTo(null);
-        buildInterface();
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setVisible(true);
+    public void start(final Stage primaryStage) {
+        Main.primaryStage = primaryStage;
+        root = new BorderPane();
+        root.setId("background");
+
+        topArea();
+        centerArea();
+        rightArea();
+        bottomArea();
+        addEventHandlers();
+
+        Scene scene = new Scene(root, 1000, 600);
+        primaryStage.setTitle("Instatag");
+        primaryStage.setScene(scene);
+        primaryStage.setMinHeight(400);
+        primaryStage.setMinWidth(500);
+        primaryStage.centerOnScreen();
+        scene.getStylesheets().add("background.css");
+        primaryStage.show();
     }
 
-    private void buildInterface() throws IOException {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        panelConstruct();
-        northernConstruct();
-        mainPanel.add(BorderLayout.NORTH, northernPanel);
-        mainPanel.add(BorderLayout.CENTER, cardPanel);
-        northernPanel.setBackground(Color.decode("#001E28"));
-        buttonsNorth.setBackground(Color.decode("#001E28"));
-        add(mainPanel);
-    }
+    public void topArea() {
+        topPane = new VBox();
+        toolBar = new ToolBar();
+        spacer = new Region();
+        spacer.getStyleClass().setAll("spacer");
 
-    private void panelConstruct() {
-        //main panel for all panels
-        mainPanel = new JPanel(new BorderLayout());
-        cardPanel = new JPanel(new CardLayout());
-        cardPanel.add(new CalendarAreaPanel(), "CALENDAR");
+        leftButtonsBox = new HBox();
+        leftButtonsBox.getStyleClass().setAll("button-bar");
+        importBtn = new Button("Import");
+        setupButtonStyle(importBtn, "firstButton");
+        exportBtn = new Button("Export");
+        setupButtonStyle(exportBtn, "secondButton");
+        leftButtonsBox.getChildren().addAll(importBtn, exportBtn);
 
-        photosPanel = new PhotosPanel();
-        cardPanel.add(photosPanel, "PHOTOS");
-        //northern panels
-        northernPanel = new JPanel(new GridLayout(2, 0));
-        buttonsNorth = new JPanel();
-        buttonsNorth.setLayout(new BoxLayout(buttonsNorth, BoxLayout.LINE_AXIS));
-    }
+        rightButtonsBox = new HBox();
+        rightButtonsBox.getStyleClass().setAll("button-bar");
 
-    private void createButtons() {
-        allPhotoButton = new JButton("All Photos");
-        gridPhotoButton = new JButton("Grid Photos");
-        calendarButton = new JButton("Calendar");
-        albumButton = new JButton("Album");
-        importButton = new JButton("Import");
-        exportButton = new JButton("Export");
-    }
+        allPhotosBtn = new Button("Photos");
+        setupButtonStyle(allPhotosBtn, "firstButton");
 
-    private void addActionListenerToImportButton() {
-        final JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setMultiSelectionEnabled(true);
-        System.out.println(Photo.getAllPhotos().size());
-        photosPanel.setPhotos(Photo.getAllPhotos());
+        printingViewBtn = new Button("Printing");
+        setupButtonStyle(printingViewBtn, "thirdButton");
 
-        importButton.addActionListener(new ActionListener() {
+        trashBtn = new Button("Trash");
+        setupButtonStyle(trashBtn, "secondButton");
+        rightButtonsBox.getChildren().addAll(allPhotosBtn, printingViewBtn, trashBtn);
+
+        leftButtonsBox.setAlignment(Pos.CENTER_LEFT);
+        rightButtonsBox.setAlignment(Pos.CENTER_RIGHT);
+        leftButtonsBox.getChildren().add(rightButtonsBox);
+        HBox.setHgrow(leftButtonsBox, Priority.ALWAYS);
+
+        //Previous implementation of the search field
+        /*final TextField searchField = new TextField("Search");
+        searchField.setId("searching");
+        searchField.setMinHeight(45);
+        searchField.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
+        searchField.focusedProperty().addListener(new ChangeListener<Boolean>() {
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean
+                    oldPropertyValue, Boolean newPropertyValue) {
+                if (newPropertyValue) {
+                    System.out.println(arg0.getClass().toString());
+                }
+            }
+        });*/
+        searchField = new SearchField();
+        comboBox = searchField.getComboBox();
+        //comboBox.getStyleClass().setAll("searching");
+        comboBox.getEditor().setId("searching");
+        comboBox.getEditor().setFont(Font.font("Arial", FontPosture.ITALIC, 25));
+        searchField.getDatePickerTextField().setId("searching");
+        searchField.getDatePickerTextField().setFont(Font.font("Arial", FontPosture.ITALIC, 25));
 
-                int returnValue = fileChooser.showOpenDialog(Main.this);
+        searchField.setAllMinHeight(45);
+
+        toolBar.getItems().addAll(leftButtonsBox, rightButtonsBox);
+        topPane.getChildren().addAll(toolBar, searchField);
+        root.setTop(topPane);
+    }
+
+    public void centerArea() {
+        displayedImagesList = FXCollections.observableArrayList(new ArrayList<Image>());
+        photosGrid = new PhotoGrid(displayedImagesList);
+        root.setCenter(photosGrid);
+    }
+
+    public void rightArea() {
+        TaggingArea tagArea = new TaggingArea();
+        root.setRight(tagArea);
+    }
+
+    public void bottomArea() {
+        BottomArea thumbnail = new BottomArea();
+        root.setBottom(thumbnail);
+    }
+
+    public void setupButtonStyle(Button btn, String buttonName) {
+        btn.setStyle("-fx-text-fill: antiquewhite");
+        btn.getStyleClass().add(buttonName);
+        btn.setMinWidth(130);
+    }
+
+    private void addEventHandlerToImport() {
+        final FileChooser fileChooser = new FileChooser();
+        photosGrid.setGridPhotos(Photo.getAllPhotos());
+
+        importBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                List<File> list = fileChooser.showOpenMultipleDialog(primaryStage);
+                ArrayList<Photo> lastImported = new ArrayList<Photo>();
                 long t1 = System.currentTimeMillis();
-                CopyOption[] options = new CopyOption[]{
-                        StandardCopyOption.REPLACE_EXISTING,
-                        StandardCopyOption.COPY_ATTRIBUTES,
-                };
 
-                System.out.println(returnValue);
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-
-                    File[] file = fileChooser.getSelectedFiles();
-
-                    for (int i = 0; i < file.length; i++) {
-
-                        //Copies the current file in the array to a new directory
-                        String fileName = file[i].getName();
-                        Path inputDir = Paths.get(file[i].getPath());
-                        Path outputDir = Paths.get("photos\\" + fileName);
-                        try {
-                            java.nio.file.Files.copy(inputDir,outputDir, options);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                        Photo photo = new Photo(file[i].toString());
+                if (list != null) {
+                    for (File file : list) {
+                        Photo photo = new Photo(file.toString());
                         photo.save();
+                        lastImported.add(photo);
                     }
-                    photosPanel.setPhotos(Photo.getAllPhotos());
+                    if (photosGrid.getItems().size() == 0) {
+                        photosGrid.setGridPhotos(Photo.getAllPhotos());
+                    }
+                    else {
+                        photosGrid.setGridPhotos(lastImported);
+                    }
                     System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
                 }
                 long t2 = System.currentTimeMillis();
@@ -138,101 +173,14 @@ public class Main extends JFrame {
         });
     }
 
-    private void addActionListenerToCalendarButton() {
-        calendarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
-                cardLayout.show(cardPanel, "CALENDAR");
-            }
-        });
+    public void addEventHandlerToExport() {
     }
 
-    private void addActionListenerToAllPhotoButton() {
-        allPhotoButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-	            List<Photo> allPhotos = Photo.getAllPhotos();
-	            if ( !photosPanel.getPhotos ().equals (allPhotos) ) {
-		            photosPanel.setPhotos (allPhotos);
-	            }
-                CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
-                cardLayout.show (cardPanel, "PHOTOS");
-                photosPanel.setIsMainView(true);
-            }
-        });
+    public void addEventHandlers() {
+        addEventHandlerToImport();
+        addEventHandlerToExport();
     }
-
-    private void addActionListenerToGridPhotoButton() {
-        gridPhotoButton.addActionListener(new ActionListener() {
-
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cardLayout = (CardLayout) cardPanel.getLayout();
-                cardLayout.show(cardPanel, "PHOTOS");
-                photosPanel.setNoSelection();
-                photosPanel.setIsMainView(false);
-            }
-        });
-    }
-
-    private void addActionListeners() {
-        addActionListenerToImportButton();
-        addActionListenerToAllPhotoButton();
-        addActionListenerToCalendarButton();
-        addActionListenerToGridPhotoButton();
-    }
-
-    private void addButtonsToLayout() {
-        buttonsNorth.add(Box.createHorizontalStrut(7));
-        buttonsNorth.add(importButton);
-        buttonsNorth.add(Box.createHorizontalStrut(5));
-        buttonsNorth.add(exportButton);
-        buttonsNorth.add(Box.createHorizontalGlue());
-        buttonsNorth.add(albumButton);
-        buttonsNorth.add(Box.createHorizontalStrut(5));
-        buttonsNorth.add(calendarButton);
-        buttonsNorth.add(Box.createHorizontalStrut(5));
-        buttonsNorth.add(allPhotoButton);
-        buttonsNorth.add(Box.createHorizontalStrut(5));
-        buttonsNorth.add(gridPhotoButton);
-        buttonsNorth.add(Box.createHorizontalStrut(5));
-        northernPanel.add(buttonsNorth);
-        buttonsNorth.add(Box.createHorizontalStrut(7));
-        for (Component jButton : buttonsNorth.getComponents()) {
-            setComponentFont(jButton);
-        }
-    }
-
-    private void addSearchField() {
-        searchField = new JTextField("Search", 10);
-        searchField.setBackground(new Color(204, 204, 204));
-        searchField.setFont(new Font("Tahoma", 2, 24));
-        northernPanel.add(searchField);
-        searchField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusLost(FocusEvent e) {
-                searchField.setText("Search");
-            }
-
-            @Override
-            public void focusGained(FocusEvent e) {
-                searchField.setText("");
-            }
-        });
-    }
-
-    private void northernConstruct() {
-        addSearchField();
-        createButtons();
-        addActionListeners();
-        addButtonsToLayout();
-    }
-
-    private void setComponentFont(Component component) {
-        component.setFont(new Font("Tahoma", Font.PLAIN, 15));
-    }
-
-    public static void main(String[] args) throws IOException {
-        new Main();
+    public static void main(String[] args) {
+        Application.launch();
     }
 }

@@ -18,7 +18,7 @@ import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import synergy.models.Photo;
-import synergy.newViews.PhotoGrid;
+import synergy.views.PhotoGrid;
 import synergy.utilities.WritableImageCreator;
 
 /**

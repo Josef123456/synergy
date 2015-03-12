@@ -39,7 +39,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
-import synergy.newViews.PhotoGrid;
+import synergy.views.PhotoGrid;
 
 public class GridRowSkin<T> extends CellSkinBase<GridRow<T>, BehaviorBase<GridRow<T>>> {
     public static GridRowSkin gridRowSkin;

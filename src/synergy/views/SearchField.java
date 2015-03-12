@@ -1,4 +1,4 @@
-package synergy.newViews;
+package synergy.views;
 
 import javafx.event.ActionEvent;
 import javafx.event.Event;
