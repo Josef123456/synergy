@@ -9,12 +9,10 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.models.Photo;
@@ -31,7 +29,7 @@ public class Main extends Application {
     private HBox leftButtonsBox, rightButtonsBox;
     private Region spacer;
     private SearchField searchField;
-    private TextField textField;
+    private ComboBox comboBox;
     private static Stage primaryStage;
     private PhotoGrid photosGrid;
     private ObservableList<Image> displayedImagesList;
@@ -106,9 +104,9 @@ public class Main extends Application {
             }
         });*/
         searchField = new SearchField();
-        textField = searchField.getTextField();
-        textField.setId("searching");
-        textField.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
+        comboBox = searchField.getComboBox();
+        comboBox.setId("searching");
+        //comboBox.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
 
         searchField.setAllMinHeight(45);
 

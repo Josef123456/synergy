@@ -3,12 +3,10 @@ package synergy.newViews;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,14 +16,19 @@ import java.util.Set;
  */
 public class SearchField extends HBox {
     DatePicker datePicker;
-    HBox fieldAndSearch;
 
-    TextField textField;
-    Button searchButton,locationA, locationB;
+    HBox queryFieldAndSearch; //this is where the Button, TextField and Search Button go
+    HBox searchQueryButtons;
+    ComboBox comboBox;
+    Button searchButton;
 
-    HBox buttonPane;
+    HBox buttonPane; // This is where LocationA and LocationB button goes
+    Button locationA, locationB;
 
     Set<String> listOfSearch;
+    int minHeight;
+
+    private String[] mockChildrenData = {"John", "John Jones", "John James", "John George", "Billy", "Jacob", "Ronald", "Alicia", "Jonah", "Freddie", "Daniel", "David", "Harry", "Harrison", "Isaac", "Toby", "Tom", "Jill"};
 
     public SearchField(){
         listOfSearch = new HashSet<String>();
@@ -41,61 +44,43 @@ public class SearchField extends HBox {
 
         getChildren().add(datePicker);
         getChildren().add(buttonPane);
-        getChildren().add(fieldAndSearch);
+        getChildren().add(queryFieldAndSearch);
     }
 
     public void setUpTextFieldAndSearch(){
-        fieldAndSearch = new HBox();
-        textField = new TextField();
+        queryFieldAndSearch = new HBox();
+
+        searchQueryButtons = new HBox();
+        comboBox = new ComboBox();
+        for(String childName: mockChildrenData){
+            comboBox.getItems().add(childName);
+        }
+        AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
+        comboBox.setOnKeyReleased(autoComplete);
+        comboBox.setMaxWidth(Double.MAX_VALUE);
+        queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
         searchButton = new Button("Search");
         searchButton.setStyle("-fx-text-fill: antiquewhite");
 
         EventHandler eventHandler = new EventHandler(){
             public void handle(Event event) {
-                listOfSearch.add(textField.getText());
-                textField.requestFocus(); // get focus first
-                textField.getCaretPosition();
-                textField.selectNextWord();
-
+                System.out.println(event.getEventType());
+                listOfSearch.add((String) comboBox.getValue());
+                Button queryButton = new Button(comboBox.getValue() + " - ");
+                queryButton.setMinHeight(minHeight);
+                queryButton.setStyle("-fx-text-fill: antiquewhite");
+                searchQueryButtons.getChildren().add(queryButton);
             }
         };
+        //comboBox.itemsProperty().addListener();
 
-        EventHandler<MouseEvent> mouseEvent = new EventHandler<MouseEvent>(){
+        //searchButton.setOnAction(eventHandler);
+        //comboBox.setOnAction(eventHandler);
 
-            @Override
-            public void handle(MouseEvent event) {
-                if(textField.getCaretPosition() == textField.getLength()){
+        queryFieldAndSearch.getChildren().add(searchQueryButtons);
+        queryFieldAndSearch.getChildren().add(comboBox);
 
-                } else {
-                    textField.previousWord();
-                    textField.selectNextWord();
-                }
-
-            }
-        };
-
-        EventHandler<KeyEvent> keyEventHandler = new EventHandler<KeyEvent>(){
-            @Override
-            public void handle(KeyEvent event) {
-                int position = textField.getCaretPosition();
-                System.out.println(position + textField.getText(position - 1, position));
-                if(event.getCode().equals(KeyCode.SPACE)){
-
-                }
-                if(!event.getCode().equals(KeyCode.BACK_SPACE)){
-
-                } else if(event.getCode().equals(KeyCode.BACK_SPACE) && !textField.getText(position, position).equals(" ")){
-                    textField.selectPreviousWord();
-                }
-            }
-        };
-
-        searchButton.setOnAction(eventHandler);
-        textField.setOnMouseReleased(mouseEvent);
-        textField.setOnKeyReleased(keyEventHandler);
-        fieldAndSearch.getChildren().add(textField);
-
-        fieldAndSearch.getChildren().add(searchButton);
+        queryFieldAndSearch.getChildren().add(searchButton);
     }
 
     public void setUpDatePicker(){
@@ -107,23 +92,26 @@ public class SearchField extends HBox {
         buttonPane = new HBox();
         locationA = new Button("Location A");
         locationB = new Button("Location B");
-       locationA.setStyle("-fx-text-fill: antiquewhite");
-       locationB.setStyle("-fx-text-fill: antiquewhite");
+        locationA.setStyle("-fx-text-fill: antiquewhite");
+        locationB.setStyle("-fx-text-fill: antiquewhite");
 
         buttonPane.getChildren().add(locationA);
         buttonPane.getChildren().add(locationB);
     }
 
-    public TextField getTextField(){
-        return textField;
+    public ComboBox getComboBox(){
+        return comboBox;
     }
 
     public void setAllMinHeight(int height){
+        this.minHeight = height;
         datePicker.setMinHeight(height);
         buttonPane.setMinHeight(height);
         searchButton.setMinHeight(height);
-        textField.setMinHeight(height);
+        comboBox.setMinHeight(height);
         locationA.setMinHeight(height);
         locationB.setMinHeight(height);
     }
+
+
 }
