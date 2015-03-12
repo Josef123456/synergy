@@ -27,12 +27,13 @@ public class Relationship {
 	    kid2Tag.save();
         this.kid1Tag = kid1Tag;
         this.kid2Tag = kid2Tag;
+        save();
 	    // Throw exception is tag is not of type kid
     }
 
-    public Relationship() { }
+    public Relationship() {save(); }
 
-	public void increaseOccurences() {
+	public void increaseOccurrences() {
 		System.out.println(getID ());
 		save ();
 		++ occurrences ;

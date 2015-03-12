@@ -13,6 +13,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.models.Photo;
@@ -105,8 +107,11 @@ public class Main extends Application {
         });*/
         searchField = new SearchField();
         comboBox = searchField.getComboBox();
-        comboBox.setId("searching");
-        //comboBox.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
+        //comboBox.getStyleClass().setAll("searching");
+        comboBox.getEditor().setId("searching");
+        comboBox.getEditor().setFont(Font.font("Arial", FontPosture.ITALIC, 25));
+        searchField.getDatePickerTextField().setId("searching");
+        searchField.getDatePickerTextField().setFont(Font.font("Arial", FontPosture.ITALIC, 25));
 
         searchField.setAllMinHeight(45);
 
