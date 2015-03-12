@@ -2,6 +2,7 @@ package synergy.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
+import synergy.database.RelationshipDao;
 import synergy.database.TagDao;
 
 import java.sql.SQLException;
@@ -81,6 +82,15 @@ public class Tag {
 		}
 		return null;
 	}
+
+    public List<Relationship> getRelationshipsForTagSortedByOccurrences(){
+        try {
+            return RelationshipDao.getInstance().getRelationshipsForTagSortedByOccurrences(this);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 	@Override
 	public String toString () {

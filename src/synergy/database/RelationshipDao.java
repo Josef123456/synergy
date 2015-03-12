@@ -51,7 +51,7 @@ public class RelationshipDao {
 		return relationshipDao.query (qb.prepare ());
 	}
 
-	public List<Relationship> getRelationshipForTagSortedByOccurences(Tag tag) throws SQLException {
+	public List<Relationship> getRelationshipsForTagSortedByOccurrences(Tag tag) throws SQLException {
 		QueryBuilder<Relationship, Integer> qb = relationshipDao.queryBuilder ();
 		qb.where().eq(Relationship.COLUMN_KID1_ID, tag.getID ()).or ().
 				eq (Relationship.COLUMN_KID2_ID, tag.getID ());
@@ -68,14 +68,12 @@ public class RelationshipDao {
 	    List<Relationship> relationships = getRelationshipForTags (relationship.getKid1 (), relationship.getKid2 ());
 	    if ( relationships.size () > 0 ) {
 		    relationship.setID( relationships.get (0).getID ());
-            System.out.println("FOUND SAME THINGS! "+relationships.size());
 		    if ( relationship.getOccurrences () == -1 ) {
                 relationships.get(0).increaseOccurrences();
 			    relationship.setOccurrences (relationships.get (0).getOccurrences ());
 		    }
 	    } else {
 		    relationship.setOccurrences (1);
-            System.out.println("OCCURRENCES SET TO 0");
 	    }
 
         relationshipDao.createOrUpdate(relationship);

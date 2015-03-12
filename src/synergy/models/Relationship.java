@@ -65,6 +65,12 @@ public class Relationship {
 	    return occurrences;
     }
 
+    public Tag getPartner(Tag kid){
+        if(kid.equals(kid1Tag))
+            return kid2Tag;
+        return kid1Tag;
+    }
+
     public void setID(int ID) {
         this.ID = ID;
     }
