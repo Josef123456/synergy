@@ -25,6 +25,8 @@ import synergy.tasks.ThumbnailLoaderTask;
 public class PhotoGrid extends GridView<Image> {
 
     private static ArrayList<Image> selectedImages = new ArrayList<>();
+	private static List<Photo> photos = new ArrayList<> ();
+	private static ArrayList<Photo> selectedPhotos = new ArrayList<> ();
     private static GridView<Image> photosGrid;
     private static ObservableList<Image> displayedImagesList;
     private static ImageGridCell lastSelectedCell = null;
@@ -41,18 +43,19 @@ public class PhotoGrid extends GridView<Image> {
         return selectedImages;
     }
 
-    public PhotoGrid(ObservableList imagesList) {
+	public static ArrayList<Photo> getSelectedPhotos () {
+		return selectedPhotos;
+	}
+
+	public PhotoGrid(ObservableList imagesList) {
         displayedImagesList = imagesList;
         photosGrid = this;
         this.setItems(displayedImagesList);
 
-        photosGrid.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
+        photosGrid.setOnMouseClicked(event -> {
 //                System.out.println("REGISTERED EVENT AT " + event.getSceneX() + " " + event
 //                        .getSceneY());
 //                GridRowSkin.gridRowSkin.getNodeAtCoordinates();
-            }
         });
 
         this.setCellFactory(param -> {
@@ -62,14 +65,16 @@ public class PhotoGrid extends GridView<Image> {
                             int lastSelectedIndex = lastSelectedCell.getIndex();
                             int newlySelectedIndex = newImageCell.getIndex();
                             int iterationIndex = newlySelectedIndex;
-                            Image shiftSelectedImage = displayedImagesList.get
-                                    (iterationIndex);
+                            Image shiftSelectedImage = displayedImagesList.get(iterationIndex);
+	                        Photo shiftSelectedPhoto = photos.get(iterationIndex);
 
                             if (newlySelectedIndex < lastSelectedIndex) {
                                 if (selectedImages.contains(shiftSelectedImage))
                                     iterationIndex++;
-
                                 while (iterationIndex <= lastSelectedIndex) {
+	                                shiftSelectedPhoto = photos.get(iterationIndex);
+	                                selectedPhotos.remove(shiftSelectedPhoto);
+	                                selectedPhotos.add(shiftSelectedPhoto);
 
                                     shiftSelectedImage = displayedImagesList.get(iterationIndex);
                                     selectedImages.remove(shiftSelectedImage);
@@ -79,8 +84,10 @@ public class PhotoGrid extends GridView<Image> {
                             } else {
                                 if (selectedImages.contains(shiftSelectedImage))
                                     iterationIndex--;
-
                                 while (iterationIndex >= lastSelectedIndex) {
+	                                shiftSelectedPhoto = photos.get(iterationIndex);
+	                                selectedPhotos.remove(shiftSelectedPhoto);
+	                                selectedPhotos.add(shiftSelectedPhoto);
 
                                     shiftSelectedImage = displayedImagesList.get(iterationIndex);
                                     selectedImages.remove(shiftSelectedImage);
@@ -101,8 +108,12 @@ public class PhotoGrid extends GridView<Image> {
     }
 
     public void setCellSelection(ImageGridCell imageCell) {
+	    Image selectedImage = imageCell.getItem ();
+	    int selectedImageIndex = displayedImagesList.indexOf (selectedImage);
         if (imageCell.getBorder() == null) {
-            selectedImages.add(imageCell.getItem());
+	        selectedPhotos.add(photos.get(selectedImageIndex));
+            selectedImages.add(selectedImage);
+
             BorderStroke[] borderStrokeArray = new BorderStroke[4];
             for (int i = 0; i < 4; i++)
                 borderStrokeArray[i] = new BorderStroke(javafx.scene.paint.Color
@@ -110,12 +121,14 @@ public class PhotoGrid extends GridView<Image> {
                         new Insets(-5, -5, -5, -5));
             imageCell.setBorder(new Border(borderStrokeArray));
         } else {
-            selectedImages.remove(imageCell.getItem());
+	        selectedPhotos.remove(photos.get(selectedImageIndex));
+            selectedImages.remove (selectedImage);
             imageCell.setBorder(null);
         }
     }
 
     public void setGridPhotos(final List<Photo> photosToDisplay) {
+	    photos = photosToDisplay;
         Thread setPhotosThread = new Thread(new ThumbnailLoaderTask(photosToDisplay));
         setPhotosThread.setDaemon(true);
         setPhotosThread.start();

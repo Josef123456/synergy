@@ -26,7 +26,8 @@ public class SearchField extends HBox {
     Set<String> listOfSearch;
     int minHeight;
 
-    private String[] mockChildrenData = {"John", "John Jones", "John James", "John George", "Billy", "Jacob", "Ronald", "Alicia", "Jonah", "Freddie", "Daniel", "David", "Harry", "Harrison", "Isaac", "Toby", "Tom", "Jill"};
+    private String[] mockChildrenData = {"John", "John Jones", "John James", "John George", "Billy", "Jacob", "Ronald",
+		    "Alicia", "Jonah", "Freddie", "Daniel", "David", "Harry", "Harrison", "Isaac", "Toby", "Tom", "Jill"};
 
     public SearchField() {
         listOfSearch = new HashSet<String>();
@@ -59,16 +60,16 @@ public class SearchField extends HBox {
         queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
         searchButton = new ToggleButton("Search");
 
-        EventHandler eventHandler = new EventHandler() {
-            public void handle(Event event) {
-                System.out.println(event.getEventType());
-                listOfSearch.add((String) comboBox.getValue());
-                Button queryButton = new Button(comboBox.getValue() + " - ");
-                queryButton.setMinHeight(minHeight);
-                queryButton.setStyle("-fx-text-fill: antiquewhite");
-                searchQueryButtons.getChildren().add(queryButton);
-            }
-        };
+//        EventHandler eventHandler = new EventHandler() {
+//            public void handle(Event event) {
+//                System.out.println(event.getEventType());
+//                listOfSearch.add((String) comboBox.getValue());
+//                Button queryButton = new Button(comboBox.getValue() + " - ");
+//                queryButton.setMinHeight(minHeight);
+//                queryButton.setStyle("-fx-text-fill: antiquewhite");
+//                searchQueryButtons.getChildren().add(queryButton);
+//            }
+//        };
         comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 System.out.println(newValue.toString());

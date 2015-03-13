@@ -145,30 +145,27 @@ public class Main extends Application {
         final FileChooser fileChooser = new FileChooser();
         photosGrid.setGridPhotos(Photo.getAllPhotos());
 
-        importBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                List<File> list = fileChooser.showOpenMultipleDialog(primaryStage);
-                ArrayList<Photo> lastImported = new ArrayList<Photo>();
-                long t1 = System.currentTimeMillis();
+        importBtn.setOnAction(event -> {
+            List<File> list = fileChooser.showOpenMultipleDialog(primaryStage);
+            ArrayList<Photo> lastImported = new ArrayList<>();
+            long t1 = System.currentTimeMillis();
 
-                if (list != null) {
-                    for (File file : list) {
-                        Photo photo = new Photo(file.toString());
-                        photo.save();
-                        lastImported.add(photo);
-                    }
-                    if (photosGrid.getItems().size() == 0) {
-                        photosGrid.setGridPhotos(Photo.getAllPhotos());
-                    }
-                    else {
-                        photosGrid.setGridPhotos(lastImported);
-                    }
-                    System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
+            if (list != null) {
+                for (File file : list) {
+                    Photo photo = new Photo(file.toString());
+                    photo.save();
+                    lastImported.add(photo);
                 }
-                long t2 = System.currentTimeMillis();
-                System.out.println(t2 - t1 + " milliseconds");
+                if (photosGrid.getItems().size() == 0) {
+                    photosGrid.setGridPhotos(Photo.getAllPhotos());
+                }
+                else {
+                    photosGrid.setGridPhotos(lastImported);
+                }
+                System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
             }
+            long t2 = System.currentTimeMillis();
+            System.out.println(t2 - t1 + " milliseconds");
         });
     }
 
