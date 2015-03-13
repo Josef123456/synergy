@@ -55,7 +55,7 @@ public class RelationshipDao {
 		QueryBuilder<Relationship, Integer> qb = relationshipDao.queryBuilder ();
 		qb.where().eq(Relationship.COLUMN_KID1_ID, tag.getID ()).or ().
 				eq (Relationship.COLUMN_KID2_ID, tag.getID ());
-		qb.orderBy (Relationship.COLUMN_OCCURRENCES, true);
+		qb.orderBy (Relationship.COLUMN_OCCURRENCES, false);
 		return relationshipDao.query (qb.prepare ());
 	}
 
