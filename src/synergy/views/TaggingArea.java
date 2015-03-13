@@ -4,10 +4,11 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.*;
-import javafx.scene.effect.DropShadow;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -48,33 +49,21 @@ public class TaggingArea extends BorderPane {
         boxLocation = new HBox(5);
         button1 = new ToggleButton("RoomA");
         button2 = new ToggleButton("RoomB");
-        button1.getStyleClass().add("toggle-button");
+
 
 // If you guys dont like the background shadow thingy then just delete it...
-        DropShadow shadow1 = new DropShadow();
+
         button1.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                button1.setEffect(shadow1);
-                button2.setEffect(null);
-                boxMainLocation.setEffect(shadow1);
-                vBoxChildren.setEffect(shadow1);
-                vBoxSuggestion.setEffect(shadow1);
-                datePane().setEffect(shadow1);
+
             }
         });
 
-        DropShadow shadow2 = new DropShadow();
-        shadow2.setColor(Color.ANTIQUEWHITE);
         button2.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                button1.setEffect(null);
-                button2.setEffect(shadow2);
-                boxMainLocation.setEffect(shadow2);
-                vBoxChildren.setEffect(shadow2);
-                vBoxSuggestion.setEffect(shadow2);
-                datePane().setEffect(shadow2);
+
             }
         });
 

@@ -107,7 +107,6 @@ public class Main extends Application {
         });*/
         searchField = new SearchField();
         comboBox = searchField.getComboBox();
-        //comboBox.getStyleClass().setAll("searching");
         comboBox.getEditor().setId("searching");
         comboBox.getEditor().setFont(Font.font("Arial", FontPosture.ITALIC, 25));
         searchField.getDatePickerTextField().setId("searching");

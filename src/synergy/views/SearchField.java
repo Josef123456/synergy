@@ -14,15 +14,14 @@ import java.util.Set;
  * Created by Cham on 06/03/2015.
  */
 public class SearchField extends HBox {
-    DatePicker datePicker;
 
+    DatePicker datePicker;
     HBox queryFieldAndSearch; //this is where the Button, TextField and Search Button go
     HBox searchQueryButtons;
     ComboBox comboBox;
-    Button searchButton;
 
     HBox buttonPane; // This is where LocationA and LocationB button goes
-    ToggleButton locationA, locationB;
+    ToggleButton locationA, locationB,searchButton;
 
     Set<String> listOfSearch;
     int minHeight;
@@ -31,9 +30,9 @@ public class SearchField extends HBox {
 
     public SearchField() {
         listOfSearch = new HashSet<String>();
+        getStyleClass().addAll("toggle-button");
         setUpUI();
-        getStyleClass().setAll("button-bar");
-        getStyleClass().add("gridSearch");
+
     }
 
     public void setUpUI() {
@@ -58,8 +57,7 @@ public class SearchField extends HBox {
         comboBox.setOnKeyReleased(autoComplete);
         comboBox.setMaxWidth(Double.MAX_VALUE);
         queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
-        searchButton = new Button("Search");
-        searchButton.setStyle("-fx-text-fill: antiquewhite");
+        searchButton = new ToggleButton("Search");
 
         EventHandler eventHandler = new EventHandler() {
             public void handle(Event event) {
@@ -107,10 +105,8 @@ public class SearchField extends HBox {
 
     public void setUpLocationButtons() {
         buttonPane = new HBox();
-        locationA = new ToggleButton("Location A");
-        locationB = new ToggleButton("Location B");
-        //locationA.setStyle("-fx-text-fill: antiquewhite");
-        //locationB.setStyle("-fx-text-fill: antiquewhite");
+        locationA = new ToggleButton("Room A");
+        locationB = new ToggleButton("Room B");
 
         EventHandler eventHandler = new EventHandler<ActionEvent>() {
 
