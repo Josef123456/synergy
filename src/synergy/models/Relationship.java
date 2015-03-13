@@ -80,5 +80,15 @@ public class Relationship {
         this.kid2Tag = kid2Tag;
     }
 
+    @Override
+    public String toString() {
+        return "\nRelationship{" +
+                "ID=" + ID +
+                ", kid1='" + kid1Tag.getValue() +
+                ", kid2=" + kid2Tag.getValue() +
+                ", occurences=" + occurrences +
+                "}\n";
+    }
+
 
 }

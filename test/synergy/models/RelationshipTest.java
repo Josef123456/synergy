@@ -58,11 +58,37 @@ public class RelationshipTest extends BaseTest {
         p4.addTag(new Tag(Tag.TagType.KID,"Serban"));
         p4.addTag(new Tag(Tag.TagType.KID,"Jeff"));
         p4.addTag(new Tag(Tag.TagType.KID,"Alia"));
+        p4.addTag(new Tag(Tag.TagType.KID,"Sari"));
+        System.out.println("ASTA E:"+p1.getRelationshipsForAllTags());
+        List<Relationship> mergedList;
+        mergedList = SimplePopularEngine.mergeNLists(p1.getRelationshipsForAllTags());
 
-        List<Relationship> mergedList = SimplePopularEngine.mergeNLists(p1.getRelationshipsForAllTags());
         for(Relationship r:mergedList){
-            System.out.println("BAAAAAAAAAAAAAAA"+r.getOccurrences()+" "+r.getKid1()+" "+r.getKid2());
+            System.out.println(r);
+            System.out.println("BAAAAAAAAAAAAAAA"+r);
         }
+
+        mergedList = SimplePopularEngine.mergeNLists(p2.getRelationshipsForAllTags());
+
+        for(Relationship r:mergedList){
+            System.out.println(r);
+            System.out.println("BAAAAAAAAAAAAAAA"+r);
+        }
+
+        mergedList = SimplePopularEngine.mergeNLists(p3.getRelationshipsForAllTags());
+
+        for(Relationship r:mergedList){
+            System.out.println(r);
+            System.out.println("BAAAAAAAAAAAAAAA"+r);
+        }
+
+        mergedList = SimplePopularEngine.mergeNLists(p4.getRelationshipsForAllTags());
+
+        for(Relationship r:mergedList){
+            System.out.println(r);
+            System.out.println("BAAAAAAAAAAAAAAA"+r);
+        }
+
 	}
 
 }
