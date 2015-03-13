@@ -31,7 +31,7 @@ public class Relationship {
 	    // Throw exception is tag is not of type kid
     }
 
-    public Relationship() {save(); }
+    public Relationship() {}
 
 	public void increaseOccurrences() {
 		System.out.println(getID ());
