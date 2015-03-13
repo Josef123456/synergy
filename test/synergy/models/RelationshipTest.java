@@ -1,6 +1,9 @@
 package synergy.models;
 
 import org.junit.Test;
+import synergy.engines.suggestion.SimplePopularEngine;
+
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
@@ -39,9 +42,27 @@ public class RelationshipTest extends BaseTest {
 	}
 
 	@Test
-	public void testViataLuSari() throws Exception {
+	public void testMerging() throws Exception {
+        Photo p1 = new Photo("/home/sari/Photostest/1.jpg");
+        Photo p2 = new Photo("/home/sari/Photostest/2.jpg");
+        Photo p3 = new Photo("/home/sari/Photostest/3.jpg");
+        Photo p4 = new Photo("/home/sari/Photostest/4.jpg");
+        //Sari Serban Alia Jeff Mama Tata Nicu
+        p1.addTag(new Tag(Tag.TagType.KID,"Sari"));
+        p1.addTag(new Tag(Tag.TagType.KID,"Serban"));
+        p2.addTag(new Tag(Tag.TagType.KID,"Sari"));
+        p2.addTag(new Tag(Tag.TagType.KID,"Alia"));
+        p3.addTag(new Tag(Tag.TagType.KID,"Sari"));
+        p3.addTag(new Tag(Tag.TagType.KID,"Alia"));
+        p3.addTag(new Tag(Tag.TagType.KID,"Serban"));
+        p4.addTag(new Tag(Tag.TagType.KID,"Serban"));
+        p4.addTag(new Tag(Tag.TagType.KID,"Jeff"));
+        p4.addTag(new Tag(Tag.TagType.KID,"Alia"));
 
-
+        List<Relationship> mergedList = SimplePopularEngine.mergeNLists(p1.getRelationshipsForAllTags());
+        for(Relationship r:mergedList){
+            System.out.println("BAAAAAAAAAAAAAAA"+r.getOccurrences()+" "+r.getKid1()+" "+r.getKid2());
+        }
 	}
 
 }

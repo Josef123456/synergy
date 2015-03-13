@@ -2,18 +2,10 @@ package synergy.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileTime;
-import java.util.*;
-import java.util.Date;
-
-import synergy.engines.suggestion.Engine;
 import synergy.database.PhotoDao;
-import synergy.metadata.*;
+import synergy.engines.suggestion.Engine;
+
+import java.util.*;
 
 /**
  * Created by alexstoick on 2/6/15.
@@ -93,6 +85,20 @@ public class Photo {
 		return Engine.suggest(this);
 	}
 
+    public List<List<Relationship>> getRelationshipsForAllTags(){
+        List<List<Relationship>> toReturn = new ArrayList<>();
+        List<Tag> tagsForPhoto = this.getChildTags();
+
+        if(tagsForPhoto.equals(null))
+            return null;
+
+        for(Tag t: tagsForPhoto){
+                toReturn.add(t.getRelationshipsForTagSortedByOccurrences());
+        }
+
+        return toReturn;
+    }
+
     public List<Tag> getLocationTags() {
         List<Tag> allTags = getTags ();
         List<Tag> locationTags = new ArrayList<> ();
@@ -125,11 +131,17 @@ public class Photo {
     }
 
 	public void addTag(Tag tag) {
-		this.save ();
+        if(!this.getChildTags().isEmpty()){
+            for(Tag t:this.getChildTags()){
+                Relationship r = new Relationship(tag,t);
+            }
+        }
+        this.save ();
 		tag.save();
 		PhotoTag photoTag = new PhotoTag (this, tag);
 		photoTag.save();
 		System.out.println(photoTag);
+
 	}
 
     public void removeTag(Tag tag) {
