@@ -54,6 +54,7 @@ public class SimpleDateEngine {
                         return tagsToReturn;
                     tagsToReturn.addAll(photoFoundOnRight.getChildTags());
                 }
+                System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
                 return tagsToReturn;
 
 
@@ -70,6 +71,7 @@ public class SimpleDateEngine {
                     else if(photoFoundOnRight != null)
                         tagsToReturn.addAll(photoFoundOnRight.getChildTags());
                 }
+                System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
                 return tagsToReturn;
             }
             else {
@@ -85,8 +87,10 @@ public class SimpleDateEngine {
                     if (nextPhotoOnLeft == null){
                         if (nextPhotoOnRight != null) {
                             closestPhoto = nextPhotoOnRight;
-                        } else
+                        } else{
+                            System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
                             return tagsToReturn;
+                        }
                     }
                     else {
                         if (nextPhotoOnRight == null) {
@@ -95,15 +99,17 @@ public class SimpleDateEngine {
                             closestPhoto = DateComparator.getClosestPhoto(closestPhoto, nextPhotoOnRight, nextPhotoOnLeft);
                         }
                     }
-                    if(closestPhoto == null)
+                    if(closestPhoto == null){
+                        System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
                         return tagsToReturn;
+                    }
                     tagsToReturn.addAll(closestPhoto.getChildTags());
                 }
-
+                System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
                 return tagsToReturn;
             }
         }
-
+        System.out.println("SimpleDateEngine SUGGESTING: NULL!");
         return null;
 
     }
@@ -145,7 +151,6 @@ public class SimpleDateEngine {
         while (Engine.historicalPhotos.get(index).getChildTags().isEmpty() && index>0){
             index--;
         }
-        Photo photo = Engine.historicalPhotos.get(index);
         if(!Engine.historicalPhotos.get(index).getChildTags().isEmpty()){
             return Engine.historicalPhotos.get(index);
         }
