@@ -86,6 +86,12 @@ public class TagDao {
 		return photoQueryBuilder.prepare();
 	}
 
+	public List<Tag> getAllChildrenTags() throws SQLException {
+		QueryBuilder<Tag, Integer> qb = tagDao.queryBuilder ();
+		qb.where().eq(Tag.COLUMN_TYPE, Tag.TagType.KID);
+		return tagDao.query (qb.prepare ());
+	}
+
 	public List<Photo> getPhotosForTag(Tag tag) throws SQLException {
 		if (photosForTagQuery == null ) {
 			photosForTagQuery = makePhotosForTagQuery();

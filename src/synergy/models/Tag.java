@@ -46,6 +46,16 @@ public class Tag {
 		}
 	}
 
+	public static List<Tag> getAllChildrenTags() {
+		try {
+			return TagDao.getInstance ().getAllChildrenTags();
+		} catch ( SQLException e) {
+			System.err.println(e);
+			e.printStackTrace ();
+		}
+		return null;
+	}
+
 	public void setID (int ID) {
 		this.ID = ID;
 	}

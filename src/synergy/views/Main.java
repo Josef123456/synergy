@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
 
 import java.io.File;
@@ -161,6 +162,7 @@ public class Main extends Application {
         addEventHandlerToExport();
     }
     public static void main(String[] args) {
-        Application.launch();
+	    Engine.prepare ();
+	    Application.launch();
     }
 }
