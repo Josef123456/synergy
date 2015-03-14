@@ -111,19 +111,11 @@ public class TaggingArea extends BorderPane {
 
         EventHandler childrenEventHandler = event -> {
             String name = childrenComboBox.getEditor().getText();
-            childrenComboBox.getEditor().setText("");
-
-            final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
-            Tag tag = new Tag(Tag.TagType.KID, name);
-            for (int i = 0; i < selectedPhotos.size(); ++i) {
-                selectedPhotos.get(i).addTag(tag);
-            }
-            updateChildrenTags();
-
+            addChildrenTag(name);
         };
-        childrenComboBox.setOnAction(childrenEventHandler);
-        addChildrenTagButton.setOnAction(childrenEventHandler);
 
+
+        addChildrenTagButton.setOnAction(childrenEventHandler);
         childrenPane.getChildren().addAll(childrenComboBox, addChildrenTagButton);
 
         gridNorthern.add(childrenText, 0, 0);
@@ -165,6 +157,19 @@ public class TaggingArea extends BorderPane {
         vBoxSuggestion.getChildren().addAll(childrenSuggestionLabel, childrenSuggestions);
 
         return vBoxSuggestion;
+    }
+
+    public void addChildrenTag(String name){
+        Set<String> hashSet = new HashSet<String>(Arrays.asList(array));
+        if(hashSet.contains(name)){
+            childrenComboBox.getEditor().setText("");
+            final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+            Tag tag = new Tag(Tag.TagType.KID, name);
+            for (int i = 0; i < selectedPhotos.size(); ++i) {
+                selectedPhotos.get(i).addTag(tag);
+            }
+            updateChildrenTags();
+        }
     }
 
 

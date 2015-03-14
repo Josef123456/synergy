@@ -1,6 +1,6 @@
 package synergy.views;
 
-import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
@@ -15,13 +15,14 @@ import java.util.Set;
  */
 public class SearchField extends HBox {
 
-    DatePicker datePicker;
+    MultipleDatePickerSelection datePicker;
     HBox queryFieldAndSearch; //this is where the Button, TextField and Search Button go
     HBox searchQueryButtons;
     ComboBox comboBox;
 
     HBox buttonPane; // This is where LocationA and LocationB button goes
-    ToggleButton locationA, locationB,searchButton;
+    ToggleButton locationA, locationB;
+    Button searchButton, addButton;
 
     Set<String> listOfSearch;
     int minHeight;
@@ -59,40 +60,30 @@ public class SearchField extends HBox {
         comboBox.setOnKeyReleased(autoComplete);
         comboBox.setMaxWidth(Double.MAX_VALUE);
         queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
-        searchButton = new ToggleButton("Search");
+        addButton = new Button("+");
+        searchButton = new Button("Search");
 
-//        EventHandler eventHandler = new EventHandler() {
-//            public void handle(Event event) {
-//                System.out.println(event.getEventType());
-//                listOfSearch.add((String) comboBox.getValue());
-//                Button queryButton = new Button(comboBox.getValue() + " - ");
-//                queryButton.setMinHeight(minHeight);
-//                queryButton.setStyle("-fx-text-fill: antiquewhite");
-//                searchQueryButtons.getChildren().add(queryButton);
-//            }
-//        };
-        comboBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                System.out.println(newValue.toString());
-                System.out.println(observable.toString());
+        EventHandler eventHandler = new EventHandler() {
+            public void handle(Event event) {
                 addChildrenQuery((String) comboBox.getValue());
                 updateChildrenQueries();
                 updateSearchDatabase();
-
             }
-        });
+        };
+
+        addButton.setOnAction(eventHandler);
 
         //searchButton.setOnAction(eventHandler);
         //comboBox.setOnAction(eventHandler);
 
         queryFieldAndSearch.getChildren().add(searchQueryButtons);
         queryFieldAndSearch.getChildren().add(comboBox);
-
+        queryFieldAndSearch.getChildren().add(addButton);
         queryFieldAndSearch.getChildren().add(searchButton);
     }
 
     public void setUpDatePicker() {
-        datePicker = new DatePicker();
+        datePicker = new MultipleDatePickerSelection();
         datePicker.setOnAction(event -> updateSearchDatabase());
 
     }
@@ -137,8 +128,7 @@ public class SearchField extends HBox {
             queryButton.setStyle("-fx-text-fill: antiquewhite");
             searchQueryButtons.getChildren().add(queryButton);
         }
-        comboBox.getEditor().setText(" ");
-
+        comboBox.getEditor().setText("");
 
     }
 
@@ -154,6 +144,7 @@ public class SearchField extends HBox {
         comboBox.setMinHeight(height - 5);
         locationA.setMinHeight(height);
         locationB.setMinHeight(height);
+        addButton.setMinHeight(height);
     }
 
 
