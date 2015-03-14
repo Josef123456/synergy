@@ -4,9 +4,7 @@ import synergy.models.Photo;
 import synergy.models.Tag;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 public class Engine {
@@ -23,10 +21,24 @@ public class Engine {
      * @return
      */
     public static List<Tag> suggest(Photo p){
-        List<Tag> unfilteredTags = SimpleDateEngine.suggest(p);
-        Set<Tag> filteredTags = new HashSet<>();
-        filteredTags.addAll(unfilteredTags);
-        return new ArrayList<>(filteredTags);
+        List<Tag> dateTags = SimpleDateEngine.suggest(p);
+        List<Tag> uniqueDateTags = new ArrayList<>();
+
+        for(Tag t:dateTags){
+            if(!uniqueDateTags.contains(t))
+                uniqueDateTags.add(t);
+        }
+        if(p.getChildTags().isEmpty()){
+            return uniqueDateTags;
+        }
+        else{
+            List<Tag> popularTags = SimplePopularEngine.suggest(p);
+            if(popularTags.isEmpty()){
+                return uniqueDateTags;
+            }
+        }
+
+        return SimplePopularEngine.suggest(p);
     }
 
     /**

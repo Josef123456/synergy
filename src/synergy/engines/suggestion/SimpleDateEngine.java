@@ -22,7 +22,6 @@ public class SimpleDateEngine {
      * @return
      */
     public static List<Tag> suggest(final Photo p){
-
         Photo photoFoundOnRight = null;
         Photo photoFoundOnLeft = null;
         final ExecutorService service = Executors.newFixedThreadPool(1);
@@ -52,7 +51,6 @@ public class SimpleDateEngine {
                 tagsToReturn = photoFoundOnRight.getChildTags();
                 while (tagsToReturn.size() < 3){
                     photoFoundOnRight = findTaggedPhotoOnRight(photoFoundOnRight);
-                    //System.out.println("TAGSTORETURN SIZE" + tagsToReturn.size());
                     if(photoFoundOnRight == null)
                         return tagsToReturn;
                     tagsToReturn.addAll(photoFoundOnRight.getChildTags());
