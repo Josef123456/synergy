@@ -1,7 +1,5 @@
 package synergy.views;
 
-import com.sun.tools.javac.util.ArrayUtils;
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -134,15 +132,14 @@ public class TaggingArea extends BorderPane {
         childrenText.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
 
         EventHandler childrenEventHandler = event -> {
+            //@TODO: when the user press enter, add the tag
             String name = childrenComboBox.getEditor().getText();
             addChildrenTag(name);
         };
         childrenComboBox.getEditor().setText ("");
 
-        addChildrenTagButton.setOnAction(childrenEventHandler);
-        childrenPane.getChildren().addAll(childrenComboBox, addChildrenTagButton);
-        childrenComboBox.setOnAction(childrenEventHandler);
         addChildrenTagButton.setOnAction (childrenEventHandler);
+        childrenPane.getChildren().addAll(childrenComboBox, addChildrenTagButton);
 
         gridNorthern.add (childrenText, 0, 0);
         gridNorthern.add (childrenPane, 1, 0);
@@ -231,7 +228,7 @@ public class TaggingArea extends BorderPane {
 		    Tag tag = tagArray[0];
 		    if ( tag.getValue ().equals("RoomA" )) {
 			    button1.setSelected (true);
-		    } else {
+		    } else if(tag.getValue().equals("RoomB")){
 			    button2.setSelected (true);
 		    }
 	    }
