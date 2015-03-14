@@ -1,22 +1,20 @@
 package synergy.views;
 
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
-import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import synergy.models.Photo;
+import synergy.models.Tag;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Random;
+import java.util.*;
 
 /**
  * Created by Josef on 07/03/2015.
@@ -42,7 +40,6 @@ public class TaggingArea extends BorderPane {
     }
 
     private HBox locationPane() {
-
         boxMainLocation = new HBox(20);
         boxMainLocation.getStyleClass().add("grid");
 
@@ -51,14 +48,25 @@ public class TaggingArea extends BorderPane {
         button2 = new ToggleButton("RoomB");
 
 
-		// If you guys dont like the background shadow thingy then just delete it...
+        // If you guys dont like the background shadow thingy then just delete it...
+
 
         button1.setOnAction(event -> {
-	        System.out.println("button1");
+            final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+            Tag tag = new Tag(Tag.TagType.PLACE, button1.getText());
+            for (int i = 0; i < selectedPhotos.size(); ++i) {
+                selectedPhotos.get(i).addTag(tag);
+            }
+            System.out.println("button1");
         });
 
         button2.setOnAction(event -> {
-			System.out.println("button2");
+            final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+            Tag tag = new Tag(Tag.TagType.PLACE, button1.getText());
+            for (int i = 0; i < selectedPhotos.size(); ++i) {
+                selectedPhotos.get(i).addTag(tag);
+            }
+            System.out.println("button2");
         });
 
         locationText = new Text(" Location:");
@@ -70,8 +78,8 @@ public class TaggingArea extends BorderPane {
 
         return boxMainLocation;
     }
-    private VBox childrenVboxPane() {
 
+    private VBox childrenVboxPane() {
         vBoxChildren = new VBox(10);
         vBoxChildren.getStyleClass().add("grid");
 
@@ -82,7 +90,7 @@ public class TaggingArea extends BorderPane {
         childrenPane = new HBox(10);
 //        vBoxChildren.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
 //        vBoxChildren.getStyleClass().add("grid");
-
+        //@TODO: Cham - Textfield ==> ComboBox with autocomplete
         childrenTextField = new TextField();
         childrenTextField.setId("searching");
         addChildrenTagButton = new ToggleButton("+");
@@ -94,23 +102,16 @@ public class TaggingArea extends BorderPane {
         childrenText.setId("leftText");
         childrenText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
-
         EventHandler childrenEventHandler = event -> {
-            HBox hBox = new HBox();
             String name = childrenTextField.getText();
-            Button buttonNames = new Button(name + " -");
-            buttonNames.setMinWidth(95.0);
-            buttonNames.setStyle("-fx-text-fill: antiquewhite");
-            hBox.getChildren().addAll(buttonNames);
             childrenTextField.setText("");
-            childrenTags.getChildren().add(hBox);
 
-            /*final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
-            Tag tag = new Tag(Tag.TagType.KID, (String) childrenComboBox.getSelectedItem());
-            for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
-                photosPanel.getPhotos ().get (selectedIndexes[ i ]).addTag (tag);
+            final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+            Tag tag = new Tag(Tag.TagType.KID, name);
+            for (int i = 0; i < selectedPhotos.size(); ++i) {
+                selectedPhotos.get(i).addTag(tag);
             }
-            updateChildrenTags();*/
+            updateChildrenTags();
 
         };
         childrenTextField.setOnAction(childrenEventHandler);
@@ -126,7 +127,6 @@ public class TaggingArea extends BorderPane {
     }
 
     private VBox suggestionPane() {
-
         vBoxSuggestion = new VBox();
         vBoxSuggestion.getStyleClass().add("grid");
 
@@ -151,7 +151,7 @@ public class TaggingArea extends BorderPane {
                 Button buttonNames = new Button(suggestion + " -");
                 buttonNames.setMinWidth(95.0);
                 buttonNames.setStyle("-fx-text-fill: antiquewhite");
-                hBox1.getChildren ().addAll(buttonNames);
+                hBox1.getChildren().addAll(buttonNames);
                 childrenTags.getChildren().add(hBox1);
 
                 /*final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
@@ -167,7 +167,6 @@ public class TaggingArea extends BorderPane {
         vBoxSuggestion.getChildren().addAll(childrenSuggestionLabel, childrenSuggestions);
 
         return vBoxSuggestion;
-
     }
 
 
@@ -176,19 +175,19 @@ public class TaggingArea extends BorderPane {
         paneDate = new VBox();
         paneDate.getStyleClass().add("grid");
 
-	    ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos ();
-	    StringBuilder stringBuilder = new StringBuilder ();
+        ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos();
+        StringBuilder stringBuilder = new StringBuilder();
 
-	    // TODO: This needs to be tweaked! To refresh everytime a new photo is added
+        // TODO: This needs to be tweaked! To refresh everytime a new photo is added
 
-	    stringBuilder.append("Date: ");
+        stringBuilder.append("Date: ");
 
-	    for( Photo photo: photos){
-		    stringBuilder.append (photo.getDate ());
-		    stringBuilder.append (", ");
-	    }
+        for (Photo photo : photos) {
+            stringBuilder.append(photo.getDate());
+            stringBuilder.append(", ");
+        }
 
-        childrenSuggestionLabel = new Label(stringBuilder.toString ());
+        childrenSuggestionLabel = new Label(stringBuilder.toString());
 
         childrenSuggestionLabel.setStyle("-fx-text-fill: antiquewhite");
         childrenSuggestionLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
@@ -300,29 +299,30 @@ public class TaggingArea extends BorderPane {
     }
 
     public void updateChildrenTags() {
-        /*locationTags.getChildren().clear();
+        childrenTags.getChildren().clear();
         Set<Tag> tagSet = new HashSet<>();
-        final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
-        for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
-            tagSet.addAll (photosPanel.getPhotos ().get (selectedIndexes[i]).getChildTags ());
+        final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+        for (int i = 0; i < selectedPhotos.size(); ++i) {
+            tagSet.addAll(selectedPhotos.get(i).getChildTags());
+            //@TODO: fix the problem where it the child tags get added to the tagset despite having the same tag name
         }
-        System.out.println ("List of children tags: " + tagSet);
-        Tag[] tagArray = tagSet.toArray (new Tag[tagSet.size()]);
+        System.out.println("List of children tags: " + tagSet);
+        Tag[] tagArray = tagSet.toArray(new Tag[tagSet.size()]);
 
-        if ( tagArray.length > 0 )  {
+        if (tagArray.length > 0) {
             for (int i = 0; i < tagArray.length; ++i) {
-                final String tagValue= tagArray[i].getValue ();
+                final String tagValue = tagArray[i].getValue();
 
                 HBox hBox = new HBox();
                 Label label = new Label();
                 label.setText(tagValue);
 
                 Button removeButton = new Button("-");
-                removeButton.setOnAction(new EventHandler(){
-                    public void handle(Event e){
+                removeButton.setOnAction(new EventHandler() {
+                    public void handle(Event e) {
                         Tag tag = new Tag(Tag.TagType.KID, tagValue);
-                        for(int i = 0; i < selectedIndex.length; ++i){
-                            photosPanel.getPhotos ().get(selectedIndexes[i]).removeTag (tag);
+                        for (int i = 0; i < selectedPhotos.size(); ++i) {
+                            selectedPhotos.get(i).removeTag(tag);
                         }
                         updateChildrenTags();
                     }
@@ -330,8 +330,7 @@ public class TaggingArea extends BorderPane {
                 hBox.getChildren().add(label);
                 hBox.getChildren().add(removeButton);
                 childrenTags.getChildren().add(hBox);
-
             }
-        }*/
+        }
     }
 }

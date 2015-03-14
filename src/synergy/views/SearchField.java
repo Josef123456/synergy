@@ -1,12 +1,12 @@
 package synergy.views;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,7 +74,8 @@ public class SearchField extends HBox {
             if (newValue != null) {
                 System.out.println(newValue.toString());
                 System.out.println(observable.toString());
-                updateQueries((String) comboBox.getValue());
+                addChildrenQuery((String) comboBox.getValue());
+                updateChildrenQueries();
                 updateSearchDatabase();
 
             }
@@ -124,25 +125,34 @@ public class SearchField extends HBox {
         buttonPane.getChildren().add(locationB);
     }
 
-    public void updateQueries(String addedQuery) {
+    public void addChildrenQuery(String addedQuery) {
         System.out.println(addedQuery);
+        Set<String> hashSet = new HashSet<String>(Arrays.asList(mockChildrenData));
         if (listOfSearch.contains(addedQuery)) {
 
-        } else {
+        } else if(hashSet.contains(addedQuery)){
             listOfSearch.add((String) comboBox.getValue());
-            Button queryButton = new Button(comboBox.getValue() + " - ");
+        }
+    }
+
+    public void updateChildrenQueries(){
+        searchQueryButtons.getChildren().clear();
+        for(String query: listOfSearch){
+            Button queryButton = new Button(query + " - ");
             queryButton.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    listOfSearch.remove(queryButton.getText());
-                    searchQueryButtons.getChildren().remove(queryButton);
+                    listOfSearch.remove(query);
+                    updateChildrenQueries();
                 }
             });
             queryButton.setMinHeight(minHeight);
             queryButton.setStyle("-fx-text-fill: antiquewhite");
             searchQueryButtons.getChildren().add(queryButton);
-
         }
+        comboBox.getEditor().setText(" ");
+
+
     }
 
     public ComboBox getComboBox() {
