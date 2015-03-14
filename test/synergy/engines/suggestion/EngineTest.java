@@ -38,18 +38,18 @@ public class EngineTest extends BaseTest {
         Photo p4 = new Photo("/home/sari/Photostest/4.jpg");
         //Sari Serban Alia Jeff Mama Tata Nicu
         p1.addTag(new Tag(Tag.TagType.KID,"Sari"));
-        p1.addTag(new Tag(Tag.TagType.KID,"Serban"));
-        p2.addTag(new Tag(Tag.TagType.KID,"Sari"));
+        //p1.addTag(new Tag(Tag.TagType.KID,"Serban"));
+        //p2.addTag(new Tag(Tag.TagType.KID,"Sari"));
         p2.addTag(new Tag(Tag.TagType.KID,"Alia"));
-        p3.addTag(new Tag(Tag.TagType.KID,"Sari"));
+        //p3.addTag(new Tag(Tag.TagType.KID,"Sari"));
         p3.addTag(new Tag(Tag.TagType.KID,"Alia"));
         p3.addTag(new Tag(Tag.TagType.KID,"Serban"));
        // p4.addTag(new Tag(Tag.TagType.KID,"Serban"));
         p4.addTag(new Tag(Tag.TagType.KID,"Jeff"));
         p4.addTag(new Tag(Tag.TagType.KID,"Alia"));
-        p4.addTag(new Tag(Tag.TagType.KID,"Sari"));
+        //p4.addTag(new Tag(Tag.TagType.KID,"Sari"));
 
-        System.out.println("Suggested:" + SimplePopularEngine.suggest(p4));
+        System.out.println("Suggested:" + p1.getSuggestedTags());
 
     }
 }

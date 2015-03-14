@@ -1,7 +1,7 @@
 package synergy.models;
 
 import org.junit.Test;
-import synergy.engines.suggestion.SimplePopularEngine;
+import synergy.utilities.RelationshipMerger;
 
 import java.util.List;
 
@@ -61,28 +61,28 @@ public class RelationshipTest extends BaseTest {
         p4.addTag(new Tag(Tag.TagType.KID,"Sari"));
         System.out.println("ASTA E:"+p1.getRelationshipsForAllTags());
         List<Relationship> mergedList;
-        mergedList = SimplePopularEngine.mergeNLists(p1.getRelationshipsForAllTags());
+        mergedList = RelationshipMerger.mergeNLists(p1.getRelationshipsForAllTags());
 
         for(Relationship r:mergedList){
             System.out.println(r);
             System.out.println("BAAAAAAAAAAAAAAA"+r);
         }
 
-        mergedList = SimplePopularEngine.mergeNLists(p2.getRelationshipsForAllTags());
+        mergedList = RelationshipMerger.mergeNLists(p2.getRelationshipsForAllTags());
 
         for(Relationship r:mergedList){
             System.out.println(r);
             System.out.println("BAAAAAAAAAAAAAAA"+r);
         }
 
-        mergedList = SimplePopularEngine.mergeNLists(p3.getRelationshipsForAllTags());
+        mergedList = RelationshipMerger.mergeNLists(p3.getRelationshipsForAllTags());
 
         for(Relationship r:mergedList){
             System.out.println(r);
             System.out.println("BAAAAAAAAAAAAAAA"+r);
         }
 
-        mergedList = SimplePopularEngine.mergeNLists(p4.getRelationshipsForAllTags());
+        mergedList = RelationshipMerger.mergeNLists(p4.getRelationshipsForAllTags());
 
         for(Relationship r:mergedList){
             System.out.println(r);
