@@ -25,6 +25,7 @@ public class SimpleDateEngine {
         Photo photoFoundOnRight = null;
         Photo photoFoundOnLeft = null;
         final ExecutorService service = Executors.newFixedThreadPool(1);
+        //final ExecutorService s = Executors.
         final Future<Photo> findOnRightTask = service.submit(new Callable(){
             @Override
             public Photo call() throws Exception{
@@ -36,6 +37,7 @@ public class SimpleDateEngine {
         try {
             photoFoundOnLeft = findTaggedPhotoOnLeft(p);
             photoFoundOnRight = findOnRightTask.get();
+            service.shutdown();
 
             System.out.println("PHOTO FOUND ON LEFT: " + photoFoundOnLeft);
             System.out.println("PHOTO FOUND ON RIGHT: " + photoFoundOnRight);
