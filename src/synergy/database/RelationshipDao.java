@@ -53,8 +53,12 @@ public class RelationshipDao {
 
 	public List<Relationship> getRelationshipsForTagSortedByOccurrences(Tag tag) throws SQLException {
 		QueryBuilder<Relationship, Integer> qb = relationshipDao.queryBuilder ();
-		qb.where().eq(Relationship.COLUMN_KID1_ID, tag.getID ()).or ().
-				eq (Relationship.COLUMN_KID2_ID, tag.getID ());
+		Where where = qb.where();
+        Where<Relationship, Integer> where1 = where.eq(Relationship.COLUMN_KID1_ID, tag.getID()).or().
+                eq(Relationship.COLUMN_KID2_ID, tag.getID());
+        Where<Relationship, Integer> where2 = where.gt(Relationship.COLUMN_OCCURRENCES, 0);
+        where.and(where1, where2);
+
 		qb.orderBy (Relationship.COLUMN_OCCURRENCES, false);
 		return relationshipDao.query (qb.prepare ());
 	}
