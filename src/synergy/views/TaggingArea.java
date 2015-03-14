@@ -28,6 +28,10 @@ public class TaggingArea extends BorderPane {
     private ComboBox childrenComboBox;
     final String[] array = {"Cham", "Mike", "Tobi", "Alex", "Sari", "Codrin", "Josef", "Amit"};
 
+    public void update(){
+        updateChildrenTags();
+    }
+
     public TaggingArea() {
         setCenter(returnGridPane(locationPane(), childrenVboxPane(), suggestionPane(), datePane()));
     }
@@ -142,20 +146,12 @@ public class TaggingArea extends BorderPane {
             Button buttonName = new Button(suggestion + " +");
             buttonName.setStyle("-fx-text-fill: antiquewhite");
             buttonName.setOnAction(event -> {
-                childrenComboBox.getEditor().setText("");
-                HBox hBox1 = new HBox();
-                Button buttonNames = new Button(suggestion + " -");
-                buttonNames.setMinWidth(95.0);
-                buttonNames.setStyle("-fx-text-fill: antiquewhite");
-                hBox1.getChildren().addAll(buttonNames);
-                childrenTags.getChildren().add(hBox1);
-
-                /*final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
-                Tag tag = new Tag(Tag.TagType.KID, (String) childrenComboBox.getSelectedItem());
-                for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
-                    photosPanel.getPhotos ().get (selectedIndexes[ i ]).addTag (tag);
+                final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+                Tag tag = new Tag(Tag.TagType.KID, suggestion);
+                for (int j = 0; j < selectedPhotos.size(); ++j) {
+                    selectedPhotos.get(j).addTag(tag);
                 }
-                updateChildrenTags();*/
+                updateChildrenTags();
             });
             boxSuggestion.getChildren().addAll(buttonName);
             childrenSuggestions.getChildren().add(boxSuggestion);
@@ -299,7 +295,11 @@ public class TaggingArea extends BorderPane {
         Set<Tag> tagSet = new HashSet<>();
         final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
         for (int i = 0; i < selectedPhotos.size(); ++i) {
-            tagSet.addAll(selectedPhotos.get(i).getChildTags());
+            if(i == 0) {
+                tagSet.addAll(selectedPhotos.get(i).getChildTags());
+            } else{
+                tagSet.retainAll(selectedPhotos.get(i).getChildTags());
+            }
             //@TODO: fix the problem where it the child tags get added to the tagset despite having the same tag name
         }
         System.out.println("List of children tags: " + tagSet);

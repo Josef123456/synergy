@@ -4,8 +4,6 @@ package synergy.views;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -37,11 +35,13 @@ public class Main extends Application {
     private ObservableList<Image> displayedImagesList;
     private ArrayList<Image> imageArrayList;
     private BorderPane root;
+    private TaggingArea taggingArea;
 
     public void start(final Stage primaryStage) {
         Main.primaryStage = primaryStage;
         root = new BorderPane();
         root.setId("background");
+        taggingArea = new TaggingArea();
 
         topArea();
         centerArea();
@@ -121,13 +121,12 @@ public class Main extends Application {
 
     public void centerArea() {
         displayedImagesList = FXCollections.observableArrayList(new ArrayList<Image>());
-        photosGrid = new PhotoGrid(displayedImagesList);
+        photosGrid = new PhotoGrid(displayedImagesList, taggingArea);
         root.setCenter(photosGrid);
     }
 
     public void rightArea() {
-        TaggingArea tagArea = new TaggingArea();
-        root.setRight(tagArea);
+        root.setRight(taggingArea);
     }
 
     public void bottomArea() {
@@ -158,8 +157,7 @@ public class Main extends Application {
                 }
                 if (photosGrid.getItems().size() == 0) {
                     photosGrid.setGridPhotos(Photo.getAllPhotos());
-                }
-                else {
+                } else {
                     photosGrid.setGridPhotos(lastImported);
                 }
                 System.out.println("Number of files imported: " + Photo.getAllPhotos().size());

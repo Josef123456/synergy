@@ -1,22 +1,20 @@
 package synergy.views;
 
 
-import java.util.ArrayList;
-import java.util.List;
-
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.controlsfx.control.cell.ImageGridCell;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
 import synergy.models.Photo;
 import synergy.tasks.ThumbnailLoaderTask;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -30,6 +28,7 @@ public class PhotoGrid extends GridView<Image> {
     private static GridView<Image> photosGrid;
     private static ObservableList<Image> displayedImagesList;
     private static ImageGridCell lastSelectedCell = null;
+    private TaggingArea taggingArea;
 
     public static GridView<Image> getPhotosGrid() {
         return photosGrid;
@@ -47,9 +46,10 @@ public class PhotoGrid extends GridView<Image> {
 		return selectedPhotos;
 	}
 
-	public PhotoGrid(ObservableList imagesList) {
+	public PhotoGrid(ObservableList imagesList, TaggingArea taggingArea) {
         displayedImagesList = imagesList;
         photosGrid = this;
+        this.taggingArea = taggingArea;
         this.setItems(displayedImagesList);
 
         this.setCellFactory(param -> {
@@ -87,7 +87,9 @@ public class PhotoGrid extends GridView<Image> {
                         }
                         ((GridViewSkin) this.getSkin()).updateGridViewItems();
                         lastSelectedCell = newImageCell;
+                        this.taggingArea.update();
                     });
+
                     return newImageCell;
                 }
         );
