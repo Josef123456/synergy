@@ -38,7 +38,6 @@ public class RelationshipMerger {
     }
 
     public static List<Relationship> mergeNLists(List<List<Relationship>> list){
-        System.out.println(list.size());
         for(int i = 1; i<list.size();i++){
 
             list.set(0, mergeRelationshipLists(list.get(0), list.get(i)));

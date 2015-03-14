@@ -102,7 +102,6 @@ public class Photo {
     public List<Tag> getLocationTags() {
         List<Tag> allTags = getTags ();
         List<Tag> locationTags = new ArrayList<> ();
-        System.out.println(allTags.size ());
         for(Tag tag:allTags) {
             if ( tag.getType () == Tag.TagType.PLACE )
                 locationTags.add (tag);
@@ -158,9 +157,7 @@ public class Photo {
             Set<Date> datesSet = new HashSet<>();
             for (Photo tmp : photos) {
                 Date date = tmp.getDate();
-                System.out.println(date);
                 Date tmpDate = new Date(date.getYear(), date.getMonth(), date.getDate());
-                System.out.println(tmpDate);
                 datesSet.add(tmpDate);
             }
             return new ArrayList<Date>(Arrays.asList(datesSet.toArray(new Date[datesSet.size()

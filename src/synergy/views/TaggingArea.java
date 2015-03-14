@@ -1,5 +1,7 @@
 package synergy.views;
 
+import com.sun.tools.javac.util.ArrayUtils;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -10,6 +12,7 @@ import javafx.scene.text.Text;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -23,12 +26,13 @@ public class TaggingArea extends BorderPane {
 	private FlowPane childrenTags;
 	private ComboBox childrenComboBox;
     String[] kidsInDatabase = { "alex", "cham", "codrin", "sari", "josef", "amit", "mike", "tobi"};
-    //Tag.getAllChildrenTags().stream ().map (Tag::getValue).collect(Collectors.toList ());
+	//Tag.getAllChildrenTags().stream ().map (Tag::getValue).collect(Collectors.toList ());
 
     public void update(){
         updateChildrenTags();
         updateLocationTags ();
 	    updateSuggestions ();
+	    updateDate();
         if(PhotoGrid.getSelectedImages().size() == 0){
             this.setVisible(false);
         } else{
@@ -84,7 +88,6 @@ public class TaggingArea extends BorderPane {
             for (int i = 0; i < selectedPhotos.size(); ++i) {
                 selectedPhotos.get(i).addTag(tag);
             }
-            System.out.println("button1");
         });
 
         button2.setOnAction (event -> {
@@ -93,7 +96,6 @@ public class TaggingArea extends BorderPane {
 	        for ( int i = 0 ; i < selectedPhotos.size () ; ++i ) {
 		        selectedPhotos.get (i).addTag (tag);
 	        }
-	        System.out.println ("button2");
         });
 
 	    Text locationText = new Text (" Location:");
@@ -175,10 +177,12 @@ public class TaggingArea extends BorderPane {
         }
     }
 
-    private VBox createDatePane () {
+	Label dateLabel;
+
+	private VBox createDatePane () {
 	    VBox paneDate = new VBox ();
         paneDate.getStyleClass ().add("grid");
-	    Label dateLabel = new Label (buildDateString ());
+	    dateLabel = new Label (buildDateString ());
 
 	    dateLabel.setStyle ("-fx-text-fill: antiquewhite");
 	    dateLabel.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
@@ -203,8 +207,12 @@ public class TaggingArea extends BorderPane {
 
 	    return new String[ 0 ];
     }
+
+	private void updateDate() {
+		dateLabel.setText (buildDateString ());
+	}
     
-    public void updateLocationTags() {
+    private void updateLocationTags() {
         Set<Tag> tagSet = new HashSet<>();
         final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
         for (int i = 0; i < selectedPhotos.size(); ++i) {
@@ -239,7 +247,6 @@ public class TaggingArea extends BorderPane {
             } else{
                 tagSet.retainAll(selectedPhotos.get(i).getChildTags());
             }
-            // TODO: fix the problem where it the child tags get added to the tagset despite having the same tag name
         }
         System.out.println("List of children tags: " + tagSet);
         Tag[] tagArray = tagSet.toArray(new Tag[tagSet.size()]);
@@ -270,12 +277,12 @@ public class TaggingArea extends BorderPane {
 	private String buildDateString() {
 		StringBuilder stringBuilder = new StringBuilder ();
 		ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos();
-		stringBuilder.append("Date: gfdgfd");
-
-		for (Photo photo : photos) {
-			stringBuilder.append(photo.getDate());
-			stringBuilder.append(", ");
+		stringBuilder.append ("Date: ");
+		if (photos.size() == 0) {
+			return "";
 		}
+		Photo photo = photos.get(0);
+		stringBuilder.append(new SimpleDateFormat("d MMM 20YY").format (photo.getDate ()));
 		return stringBuilder.toString ();
 	}
 }

@@ -41,8 +41,6 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
 				Image shiftSelectedImage = PhotoGrid.getDisplayedImagesList ().get (iterationIndex);
 				Photo shiftSelectedPhoto = PhotoGrid.getPhotos ().get (iterationIndex);
 
-				System.out.println (newlySelectedIndex + " " + lastSelectedIndex);
-
 				if (PhotoGrid.getSelectedImages ().contains (shiftSelectedImage))
 					iterationIndex--;
 				while (iterationIndex >= lastSelectedIndex) {
