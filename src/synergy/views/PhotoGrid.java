@@ -52,50 +52,39 @@ public class PhotoGrid extends GridView<Image> {
         photosGrid = this;
         this.setItems(displayedImagesList);
 
-        photosGrid.setOnMouseClicked(event -> {
-//                System.out.println("REGISTERED EVENT AT " + event.getSceneX() + " " + event
-//                        .getSceneY());
-//                GridRowSkin.gridRowSkin.getNodeAtCoordinates();
-        });
-
         this.setCellFactory(param -> {
                     final ImageGridCell newImageCell = new ImageGridCell();
                     newImageCell.setOnMouseClicked(event -> {
                         if (event.isShiftDown()) {
                             int lastSelectedIndex = lastSelectedCell.getIndex();
                             int newlySelectedIndex = newImageCell.getIndex();
-                            int iterationIndex = newlySelectedIndex;
+
+	                        if (newlySelectedIndex < lastSelectedIndex) {
+		                        int aux = newlySelectedIndex;
+		                        newlySelectedIndex = lastSelectedIndex;
+		                        lastSelectedIndex = aux;
+	                        }
+	                        int iterationIndex = newlySelectedIndex;
                             Image shiftSelectedImage = displayedImagesList.get(iterationIndex);
 	                        Photo shiftSelectedPhoto = photos.get(iterationIndex);
 
-                            if (newlySelectedIndex < lastSelectedIndex) {
-                                if (selectedImages.contains(shiftSelectedImage))
-                                    iterationIndex++;
-                                while (iterationIndex <= lastSelectedIndex) {
-	                                shiftSelectedPhoto = photos.get(iterationIndex);
-	                                selectedPhotos.remove(shiftSelectedPhoto);
-	                                selectedPhotos.add(shiftSelectedPhoto);
+	                        System.out.println (newlySelectedIndex + " " + lastSelectedIndex);
 
-                                    shiftSelectedImage = displayedImagesList.get(iterationIndex);
-                                    selectedImages.remove(shiftSelectedImage);
-                                    selectedImages.add(shiftSelectedImage);
-                                    iterationIndex++;
-                                }
-                            } else {
-                                if (selectedImages.contains(shiftSelectedImage))
-                                    iterationIndex--;
-                                while (iterationIndex >= lastSelectedIndex) {
-	                                shiftSelectedPhoto = photos.get(iterationIndex);
-	                                selectedPhotos.remove(shiftSelectedPhoto);
-	                                selectedPhotos.add(shiftSelectedPhoto);
+                            if (selectedImages.contains(shiftSelectedImage))
+                                iterationIndex--;
+                            while (iterationIndex >= lastSelectedIndex) {
+                                shiftSelectedPhoto = photos.get(iterationIndex);
+                                selectedPhotos.remove(shiftSelectedPhoto);
+                                selectedPhotos.add(shiftSelectedPhoto);
 
-                                    shiftSelectedImage = displayedImagesList.get(iterationIndex);
-                                    selectedImages.remove(shiftSelectedImage);
-                                    selectedImages.add(shiftSelectedImage);
-                                    iterationIndex--;
-                                }
+                                shiftSelectedImage = displayedImagesList.get(iterationIndex);
+                                selectedImages.remove(shiftSelectedImage);
+                                selectedImages.add(shiftSelectedImage);
+                                iterationIndex--;
                             }
-                        } else setCellSelection(newImageCell);
+                        } else {
+	                        setCellSelection(newImageCell);
+                        }
                         ((GridViewSkin) this.getSkin()).updateGridViewItems();
                         lastSelectedCell = newImageCell;
                     });
