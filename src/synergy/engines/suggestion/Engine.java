@@ -24,10 +24,12 @@ public class Engine {
         List<Tag> dateTags = SimpleDateEngine.suggest(p);
         List<Tag> uniqueDateTags = new ArrayList<>();
 
-        for(Tag t:dateTags){
-            if(!uniqueDateTags.contains(t))
-                uniqueDateTags.add(t);
-        }
+        if(!dateTags.equals(null))
+            for(Tag t:dateTags){
+                if(!uniqueDateTags.contains(t))
+                    uniqueDateTags.add(t);
+            }
+
         if(p.getChildTags().isEmpty()){
             return uniqueDateTags;
         }
