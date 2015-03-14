@@ -33,7 +33,6 @@ public class Main extends Application {
     private static Stage primaryStage;
     private PhotoGrid photosGrid;
     private ObservableList<Image> displayedImagesList;
-    private ArrayList<Image> imageArrayList;
     private BorderPane root;
     private TaggingArea taggingArea;
 
@@ -91,20 +90,6 @@ public class Main extends Application {
         leftButtonsBox.getChildren().add(rightButtonsBox);
         HBox.setHgrow(leftButtonsBox, Priority.ALWAYS);
 
-        //Previous implementation of the search field
-        /*final TextField searchField = new TextField("Search");
-        searchField.setId("searching");
-        searchField.setMinHeight(45);
-        searchField.setFont(Font.font("Arial", FontPosture.ITALIC, 25));
-        searchField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean
-                    oldPropertyValue, Boolean newPropertyValue) {
-                if (newPropertyValue) {
-                    System.out.println(arg0.getClass().toString());
-                }
-            }
-        });*/
         searchField = new SearchField();
         comboBox = searchField.getComboBox();
         comboBox.getEditor().setId("searching");

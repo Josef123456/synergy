@@ -60,6 +60,7 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
 			}
 			((GridViewSkin) photoGrid.getSkin()).updateGridViewItems();
 			lastSelectedCell = newImageCell;
+			photoGrid.getTaggingArea ().update ();
 		});
 		return newImageCell;
 	}

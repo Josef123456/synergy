@@ -4,24 +4,11 @@ package synergy.views;
 import java.util.ArrayList;
 import java.util.List;
 
-import controlsfx.controlsfx.control.GridCell;
 import controlsfx.controlsfx.control.GridView;
-import controlsfx.controlsfx.control.cell.ImageGridCell;
-import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.tasks.ThumbnailLoaderTask;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by iHack1337 on 3/2/2015.
@@ -37,6 +24,10 @@ public class PhotoGrid extends GridView<Image> {
 
 	public static List<Photo> getPhotos () {
 		return photos;
+	}
+
+	public TaggingArea getTaggingArea () {
+		return taggingArea;
 	}
 
 	public static GridView<Image> getPhotosGrid() {
