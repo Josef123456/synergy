@@ -114,3 +114,6 @@
     -fx-background-color: #292929;
     -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
 }
+.toggle-button:selected {
+    -fx-background-color: #bbb;
+}

@@ -1,6 +1,5 @@
 package synergy.views;
 
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -31,9 +30,6 @@ public class TaggingArea extends BorderPane {
 
     public TaggingArea() {
         setCenter(returnGridPane(locationPane(), childrenVboxPane(), suggestionPane(), datePane()));
-        getStyleClass().setAll("button-bar");
-        getStyleClass().addAll("toggle-button");
-        getStyleClass().addAll("grid");
     }
 
     private HBox locationPane() {
@@ -43,7 +39,9 @@ public class TaggingArea extends BorderPane {
         boxLocation = new HBox(5);
         button1 = new ToggleButton("RoomA");
         button2 = new ToggleButton("RoomB");
-
+        ToggleGroup toggleGroup = new ToggleGroup();
+        button1.setToggleGroup(toggleGroup);
+        button2.setToggleGroup(toggleGroup);
 
         button1.setOnAction(event -> {
             final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
@@ -84,11 +82,6 @@ public class TaggingArea extends BorderPane {
         childrenPane = new HBox(10);
 //        vBoxChildren.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
 //        vBoxChildren.getStyleClass().add("grid");
-<<<<<<< HEAD
-        // TODO: Cham - Textfield ==> ComboBox with autocomplete
-        childrenTextField = new TextField();
-        childrenTextField.setId("searching");
-=======
         //@TODO: Cham - Textfield ==> ComboBox with autocomplete
         childrenComboBox = new ComboBox();
         childrenComboBox.setId("searching");
@@ -97,7 +90,6 @@ public class TaggingArea extends BorderPane {
         }
         AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
         childrenComboBox.setOnKeyReleased(autoComplete);
->>>>>>> autosearch
         addChildrenTagButton = new ToggleButton("+");
         addChildrenTagButton.setStyle("-fx-text-fill: antiquewhite");
         addChildrenTagButton.setStyle("-fx-background-color: #595959");
