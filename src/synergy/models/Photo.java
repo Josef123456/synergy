@@ -131,7 +131,7 @@ public class Photo {
     }
 
 	public void addTag(Tag tag) {
-        if(!this.getChildTags().isEmpty()){
+        if(!this.getChildTags().isEmpty() && tag.getType() == Tag.TagType.KID){
             for(Tag t:this.getChildTags()){
                 Relationship r = new Relationship(tag,t);
             }
