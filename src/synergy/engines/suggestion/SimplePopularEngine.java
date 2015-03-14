@@ -11,9 +11,10 @@ import java.util.List;
 
 /**
  * engine for the tag suggestion by overall popularity.
+ * RETURN TOP N RELATIONSHIPS(PAIR TAG)
  */
 public class SimplePopularEngine {
-    //RETURN TOP N RELATIONSHIPS(PAIR TAG)
+
 
     public static List<Tag> suggest(Photo p){
         List<Tag> tagsInPhoto = p.getChildTags();
@@ -28,20 +29,15 @@ public class SimplePopularEngine {
 
         List<Tag> toReturn = new ArrayList<>();
         for(Relationship r:sortedRelationships) {
-            System.out.println("In for: "+r);
-            if(tagsInPhoto.contains(r.getKid1()) && !tagsInPhoto.contains(r.getKid2()) && !toReturn.contains(r.getKid2())){
-                toReturn.add(r.getKid2());
-                System.out.println("ADDED: "+r.getKid2());
+            if(tagsInPhoto.contains(r.getKid1()) && !tagsInPhoto.contains(r.getKid2()) && !toReturn.contains(r.getKid2 ()) ) {
+	            toReturn.add(r.getKid2());
             }
-           else
-                if(tagsInPhoto.contains(r.getKid2()) && !tagsInPhoto.contains(r.getKid1()) && !toReturn.contains(r.getKid1())){
-                    toReturn.add(r.getKid1());
-                    System.out.println("ADDED: "+r.getKid1());
-                }
+            else {
+	            if ( tagsInPhoto.contains (r.getKid2 ()) && !tagsInPhoto.contains (r.getKid1 ()) && !toReturn.contains (r.getKid1 ()) ) {
+		            toReturn.add (r.getKid1 ());
+	            }
+            }
         }
-
         return toReturn;
     }
-
-
 }

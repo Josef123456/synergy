@@ -38,9 +38,6 @@ public class SimpleDateEngine {
             photoFoundOnLeft = findTaggedPhotoOnLeft(p);
             photoFoundOnRight = findOnRightTask.get();
             service.shutdown();
-
-            System.out.println("PHOTO FOUND ON LEFT: " + photoFoundOnLeft);
-            System.out.println("PHOTO FOUND ON RIGHT: " + photoFoundOnRight);
         }
         catch (Exception e){
             System.err.println(e);
@@ -139,7 +136,6 @@ public class SimpleDateEngine {
     private static Photo findTaggedPhotoOnLeft(Photo p){
 
         int index =  Engine.historicalPhotos.indexOf(p)-1;
-        System.out.println(index +" "+Engine.historicalPhotos.indexOf(p));
 
         if(index == -1)
             return null;
@@ -149,7 +145,6 @@ public class SimpleDateEngine {
             index--;
         }
         Photo photo = Engine.historicalPhotos.get(index);
-        System.out.println("LLLEEEEFFFFTTT" + photo.getChildTags()+ " "+ index+" "+ photo);
         if(!Engine.historicalPhotos.get(index).getChildTags().isEmpty()){
             return Engine.historicalPhotos.get(index);
         }

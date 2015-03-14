@@ -43,7 +43,6 @@ public class RelationshipMerger {
 
             list.set(0, mergeRelationshipLists(list.get(0), list.get(i)));
         }
-        System.out.println("MERGED: "+list.get(0));
         return list.get(0);
     }
 }

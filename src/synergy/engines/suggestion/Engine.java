@@ -48,6 +48,5 @@ public class Engine {
      */
     public static void prepare(){
         historicalPhotos = Photo.getAllPhotos(); // fetches all photos from database to be analysed.
-        System.out.println(historicalPhotos);
     }
 }

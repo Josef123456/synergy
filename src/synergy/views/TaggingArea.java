@@ -64,13 +64,16 @@ public class TaggingArea extends BorderPane {
         setCenter (returnGridPane (createLocationPane (), createChildrenPane (), createSuggestionPane (), createDatePane ()));
     }
 
-    private HBox createLocationPane () {
+	private ToggleButton button1;
+	private ToggleButton button2;
+
+	private HBox createLocationPane () {
 	    HBox boxMainLocation = new HBox (20);
         boxMainLocation.getStyleClass ().add("grid");
 
 	    HBox boxLocation = new HBox (5);
-        ToggleButton button1 = new ToggleButton("RoomA");
-	    ToggleButton button2 = new ToggleButton ("RoomB");
+        button1 = new ToggleButton("RoomA");
+	    button2 = new ToggleButton ("RoomB");
         ToggleGroup toggleGroup = new ToggleGroup();
         button1.setToggleGroup(toggleGroup);
         button2.setToggleGroup (toggleGroup);
@@ -86,7 +89,7 @@ public class TaggingArea extends BorderPane {
 
         button2.setOnAction (event -> {
 	        final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
-	        Tag tag = new Tag (Tag.TagType.PLACE, button1.getText ());
+	        Tag tag = new Tag (Tag.TagType.PLACE, button2.getText ());
 	        for ( int i = 0 ; i < selectedPhotos.size () ; ++i ) {
 		        selectedPhotos.get (i).addTag (tag);
 	        }
@@ -206,14 +209,24 @@ public class TaggingArea extends BorderPane {
         final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
         for (int i = 0; i < selectedPhotos.size(); ++i) {
             if(i == 0) {
-                tagSet.addAll(selectedPhotos.get(i).getLocationTags());
+                tagSet.addAll (selectedPhotos.get (i).getLocationTags ());
             } else{
                 tagSet.retainAll(selectedPhotos.get(i).getLocationTags());
             }
-            //TODO: fix the problem where it the child tags get added to the tagset despite having the same tag name
         }
         System.out.println("List of location tags: " + tagSet);
         Tag[] tagArray = tagSet.toArray(new Tag[tagSet.size()]);
+
+	    button1.setSelected (false);
+	    button2.setSelected (false);
+	    if (tagArray.length > 0 ) {
+		    Tag tag = tagArray[0];
+		    if ( tag.getValue ().equals("RoomA" )) {
+			    button1.setSelected (true);
+		    } else {
+			    button2.setSelected (true);
+		    }
+	    }
     }
 
     private void updateChildrenTags() {
@@ -257,7 +270,7 @@ public class TaggingArea extends BorderPane {
 	private String buildDateString() {
 		StringBuilder stringBuilder = new StringBuilder ();
 		ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos();
-		stringBuilder.append(" Date: gfdgfd");
+		stringBuilder.append("Date: gfdgfd");
 
 		for (Photo photo : photos) {
 			stringBuilder.append(photo.getDate());
