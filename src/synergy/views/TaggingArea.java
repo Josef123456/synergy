@@ -22,7 +22,8 @@ public class TaggingArea extends BorderPane {
 	private VBox vBoxSuggestion;
 	private FlowPane childrenTags;
 	private ComboBox childrenComboBox;
-    final String[] array = {"alex"};//Tag.getAllChildrenTags().stream ().map ()
+    String[] kidsInDatabase = { "alex", "cham", "codrin", "sari", "josef", "amit", "mike", "tobi"};
+    //Tag.getAllChildrenTags().stream ().map (Tag::getValue).collect(Collectors.toList ());
 
     public void update(){
         updateChildrenTags();
@@ -56,7 +57,7 @@ public class TaggingArea extends BorderPane {
 			boxSuggestion.getChildren ().add(buttonName);
 			childrenSuggestions.getChildren ().add(boxSuggestion);
 		}
-		vBoxSuggestion.getChildren().add(childrenSuggestions);
+		vBoxSuggestion.getChildren().add (childrenSuggestions);
 	}
 
     public TaggingArea() {
@@ -113,7 +114,7 @@ public class TaggingArea extends BorderPane {
 	    HBox childrenPane = new HBox (10);
         childrenComboBox = new ComboBox();
         childrenComboBox.setId("searching");
-        for (String childrenNames : array) {
+        for (String childrenNames : kidsInDatabase ) {
             childrenComboBox.getItems().add(childrenNames);
         }
         AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
@@ -132,7 +133,6 @@ public class TaggingArea extends BorderPane {
             addChildrenTag(name);
         };
         childrenComboBox.getEditor().setText ("");
-
 
         addChildrenTagButton.setOnAction(childrenEventHandler);
         childrenPane.getChildren().addAll(childrenComboBox, addChildrenTagButton);
@@ -160,7 +160,7 @@ public class TaggingArea extends BorderPane {
     }
 
     public void addChildrenTag(String name){
-        Set<String> hashSet = new HashSet<String>(Arrays.asList(array));
+        Set<String> hashSet = new HashSet<String>(Arrays.asList(kidsInDatabase));
         if(hashSet.contains(name)){
             childrenComboBox.getEditor().setText("");
             final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
@@ -175,7 +175,6 @@ public class TaggingArea extends BorderPane {
     private VBox createDatePane () {
 	    VBox paneDate = new VBox ();
         paneDate.getStyleClass ().add("grid");
-
 	    Label dateLabel = new Label (buildDateString ());
 
 	    dateLabel.setStyle ("-fx-text-fill: antiquewhite");
@@ -189,7 +188,6 @@ public class TaggingArea extends BorderPane {
         VBox hb = new VBox(15);
         hb.getStyleClass().add("hbox");
         hb.getChildren().addAll(box1, box2, box3, box4);
-
         return hb;
     }
 
@@ -197,7 +195,6 @@ public class TaggingArea extends BorderPane {
 	    final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
 	    if ( selectedPhotos.size () > 0 ) {
 		    List<String> suggestions = selectedPhotos.get (0).getSuggestedTags ().stream ().map (Tag::getValue).collect (Collectors.toList ());
-		    System.out.println ("\n\n Suggestions:" + Arrays.toString (suggestions.toArray (new String[ suggestions.size () ])) + "\n\n");
 		    return suggestions.toArray (new String[ suggestions.size () ]);
 	    }
 
@@ -213,7 +210,7 @@ public class TaggingArea extends BorderPane {
             } else{
                 tagSet.retainAll(selectedPhotos.get(i).getLocationTags());
             }
-            //@TODO: fix the problem where it the child tags get added to the tagset despite having the same tag name
+            //TODO: fix the problem where it the child tags get added to the tagset despite having the same tag name
         }
         System.out.println("List of location tags: " + tagSet);
         Tag[] tagArray = tagSet.toArray(new Tag[tagSet.size()]);

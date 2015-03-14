@@ -31,7 +31,7 @@ public class SearchField extends HBox {
 		    "Alicia", "Jonah", "Freddie", "Daniel", "David", "Harry", "Harrison", "Isaac", "Toby", "Tom", "Jill"};
 
     public SearchField() {
-        listOfSearch = new HashSet<String>();
+        listOfSearch = new HashSet<>();
         getStyleClass().addAll("toggle-button");
         setUpUI();
 
@@ -63,18 +63,13 @@ public class SearchField extends HBox {
         addButton = new Button("+");
         searchButton = new Button("Search");
 
-        EventHandler eventHandler = new EventHandler() {
-            public void handle(Event event) {
-                addChildrenQuery((String) comboBox.getValue());
-                updateChildrenQueries();
-                updateSearchDatabase();
-            }
+        EventHandler eventHandler = event -> {
+            addChildrenQuery((String) comboBox.getValue());
+            updateChildrenQueries();
+            updateSearchDatabase();
         };
 
         addButton.setOnAction(eventHandler);
-
-        //searchButton.setOnAction(eventHandler);
-        //comboBox.setOnAction(eventHandler);
 
         queryFieldAndSearch.getChildren().add(searchQueryButtons);
         queryFieldAndSearch.getChildren().add(comboBox);
@@ -94,8 +89,12 @@ public class SearchField extends HBox {
 
     public void setUpLocationButtons() {
         buttonPane = new HBox();
+	    ToggleGroup toggleGroup = new ToggleGroup ();
         locationA = new ToggleButton("Room A");
         locationB = new ToggleButton("Room B");
+
+	    locationA.setToggleGroup (toggleGroup);
+	    locationB.setToggleGroup (toggleGroup);
 
         EventHandler eventHandler = event -> updateSearchDatabase();
 

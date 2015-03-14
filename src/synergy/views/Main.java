@@ -1,6 +1,7 @@
 package synergy.views;
 
 
+import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -162,6 +163,7 @@ public class Main extends Application {
         addEventHandlerToExport();
     }
     public static void main(String[] args) {
+	    System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 	    Engine.prepare ();
 	    Application.launch();
     }
