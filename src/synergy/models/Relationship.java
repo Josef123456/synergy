@@ -34,11 +34,16 @@ public class Relationship {
     public Relationship() {}
 
 	public void increaseOccurrences() {
-		System.out.println(getID ());
 		save ();
 		++ occurrences ;
 		save ();
 	}
+
+    public void decreaseOccurrences() {
+        save ();
+        -- occurrences ;
+        save ();
+    }
 
 	public void setOccurrences (int occurrences) {
 		this.occurrences = occurrences;
@@ -51,6 +56,12 @@ public class Relationship {
             System.err.println(e);
             e.printStackTrace();
         }
+    }
+
+    public boolean contains(Tag kid){
+        if(this.getKid1().equals(kid) || this.getKid2().equals(kid))
+            return true;
+        return false;
     }
 
     public int getID() {

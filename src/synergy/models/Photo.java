@@ -89,7 +89,7 @@ public class Photo {
         List<List<Relationship>> toReturn = new ArrayList<>();
         List<Tag> tagsForPhoto = this.getChildTags();
 
-        if(tagsForPhoto.equals(null))
+        if(tagsForPhoto == null)
             return null;
 
         for(Tag t: tagsForPhoto){
@@ -146,6 +146,17 @@ public class Photo {
     public void removeTag(Tag tag) {
 	    this.save();
         tag.save();
+        List<Relationship> relList= tag.getRelationshipsForTagSortedByOccurrences();
+        for(Relationship r: relList){
+            if(this.getChildTags().contains(r.getPartner(tag)))
+            {
+                System.out.println("Occurrences before: " + r);
+                r.decreaseOccurrences();
+                System.out.println("Occurrences after: " + r);
+            }
+
+        }
+
         PhotoTag photoTag = new PhotoTag(this, tag);
         photoTag.save();
         photoTag.destroy();
