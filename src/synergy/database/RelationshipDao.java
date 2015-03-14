@@ -79,8 +79,8 @@ public class RelationshipDao {
 	    } else {
 		    relationship.setOccurrences (1);
 	    }
-
-        relationshipDao.createOrUpdate(relationship);
+        if(!relationship.getKid1().equals(relationship.getKid2()))
+            relationshipDao.createOrUpdate(relationship);
     }
 
     public List<Relationship> getAllRelationships() throws SQLException {
