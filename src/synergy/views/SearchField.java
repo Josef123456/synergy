@@ -47,9 +47,10 @@ public class SearchField extends HBox {
     }
 
     public void setUpTextFieldAndSearch() {
-        queryFieldAndSearch = new HBox();
 
+        queryFieldAndSearch = new HBox();
         searchQueryButtons = new HBox();
+
         comboBox = new ComboBox();
         for (String childName : mockChildrenData) {
             comboBox.getItems().add(childName);

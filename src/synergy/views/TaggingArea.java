@@ -3,10 +3,7 @@ package synergy.views;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -25,11 +22,11 @@ public class TaggingArea extends BorderPane {
     private GridPane gridNorthern;
     private VBox vBoxChildren, vBoxSuggestion, paneDate;
     private FlowPane childrenTags, childrenSuggestions;
-    private HBox childrenPane, boxLocation, boxMainLocation;
+    private HBox childrenPane, boxLocation, boxMainLocation, boxSuggestion;
     private ToggleButton button1, button2, addChildrenTagButton;
     private Text locationText, childrenText;
     private Label childrenSuggestionLabel;
-    private TextField childrenTextField;
+    private ComboBox childrenComboBox;
     final String[] array = {"Cham", "Mike", "Tobi", "Alex", "Sari", "Codrin", "Josef", "Amit"};
 
     public TaggingArea() {
@@ -46,9 +43,6 @@ public class TaggingArea extends BorderPane {
         boxLocation = new HBox(5);
         button1 = new ToggleButton("RoomA");
         button2 = new ToggleButton("RoomB");
-
-
-        // If you guys dont like the background shadow thingy then just delete it...
 
 
         button1.setOnAction(event -> {
@@ -90,9 +84,20 @@ public class TaggingArea extends BorderPane {
         childrenPane = new HBox(10);
 //        vBoxChildren.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
 //        vBoxChildren.getStyleClass().add("grid");
+<<<<<<< HEAD
         // TODO: Cham - Textfield ==> ComboBox with autocomplete
         childrenTextField = new TextField();
         childrenTextField.setId("searching");
+=======
+        //@TODO: Cham - Textfield ==> ComboBox with autocomplete
+        childrenComboBox = new ComboBox();
+        childrenComboBox.setId("searching");
+        for (String childrenNames : array) {
+            childrenComboBox.getItems().add(childrenNames);
+        }
+        AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
+        childrenComboBox.setOnKeyReleased(autoComplete);
+>>>>>>> autosearch
         addChildrenTagButton = new ToggleButton("+");
         addChildrenTagButton.setStyle("-fx-text-fill: antiquewhite");
         addChildrenTagButton.setStyle("-fx-background-color: #595959");
@@ -103,8 +108,8 @@ public class TaggingArea extends BorderPane {
         childrenText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
 
         EventHandler childrenEventHandler = event -> {
-            String name = childrenTextField.getText();
-            childrenTextField.setText("");
+            String name = childrenComboBox.getEditor().getText();
+            childrenComboBox.getEditor().setText("");
 
             final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
             Tag tag = new Tag(Tag.TagType.KID, name);
@@ -114,10 +119,10 @@ public class TaggingArea extends BorderPane {
             updateChildrenTags();
 
         };
-        childrenTextField.setOnAction(childrenEventHandler);
+        childrenComboBox.setOnAction(childrenEventHandler);
         addChildrenTagButton.setOnAction(childrenEventHandler);
 
-        childrenPane.getChildren().addAll(childrenTextField, addChildrenTagButton);
+        childrenPane.getChildren().addAll(childrenComboBox, addChildrenTagButton);
 
         gridNorthern.add(childrenText, 0, 0);
         gridNorthern.add(childrenPane, 1, 0);
@@ -137,16 +142,15 @@ public class TaggingArea extends BorderPane {
         childrenSuggestions = new FlowPane(10, 10);
         childrenSuggestions.setPadding(new Insets(10, 10, 10, 10));
         childrenSuggestions.setPrefWrapLength(4.0);
-        vBoxSuggestion.getStyleClass().add("grid");
 
         String[] suggestions = getSuggestions();
         for (int i = 0; i < suggestions.length; i++) {
-            HBox hBox = new HBox();
+            boxSuggestion = new HBox();
             String suggestion = (suggestions[i] + " ");
             Button buttonName = new Button(suggestion + " +");
             buttonName.setStyle("-fx-text-fill: antiquewhite");
             buttonName.setOnAction(event -> {
-                childrenTextField.setText("");
+                childrenComboBox.getEditor().setText("");
                 HBox hBox1 = new HBox();
                 Button buttonNames = new Button(suggestion + " -");
                 buttonNames.setMinWidth(95.0);
@@ -161,8 +165,8 @@ public class TaggingArea extends BorderPane {
                 }
                 updateChildrenTags();*/
             });
-            hBox.getChildren().addAll(buttonName);
-            childrenSuggestions.getChildren().add(hBox);
+            boxSuggestion.getChildren().addAll(buttonName);
+            childrenSuggestions.getChildren().add(boxSuggestion);
         }
         vBoxSuggestion.getChildren().addAll(childrenSuggestionLabel, childrenSuggestions);
 
@@ -180,7 +184,7 @@ public class TaggingArea extends BorderPane {
 
         // TODO: This needs to be tweaked! To refresh everytime a new photo is added
 
-        stringBuilder.append("Date: ");
+        stringBuilder.append(" Date: ");
 
         for (Photo photo : photos) {
             stringBuilder.append(photo.getDate());
