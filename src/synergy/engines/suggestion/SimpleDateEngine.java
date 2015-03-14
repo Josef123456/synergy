@@ -37,7 +37,7 @@ public class SimpleDateEngine {
         try {
             photoFoundOnLeft = findTaggedPhotoOnLeft(p);
             photoFoundOnRight = findOnRightTask.get();
-            service.shutdown();
+            service.shutdownNow();
         }
         catch (Exception e){
             System.err.println(e);
@@ -67,7 +67,8 @@ public class SimpleDateEngine {
                     photoFoundOnLeft = findTaggedPhotoOnLeft(photoFoundOnLeft);
                     if(photoFoundOnLeft == null)
                         return tagsToReturn;
-                    tagsToReturn.addAll(photoFoundOnRight.getChildTags());
+                    else if(photoFoundOnRight != null)
+                        tagsToReturn.addAll(photoFoundOnRight.getChildTags());
                 }
                 return tagsToReturn;
             }
