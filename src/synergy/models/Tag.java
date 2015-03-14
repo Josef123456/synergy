@@ -35,7 +35,6 @@ public class Tag {
 	public Tag (TagType type, String value) {
 		this.type = type;
 		this.value = value;
-        save();
 	}
 
 	public void save() {

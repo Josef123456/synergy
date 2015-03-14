@@ -90,7 +90,7 @@ public class TaggingArea extends BorderPane {
         childrenPane = new HBox(10);
 //        vBoxChildren.setStyle("-fx-background-color: rgba(0, 0, 0, 0);");
 //        vBoxChildren.getStyleClass().add("grid");
-        //@TODO: Cham - Textfield ==> ComboBox with autocomplete
+        // TODO: Cham - Textfield ==> ComboBox with autocomplete
         childrenTextField = new TextField();
         childrenTextField.setId("searching");
         addChildrenTagButton = new ToggleButton("+");
@@ -318,14 +318,12 @@ public class TaggingArea extends BorderPane {
                 label.setText(tagValue);
 
                 Button removeButton = new Button("-");
-                removeButton.setOnAction(new EventHandler() {
-                    public void handle(Event e) {
-                        Tag tag = new Tag(Tag.TagType.KID, tagValue);
-                        for (int i = 0; i < selectedPhotos.size(); ++i) {
-                            selectedPhotos.get(i).removeTag(tag);
-                        }
-                        updateChildrenTags();
+                removeButton.setOnAction(e -> {
+                    Tag tag = new Tag(Tag.TagType.KID, tagValue);
+                    for (int i1 = 0; i1 < selectedPhotos.size(); ++i1 ) {
+                        selectedPhotos.get(i1).removeTag(tag);
                     }
+                    updateChildrenTags();
                 });
                 hBox.getChildren().add(label);
                 hBox.getChildren().add(removeButton);

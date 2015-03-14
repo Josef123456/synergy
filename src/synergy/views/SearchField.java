@@ -38,8 +38,8 @@ public class SearchField extends HBox {
 
     public void setUpUI() {
         setUpTextFieldAndSearch();
-        setUpDatePicker();
-        setUpLocationButtons();
+        setUpDatePicker ();
+        setUpLocationButtons ();
 
         getChildren().add(datePicker);
         getChildren().add(buttonPane);
@@ -92,12 +92,7 @@ public class SearchField extends HBox {
 
     public void setUpDatePicker() {
         datePicker = new DatePicker();
-        datePicker.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                updateSearchDatabase();
-            }
-        });
+        datePicker.setOnAction(event -> updateSearchDatabase());
 
     }
 
@@ -110,13 +105,7 @@ public class SearchField extends HBox {
         locationA = new ToggleButton("Room A");
         locationB = new ToggleButton("Room B");
 
-        EventHandler eventHandler = new EventHandler<ActionEvent>() {
-
-            @Override
-            public void handle(ActionEvent event) {
-                updateSearchDatabase();
-            }
-        };
+        EventHandler eventHandler = event -> updateSearchDatabase();
 
         locationA.setOnAction(eventHandler);
         locationB.setOnAction(eventHandler);
@@ -136,15 +125,12 @@ public class SearchField extends HBox {
     }
 
     public void updateChildrenQueries(){
-        searchQueryButtons.getChildren().clear();
+        searchQueryButtons.getChildren().clear ();
         for(String query: listOfSearch){
             Button queryButton = new Button(query + " - ");
-            queryButton.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    listOfSearch.remove(query);
-                    updateChildrenQueries();
-                }
+            queryButton.setOnAction(event -> {
+                listOfSearch.remove(query);
+                updateChildrenQueries();
             });
             queryButton.setMinHeight(minHeight);
             queryButton.setStyle("-fx-text-fill: antiquewhite");
