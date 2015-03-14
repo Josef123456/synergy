@@ -25,8 +25,22 @@ public class SimplePopularEngine {
             listRelationshipsForTags.add(relationshipsForTag);
         }
         List<Relationship> sortedRelationships = mergeNLists(listRelationshipsForTags);
-        //TODO implement the rest!
-        return null;
+
+        List<Tag> toReturn = new ArrayList<>();
+        for(Relationship r:sortedRelationships) {
+            System.out.println("In for: "+r);
+            if(tagsInPhoto.contains(r.getKid1()) && !tagsInPhoto.contains(r.getKid2())){
+                toReturn.add(r.getKid2());
+                System.out.println("FIRST IF!");
+            }
+            else
+                if(tagsInPhoto.contains(r.getKid2()) && !tagsInPhoto.contains(r.getKid1())){
+                    toReturn.add(r.getKid1());
+                    System.out.println("SECOND IF!");
+                }
+        }
+
+        return toReturn;
     }
 
     public static List<Relationship> mergeRelationshipLists(List<Relationship> list1, List<Relationship> list2){
@@ -58,9 +72,10 @@ public class SimplePopularEngine {
     public static List<Relationship> mergeNLists(List<List<Relationship>> list){
         System.out.println(list.size());
         for(int i = 1; i<list.size();i++){
-            System.out.println("MERGED: "+list.get(i));
+
             list.set(0, mergeRelationshipLists(list.get(0), list.get(i)));
         }
+        System.out.println("MERGED: "+list.get(0));
         return list.get(0);
     }
 }

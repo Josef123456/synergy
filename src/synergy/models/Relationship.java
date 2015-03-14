@@ -9,9 +9,9 @@ public class Relationship {
 
     @DatabaseField(generatedId = true, columnName = _ID)
     private int ID = -1;
-    @DatabaseField(foreign = true, canBeNull = false, columnName = COLUMN_KID1_ID,uniqueCombo = true)
+    @DatabaseField(foreign = true, canBeNull = false, columnName = COLUMN_KID1_ID,uniqueCombo = true,foreignAutoRefresh = true)
     private Tag kid1Tag;
-    @DatabaseField(foreign = true, canBeNull = false, columnName = COLUMN_KID2_ID,uniqueCombo = true)
+    @DatabaseField(foreign = true, canBeNull = false, columnName = COLUMN_KID2_ID,uniqueCombo = true,foreignAutoRefresh = true)
     private Tag kid2Tag;
 	// Set default value to 0
     @DatabaseField(canBeNull = false, columnName = COLUMN_OCCURRENCES, defaultValue = "0")
