@@ -111,6 +111,7 @@ public class Main extends Application {
     }
 
     public void rightArea() {
+        taggingArea.update();
         root.setRight(taggingArea);
     }
 

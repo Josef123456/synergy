@@ -30,6 +30,12 @@ public class TaggingArea extends BorderPane {
 
     public void update(){
         updateChildrenTags();
+        updateLocationTags();
+        if(PhotoGrid.getSelectedImages().size() == 0){
+            this.setVisible(false);
+        } else{
+            this.setVisible(true);
+        }
     }
 
     public TaggingArea() {
@@ -265,29 +271,18 @@ public class TaggingArea extends BorderPane {
     }
 
     public void updateLocationTags() {
-       /* locationTags.getChildren().clear();
-
-        Set<Tag> tagSet = new HashSet<> ();
-        final Integer[] selectedIndexes = photosPanel.getSelectedIndexesAsArray ();
-        System.out.println ( "Selected Indexes: " + Arrays.toString(selectedIndexes));
-        System.out.println( photosPanel.getPhotos ().get (0).getID ());
-        for ( int i = 0 ; i < selectedIndexes.length; ++ i ) {
-            tagSet.addAll (photosPanel.getPhotos ().get (selectedIndexes[i]).getLocationTags ());
-        }
-        System.out.println ("List of location tags: " + tagSet ) ;
-        Tag[] tagArray = tagSet.toArray (new Tag[tagSet.size()]);
-
-        HBox hBox = new HBox();
-        hBox.setPadding(new Insets(0, 10, 0 ,0));
-        if ( tagArray.length > 0 )  {
-            for (int i = 0; i < tagArray.length; ++i) {
-                final String tagValue= tagArray[i].getValue ();
-                Label label = new Label();
-                label.setText(tagValue);
-                hBox.getChildren().add(label);
+        Set<Tag> tagSet = new HashSet<>();
+        final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+        for (int i = 0; i < selectedPhotos.size(); ++i) {
+            if(i == 0) {
+                tagSet.addAll(selectedPhotos.get(i).getLocationTags());
+            } else{
+                tagSet.retainAll(selectedPhotos.get(i).getLocationTags());
             }
+            //@TODO: fix the problem where it the child tags get added to the tagset despite having the same tag name
         }
-        locationTags.getChildren().add(hBox);*/
+        System.out.println("List of children tags: " + tagSet);
+        Tag[] tagArray = tagSet.toArray(new Tag[tagSet.size()]);
     }
 
     public void updateChildrenTags() {
