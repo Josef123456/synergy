@@ -1,14 +1,16 @@
 package synergy.views;
 
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import synergy.models.Photo;
+import synergy.models.Tag;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * Created by Cham on 06/03/2015.
@@ -25,12 +27,13 @@ public class SearchField extends HBox {
     Button searchButton, addButton;
 
     Set<String> listOfSearch;
-    int minHeight;
+    private int minHeight;
 
-    private String[] mockChildrenData = {"John", "John Jones", "John James", "John George", "Billy", "Jacob", "Ronald",
-		    "Alicia", "Jonah", "Freddie", "Daniel", "David", "Harry", "Harrison", "Isaac", "Toby", "Tom", "Jill"};
+    private String[] mockChildrenData = { "alex", "cham", "codrin", "sari", "josef", "amit", "mike", "tobi"};
+	private PhotoGrid photoGrid;
 
-    public SearchField() {
+    public SearchField(PhotoGrid photoGrid) {
+	    this.photoGrid = photoGrid;
         listOfSearch = new HashSet<>();
         getStyleClass().addAll("toggle-button");
         setUpUI();
@@ -64,12 +67,12 @@ public class SearchField extends HBox {
         searchButton = new Button("Search");
 
         EventHandler eventHandler = event -> {
-            addChildrenQuery((String) comboBox.getValue());
-            updateChildrenQueries();
-            updateSearchDatabase();
+            addChildrenQuery ((String) comboBox.getValue ());
+            updateChildrenQueries ();
         };
 
         addButton.setOnAction(eventHandler);
+	    searchButton.setOnAction (event -> updateSearchDatabase());
 
         queryFieldAndSearch.getChildren().add(searchQueryButtons);
         queryFieldAndSearch.getChildren().add(comboBox);
@@ -79,8 +82,6 @@ public class SearchField extends HBox {
 
     public void setUpDatePicker() {
         datePicker = new MultipleDatePickerSelection();
-        datePicker.setOnAction(event -> updateSearchDatabase());
-
     }
 
     public TextField getDatePickerTextField() {
@@ -96,17 +97,11 @@ public class SearchField extends HBox {
 	    locationA.setToggleGroup (toggleGroup);
 	    locationB.setToggleGroup (toggleGroup);
 
-        EventHandler eventHandler = event -> updateSearchDatabase();
-
-        locationA.setOnAction(eventHandler);
-        locationB.setOnAction(eventHandler);
-
         buttonPane.getChildren().add(locationA);
         buttonPane.getChildren().add(locationB);
     }
 
     public void addChildrenQuery(String addedQuery) {
-        System.out.println(addedQuery);
         Set<String> hashSet = new HashSet<String>(Arrays.asList(mockChildrenData));
         if (listOfSearch.contains(addedQuery)) {
 
@@ -128,7 +123,6 @@ public class SearchField extends HBox {
             searchQueryButtons.getChildren().add(queryButton);
         }
         comboBox.getEditor().setText("");
-
     }
 
     public ComboBox getComboBox() {
@@ -148,10 +142,37 @@ public class SearchField extends HBox {
 
 
     public void updateSearchDatabase() {
-        Set listOfSearchedField = listOfSearch;
-        boolean isLocationA = locationA.isPressed();
-        boolean isLocationB = locationB.isPressed();
-        String date = getDatePickerTextField().getText();
-        //@TODO: placeholder for alex
+        Set<String> listOfSearchedField = listOfSearch;
+	    LocalDate date = datePicker.getValue ();
+	    LocalDate initialDate = datePicker.getIniDate ();
+	    LocalDate endDate = datePicker.getEndDate ();
+	    final Date finalInitialDate;
+	    final Date finalEndDate;
+	    if ( date == null ) {
+		    // use to/from
+		    finalInitialDate = new Date(initialDate.toEpochDay ());
+		    finalEndDate = new Date(endDate.toEpochDay ());
+	    } else {
+		    finalInitialDate = finalEndDate = new Date(date.toEpochDay ());
+	    }
+	    Tag roomTag = null ;
+	    if ( locationA.isSelected () == true ) {
+		    roomTag = new Tag(Tag.TagType.PLACE, locationA.getText ());
+	    }
+	    if ( locationB.isSelected () == true ) {
+		    roomTag = new Tag(Tag.TagType.PLACE, locationB.getText ());
+	    }
+
+	    System.out.println(listOfSearchedField);
+	    Tag kidTag = null;
+	    if ( listOfSearchedField.size () > 0 ) {
+		    String kid1 = listOfSearchedField.iterator ().next ();
+		    kidTag = new Tag(Tag.TagType.KID, kid1);
+	    }
+
+	    List<Photo> photosFromDB = Photo.getPhotosForDatesAndRoomAndKid (
+			    finalInitialDate, finalEndDate, roomTag, kidTag
+	    );
+	    //TODO: do something with photos from DB
     }
 }

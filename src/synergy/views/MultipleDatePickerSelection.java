@@ -26,8 +26,15 @@ public class MultipleDatePickerSelection extends DatePicker{
     private LocalDate endDate;
     final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d.MM.uuuu", Locale.ENGLISH);
 
+	public LocalDate getIniDate () {
+		return iniDate;
+	}
 
-    public MultipleDatePickerSelection() {
+	public LocalDate getEndDate () {
+		return endDate;
+	}
+
+	public MultipleDatePickerSelection() {
 
         setValue(LocalDate.now());
         setConverter(new StringConverter<LocalDate>() {
