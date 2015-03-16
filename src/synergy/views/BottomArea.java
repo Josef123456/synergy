@@ -4,7 +4,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 import controlsfx.controlsfx.control.GridView;
+import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -21,9 +23,10 @@ import synergy.models.Photo;
  */
 public class BottomArea extends VBox {
 
-    private Button gridViewBtn, fullViewBtn, deleteBtn, zoomMinusBtn, zoomPlusBtn;
+    private Button gridViewBtn, fullViewBtn, deleteBtn, zoomMinusBtn, zoomPlusBtn, deselectBtn,
+            selectBtn;
     private Label zoomLabel;
-    private HBox centerBox, rightBox, leftBox;
+    private HBox zoomBox, rightBox, leftBox, selectBox;
 
     public BottomArea() {
         getStyleClass().setAll("button-bar");
@@ -51,15 +54,21 @@ public class BottomArea extends VBox {
         setupNodeStyle(zoomPlusBtn, "zoomPlusBtn");
         zoomPlusBtn.setMinWidth(20);
 
+        deselectBtn = new Button("Deselect All");
+        setupNodeStyle(deselectBtn, "deselectBtn");
+
+        selectBtn = new Button("Select All");
+        setupNodeStyle(selectBtn, "selectBtn");
+
         deleteBtn = new Button("Delete");
         setupNodeStyle(deleteBtn, "deleteBtn");
 
         leftBox = new HBox();
         leftBox.getChildren().addAll(gridViewBtn, fullViewBtn);
         leftBox.setAlignment(Pos.CENTER_LEFT);
-        deleteBtn.setOnAction(event->{
+        deleteBtn.setOnAction(event -> {
             ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos();
-            for (int i = 0 ; i < photos.size(); i++){
+            for (int i = 0; i < photos.size(); i++) {
                 File f = new File(photos.get(i).getPath());
                 PhotoGrid.getSelectedImages().remove(i);
                 PhotoGrid.getDisplayedImagesList().remove(i);
@@ -69,17 +78,22 @@ public class BottomArea extends VBox {
 
         });
 
-        centerBox = new HBox(5);
-        centerBox.getChildren().addAll(zoomMinusBtn, zoomLabel, zoomPlusBtn);
-        centerBox.setAlignment(Pos.CENTER);
-        centerBox.setHgrow(centerBox, Priority.ALWAYS);
+        zoomBox = new HBox(5);
+        zoomBox.getChildren().addAll(zoomMinusBtn, zoomLabel, zoomPlusBtn);
+        zoomBox.setAlignment(Pos.CENTER);
+        zoomBox.setHgrow(zoomBox, Priority.ALWAYS);
+
+        selectBox = new HBox();
+        selectBox.getChildren().addAll(selectBtn, deselectBtn);
+        selectBox.setAlignment(Pos.CENTER);
+        selectBox.setHgrow(selectBox, Priority.ALWAYS);
 
         rightBox = new HBox();
         rightBox.getChildren().add(deleteBtn);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
         rightBox.setHgrow(rightBox, Priority.ALWAYS);
 
-        bottomBar.getItems().addAll(leftBox, centerBox, rightBox);
+        bottomBar.getItems().addAll(leftBox, zoomBox, selectBox, rightBox);
 
         this.getChildren().addAll(bottomBar);
     }
@@ -108,6 +122,26 @@ public class BottomArea extends VBox {
                     photoGrid.setCellWidth(cellWidth + 100);
                     photoGrid.setCellHeight(cellHeight + 100);
                 }
+            }
+        });
+
+        selectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PhotoGrid.getSelectedImages().clear();
+                PhotoGrid.getSelectedImages().addAll(PhotoGrid.getDisplayedImagesList());
+                PhotoGrid.getSelectedPhotos().clear();
+                PhotoGrid.getSelectedPhotos().addAll(PhotoGrid.getSelectedPhotos());
+                ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+            }
+        });
+
+        deselectBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PhotoGrid.getSelectedImages().clear();
+                PhotoGrid.getSelectedPhotos().clear();
+                ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
             }
         });
     }
