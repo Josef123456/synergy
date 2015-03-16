@@ -1,13 +1,10 @@
 package synergy.models;
 
-import org.junit.Before;
 import org.junit.Test;
-import synergy.database.PhotoDao;
-import synergy.database.PhotoTagDao;
-import synergy.database.TagDao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
@@ -68,8 +65,44 @@ public class PhotoTest extends BaseTest{
 		System.out.println(photo);
 		Date date = new Date(115,1,21);
 		System.out.println(date);
-		Photo[] photos = Photo.getPhotosForDate (date);
-		assertEquals (1, photos.length);
+		List<Photo> photos = Photo.getPhotosForDate (date);
+		assertEquals (1, photos.size());
+	}
+
+	@Test public void testGetPhotosForDatesAndRoomAndKid() throws Exception {
+		Photo photo = new Photo(FILE_PATH);
+		photo.save();
+
+		Date toDate = photo.getDate ();
+		Date fromDate = photo.getDate ();
+
+		List<Photo> photos = Photo.getPhotosForDatesAndRoomAndKid (toDate, fromDate, null, null);
+		assertEquals (1 , photos.size ());
+
+		Tag t = new Tag(Tag.TagType.KID, "Sari");
+		Tag t1 = new Tag(Tag.TagType.PLACE, "RoomA");
+
+		photo.addTag (t);
+
+		photos = Photo.getPhotosForDatesAndRoomAndKid (toDate, fromDate, null, t);
+		assertEquals (1 , photos.size ());
+
+		photos = Photo.getPhotosForDatesAndRoomAndKid (null, null, null, t);
+		assertEquals (1 , photos.size ());
+
+		photo.removeTag (t);
+
+		photos = Photo.getPhotosForDatesAndRoomAndKid (toDate, fromDate, null, t);
+		assertEquals (0, photos.size ());
+
+		photo.addTag (t);
+		photo.addTag (t1);
+
+		photos = Photo.getPhotosForDatesAndRoomAndKid (null, null, t1, t);
+		assertEquals (1 , photos.size ());
+
+		photos = Photo.getPhotosForDatesAndRoomAndKid (null, null, t1, null);
+		assertEquals (1 , photos.size ());
 	}
 
 }
