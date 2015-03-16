@@ -26,7 +26,7 @@ public class Engine {
 
         if( dateTags != null )
             for(Tag t:dateTags){
-                if(!uniqueDateTags.contains(t))
+                if(!uniqueDateTags.contains(t) && !p.getChildTags().contains(t))
                     uniqueDateTags.add(t);
             }
 

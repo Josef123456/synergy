@@ -13,7 +13,6 @@ import java.util.concurrent.Future;
  * Created by sari on 27/02/15.
  */
 public class SimpleDateEngine {
-    static int photoIndex; //the index of the current photo
     /**
      * This method finds the nearest photo that contains tags and returns the contained tags.
      *
