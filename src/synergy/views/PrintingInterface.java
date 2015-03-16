@@ -1,8 +1,6 @@
 package synergy.views;
 
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.print.*;
 import javafx.scene.Node;
@@ -56,26 +54,20 @@ public class PrintingInterface extends Application{
         leftButtonsBox.getStyleClass().setAll("button-bar");
         portraitBtn = new Button("Portrait");
         setupButtonStyle(portraitBtn, "firstButton");
-        portraitBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Printer printer = Printer.getDefaultPrinter();
-                PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-                double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
-                double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
-                table.getTransforms().add(new Scale(scaleX, scaleY));
-            }
+        portraitBtn.setOnAction(event -> {
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+            double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
+            double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
+            table.getTransforms().add(new Scale(scaleX, scaleY));
         });
         landscapeBtn = new Button("Landscape");
-        landscapeBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Printer printer = Printer.getDefaultPrinter();
-                PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.LANDSCAPE, Printer.MarginType.DEFAULT);
-                double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
-                double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
-                table.getTransforms().add(new Scale(scaleX, scaleY));
-            }
+        landscapeBtn.setOnAction(event -> {
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.LANDSCAPE, Printer.MarginType.DEFAULT);
+            double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
+            double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
+            table.getTransforms().add(new Scale(scaleX, scaleY));
         });
         setupButtonStyle(landscapeBtn, "secondButton");
         leftButtonsBox.getChildren().addAll(portraitBtn, landscapeBtn);
@@ -110,33 +102,20 @@ public class PrintingInterface extends Application{
         toolbarBottom = new ToolBar();
         cancelBtn = new Button("Cancel");
         setupButtonStyle(cancelBtn, "firstButton");
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                stage.close();
-            }
-        });
+        cancelBtn.setOnAction(event -> stage.close());
 
         optionsBtn = new Button("Options");
         setupButtonStyle(optionsBtn, "secondButton");
-        optionsBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                print(table);
-            }
-        });
+        optionsBtn.setOnAction(event -> print(table));
 
         printBtn = new Button("Print");
         setupButtonStyle(printBtn, "fourthButton");
-        printBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                PrinterJob job = PrinterJob.createPrinterJob();
-                if (job != null) {
-                    boolean success = job.printPage(table);
-                    if (success) {
-                        job.endJob();
-                    }
+        printBtn.setOnAction(event -> {
+            PrinterJob job = PrinterJob.createPrinterJob();
+            if (job != null) {
+                boolean success = job.printPage(table);
+                if (success) {
+                    job.endJob();
                 }
             }
         });
