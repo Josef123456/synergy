@@ -22,7 +22,10 @@ public class TaggingArea extends BorderPane {
 
 	private VBox vBoxSuggestion;
 	private FlowPane childrenTags;
-	private ComboBox childrenComboBox;
+	private ComboBox<CharSequence> childrenComboBox;
+	private ToggleButton button1;
+	private ToggleButton button2;
+	private Label dateLabel;
     String[] kidsInDatabase = { "alex", "cham", "codrin", "sari", "josef", "amit", "mike", "tobi"};
 	//Tag.getAllChildrenTags().stream ().map (Tag::getValue).collect(Collectors.toList ());
 
@@ -37,37 +40,10 @@ public class TaggingArea extends BorderPane {
             this.setVisible(true);
         }
     }
-	private void updateSuggestions() {
-		FlowPane childrenSuggestions = new FlowPane (10, 10);
-		childrenSuggestions.setPadding (new Insets (10, 10, 10, 10));
-		childrenSuggestions.setPrefWrapLength (4.0);
-		String[] suggestions = getSuggestions();
-		vBoxSuggestion.getChildren ().clear();
-		for (int i = 0; i < suggestions.length; i++) {
-			HBox boxSuggestion = new HBox ();
-			String suggestion = (suggestions[i] + " ");
-			Button buttonName = new Button(suggestion + " +");
-			buttonName.setStyle("-fx-text-fill: antiquewhite");
-			buttonName.setOnAction(event -> {
-				final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
-				Tag tag = new Tag(Tag.TagType.KID, suggestion);
-				for (int j = 0; j < selectedPhotos.size(); ++j) {
-					selectedPhotos.get(j).addTag(tag);
-				}
-				updateChildrenTags ();
-			});
-			boxSuggestion.getChildren ().add(buttonName);
-			childrenSuggestions.getChildren ().add(boxSuggestion);
-		}
-		vBoxSuggestion.getChildren().add (childrenSuggestions);
-	}
 
     public TaggingArea() {
-        setCenter (returnGridPane (createLocationPane (), createChildrenPane (), createSuggestionPane (), createDatePane ()));
+        setCenter (returnGridPane (createLocationPane (), createDatePane (), createChildrenPane (), createSuggestionPane ()));
     }
-
-	private ToggleButton button1;
-	private ToggleButton button2;
 
 	private HBox createLocationPane () {
 	    HBox boxMainLocation = new HBox (20);
@@ -115,10 +91,10 @@ public class TaggingArea extends BorderPane {
         childrenTags.setPadding(new Insets(10, 10, 10, 10));
         childrenTags.setPrefWrapLength(4.0);
 	    HBox childrenPane = new HBox (10);
-        childrenComboBox = new ComboBox();
+        childrenComboBox = new ComboBox<> ();
         childrenComboBox.setId("searching");
         for (String childrenNames : kidsInDatabase ) {
-            childrenComboBox.getItems().add(childrenNames);
+            childrenComboBox.getItems ().add(childrenNames);
         }
         AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
         childrenComboBox.setOnKeyReleased (autoComplete);
@@ -132,8 +108,9 @@ public class TaggingArea extends BorderPane {
         childrenText.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
 
         EventHandler childrenEventHandler = event -> {
-            //@TODO: when the user press enter, add the tag
+            //TODO: when the user press enter, add the tag
             String name = childrenComboBox.getEditor().getText();
+	        //TODO: Make sure the name is in the predefined ones.
             addChildrenTag(name);
         };
         childrenComboBox.getEditor().setText ("");
@@ -152,16 +129,11 @@ public class TaggingArea extends BorderPane {
         vBoxSuggestion = new VBox();
         vBoxSuggestion.getStyleClass().add("grid");
 
-	    Label childrenSuggestionLabel = new Label (" Suggestions: ");
-        childrenSuggestionLabel.setStyle ("-fx-text-fill: antiquewhite");
-        childrenSuggestionLabel.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
-
-	    vBoxSuggestion.getChildren ().add(childrenSuggestionLabel);
 
         return vBoxSuggestion;
     }
 
-    public void addChildrenTag(String name){
+    private void addChildrenTag(String name){
         Set<String> hashSet = new HashSet<String>(Arrays.asList(kidsInDatabase));
         if(hashSet.contains(name)){
             childrenComboBox.getEditor().setText("");
@@ -173,8 +145,6 @@ public class TaggingArea extends BorderPane {
             updateChildrenTags();
         }
     }
-
-	Label dateLabel;
 
 	private VBox createDatePane () {
 	    VBox paneDate = new VBox ();
@@ -270,6 +240,44 @@ public class TaggingArea extends BorderPane {
             }
         }
     }
+
+	private void updateSuggestions() {
+		FlowPane childrenSuggestions = new FlowPane (10, 10);
+		childrenSuggestions.setPadding (new Insets (10, 10, 10, 10));
+		childrenSuggestions.setPrefWrapLength (4.0);
+		String[] suggestions = getSuggestions();
+		vBoxSuggestion.getChildren ().clear();
+		Label childrenSuggestionLabel = new Label ("Suggestions: ");
+		childrenSuggestionLabel.setStyle ("-fx-text-fill: antiquewhite");
+		childrenSuggestionLabel.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
+
+		vBoxSuggestion.getChildren ().add(childrenSuggestionLabel);
+
+		for (int i = 0; i < suggestions.length; i++) {
+			HBox boxSuggestion = new HBox ();
+			String suggestion = (suggestions[i]);
+			Button buttonName = new Button(suggestion + " +");
+			buttonName.setStyle("-fx-text-fill: antiquewhite");
+			buttonName.setOnAction(event -> {
+				final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+				Tag tag = new Tag(Tag.TagType.KID, suggestion);
+				for (int j = 0; j < selectedPhotos.size(); ++j) {
+					selectedPhotos.get(j).addTag(tag);
+				}
+				updateChildrenTags ();
+			});
+			boxSuggestion.getChildren ().add(buttonName);
+			childrenSuggestions.getChildren ().add(boxSuggestion);
+		}
+
+		vBoxSuggestion.getChildren().add (childrenSuggestions);
+		System.out.println(suggestions.length);
+		if(suggestions.length == 0 ) {
+			vBoxSuggestion.setVisible (false);
+		} else {
+			vBoxSuggestion.setVisible (true);
+		}
+	}
 
 	private String buildDateString() {
 		StringBuilder stringBuilder = new StringBuilder ();
