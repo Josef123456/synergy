@@ -12,6 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -66,16 +67,20 @@ public class BottomArea extends VBox {
         leftBox = new HBox();
         leftBox.getChildren().addAll(gridViewBtn, fullViewBtn);
         leftBox.setAlignment(Pos.CENTER_LEFT);
-        deleteBtn.setOnAction(event -> {
-            ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos();
-            for (int i = 0; i < photos.size(); i++) {
-                File f = new File(photos.get(i).getPath());
-                PhotoGrid.getSelectedImages().remove(i);
-                PhotoGrid.getDisplayedImagesList().remove(i);
-                PhotoGrid.getSelectedPhotos().remove(i);
-                f.delete();
-            }
+        deleteBtn.setOnAction(event->{
+            ArrayList<Photo> selectedPhotos = new ArrayList<> ();
+	        selectedPhotos.addAll (PhotoGrid.getSelectedPhotos ());
+	        ArrayList<Image> selectedImages = new ArrayList<> ();
+	        selectedImages.addAll (PhotoGrid.getSelectedImages ());
 
+	        System.out.println(selectedPhotos.size());
+            for (int i = 0 ; i < selectedPhotos.size(); i++){
+	            Photo currentPhoto = selectedPhotos.get(i);
+                PhotoGrid.getSelectedImages().remove(selectedImages.get (i));
+                PhotoGrid.getDisplayedImagesList().remove(selectedImages.get(i));
+                PhotoGrid.getSelectedPhotos().remove(selectedPhotos.get(i));
+	            currentPhoto.delete();
+            }
         });
 
         zoomBox = new HBox(5);

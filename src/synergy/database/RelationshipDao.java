@@ -39,11 +39,11 @@ public class RelationshipDao {
 	public List<Relationship> getRelationshipForTags( Tag tag1 , Tag tag2 ) throws SQLException {
 		QueryBuilder<Relationship, Integer> qb = relationshipDao.queryBuilder ();
 		Where where = qb.where();
-		Where<Relationship, Integer> where1 = where.and (
+		Where where1 = where.and (
 				where.eq (Relationship.COLUMN_KID1_ID, tag1.getID ()),
 				where.eq (Relationship.COLUMN_KID2_ID, tag2.getID ())
 		);
-		Where<Relationship, Integer> where2 = where.and (
+		Where where2 = where.and (
 				where.eq (Relationship.COLUMN_KID2_ID, tag1.getID ()),
 				where.eq (Relationship.COLUMN_KID1_ID, tag2.getID ())
 		);

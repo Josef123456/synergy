@@ -5,6 +5,8 @@ import com.j256.ormlite.table.DatabaseTable;
 import synergy.database.PhotoDao;
 import synergy.engines.suggestion.Engine;
 
+import java.io.File;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -190,6 +192,17 @@ public class Photo {
         }
         return new Photo[0];
     }
+
+	public void delete() {
+		try {
+			PhotoDao.getInstance ().delete (this);
+//			File f = new File(path);
+//			f.delete();
+		} catch(SQLException e ){
+			System.err.println(e);
+			e.printStackTrace ();
+		}
+	}
 
     @Override
     public boolean equals(Object o) {

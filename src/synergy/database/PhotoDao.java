@@ -71,6 +71,10 @@ public class PhotoDao {
 	    photoDao.createOrUpdate (photo);
     }
 
+	public void delete(Photo photo) throws SQLException {
+		photoDao.delete (photo);
+	}
+
 	public List<Photo> getAllPhotos() throws SQLException {
 		return photoDao.queryForAll ();
 	}
