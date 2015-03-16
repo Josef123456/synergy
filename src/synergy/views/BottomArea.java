@@ -6,6 +6,10 @@ import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import synergy.models.Photo;
+
+import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created on 09/03/2015.
@@ -29,7 +33,6 @@ public class BottomArea extends VBox {
 
     }
 
-
     public ToolBar bottomArea() {
 
         toolbarBottom = new ToolBar();
@@ -41,6 +44,18 @@ public class BottomArea extends VBox {
 
         deleteBtn = new Button("Delete");
         setupButtonStyle(deleteBtn, "fourthButton");
+
+        deleteBtn.setOnAction(event->{
+            ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos();
+            for (int i = 0 ; i < photos.size(); i++){
+                File f = new File(photos.get(i).getPath());
+                PhotoGrid.getSelectedImages().remove(i);
+                PhotoGrid.getDisplayedImagesList().remove(i);
+                PhotoGrid.getSelectedPhotos().remove(i);
+                f.delete();
+            }
+
+        });
 
         centerbox = new HBox();
         centerbox.getChildren().addAll(gridViewBtn, fullViewBtn);
@@ -63,4 +78,5 @@ public class BottomArea extends VBox {
         btn.getStyleClass().add(buttonName);
         btn.setMinWidth(130);
     }
+
 }
