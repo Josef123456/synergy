@@ -1,6 +1,7 @@
 package synergy.views;
 
 import javafx.application.Application;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
 import javafx.print.*;
 import javafx.scene.Node;
@@ -13,6 +14,13 @@ import javafx.scene.layout.*;
 import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import synergy.models.Photo;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Josef on 09/03/2015.
@@ -27,7 +35,7 @@ public class PrintingInterface extends Application {
     private Stage stage;
     private Pane table;
 
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IOException {
         this.stage = primaryStage;
         main = new BorderPane();
         main.setId("background");
@@ -79,9 +87,16 @@ public class PrintingInterface extends Application {
         main.setTop(toolBar);
     }
 
-    private void setupCenter() {
+    private void setupCenter() throws IOException {
         table = new Pane();
-        Image image = new Image("picture.png");
+        ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
+        StringBuilder sb = new StringBuilder ();
+        for ( Photo photo : selectedPhotos ) {
+            sb.append (photo.getPath ());
+        }
+        BufferedImage bufferedImage;
+        bufferedImage = ImageIO.read(new File(""+sb));
+        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
         ImageView iv1 = new ImageView();
         iv1.setImage(image);
         table.getChildren().add(iv1);
@@ -92,11 +107,6 @@ public class PrintingInterface extends Application {
         table.getTransforms().add(new Scale(scaleX, scaleY));
 
         main.setCenter(table);
-//        button.setOnAction(new EventHandler<ActionEvent>() {
-//            public void handle(ActionEvent e) {
-//                print(table);
-//            }
-//        });
     }
 
     private void setupBottom() {

@@ -22,6 +22,7 @@ import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,12 +46,7 @@ public class Main extends Application {
         root = new BorderPane();
         root.setId("background");
         taggingArea = new TaggingArea();
-        ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
-        StringBuilder sb = new StringBuilder ();
-        for ( Photo photo : selectedPhotos ) {
-            sb.append (photo.getPath ());
-        }
-        System.out.println(sb.toString());
+
         topArea();
         centerArea();
         rightArea();
@@ -94,7 +90,11 @@ public class Main extends Application {
             public void handle(ActionEvent event) {
                 Stage stage= new Stage();
                 PrintingInterface printer= new PrintingInterface();
-                printer.start(stage);
+                try {
+                    printer.start(stage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -181,9 +181,12 @@ public class Main extends Application {
         addEventHandlerToExport();
     }
     public static void main(String[] args) {
-	    System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
+
+        System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 	    Engine.prepare ();
+
 	    Application.launch();
+
 
     }
 }
