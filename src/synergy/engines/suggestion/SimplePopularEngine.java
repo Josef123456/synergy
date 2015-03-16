@@ -30,12 +30,12 @@ public class SimplePopularEngine {
         List<Tag> toReturn = new ArrayList<>();
         for(Relationship r:sortedRelationships) {
             if(tagsInPhoto.contains(r.getKid1()) && !tagsInPhoto.contains(r.getKid2())
-                    && !toReturn.contains(r.getKid2 ()) && !p.getChildTags().contains(r.getKid2()) ) {
+                    && !toReturn.contains(r.getKid2 ()) ) {
 	            toReturn.add(r.getKid2());
             }
             else {
 	            if ( tagsInPhoto.contains (r.getKid2 ()) && !tagsInPhoto.contains (r.getKid1 ())
-                        && !toReturn.contains (r.getKid1 ()) && !p.getChildTags().contains(r.getKid1())) {
+                        && !toReturn.contains (r.getKid1 ())) {
 		            toReturn.add (r.getKid1 ());
 	            }
             }
