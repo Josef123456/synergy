@@ -152,6 +152,9 @@ public class Main extends Application {
             }
             long t2 = System.currentTimeMillis();
             System.out.println(t2 - t1 + " milliseconds");
+            Thread refreshEngine = new Thread(() -> Engine.prepare());
+            refreshEngine.setDaemon(true);
+            refreshEngine.start();
         });
     }
 
