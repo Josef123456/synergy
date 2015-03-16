@@ -1,5 +1,8 @@
 package synergy.views;
 
+import java.io.File;
+import java.util.ArrayList;
+
 import controlsfx.controlsfx.control.GridView;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
@@ -11,9 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import synergy.models.Photo;
-
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created on 09/03/2015.
@@ -69,10 +69,6 @@ public class BottomArea extends VBox {
 
         });
 
-        centerbox = new HBox();
-        centerbox.getChildren().addAll(gridViewBtn, fullViewBtn);
-        centerbox.setAlignment(Pos.CENTER_LEFT);
-
         centerBox = new HBox(5);
         centerBox.getChildren().addAll(zoomMinusBtn, zoomLabel, zoomPlusBtn);
         centerBox.setAlignment(Pos.CENTER);
@@ -122,4 +118,5 @@ public class BottomArea extends VBox {
         if (node.getClass().equals(Button.class))
             ((Button) node).setMinWidth(130);
     }
+
 }
