@@ -45,7 +45,12 @@ public class Main extends Application {
         root = new BorderPane();
         root.setId("background");
         taggingArea = new TaggingArea();
-
+        ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
+        StringBuilder sb = new StringBuilder ();
+        for ( Photo photo : selectedPhotos ) {
+            sb.append (photo.getPath ());
+        }
+        System.out.println(sb.toString());
         topArea();
         centerArea();
         rightArea();
@@ -87,7 +92,9 @@ public class Main extends Application {
         printingViewBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                new PrintingInterface();
+                Stage stage= new Stage();
+                PrintingInterface printer= new PrintingInterface();
+                printer.start(stage);
             }
         });
 
@@ -177,5 +184,6 @@ public class Main extends Application {
 	    System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
 	    Engine.prepare ();
 	    Application.launch();
+
     }
 }
