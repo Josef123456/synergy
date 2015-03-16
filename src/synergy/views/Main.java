@@ -1,31 +1,29 @@
 package synergy.views;
 
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-
 import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -86,6 +84,12 @@ public class Main extends Application {
 
         printingViewBtn = new Button("Printing");
         setupButtonStyle(printingViewBtn, "thirdButton");
+        printingViewBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new PrintingInterface();
+            }
+        });
 
         trashBtn = new Button("Trash");
         setupButtonStyle(trashBtn, "secondButton");
