@@ -1,6 +1,10 @@
 package synergy.views;
 
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -11,17 +15,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main extends Application {
 
@@ -118,8 +122,8 @@ public class Main extends Application {
     }
 
     public void bottomArea() {
-        BottomArea thumbnail = new BottomArea();
-        root.setBottom(thumbnail);
+        BottomArea bottomArea = new BottomArea();
+        root.setBottom(bottomArea);
     }
 
     public void setupButtonStyle(Button btn, String buttonName) {
@@ -130,7 +134,7 @@ public class Main extends Application {
 
     private void addEventHandlerToImport() {
         final FileChooser fileChooser = new FileChooser();
-        photosGrid.setGridPhotos(Photo.getAllPhotos());
+        photosGrid.addPhotosToGrid(Photo.getAllPhotos());
 
         importBtn.setOnAction(event -> {
             List<File> list = fileChooser.showOpenMultipleDialog(primaryStage);
@@ -144,9 +148,9 @@ public class Main extends Application {
                     lastImported.add(photo);
                 }
                 if (photosGrid.getItems().size() == 0) {
-                    photosGrid.setGridPhotos(Photo.getAllPhotos());
+                    photosGrid.addPhotosToGrid(Photo.getAllPhotos());
                 } else {
-                    photosGrid.setGridPhotos(lastImported);
+                    photosGrid.addPhotosToGrid(lastImported);
                 }
                 System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
             }

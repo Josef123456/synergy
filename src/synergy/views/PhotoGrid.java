@@ -16,7 +16,7 @@ import synergy.tasks.ThumbnailLoaderTask;
 public class PhotoGrid extends GridView<Image> {
 
     private static ArrayList<Image> selectedImages = new ArrayList<>();
-	private static List<Photo> photos ;
+	private static ArrayList<Photo> photos = new ArrayList<>();
 	private static ArrayList<Photo> selectedPhotos = new ArrayList<> ();
     private static GridView<Image> photosGrid;
     private static ObservableList<Image> displayedImagesList;
@@ -58,8 +58,8 @@ public class PhotoGrid extends GridView<Image> {
         this.setCellWidth(300);
     }
 
-    public void setGridPhotos(final List<Photo> photosToDisplay) {
-	    photos = photosToDisplay;
+    public void addPhotosToGrid(final List<Photo> photosToDisplay) {
+	    photos.addAll(photosToDisplay);
         Thread setPhotosThread = new Thread(new ThumbnailLoaderTask(photosToDisplay));
         setPhotosThread.setDaemon(true);
         setPhotosThread.start();

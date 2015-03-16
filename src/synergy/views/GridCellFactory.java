@@ -17,70 +17,73 @@ import synergy.models.Photo;
  */
 public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image>> {
 
-	private PhotoGrid photoGrid;
-	private static ImageGridCell lastSelectedCell = null;
+    private PhotoGrid photoGrid;
+    private static ImageGridCell lastSelectedCell = null;
 
-	public GridCellFactory (PhotoGrid photoGrid) {
-		this.photoGrid = photoGrid;
-	}
+    public GridCellFactory(PhotoGrid photoGrid) {
+        this.photoGrid = photoGrid;
+    }
 
-	@Override
-	public GridCell<Image> call (GridView<Image> param) {
-		final ImageGridCell newImageCell = new ImageGridCell();
-		newImageCell.setOnMouseClicked(event -> {
-			if (event.isShiftDown()) {
-				int lastSelectedIndex = lastSelectedCell.getIndex();
-				int newlySelectedIndex = newImageCell.getIndex();
+    @Override
+    public GridCell<Image> call(GridView<Image> param) {
+        final ImageGridCell newImageCell = new ImageGridCell();
+        newImageCell.setOnMouseClicked(event -> {
+            System.out.println("CLICKED");
+            if (event.isShiftDown()) {
+                int lastSelectedIndex = lastSelectedCell.getIndex();
+                int newlySelectedIndex = newImageCell.getIndex();
 
-				if (newlySelectedIndex < lastSelectedIndex) {
-					int aux = newlySelectedIndex;
-					newlySelectedIndex = lastSelectedIndex;
-					lastSelectedIndex = aux;
-				}
-				int iterationIndex = newlySelectedIndex;
-				Image shiftSelectedImage = PhotoGrid.getDisplayedImagesList ().get (iterationIndex);
-				Photo shiftSelectedPhoto = PhotoGrid.getPhotos ().get (iterationIndex);
+                if (newlySelectedIndex < lastSelectedIndex) {
+                    int aux = newlySelectedIndex;
+                    newlySelectedIndex = lastSelectedIndex;
+                    lastSelectedIndex = aux;
+                }
+                int iterationIndex = newlySelectedIndex;
+                Image shiftSelectedImage = PhotoGrid.getDisplayedImagesList().get(iterationIndex);
+                Photo shiftSelectedPhoto = PhotoGrid.getPhotos().get(iterationIndex);
 
-				if (PhotoGrid.getSelectedImages ().contains (shiftSelectedImage))
-					iterationIndex--;
-				while (iterationIndex >= lastSelectedIndex) {
-					shiftSelectedPhoto = PhotoGrid.getPhotos ().get (iterationIndex);
-					PhotoGrid.getSelectedPhotos ().remove (shiftSelectedPhoto);
-					PhotoGrid.getSelectedPhotos ().add (shiftSelectedPhoto);
+                System.out.println(newlySelectedIndex + " " + lastSelectedIndex);
 
-					shiftSelectedImage = PhotoGrid.getDisplayedImagesList ().get (iterationIndex);
-					PhotoGrid.getSelectedImages ().remove (shiftSelectedImage);
-					PhotoGrid.getSelectedImages ().add (shiftSelectedImage);
-					iterationIndex--;
-				}
-			} else {
-				setCellSelection(newImageCell);
-			}
-			((GridViewSkin) photoGrid.getSkin()).updateGridViewItems();
-			lastSelectedCell = newImageCell;
-			photoGrid.getTaggingArea ().update ();
-		});
-		return newImageCell;
-	}
+                if (PhotoGrid.getSelectedImages().contains(shiftSelectedImage))
+                    iterationIndex--;
+                while (iterationIndex >= lastSelectedIndex) {
+                    shiftSelectedPhoto = PhotoGrid.getPhotos().get(iterationIndex);
+                    PhotoGrid.getSelectedPhotos().remove(shiftSelectedPhoto);
+                    PhotoGrid.getSelectedPhotos().add(shiftSelectedPhoto);
 
-	public void setCellSelection(ImageGridCell imageCell) {
-		Image selectedImage = imageCell.getItem ();
-		int selectedImageIndex = PhotoGrid.getDisplayedImagesList ().indexOf (selectedImage);
-		if (imageCell.getBorder() == null) {
-			PhotoGrid.getSelectedPhotos ().add (PhotoGrid.getPhotos ().get (selectedImageIndex));
-			PhotoGrid.getSelectedImages ().add (selectedImage);
+                    shiftSelectedImage = PhotoGrid.getDisplayedImagesList().get(iterationIndex);
+                    PhotoGrid.getSelectedImages().remove(shiftSelectedImage);
+                    PhotoGrid.getSelectedImages().add(shiftSelectedImage);
+                    iterationIndex--;
+                }
+            } else {
+                setCellSelection(newImageCell);
+            }
+            ((GridViewSkin) photoGrid.getSkin()).updateGridViewItems();
+            lastSelectedCell = newImageCell;
+            photoGrid.getTaggingArea().update();
+        });
+        return newImageCell;
+    }
 
-			BorderStroke[] borderStrokeArray = new BorderStroke[4];
-			for (int i = 0; i < 4; i++)
-				borderStrokeArray[i] = new BorderStroke(javafx.scene.paint.Color
-						.BLUE, BorderStrokeStyle.SOLID, null, BorderStroke.MEDIUM,
-						new Insets (-5, -5, -5, -5));
-			imageCell.setBorder(new Border (borderStrokeArray));
-		} else {
-			PhotoGrid.getSelectedPhotos ().remove (PhotoGrid.getPhotos ().get (selectedImageIndex));
-			PhotoGrid.getSelectedImages ().remove (selectedImage);
-			imageCell.setBorder(null);
-		}
-	}
+    public void setCellSelection(ImageGridCell imageCell) {
+        Image selectedImage = imageCell.getItem();
+        int selectedImageIndex = PhotoGrid.getDisplayedImagesList().indexOf(selectedImage);
+        if (imageCell.getBorder() == null) {
+            PhotoGrid.getSelectedPhotos().add(PhotoGrid.getPhotos().get(selectedImageIndex));
+            PhotoGrid.getSelectedImages().add(selectedImage);
+
+            BorderStroke[] borderStrokeArray = new BorderStroke[4];
+            for (int i = 0; i < 4; i++)
+                borderStrokeArray[i] = new BorderStroke(javafx.scene.paint.Color
+                        .BLUE, BorderStrokeStyle.SOLID, null, BorderStroke.MEDIUM,
+                        new Insets(-5, -5, -5, -5));
+            imageCell.setBorder(new Border(borderStrokeArray));
+        } else {
+            PhotoGrid.getSelectedPhotos().remove(PhotoGrid.getPhotos().get(selectedImageIndex));
+            PhotoGrid.getSelectedImages().remove(selectedImage);
+            imageCell.setBorder(null);
+        }
+    }
 
 }

@@ -1,7 +1,11 @@
 package synergy.views;
 
+import controlsfx.controlsfx.control.GridView;
+import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -17,34 +21,42 @@ import java.util.ArrayList;
  */
 public class BottomArea extends VBox {
 
-    private Button gridViewBtn, fullViewBtn, deleteBtn;
-    private HBox centerbox, rightBox;
-    private ToolBar toolbarBottom;
+    private Button gridViewBtn, fullViewBtn, deleteBtn, zoomMinusBtn, zoomPlusBtn;
+    private Label zoomLabel;
+    private HBox centerBox, rightBox, leftBox;
 
     public BottomArea() {
         getStyleClass().setAll("button-bar");
-        getChildren().addAll(bottomArea());
+        initBottomArea();
+        addEventHandlers();
     }
 
-    /**
-     * Whoever is working on thumbnailView. please insert code inside this method.
-     */
-    public void thumbnailView() {
+    public void initBottomArea() {
+        ToolBar bottomBar = new ToolBar();
 
-    }
-
-    public ToolBar bottomArea() {
-
-        toolbarBottom = new ToolBar();
         gridViewBtn = new Button("Grid");
-        setupButtonStyle(gridViewBtn, "firstButton");
+        setupNodeStyle(gridViewBtn, "gridViewBtn");
 
         fullViewBtn = new Button("Full");
-        setupButtonStyle(fullViewBtn, "secondButton");
+        setupNodeStyle(fullViewBtn, "fullViewBtn");
+
+        zoomMinusBtn = new Button("-");
+        setupNodeStyle(zoomMinusBtn, "zoomMinusBtn");
+        zoomMinusBtn.setMinWidth(20);
+
+        zoomLabel = new Label("Zoom");
+        setupNodeStyle(zoomLabel, "zoomLabel");
+
+        zoomPlusBtn = new Button("+");
+        setupNodeStyle(zoomPlusBtn, "zoomPlusBtn");
+        zoomPlusBtn.setMinWidth(20);
 
         deleteBtn = new Button("Delete");
-        setupButtonStyle(deleteBtn, "fourthButton");
+        setupNodeStyle(deleteBtn, "deleteBtn");
 
+        leftBox = new HBox();
+        leftBox.getChildren().addAll(gridViewBtn, fullViewBtn);
+        leftBox.setAlignment(Pos.CENTER_LEFT);
         deleteBtn.setOnAction(event->{
             ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos();
             for (int i = 0 ; i < photos.size(); i++){
@@ -61,22 +73,53 @@ public class BottomArea extends VBox {
         centerbox.getChildren().addAll(gridViewBtn, fullViewBtn);
         centerbox.setAlignment(Pos.CENTER_LEFT);
 
+        centerBox = new HBox(5);
+        centerBox.getChildren().addAll(zoomMinusBtn, zoomLabel, zoomPlusBtn);
+        centerBox.setAlignment(Pos.CENTER);
+        centerBox.setHgrow(centerBox, Priority.ALWAYS);
+
         rightBox = new HBox();
         rightBox.getChildren().add(deleteBtn);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
+        rightBox.setHgrow(rightBox, Priority.ALWAYS);
 
-        centerbox.getChildren().addAll(rightBox);
-        HBox.setHgrow(centerbox, Priority.ALWAYS);
+        bottomBar.getItems().addAll(leftBox, centerBox, rightBox);
 
-        toolbarBottom.getItems().addAll(centerbox, deleteBtn);
-
-        return toolbarBottom;
+        this.getChildren().addAll(bottomBar);
     }
 
-    public void setupButtonStyle(Button btn, String buttonName) {
-        btn.setStyle("-fx-text-fill: antiquewhite");
-        btn.getStyleClass().add(buttonName);
-        btn.setMinWidth(130);
+    public void addEventHandlers() {
+        GridView photoGrid = PhotoGrid.getPhotosGrid();
+
+        zoomMinusBtn.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                double cellWidth = photoGrid.getCellWidth();
+                double cellHeight = photoGrid.getCellHeight();
+                if (cellWidth > 100 & cellHeight > 100) {
+                    photoGrid.setCellWidth(cellWidth - 100);
+                    photoGrid.setCellHeight(cellHeight - 100);
+                }
+            }
+        });
+
+        zoomPlusBtn.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                double cellWidth = photoGrid.getCellWidth();
+                double cellHeight = photoGrid.getCellHeight();
+                if (cellWidth < 1000 & cellHeight < 1000) {
+                    photoGrid.setCellWidth(cellWidth + 100);
+                    photoGrid.setCellHeight(cellHeight + 100);
+                }
+            }
+        });
     }
 
+    public void setupNodeStyle(Node node, String nodeName) {
+        node.setStyle("-fx-text-fill: antiquewhite");
+        node.getStyleClass().add(nodeName);
+        if (node.getClass().equals(Button.class))
+            ((Button) node).setMinWidth(130);
+    }
 }
