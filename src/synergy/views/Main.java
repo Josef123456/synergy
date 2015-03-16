@@ -5,6 +5,8 @@ import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -82,7 +84,12 @@ public class Main extends Application {
 
         printingViewBtn = new Button("Printing");
         setupButtonStyle(printingViewBtn, "thirdButton");
-        printingViewBtn.setOnAction(event -> new PrintingInterface());
+        printingViewBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                new PrintingInterface();
+            }
+        });
 
         trashBtn = new Button("Trash");
         setupButtonStyle(trashBtn, "secondButton");

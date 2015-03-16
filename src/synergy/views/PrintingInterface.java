@@ -17,7 +17,7 @@ import javafx.stage.StageStyle;
 /**
  * Created by Josef on 09/03/2015.
  */
-public class PrintingInterface extends Application{
+public class PrintingInterface extends Application {
 
     private BorderPane main;
     private ToolBar toolBar, toolbarBottom;
@@ -26,6 +26,7 @@ public class PrintingInterface extends Application{
     private Button portraitBtn, landscapeBtn, cancelBtn, optionsBtn, printBtn;
     private Stage stage;
     private Pane table;
+
     public void start(Stage primaryStage) {
         this.stage = primaryStage;
         main = new BorderPane();
@@ -77,6 +78,7 @@ public class PrintingInterface extends Application{
         toolBar.getItems().addAll(leftButtonsBox);
         main.setTop(toolBar);
     }
+
     private void setupCenter() {
         table = new Pane();
         Image image = new Image("picture.png");
@@ -95,9 +97,8 @@ public class PrintingInterface extends Application{
 //                print(table);
 //            }
 //        });
-        main.setCenter(table);
-
     }
+
     private void setupBottom() {
         toolbarBottom = new ToolBar();
         cancelBtn = new Button("Cancel");
@@ -140,14 +141,8 @@ public class PrintingInterface extends Application{
         btn.getStyleClass().add(buttonName);
         btn.setMinWidth(130);
     }
+
     public void print(final Node node) {
-//        PrinterJob job = PrinterJob.createPrinterJob();
-//        if (job != null) {
-//            boolean success = job.printPage(node);
-//            if (success) {
-//                job.endJob();
-//            }
-//        }
         Printer printer = Printer.getDefaultPrinter();
         PageLayout pageLayout = printer.createPageLayout(Paper.A4,
                 PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
