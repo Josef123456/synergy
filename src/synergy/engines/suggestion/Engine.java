@@ -21,22 +21,14 @@ public class Engine {
      * @return
      */
     public static List<Tag> suggest(Photo p){
-        List<Tag> dateTags = SimpleDateEngine.suggest(p);
-        List<Tag> uniqueDateTags = new ArrayList<>();
 
-        if( dateTags != null )
-            for(Tag t:dateTags){
-                if(!uniqueDateTags.contains(t) && !p.getChildTags().contains(t))
-                    uniqueDateTags.add(t);
-            }
-
-        if(p.getChildTags().isEmpty()){
-            return uniqueDateTags;
+        if( p.getChildTags().isEmpty() ){
+            return getUniqueDates(p);
         }
         else{
             List<Tag> popularTags = SimplePopularEngine.suggest(p);
             if(popularTags.isEmpty()){
-                return uniqueDateTags;
+                return getUniqueDates(p);
             }
         }
 
@@ -48,5 +40,18 @@ public class Engine {
      */
     public static void prepare(){
         historicalPhotos = Photo.getAllPhotos(); // fetches all photos from database to be analysed.
+    }
+
+    private static List<Tag> getUniqueDates(Photo p){
+        List<Tag> dateTags = SimpleDateEngine.suggest(p);
+        List<Tag> uniqueDateTags = new ArrayList<>();
+        if(dateTags != null)
+            for(Tag t:dateTags){
+                if(!uniqueDateTags.contains(t) && !p.getChildTags().contains(t))
+                    uniqueDateTags.add(t);
+            }
+
+        return uniqueDateTags;
+
     }
 }
