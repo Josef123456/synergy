@@ -129,12 +129,11 @@ public class TaggingArea extends BorderPane {
         vBoxSuggestion = new VBox();
         vBoxSuggestion.getStyleClass().add("grid");
 
-
         return vBoxSuggestion;
     }
 
     private void addChildrenTag(String name){
-        Set<String> hashSet = new HashSet<String>(Arrays.asList(kidsInDatabase));
+        Set<String> hashSet = new HashSet<>(Arrays.asList(kidsInDatabase));
         if(hashSet.contains(name)){
             childrenComboBox.getEditor().setText("");
             final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
@@ -142,7 +141,8 @@ public class TaggingArea extends BorderPane {
             for (int i = 0; i < selectedPhotos.size(); ++i) {
                 selectedPhotos.get(i).addTag(tag);
             }
-            updateChildrenTags();
+            updateChildrenTags ();
+	        updateSuggestions ();
         }
     }
 
@@ -233,6 +233,7 @@ public class TaggingArea extends BorderPane {
                         selectedPhotos.get(i1).removeTag(tag);
                     }
                     updateChildrenTags();
+	                updateSuggestions ();
                 });
                 hBox.getChildren().add(label);
                 hBox.getChildren().add(removeButton);
@@ -251,6 +252,7 @@ public class TaggingArea extends BorderPane {
 		childrenSuggestionLabel.setStyle ("-fx-text-fill: antiquewhite");
 		childrenSuggestionLabel.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
 
+		System.out.println ("in updating suggestion");
 		vBoxSuggestion.getChildren ().add(childrenSuggestionLabel);
 
 		for (int i = 0; i < suggestions.length; i++) {
@@ -264,14 +266,16 @@ public class TaggingArea extends BorderPane {
 				for (int j = 0; j < selectedPhotos.size(); ++j) {
 					selectedPhotos.get(j).addTag(tag);
 				}
+				((Button)event.getSource ()).setVisible (false);
 				updateChildrenTags ();
+				updateSuggestions ();
 			});
 			boxSuggestion.getChildren ().add(buttonName);
 			childrenSuggestions.getChildren ().add(boxSuggestion);
 		}
 
 		vBoxSuggestion.getChildren().add (childrenSuggestions);
-		System.out.println(suggestions.length);
+		System.out.println (suggestions.length);
 		if(suggestions.length == 0 ) {
 			vBoxSuggestion.setVisible (false);
 		} else {

@@ -132,22 +132,25 @@ public class Photo {
     }
 
 	public void addTag(Tag tag) {
-        if(!this.getChildTags().isEmpty() && tag.getType() == Tag.TagType.KID){
-            for(Tag t:this.getChildTags()){
-                Relationship r = new Relationship(tag,t);
-            }
-        }
         this.save ();
-		tag.save();
+		tag.save ();
 		PhotoTag photoTag = new PhotoTag (this, tag);
-		photoTag.save();
-		System.out.println(photoTag);
-
+		photoTag.save ();
+		System.out.println ("adding: " + photoTag);
+		if(!this.getChildTags().isEmpty() && tag.getType() == Tag.TagType.KID){
+			//TODO: make sure we don't get relationships between (KID1,KID1)
+			for(Tag t:this.getChildTags()){
+				new Relationship(tag,t);
+			}
+		}
 	}
 
     public void removeTag(Tag tag) {
 	    this.save();
         tag.save();
+	    PhotoTag photoTag = new PhotoTag(this, tag);
+	    photoTag.save();
+	    photoTag.destroy();
         List<Relationship> relList= tag.getRelationshipsForTagSortedByOccurrences();
         for(Relationship r: relList){
             if(this.getChildTags().contains(r.getPartner(tag)))
@@ -158,10 +161,6 @@ public class Photo {
             }
 
         }
-
-        PhotoTag photoTag = new PhotoTag(this, tag);
-        photoTag.save();
-        photoTag.destroy();
     }
 
     public static ArrayList<Date> getUniqueDates() {
