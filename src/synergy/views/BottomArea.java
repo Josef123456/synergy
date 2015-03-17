@@ -1,6 +1,5 @@
 package synergy.views;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import controlsfx.controlsfx.control.GridView;
@@ -123,7 +122,7 @@ public class BottomArea extends VBox {
             public void handle(ActionEvent event) {
                 double cellWidth = photoGrid.getCellWidth();
                 double cellHeight = photoGrid.getCellHeight();
-                if (cellWidth < 1000 & cellHeight < 1000) {
+                if (cellWidth < 900 & cellHeight < 900) {
                     photoGrid.setCellWidth(cellWidth + 100);
                     photoGrid.setCellHeight(cellHeight + 100);
                 }

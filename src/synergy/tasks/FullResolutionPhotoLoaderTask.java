@@ -18,8 +18,8 @@ import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import synergy.models.Photo;
-import synergy.views.PhotoGrid;
 import synergy.utilities.WritableImageCreator;
+import synergy.views.PhotoGrid;
 
 /**
  * Created by alexstoick on 3/7/15.
@@ -31,11 +31,10 @@ public class FullResolutionPhotoLoaderTask extends Task {
     private ArrayList<Image> selectedImages;
     private GridView<Image> photosGrid;
 
-    public FullResolutionPhotoLoaderTask(List<Photo> photosToDisplay, HashMap<Photo, Image>
-            displayedImagesMap) {
+    public FullResolutionPhotoLoaderTask(List<Photo> photosToDisplay) {
         this.photosToDisplay = photosToDisplay;
         this.displayedImagesList = PhotoGrid.getDisplayedImagesList();
-        this.displayedImagesMap = displayedImagesMap;
+        this.displayedImagesMap = PhotoGrid.getDisplayedImagesMap();
         this.selectedImages = PhotoGrid.getSelectedImages();
         this.photosGrid = PhotoGrid.getPhotosGrid();
     }
@@ -49,19 +48,23 @@ public class FullResolutionPhotoLoaderTask extends Task {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            BufferedImage scaledImage = Scalr.resize(initialImage, 350);
+            BufferedImage scaledImage = Scalr.resize(initialImage, 750);
             initialImage.flush();
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage(scaledImage);
 
-            Platform.runLater(() -> {
-                Image toBeReplaced = displayedImagesMap.get(photo);
-                int i = displayedImagesList.indexOf(toBeReplaced);
-                displayedImagesList.set(i, finalWi);
-                i = selectedImages.indexOf(toBeReplaced);
-                if (i != -1)
-                    selectedImages.set(i, finalWi);
-                ((GridViewSkin) photosGrid.getSkin()).updateGridViewItems();
-            });
+            if (!this.isCancelled()) {
+                Platform.runLater(() -> {
+                    Image toBeReplaced = displayedImagesMap.get(photo);
+                    int i = displayedImagesList.indexOf(toBeReplaced);
+                    displayedImagesList.set(i, finalWi);
+                    i = selectedImages.indexOf(toBeReplaced);
+                    if (i != -1)
+                        selectedImages.set(i, finalWi);
+                    ((GridViewSkin) photosGrid.getSkin()).updateGridViewItems();
+                });
+            } else {
+                return null;
+            }
             System.out.println("Replaced " + photo.getPath());
         }
         return null;

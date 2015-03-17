@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.paint.Color;
 import javafx.util.Callback;
 import synergy.models.Photo;
 
@@ -40,14 +41,14 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
                 }
                 int iterationIndex = newlySelectedIndex;
                 Image shiftSelectedImage = PhotoGrid.getDisplayedImagesList().get(iterationIndex);
-                Photo shiftSelectedPhoto = PhotoGrid.getPhotos().get(iterationIndex);
+                Photo shiftSelectedPhoto = PhotoGrid.getDisplayedPhotos().get(iterationIndex);
 
                 System.out.println(newlySelectedIndex + " " + lastSelectedIndex);
 
                 if (PhotoGrid.getSelectedImages().contains(shiftSelectedImage))
                     iterationIndex--;
                 while (iterationIndex >= lastSelectedIndex) {
-                    shiftSelectedPhoto = PhotoGrid.getPhotos().get(iterationIndex);
+                    shiftSelectedPhoto = PhotoGrid.getDisplayedPhotos().get(iterationIndex);
                     PhotoGrid.getSelectedPhotos().remove(shiftSelectedPhoto);
                     PhotoGrid.getSelectedPhotos().add(shiftSelectedPhoto);
 
@@ -70,17 +71,17 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
         Image selectedImage = imageCell.getItem();
         int selectedImageIndex = PhotoGrid.getDisplayedImagesList().indexOf(selectedImage);
         if (imageCell.getBorder() == null) {
-            PhotoGrid.getSelectedPhotos().add(PhotoGrid.getPhotos().get(selectedImageIndex));
+            PhotoGrid.getSelectedPhotos().add(PhotoGrid.getDisplayedPhotos().get(selectedImageIndex));
             PhotoGrid.getSelectedImages().add(selectedImage);
 
             BorderStroke[] borderStrokeArray = new BorderStroke[4];
             for (int i = 0; i < 4; i++)
-                borderStrokeArray[i] = new BorderStroke(javafx.scene.paint.Color
+                borderStrokeArray[i] = new BorderStroke(Color
                         .BLUE, BorderStrokeStyle.SOLID, null, BorderStroke.MEDIUM,
                         new Insets(-5, -5, -5, -5));
             imageCell.setBorder(new Border(borderStrokeArray));
         } else {
-            PhotoGrid.getSelectedPhotos().remove(PhotoGrid.getPhotos().get(selectedImageIndex));
+            PhotoGrid.getSelectedPhotos().remove(PhotoGrid.getDisplayedPhotos().get(selectedImageIndex));
             PhotoGrid.getSelectedImages().remove(selectedImage);
             imageCell.setBorder(null);
         }

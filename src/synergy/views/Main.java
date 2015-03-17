@@ -2,6 +2,12 @@ package synergy.views;
 
 
 import com.j256.ormlite.logger.LocalLog;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,18 +19,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main extends Application {
 
@@ -88,8 +93,8 @@ public class Main extends Application {
         printingViewBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Stage stage= new Stage();
-                PrintingInterface printer= new PrintingInterface();
+                Stage stage = new Stage();
+                PrintingInterface printer = new PrintingInterface();
                 try {
                     printer.start(stage);
                 } catch (IOException e) {
@@ -145,7 +150,7 @@ public class Main extends Application {
 
     private void addEventHandlerToImport() {
         final FileChooser fileChooser = new FileChooser();
-        photosGrid.addPhotosToGrid(Photo.getAllPhotos());
+        photosGrid.setGridPhotos(Photo.getAllPhotos());
 
         importBtn.setOnAction(event -> {
             List<File> list = fileChooser.showOpenMultipleDialog(primaryStage);
@@ -158,10 +163,11 @@ public class Main extends Application {
                     photo.save();
                     lastImported.add(photo);
                 }
-                if (photosGrid.getItems().size() == 0) {
-                    photosGrid.addPhotosToGrid(Photo.getAllPhotos());
-                } else {
+                if (photosGrid.displayingImported) {
                     photosGrid.addPhotosToGrid(lastImported);
+                } else {
+                    photosGrid.displayingImported = true;
+                    photosGrid.setGridPhotos(lastImported);
                 }
                 System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
             }
@@ -174,19 +180,22 @@ public class Main extends Application {
     }
 
     public void addEventHandlerToExport() {
+        exportBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            }
+        });
     }
 
     public void addEventHandlers() {
         addEventHandlerToImport();
         addEventHandlerToExport();
     }
+
     public static void main(String[] args) {
-
         System.setProperty(LocalLog.LOCAL_LOG_LEVEL_PROPERTY, "ERROR");
-	    Engine.prepare ();
+        Engine.prepare();
 
-	    Application.launch();
-
-
+        Application.launch();
     }
 }

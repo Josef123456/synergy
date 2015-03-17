@@ -13,8 +13,8 @@ import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import synergy.models.Photo;
-import synergy.views.PhotoGrid;
 import synergy.utilities.WritableImageCreator;
+import synergy.views.PhotoGrid;
 
 /**
  * Created by alexstoick on 3/7/15.
@@ -27,7 +27,7 @@ public class ThumbnailLoaderTask extends Task {
     public ThumbnailLoaderTask(List<Photo> photosToDisplay) {
         this.photosToDisplay = photosToDisplay;
         this.displayedImagesList = PhotoGrid.getDisplayedImagesList();
-        this.displayedImagesMap = new HashMap<>();
+        this.displayedImagesMap = PhotoGrid.getDisplayedImagesMap();
     }
 
     @Override
@@ -41,17 +41,20 @@ public class ThumbnailLoaderTask extends Task {
             }
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage(initialThumbNail);
 
-            Platform.runLater(() -> {
-                displayedImagesList.add(finalWi);
-                displayedImagesMap.put(photo, finalWi);
-            });
+            if (!this.isCancelled()) {
+                Platform.runLater(() -> {
+                    displayedImagesList.add(finalWi);
+                    displayedImagesMap.put(photo, finalWi);
+                });
+            } else {
+                return null;
+            }
             System.out.println("Loaded thumbnail for: " + photo.getPath());
         }
-
-        Thread setQualityPhotosThread = new Thread(new FullResolutionPhotoLoaderTask
-                (photosToDisplay, displayedImagesMap));
-        setQualityPhotosThread.setDaemon(true);
-        setQualityPhotosThread.start();
+        FullResolutionPhotoLoaderTask fullResolutionPhotoLoaderTask = new
+                FullResolutionPhotoLoaderTask(photosToDisplay);
+        PhotoGrid.getTasks().add(fullResolutionPhotoLoaderTask);
+        (fullResolutionPhotoLoaderTask).run();
         return null;
     }
 }
