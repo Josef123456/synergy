@@ -2,10 +2,12 @@ package synergy.views;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Font;
 import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.models.Tag;
@@ -112,6 +114,7 @@ public class SearchField extends HBox {
 
         periodPane = new HBox();
         periodPane.setSpacing(5);
+        periodPane.setAlignment(Pos.CENTER);
         initialDate = new DatePicker(LocalDate.now());
         endDate = new DatePicker(LocalDate.now());
         final Callback<DatePicker, DateCell> dayCellFactory =
@@ -134,8 +137,13 @@ public class SearchField extends HBox {
                     }
                 };
         endDate.setDayCellFactory(dayCellFactory);
+        initialDate.setMaxWidth(125);
+        endDate.setMaxWidth(125);
+        Font font = new Font("Arial", 20);
         Label fromLabel = new Label("From: ");
+        fromLabel.setFont(font);
         Label toLabel = new Label("To: ");
+        toLabel.setFont(font);
         periodPane.getChildren().add(fromLabel);
         periodPane.getChildren().add(initialDate);
         periodPane.getChildren().add(toLabel);
