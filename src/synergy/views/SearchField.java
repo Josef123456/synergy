@@ -117,7 +117,7 @@ public class SearchField extends HBox {
         periodPane.setAlignment(Pos.CENTER);
         initialDate = new DatePicker(LocalDate.now());
         endDate = new DatePicker(LocalDate.now());
-        final Callback<DatePicker, DateCell> dayCellFactory =
+        final Callback<DatePicker, DateCell> initialDateDayCellFactory =
                 new Callback<DatePicker, DateCell>() {
                     @Override
                     public DateCell call(final DatePicker datePicker) {
@@ -125,7 +125,20 @@ public class SearchField extends HBox {
                             @Override
                             public void updateItem(LocalDate item, boolean empty) {
                                 super.updateItem(item, empty);
-
+                                setMinSize(50, 50);
+                            }
+                        };
+                    }
+                };
+        final Callback<DatePicker, DateCell> endDateDayCellFactory =
+                new Callback<DatePicker, DateCell>() {
+                    @Override
+                    public DateCell call(final DatePicker datePicker) {
+                        return new DateCell() {
+                            @Override
+                            public void updateItem(LocalDate item, boolean empty) {
+                                super.updateItem(item, empty);
+                                setMinSize(50, 50);
                                 if (item.isBefore(
                                         initialDate.getValue().plusDays(1))
                                         ) {
@@ -136,9 +149,15 @@ public class SearchField extends HBox {
                         };
                     }
                 };
-        endDate.setDayCellFactory(dayCellFactory);
+        datePicker.setDayCellFactory(initialDateDayCellFactory);//this is not part of the period pane, I just added her so the datecellfactory has been initiated
+        datePicker.setShowWeekNumbers(false);
+        initialDate.setDayCellFactory(initialDateDayCellFactory);
         initialDate.setMaxWidth(125);
+        initialDate.setShowWeekNumbers(false);
+        endDate.setDayCellFactory(endDateDayCellFactory);
         endDate.setMaxWidth(125);
+        endDate.setShowWeekNumbers(false);
+
         Font font = new Font("Arial", 20);
         Label fromLabel = new Label("From: ");
         fromLabel.setFont(font);
