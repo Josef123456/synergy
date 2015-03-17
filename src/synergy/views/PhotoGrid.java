@@ -22,7 +22,7 @@ public class PhotoGrid extends GridView<Image> {
     private static ArrayList<Image> selectedImages = new ArrayList<>();
     private static ArrayList<Photo> displayedPhotosList = new ArrayList<>();
     private static ArrayList<Photo> selectedPhotos = new ArrayList<>();
-    private static GridView<Image> photosGrid;
+    private static PhotoGrid photosGrid;
     private static HashMap<Photo, Image> displayedImagesMap = new HashMap<>();
     private static ObservableList<Image> displayedImagesList;
     private static ArrayList<Task> tasks = new ArrayList<>();
@@ -45,7 +45,7 @@ public class PhotoGrid extends GridView<Image> {
         return taggingArea;
     }
 
-    public static GridView<Image> getPhotosGrid() {
+    public static PhotoGrid getPhotosGrid() {
         return photosGrid;
     }
 
@@ -74,6 +74,9 @@ public class PhotoGrid extends GridView<Image> {
     }
 
     public void setGridPhotos(List<Photo> photosToDisplay) {
+        System.out.println("METHOD WAS CALLED WITH " + photosToDisplay.size() + " PHOTOS");
+        for (Photo photo : photosToDisplay)
+            System.out.println(photo.getDate());
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
