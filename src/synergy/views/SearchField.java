@@ -1,11 +1,12 @@
 package synergy.views;
 
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
@@ -17,7 +18,14 @@ import java.util.*;
  */
 public class SearchField extends HBox {
 
-    MultipleDatePickerSelection datePicker;
+    DatePicker datePicker;
+    ComboBox dateCategories;
+    ComboBox months;
+    StackPane stackCategories;
+    DatePicker initialDate, endDate;
+    HBox categoryAndItem;
+    HBox periodPane; // no pun intended
+
     HBox queryFieldAndSearch; //this is where the Button, TextField and Search Button go
     HBox searchQueryButtons;
     ComboBox comboBox;
@@ -29,6 +37,8 @@ public class SearchField extends HBox {
     Set<String> listOfSearch;
     private int minHeight;
 
+    String[] arrayMonths = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+    String[] arrayCategories = {"Date", "Month", "Period"};
     private String[] mockChildrenData = { "alex", "cham", "codrin", "sari", "josef", "amit", "mike", "tobi"};
 	private PhotoGrid photoGrid;
 
@@ -45,7 +55,7 @@ public class SearchField extends HBox {
         setUpDatePicker ();
         setUpLocationButtons ();
 
-        getChildren().add(datePicker);
+        getChildren().add(categoryAndItem);
         getChildren().add(buttonPane);
         getChildren().add(queryFieldAndSearch);
     }
@@ -67,8 +77,8 @@ public class SearchField extends HBox {
         searchButton = new Button("Search");
 
         EventHandler eventHandler = event -> {
-            addChildrenQuery ((String) comboBox.getValue ());
-            updateChildrenQueries ();
+            addChildrenQuery((String) comboBox.getValue());
+            updateChildrenQueries();
         };
 
         addButton.setOnAction(eventHandler);
@@ -81,7 +91,71 @@ public class SearchField extends HBox {
     }
 
     public void setUpDatePicker() {
-        datePicker = new MultipleDatePickerSelection();
+        datePicker = new DatePicker();
+        categoryAndItem = new HBox();
+        categoryAndItem.setSpacing(10);
+        stackCategories = new StackPane();
+
+        dateCategories = new ComboBox();
+        dateCategories.getItems().addAll(arrayCategories);
+        dateCategories.setValue(arrayCategories[0]);
+        updateCategories();
+        dateCategories.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                updateCategories();
+            }
+        });
+
+        months = new ComboBox();
+        months.getItems().addAll(arrayMonths);
+
+        periodPane = new HBox();
+        periodPane.setSpacing(5);
+        initialDate = new DatePicker(LocalDate.now());
+        endDate = new DatePicker(LocalDate.now());
+        final Callback<DatePicker, DateCell> dayCellFactory =
+                new Callback<DatePicker, DateCell>() {
+                    @Override
+                    public DateCell call(final DatePicker datePicker) {
+                        return new DateCell() {
+                            @Override
+                            public void updateItem(LocalDate item, boolean empty) {
+                                super.updateItem(item, empty);
+
+                                if (item.isBefore(
+                                        initialDate.getValue().plusDays(1))
+                                        ) {
+                                    setDisable(true);
+                                    setStyle("-fx-background-color: #ffc0cb;");
+                                }
+                            }
+                        };
+                    }
+                };
+        endDate.setDayCellFactory(dayCellFactory);
+        Label fromLabel = new Label("From: ");
+        Label toLabel = new Label("To: ");
+        periodPane.getChildren().add(fromLabel);
+        periodPane.getChildren().add(initialDate);
+        periodPane.getChildren().add(toLabel);
+        periodPane.getChildren().add(endDate);
+
+        categoryAndItem.getChildren().add(dateCategories);
+        categoryAndItem.getChildren().add(stackCategories);
+    }
+
+    public void updateCategories(){
+        if(dateCategories.getValue().equals("Date")){
+            stackCategories.getChildren().clear();
+            stackCategories.getChildren().add(datePicker);
+        } else if(dateCategories.getValue().equals("Month")){
+            stackCategories.getChildren().clear();
+            stackCategories.getChildren().add(months);
+        } else if(dateCategories.getValue().equals("Period")){
+            stackCategories.getChildren().clear();
+            stackCategories.getChildren().add(periodPane);
+        }
     }
 
     public TextField getDatePickerTextField() {
@@ -95,7 +169,7 @@ public class SearchField extends HBox {
         locationB = new ToggleButton("Room B");
 
 	    locationA.setToggleGroup (toggleGroup);
-	    locationB.setToggleGroup (toggleGroup);
+	    locationB.setToggleGroup(toggleGroup);
 
         buttonPane.getChildren().add(locationA);
         buttonPane.getChildren().add(locationB);
@@ -132,6 +206,11 @@ public class SearchField extends HBox {
     public void setAllMinHeight(int height) {
         this.minHeight = height;
         datePicker.setMinHeight(height - 5);
+        categoryAndItem.setMinHeight(height);
+        initialDate.setMinHeight(height);
+        endDate.setMinHeight(height);
+        dateCategories.setMinHeight(height);
+        months.setMinHeight(height);
         buttonPane.setMinHeight(height);
         searchButton.setMinHeight(height);
         comboBox.setMinHeight(height - 5);
@@ -143,9 +222,10 @@ public class SearchField extends HBox {
 
     public void updateSearchDatabase() {
         Set<String> listOfSearchedField = listOfSearch;
-	    LocalDate date = datePicker.getValue ();
-	    LocalDate initialDate = datePicker.getIniDate ();
-	    LocalDate endDate = datePicker.getEndDate ();
+	    LocalDate date = datePicker.getValue();
+	    LocalDate initialDate = this.initialDate.getValue();
+	    LocalDate endDate = this.endDate.getValue();
+
 	    final Date finalInitialDate;
 	    final Date finalEndDate;
 	    if ( date == null ) {
