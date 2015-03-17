@@ -112,7 +112,7 @@ public class Main extends Application {
         leftButtonsBox.getChildren().add(rightButtonsBox);
         HBox.setHgrow(leftButtonsBox, Priority.ALWAYS);
 
-        searchField = new SearchField();
+        searchField = new SearchField(photosGrid);
         comboBox = searchField.getComboBox();
         comboBox.getEditor().setId("searching");
         comboBox.getEditor().setFont(Font.font("Arial", FontPosture.ITALIC, 25));

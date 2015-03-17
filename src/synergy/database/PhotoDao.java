@@ -6,13 +6,11 @@ import com.j256.ormlite.jdbc.JdbcConnectionSource;
 import com.j256.ormlite.stmt.PreparedQuery;
 import com.j256.ormlite.stmt.QueryBuilder;
 import com.j256.ormlite.stmt.SelectArg;
+import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import synergy.models.Photo;
 import synergy.models.PhotoTag;
@@ -75,6 +73,41 @@ public class PhotoDao {
 		photoDao.delete (photo);
 	}
 
+	public List<Photo>getPhotosForDatesAndRoomAndKid(Date toDate, Date fromDate, Tag room, Tag kid)
+			throws SQLException {
+		QueryBuilder<Photo, Integer> qb = photoDao.queryBuilder ();
+		Where where = qb.where ();
+		int count = 0 ;
+		int roomTag = 0 ;
+		int kidTag = 0;
+		if ( toDate != null && fromDate != null ) {
+			Date startOfDay = new Date(fromDate.getYear (), fromDate.getMonth (), fromDate.getDate (),0,0,0);
+			Date endOfDay = new Date(toDate.getYear (), toDate.getMonth (), toDate.getDate (),23,59,59);
+			where.between (Photo.COLUMN_DATE, startOfDay, endOfDay);
+			++ count ;
+			roomTag = kidTag = 2;
+		}
+		if ( room != null ) {
+			makePhotoForTagQuery (where);
+			++ count ;
+			kidTag ++ ;
+		}
+		if ( kid != null ) {
+			makePhotoForTagQuery (where);
+			++ count ;
+		}
+		System.out.println(where);
+		System.out.println(count);
+		PreparedQuery preparedQuery = where.and (count).prepare ();
+		if ( room != null ) {
+			preparedQuery.setArgumentHolderValue (roomTag, room);
+		}
+		if ( kid != null ) {
+			preparedQuery.setArgumentHolderValue (kidTag, kid);
+		}
+		return photoDao.query (preparedQuery);
+	}
+
 	public List<Photo> getAllPhotos() throws SQLException {
 		return photoDao.queryForAll ();
 	}
@@ -99,6 +132,16 @@ public class PhotoDao {
 		QueryBuilder<Photo, Integer> qb = photoDao.queryBuilder ();
 		qb.where ().eq (Photo.COLUMN_PATH, path);
 		return photoDao.query(qb.prepare ());
+	}
+
+	private Where makePhotoForTagQuery(Where where) throws SQLException {
+		QueryBuilder<PhotoTag, Integer> photoTagsQueryBuilder = PhotoTagDao.getInstance()
+				.getQueryBuilder();
+		photoTagsQueryBuilder.selectColumns(PhotoTag.COLUMN_PHOTO_ID);
+		SelectArg postSelectArg = new SelectArg();
+		photoTagsQueryBuilder.where().eq(PhotoTag.COLUMN_TAG_ID, postSelectArg);
+
+		return where.in (Photo._ID, photoTagsQueryBuilder);
 	}
 
     private PreparedQuery<Tag> makeTagsForPhotoQuery() throws SQLException {

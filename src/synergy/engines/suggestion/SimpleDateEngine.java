@@ -5,7 +5,6 @@ import synergy.models.Tag;
 import synergy.utilities.DateComparator;
 
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -14,7 +13,6 @@ import java.util.concurrent.Future;
  * Created by sari on 27/02/15.
  */
 public class SimpleDateEngine {
-    static int photoIndex; //the index of the current photo
     /**
      * This method finds the nearest photo that contains tags and returns the contained tags.
      *
@@ -26,13 +24,7 @@ public class SimpleDateEngine {
         Photo photoFoundOnLeft = null;
         final ExecutorService service = Executors.newFixedThreadPool(1);
         //final ExecutorService s = Executors.
-        final Future<Photo> findOnRightTask = service.submit(new Callable(){
-            @Override
-            public Photo call() throws Exception{
-                return findTaggedPhotoOnRight(p);
-            }
-
-        });
+        final Future<Photo> findOnRightTask = service.submit(() -> findTaggedPhotoOnRight(p));
 
         try {
             photoFoundOnLeft = findTaggedPhotoOnLeft(p);
@@ -44,8 +36,8 @@ public class SimpleDateEngine {
         }
 
 
-        if(photoFoundOnLeft == null){
-            if(photoFoundOnRight != null) {
+        if(photoFoundOnLeft == null){ //no photo on left
+            if(photoFoundOnRight != null) { //check if photo on right
                 List<Tag> tagsToReturn;
                 tagsToReturn = photoFoundOnRight.getChildTags();
                 while (tagsToReturn.size() < 3){
@@ -56,25 +48,22 @@ public class SimpleDateEngine {
                 }
                 System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
                 return tagsToReturn;
-
-
             }
         }
-        else {
-            if(photoFoundOnRight == null) {
+        else { //there is photo on left
+            if(photoFoundOnRight == null) { //there is a photo on right
                 List<Tag> tagsToReturn;
                 tagsToReturn = photoFoundOnLeft.getChildTags();
                 while (tagsToReturn.size() < 3){
                     photoFoundOnLeft = findTaggedPhotoOnLeft(photoFoundOnLeft);
                     if(photoFoundOnLeft == null)
                         return tagsToReturn;
-                    else if(photoFoundOnRight != null)
-                        tagsToReturn.addAll(photoFoundOnRight.getChildTags());
+                    tagsToReturn.addAll(photoFoundOnLeft.getChildTags());
                 }
                 System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
                 return tagsToReturn;
             }
-            else {
+            else { //there is a photo on both sides
 
                 List<Tag> tagsToReturn;
                 Photo closestPhoto = DateComparator.getClosestPhoto(p, photoFoundOnRight, photoFoundOnLeft);
@@ -89,12 +78,13 @@ public class SimpleDateEngine {
                             closestPhoto = nextPhotoOnRight;
                         } else{
                             System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
+                            System.out.println("SimpleDateEngine SUGGESTING: "+tagsToReturn);
                             return tagsToReturn;
                         }
                     }
                     else {
                         if (nextPhotoOnRight == null) {
-                            closestPhoto = nextPhotoOnRight;
+                            closestPhoto = nextPhotoOnLeft;
                         } else {
                             closestPhoto = DateComparator.getClosestPhoto(closestPhoto, nextPhotoOnRight, nextPhotoOnLeft);
                         }

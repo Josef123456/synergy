@@ -43,7 +43,6 @@ public class PhotoTag {
 
 	public void destroy() {
 		try {
-			System.out.println(this);
 			PhotoTagDao.getInstance ().destroy (this);
 		} catch ( Exception e ) {
 			System.err.println (e);
