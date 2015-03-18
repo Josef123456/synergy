@@ -2,12 +2,6 @@ package synergy.views;
 
 
 import com.j256.ormlite.logger.LocalLog;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,11 +13,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
@@ -31,9 +21,14 @@ import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main extends Application {
 
-    private Button importBtn, exportBtn, allPhotosBtn, printingViewBtn, trashBtn;
+    private Button importBtn, exportBtn, allPhotosBtn, printingViewBtn;
     private ToolBar toolBar;
     private VBox topPane;
     private HBox leftButtonsBox, rightButtonsBox;
@@ -58,13 +53,13 @@ public class Main extends Application {
         bottomArea();
         addEventHandlers();
 
-        Scene scene = new Scene(root, 1000, 600);
+        Scene scene = new Scene(root, 1100, 700);
         primaryStage.setTitle("Instatag");
         primaryStage.setScene(scene);
-        primaryStage.setMinHeight(400);
-        primaryStage.setMinWidth(500);
+        primaryStage.setMinHeight(500);
+        primaryStage.setMinWidth(600);
         primaryStage.centerOnScreen();
-        scene.getStylesheets().add("background.css");
+        scene.getStylesheets().add("background1.css");
         primaryStage.show();
     }
 
@@ -89,7 +84,7 @@ public class Main extends Application {
         setupButtonStyle(allPhotosBtn, "firstButton");
 
         printingViewBtn = new Button("Printing");
-        setupButtonStyle(printingViewBtn, "thirdButton");
+        setupButtonStyle(printingViewBtn, "secondButton");
         printingViewBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -102,10 +97,7 @@ public class Main extends Application {
                 }
             }
         });
-
-        trashBtn = new Button("Trash");
-        setupButtonStyle(trashBtn, "secondButton");
-        rightButtonsBox.getChildren().addAll(allPhotosBtn, printingViewBtn, trashBtn);
+        rightButtonsBox.getChildren().addAll(allPhotosBtn, printingViewBtn);
 
         leftButtonsBox.setAlignment(Pos.CENTER_LEFT);
         rightButtonsBox.setAlignment(Pos.CENTER_RIGHT);

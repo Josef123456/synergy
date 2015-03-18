@@ -28,20 +28,25 @@ import java.util.ArrayList;
 public class PrintingInterface extends Application {
 
     private BorderPane main;
-	private Stage stage;
+    private ToolBar toolBar, toolbarBottom;
+    private Region spacer;
+    private HBox leftButtonsBox, centerbox, rightBox;
+    private Button portraitBtn, landscapeBtn, cancelBtn, optionsBtn, printBtn;
+    private Stage stage;
     private Pane table;
 
     public void start(Stage primaryStage) throws IOException {
         this.stage = primaryStage;
         main = new BorderPane();
         main.setId("background");
+        setupCenter();
+
         setTopUI();
 
-        setupCenter();
         setupBottom();
 
         Scene scene = new Scene(main, 800, 700);
-        scene.getStylesheets().add("background.css");
+        scene.getStylesheets().add("background1.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Print");
         primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -51,49 +56,49 @@ public class PrintingInterface extends Application {
 
     private void setTopUI() {
 
-	    ToolBar toolBar = new ToolBar ();
-	    Region spacer = new Region ();
-        spacer.getStyleClass ().setAll("spacer");
+        toolBar = new ToolBar();
+        spacer = new Region();
+        spacer.getStyleClass().setAll("spacer");
 
-	    HBox leftButtonsBox = new HBox ();
-        leftButtonsBox.getStyleClass ().setAll("button-bar");
-	    Button portraitBtn = new Button ("Portrait");
+        leftButtonsBox = new HBox();
+        leftButtonsBox.getStyleClass().setAll("button-bar");
+        portraitBtn = new Button("Portrait");
         setupButtonStyle(portraitBtn, "firstButton");
-        portraitBtn.setOnAction (event -> {
-	        Printer printer = Printer.getDefaultPrinter ();
-	        PageLayout pageLayout = printer.createPageLayout (Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-	        double scaleX = pageLayout.getPrintableWidth () / table.getBoundsInParent ().getWidth ();
-	        double scaleY = pageLayout.getPrintableHeight () / table.getBoundsInParent ().getHeight ();
-	        table.getTransforms ().add (new Scale (scaleX, scaleY));
+        portraitBtn.setOnAction(event -> {
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
+            double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
+            double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
+            table.getTransforms().add(new Scale(scaleX, scaleY));
         });
-	    Button landscapeBtn = new Button ("Landscape");
-        landscapeBtn.setOnAction (event -> {
-	        Printer printer = Printer.getDefaultPrinter ();
-	        PageLayout pageLayout = printer.createPageLayout (Paper.NA_LETTER, PageOrientation.LANDSCAPE, Printer.MarginType.DEFAULT);
-	        double scaleX = pageLayout.getPrintableWidth () / table.getBoundsInParent ().getWidth ();
-	        double scaleY = pageLayout.getPrintableHeight () / table.getBoundsInParent ().getHeight ();
-	        table.getTransforms ().add (new Scale (scaleX, scaleY));
+        landscapeBtn = new Button("Landscape");
+        landscapeBtn.setOnAction(event -> {
+            Printer printer = Printer.getDefaultPrinter();
+            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.LANDSCAPE, Printer.MarginType.DEFAULT);
+            double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
+            double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
+            table.getTransforms().add(new Scale(scaleX, scaleY));
         });
         setupButtonStyle(landscapeBtn, "secondButton");
-        leftButtonsBox.getChildren ().addAll(portraitBtn, landscapeBtn);
-        leftButtonsBox.setAlignment (Pos.CENTER);
+        leftButtonsBox.getChildren().addAll(portraitBtn, landscapeBtn);
+        leftButtonsBox.setAlignment(Pos.CENTER);
         HBox.setHgrow(leftButtonsBox, Priority.ALWAYS);
 
-        toolBar.getItems ().addAll(leftButtonsBox);
+        toolBar.getItems().addAll(leftButtonsBox);
         main.setTop(toolBar);
     }
 
     private void setupCenter() throws IOException {
         table = new Pane();
-        ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
-        StringBuilder sb = new StringBuilder ();
+        ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+        StringBuilder sb = new StringBuilder();
         for ( Photo photo : selectedPhotos ) {
             sb.append (photo.getPath ());
         }
-        BufferedImage bufferedImage;
-        bufferedImage = ImageIO.read(new File(""+sb));
+        BufferedImage bufferedImage= ImageIO.read(new File(""+sb));
         Image image = SwingFXUtils.toFXImage(bufferedImage, null);
         ImageView iv1 = new ImageView();
+        iv1.isSmooth();
         iv1.setImage(image);
         table.getChildren().add(iv1);
         Printer printer = Printer.getDefaultPrinter();
@@ -106,39 +111,39 @@ public class PrintingInterface extends Application {
     }
 
     private void setupBottom() {
-	    ToolBar toolbarBottom = new ToolBar ();
-	    Button cancelBtn = new Button ("Cancel");
+        toolbarBottom = new ToolBar();
+        cancelBtn = new Button("Cancel");
         setupButtonStyle(cancelBtn, "firstButton");
-        cancelBtn.setOnAction (event -> stage.close ());
+        cancelBtn.setOnAction(event -> stage.close());
 
-	    Button optionsBtn = new Button ("Options");
+        optionsBtn = new Button("Options");
         setupButtonStyle(optionsBtn, "secondButton");
-        optionsBtn.setOnAction (event -> print (table));
+        optionsBtn.setOnAction(event -> print(table));
 
-	    Button printBtn = new Button ("Print");
+        printBtn = new Button("Print");
         setupButtonStyle(printBtn, "fourthButton");
-        printBtn.setOnAction (event -> {
-	        PrinterJob job = PrinterJob.createPrinterJob ();
-	        if ( job != null ) {
-		        boolean success = job.printPage (table);
-		        if ( success ) {
-			        job.endJob ();
-		        }
-	        }
+        printBtn.setOnAction(event -> {
+            PrinterJob job = PrinterJob.createPrinterJob();
+            if (job != null) {
+                boolean success = job.printPage(table);
+                if (success) {
+                    job.endJob();
+                }
+            }
         });
 
-	    HBox centerBox = new HBox ();
-        centerBox.getChildren ().addAll (cancelBtn);
-        centerBox.setAlignment (Pos.CENTER_LEFT);
+        centerbox = new HBox();
+        centerbox.getChildren().addAll(cancelBtn);
+        centerbox.setAlignment(Pos.CENTER_LEFT);
 
-	    HBox rightBox = new HBox ();
-        rightBox.getChildren ().addAll (optionsBtn, printBtn);
-        rightBox.setAlignment (Pos.CENTER_RIGHT);
+        rightBox = new HBox();
+        rightBox.getChildren().addAll(optionsBtn, printBtn);
+        rightBox.setAlignment(Pos.CENTER_RIGHT);
 
-        centerBox.getChildren ().addAll(rightBox);
-        HBox.setHgrow(centerBox, Priority.ALWAYS);
+        centerbox.getChildren().addAll(rightBox);
+        HBox.setHgrow(centerbox, Priority.ALWAYS);
 
-        toolbarBottom.getItems ().addAll(centerBox, rightBox);
+        toolbarBottom.getItems().addAll(centerbox, rightBox);
         main.setBottom(toolbarBottom);
     }
 
@@ -162,9 +167,4 @@ public class PrintingInterface extends Application {
                 job.endJob();
         }
     }
-
-    public static void main(String args[]) {
-        Application.launch();
-    }
-
 }

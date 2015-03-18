@@ -1,0 +1,138 @@
+.root {
+    -fx-background-color: -dark-black;
+}
+
+#background {
+    -light-black: rgb(74, 75, 78);
+    -dark-highlight: rgb(87, 89, 92);
+    -dark-black: rgb(39, 40, 40);
+    -darkest-black: rgb(5, 5, 5);
+    -mid-gray: rgb(216, 222, 227);
+}
+
+#searching {
+    -fx-text-fill: antiquewhite;
+    -fx-background-color:  #3A3A3C;
+}
+.combo-box .cell{
+    -fx-text-fill: antiquewhite;
+}
+.my-list-cell {
+    -fx-text-fill: antiquewhite;
+    -fx-background-color: #3A3A3C;
+    -fx-base: -light-black;
+}
+.button{
+    -fx-background-color: #3A3A3C;
+    -fx-text-fill: antiquewhite;
+}
+
+.button-bar .button.firstButton {
+    -fx-background-color: #3A3A3C;
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+    -fx-background-radius: 3 0 0 3, 2 0 0 2, 2 0 0 2;
+}
+
+.button-bar .button.secondButton {
+    -fx-background-color: #3A3A3C;
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+    -fx-background-radius: 0 3 3 0, 0 2 2 0, 0 2 2 0;
+}
+
+.button-bar .button.thirdButton {
+    -fx-background-color: #3A3A3C;
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+    -fx-background-radius: 0 0 0 0, 2 2 2 2, 0 0 0 0;
+}
+
+.button-bar .button.deleteBtn {
+    -fx-background-color: #3A3A3C;
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+    -fx-background-radius: 3 3 3 3, 2 2 2 2, 2 2 2 2;
+}
+
+.button-bar .button.zoomPlusBtn {
+    -fx-background-color: #3A3A3C;
+}
+
+.button-bar .button.zoomMinusBtn {
+    -fx-background-color: #3A3A3C;
+}
+
+.toggle-button toggleButton {
+    -fx-background-color: -dark-black;
+    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
+    -fx-background-radius: 0;
+}
+/*hoovering buttons*/
+.button:hover{
+-fx-background-color: rgba(235,235,235,0.7);
+}
+#searching:hover{
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+.combo-box:hover{
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+.button-bar .button.firstButton:hover {
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+
+.button-bar .button.secondButton:hover{
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+
+.button-bar .button.thirdButton:hover {
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+
+.button-bar .button.deleteBtn:hover {
+    -fx-background-color: rgba(235, 235, 235, 0.7);
+}
+.button-bar .button.zoomMinusBtn:hover {
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+.button-bar .button.zoomPlusBtn:hover{
+    -fx-background-color: rgba(235,235,235,0.7);
+}
+
+.tool-bar {
+    -fx-base: -light-black;
+    -fx-font-size: 12pt;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: .9em 0.416667em .9em 0.416667em;
+    -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
+}
+
+.grid {
+    -fx-base: -light-black;
+    -fx-background-color: #3A3A3C;
+    -fx-background-radius: 5.0;
+    -fx-background-insets: 0.0 5.0 0.0 5.0;
+    -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
+    -fx-padding: 10;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+.hbox {
+    -fx-background-color: -light-black;
+    -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
+    -fx-padding: 15;
+    -fx-spacing: 10;
+}
+
+#leftText {
+    -fx-fill: antiquewhite;
+}
+.toggle-button {
+    -fx-text-fill: antiquewhite;
+    -fx-font: bold;
+    -fx-background-color: #3A3A3C;
+    -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
+}
+.scroll-pane {
+    -fx-background-color: transparent;
+}
+.toggle-button:selected {
+    -fx-background-color: #bbb;
+}

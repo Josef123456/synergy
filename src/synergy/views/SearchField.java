@@ -1,21 +1,8 @@
 package synergy.views;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -23,6 +10,12 @@ import javafx.scene.text.Font;
 import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.models.Tag;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Cham on 06/03/2015.
@@ -56,14 +49,14 @@ public class SearchField extends HBox {
     public SearchField(PhotoGrid photoGrid) {
 	    this.photoGrid = photoGrid;
         listOfSearch = new HashSet<>();
-        getStyleClass().addAll("toggle-button");
         setUpUI();
+        getStyleClass().add("my-list-cell");
 
     }
 
     public void setUpUI() {
         setUpTextFieldAndSearch();
-        setUpDatePicker ();
+        setUpDatePicker();
         setUpLocationButtons ();
 
         getChildren().add(categoryAndItem);
@@ -86,7 +79,6 @@ public class SearchField extends HBox {
         queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
         addButton = new Button("+");
         searchButton = new Button("Search");
-
         EventHandler eventHandler = event -> {
             addChildrenQuery((String) comboBox.getValue());
             updateChildrenQueries();
@@ -108,11 +100,12 @@ public class SearchField extends HBox {
         stackCategories = new StackPane();
 
         dateCategories = new ComboBox();
+        dateCategories.setId("searching");
         dateCategories.getItems().addAll(arrayCategories);
         dateCategories.setValue(arrayCategories[0]);
         updateCategories();
         dateCategories.setOnAction(event -> updateCategories());
-
+        dateCategories.setStyle("-fx-text-fill: antiquewhite");
         months = new ComboBox();
         months.getItems().addAll(arrayMonths);
 
@@ -157,7 +150,7 @@ public class SearchField extends HBox {
                     }
                 };
         datePicker.setDayCellFactory(initialDateDayCellFactory);//this is not part of the period pane, I just added her so the datecellfactory has been initiated
-        datePicker.setShowWeekNumbers (false);
+        datePicker.setShowWeekNumbers(false);
 	    initialDatePicker.setDayCellFactory (initialDateDayCellFactory);
 	    initialDatePicker.setMaxWidth(125);
 	    initialDatePicker.setShowWeekNumbers(false);
@@ -169,8 +162,10 @@ public class SearchField extends HBox {
 
         Font font = new Font("Arial", 20);
         Label fromLabel = new Label("From: ");
+        fromLabel.setStyle("-fx-text-fill: antiquewhite");
         fromLabel.setFont(font);
         Label toLabel = new Label("To: ");
+        toLabel.setStyle("-fx-text-fill: antiquewhite");
         toLabel.setFont(font);
         periodPane.getChildren().add(fromLabel);
         periodPane.getChildren().add(initialDatePicker);
@@ -202,9 +197,10 @@ public class SearchField extends HBox {
         buttonPane = new HBox();
 	    ToggleGroup toggleGroup = new ToggleGroup ();
         locationA = new ToggleButton("Room A");
+        locationA.setMinWidth(50);
         locationB = new ToggleButton("Room B");
-
-	    locationA.setToggleGroup (toggleGroup);
+        locationB.setMinWidth(50);
+        locationA.setToggleGroup (toggleGroup);
 	    locationB.setToggleGroup(toggleGroup);
 
         buttonPane.getChildren().add(locationA);

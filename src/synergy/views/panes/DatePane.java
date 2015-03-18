@@ -40,7 +40,7 @@ public class DatePane extends BaseVerticalPane {
 	private String buildDateString() {
 		StringBuilder stringBuilder = new StringBuilder ();
 		ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos ();
-		stringBuilder.append ("Date: ");
+		stringBuilder.append (" Date: ");
 		if (photos.size() == 0) {
 			return "";
 		}
