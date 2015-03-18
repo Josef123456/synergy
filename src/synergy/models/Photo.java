@@ -7,6 +7,7 @@ import synergy.engines.suggestion.Engine;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -40,7 +41,7 @@ public class Photo {
 	        int hour = Integer.parseInt(timeParts[0]);
 	        int minute = Integer.parseInt(timeParts[1]);
 	        int second = Integer.parseInt(timeParts[2]);
-            this.date = new Date(year, month-1, day, hour, minute, second);
+            this.date = new Date(year-1900, month-1, day, hour, minute, second);
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
@@ -191,7 +192,7 @@ public class Photo {
         return null;
     }
 
-	public static List<Photo> getPhotosForDatesAndRoomAndKid(Date toDate, Date fromDate, Tag room, Tag kid) {
+	public static List<Photo> getPhotosForDatesAndRoomAndKid(LocalDate fromDate, LocalDate toDate, Tag room, Tag kid) {
 		if ( room != null ) {
 			room.save ();
 		}
@@ -199,7 +200,7 @@ public class Photo {
 			kid.save ();
 		}
 		try {
-			return PhotoDao.getInstance ().getPhotosForDatesAndRoomAndKid(toDate, fromDate, room, kid);
+			return PhotoDao.getInstance ().getPhotosForDatesAndRoomAndKid(fromDate, toDate, room, kid);
 		} catch ( SQLException e ) {
 			System.err.println (e);
 			e.printStackTrace ();

@@ -26,6 +26,11 @@ import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.*;
+
 /**
  * Created by Cham on 06/03/2015.
  */
@@ -35,7 +40,7 @@ public class SearchField extends HBox {
     ComboBox dateCategories;
     ComboBox months;
     StackPane stackCategories;
-    DatePicker initialDate, endDate;
+    DatePicker initialDatePicker, endDatePicker;
     HBox categoryAndItem;
     HBox periodPane; // no pun intended
 
@@ -113,12 +118,7 @@ public class SearchField extends HBox {
         dateCategories.getItems().addAll(arrayCategories);
         dateCategories.setValue(arrayCategories[0]);
         updateCategories();
-        dateCategories.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                updateCategories();
-            }
-        });
+        dateCategories.setOnAction(event -> updateCategories());
 
         months = new ComboBox();
         months.getItems().addAll(arrayMonths);
@@ -126,9 +126,9 @@ public class SearchField extends HBox {
         periodPane = new HBox();
         periodPane.setSpacing(5);
         periodPane.setAlignment(Pos.CENTER);
-        initialDate = new DatePicker(LocalDate.now());
-        endDate = new DatePicker(LocalDate.now());
-        final Callback<DatePicker, DateCell> initialDateDayCellFactory =
+        initialDatePicker = new DatePicker();
+        endDatePicker = new DatePicker();
+        final Callback<DatePicker, DateCell> dayCellFactory =
                 new Callback<DatePicker, DateCell>() {
                     @Override
                     public DateCell call(final DatePicker datePicker) {
@@ -175,9 +175,9 @@ public class SearchField extends HBox {
         Label toLabel = new Label("To: ");
         toLabel.setFont(font);
         periodPane.getChildren().add(fromLabel);
-        periodPane.getChildren().add(initialDate);
+        periodPane.getChildren().add(initialDatePicker);
         periodPane.getChildren().add(toLabel);
-        periodPane.getChildren().add(endDate);
+        periodPane.getChildren().add(endDatePicker);
 
         categoryAndItem.getChildren().add(dateCategories);
         categoryAndItem.getChildren().add(stackCategories);
@@ -245,8 +245,8 @@ public class SearchField extends HBox {
         this.minHeight = height;
         datePicker.setMinHeight(height - 5);
         categoryAndItem.setMinHeight(height);
-        initialDate.setMinHeight(height);
-        endDate.setMinHeight(height);
+        initialDatePicker.setMinHeight (height);
+        endDatePicker.setMinHeight (height);
         dateCategories.setMinHeight(height);
         months.setMinHeight(height);
         buttonPane.setMinHeight(height);
@@ -261,17 +261,32 @@ public class SearchField extends HBox {
     public void updateSearchDatabase() {
         Set<String> listOfSearchedField = listOfSearch;
 	    LocalDate date = datePicker.getValue();
-	    LocalDate initialDate = this.initialDate.getValue();
-	    LocalDate endDate = this.endDate.getValue();
+	    LocalDate initialDate = initialDatePicker.getValue();
+	    LocalDate endDate = endDatePicker.getValue ();
 
-	    final Date finalInitialDate;
-	    final Date finalEndDate;
-	    if ( date == null ) {
-		    // use to/from
-		    finalInitialDate = new Date(initialDate.toEpochDay ());
-		    finalEndDate = new Date(endDate.toEpochDay ());
-	    } else {
-		    finalInitialDate = finalEndDate = new Date(date.toEpochDay ());
+	    LocalDate finalInitialDate = null;
+	    LocalDate finalEndDate = null ;
+
+	    String selected = (String)dateCategories.getSelectionModel ().getSelectedItem ();
+
+	    System.out.println ();
+
+	    switch(selected) {
+		    case "Date": {
+			    finalInitialDate = finalEndDate = LocalDate.of (date.getYear (), date.getMonth (), date.getDayOfMonth ());
+			    break ;
+		    }
+		    case "Period": {
+			    finalInitialDate = LocalDate.of (initialDate.getYear (), initialDate.getMonth (), initialDate.getDayOfMonth ());
+			    finalEndDate = LocalDate.of (endDate.getYear (), endDate.getMonth (), endDate.getDayOfMonth ());
+			    break ;
+		    }
+		    case "Month": {
+			    //TODO: fix this
+			    System.out.println("assign these");
+			    System.out.println(months.getSelectionModel ().getSelectedItem ());
+			    break;
+		    }
 	    }
 	    Tag roomTag = null ;
 	    if ( locationA.isSelected () == true ) {
@@ -288,10 +303,13 @@ public class SearchField extends HBox {
 		    kidTag = new Tag(Tag.TagType.KID, kid1);
 	    }
 
+	    System.out.println("final init date: " + finalInitialDate);
+	    System.out.println("final end date: " + finalEndDate);
 	    List<Photo> photosFromDB = Photo.getPhotosForDatesAndRoomAndKid (
 			    finalInitialDate, finalEndDate, roomTag, kidTag
 	    );
 
         PhotoGrid.getPhotosGrid().setGridPhotos(photosFromDB);
+	    System.out.println("Photos from query: " + photosFromDB.size ());
     }
 }

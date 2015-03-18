@@ -2,6 +2,7 @@ package synergy.models;
 
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -73,9 +74,12 @@ public class PhotoTest extends BaseTest{
 		Photo photo = new Photo(FILE_PATH);
 		photo.save();
 
-		Date toDate = photo.getDate ();
-		Date fromDate = photo.getDate ();
+		Date photoDate = photo.getDate();
+		// Becase of weird formatting of Date ...
+		LocalDate toDate = LocalDate.of(photoDate.getYear ()+1900, photoDate.getMonth ()+1, photoDate.getDate ());
+		LocalDate fromDate = LocalDate.of (photoDate.getYear ()+1900, photoDate.getMonth ()+1, photoDate.getDate ());
 
+		System.out.println(photoDate + " %%% " );
 		List<Photo> photos = Photo.getPhotosForDatesAndRoomAndKid (toDate, fromDate, null, null);
 		assertEquals (1 , photos.size ());
 

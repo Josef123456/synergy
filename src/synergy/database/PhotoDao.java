@@ -10,6 +10,7 @@ import com.j256.ormlite.stmt.Where;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.*;
 
 import synergy.models.Photo;
@@ -73,7 +74,7 @@ public class PhotoDao {
 		photoDao.delete (photo);
 	}
 
-	public List<Photo>getPhotosForDatesAndRoomAndKid(Date toDate, Date fromDate, Tag room, Tag kid)
+	public List<Photo>getPhotosForDatesAndRoomAndKid(LocalDate fromDate, LocalDate toDate, Tag room, Tag kid)
 			throws SQLException {
 		QueryBuilder<Photo, Integer> qb = photoDao.queryBuilder ();
 		Where where = qb.where ();
@@ -81,8 +82,11 @@ public class PhotoDao {
 		int roomTag = 0 ;
 		int kidTag = 0;
 		if ( toDate != null && fromDate != null ) {
-			Date startOfDay = new Date(fromDate.getYear (), fromDate.getMonth (), fromDate.getDate (),0,0,0);
-			Date endOfDay = new Date(toDate.getYear (), toDate.getMonth (), toDate.getDate (),23,59,59);
+			Date startOfDay = new Date(fromDate.getYear ()-1900, fromDate.getMonthValue ()-1, fromDate.getDayOfMonth (),0,0,0);
+			Date endOfDay = new Date(toDate.getYear ()-1900, toDate.getMonthValue ()-1, toDate.getDayOfMonth(),23,59,59);
+			System.out.println(fromDate);
+			System.out.println ("photo dao; init date " + startOfDay);
+			System.out.println ("photo dao; end date " + endOfDay);
 			where.between (Photo.COLUMN_DATE, startOfDay, endOfDay);
 			++ count ;
 			roomTag = kidTag = 2;
@@ -98,14 +102,19 @@ public class PhotoDao {
 		}
 		System.out.println(where);
 		System.out.println(count);
-		PreparedQuery preparedQuery = where.and (count).prepare ();
-		if ( room != null ) {
-			preparedQuery.setArgumentHolderValue (roomTag, room);
+		if ( count == 0 ) {
+			return photoDao.queryForAll ();
+		} else {
+			PreparedQuery preparedQuery = where.and (count).prepare ();
+			if ( room != null ) {
+				preparedQuery.setArgumentHolderValue (roomTag, room);
+			}
+			if ( kid != null ) {
+				preparedQuery.setArgumentHolderValue (kidTag, kid);
+			}
+			System.out.println ("++" + qb.prepareStatementString());
+			return photoDao.query (preparedQuery);
 		}
-		if ( kid != null ) {
-			preparedQuery.setArgumentHolderValue (kidTag, kid);
-		}
-		return photoDao.query (preparedQuery);
 	}
 
 	public List<Photo> getAllPhotos() throws SQLException {
