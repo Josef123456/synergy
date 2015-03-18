@@ -26,11 +26,6 @@ import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.*;
-
 /**
  * Created by Cham on 06/03/2015.
  */
@@ -128,7 +123,7 @@ public class SearchField extends HBox {
         periodPane.setAlignment(Pos.CENTER);
         initialDatePicker = new DatePicker();
         endDatePicker = new DatePicker();
-        final Callback<DatePicker, DateCell> dayCellFactory =
+        final Callback<DatePicker, DateCell> initialDateDayCellFactory =
                 new Callback<DatePicker, DateCell>() {
                     @Override
                     public DateCell call(final DatePicker datePicker) {
@@ -151,7 +146,7 @@ public class SearchField extends HBox {
                                 super.updateItem(item, empty);
                                 setMinSize(50, 50);
                                 if (item.isBefore(
-                                        initialDate.getValue().plusDays(1))
+		                                initialDatePicker.getValue().plusDays(1))
                                         ) {
                                     setDisable(true);
                                     setStyle("-fx-background-color: #ffc0cb;");
@@ -161,13 +156,13 @@ public class SearchField extends HBox {
                     }
                 };
         datePicker.setDayCellFactory(initialDateDayCellFactory);//this is not part of the period pane, I just added her so the datecellfactory has been initiated
-        datePicker.setShowWeekNumbers(false);
-        initialDate.setDayCellFactory(initialDateDayCellFactory);
-        initialDate.setMaxWidth(125);
-        initialDate.setShowWeekNumbers(false);
-        endDate.setDayCellFactory(endDateDayCellFactory);
-        endDate.setMaxWidth(125);
-        endDate.setShowWeekNumbers(false);
+        datePicker.setShowWeekNumbers (false);
+	    initialDatePicker.setDayCellFactory (initialDateDayCellFactory);
+	    initialDatePicker.setMaxWidth(125);
+	    initialDatePicker.setShowWeekNumbers(false);
+	    endDatePicker.setDayCellFactory(endDateDayCellFactory);
+	    endDatePicker.setMaxWidth(125);
+	    endDatePicker.setShowWeekNumbers(false);
 
         Font font = new Font("Arial", 20);
         Label fromLabel = new Label("From: ");
