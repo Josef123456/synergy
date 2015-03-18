@@ -1,23 +1,8 @@
 package synergy.views;
 
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
-import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -25,6 +10,12 @@ import javafx.scene.text.Font;
 import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.models.Tag;
+
+import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Cham on 06/03/2015.
@@ -121,7 +112,7 @@ public class SearchField extends HBox {
         periodPane = new HBox();
         periodPane.setSpacing(5);
         periodPane.setAlignment(Pos.CENTER);
-        initialDatePicker = new DatePicker();
+        initialDatePicker = new DatePicker(LocalDate.now());
         endDatePicker = new DatePicker();
         final Callback<DatePicker, DateCell> initialDateDayCellFactory =
                 new Callback<DatePicker, DateCell>() {
