@@ -112,7 +112,7 @@ public class SearchField extends HBox {
         periodPane = new HBox();
         periodPane.setSpacing(5);
         periodPane.setAlignment(Pos.CENTER);
-        initialDatePicker = new DatePicker(LocalDate.now());
+        initialDatePicker = new DatePicker();
         endDatePicker = new DatePicker();
         final Callback<DatePicker, DateCell> initialDateDayCellFactory =
                 new Callback<DatePicker, DateCell>() {
@@ -136,6 +136,9 @@ public class SearchField extends HBox {
                             public void updateItem(LocalDate item, boolean empty) {
                                 super.updateItem(item, empty);
                                 setMinSize(50, 50);
+                                if(initialDatePicker.getValue() == null){
+                                    setDisable(true);
+                                } else
                                 if (item.isBefore(
 		                                initialDatePicker.getValue().plusDays(1))
                                         ) {
@@ -151,9 +154,11 @@ public class SearchField extends HBox {
 	    initialDatePicker.setDayCellFactory (initialDateDayCellFactory);
 	    initialDatePicker.setMaxWidth(125);
 	    initialDatePicker.setShowWeekNumbers(false);
+        initialDatePicker.setPromptText("dd/mm/yyyy");
 	    endDatePicker.setDayCellFactory(endDateDayCellFactory);
 	    endDatePicker.setMaxWidth(125);
 	    endDatePicker.setShowWeekNumbers(false);
+        endDatePicker.setPromptText("dd/mm/yyyy");
 
         Font font = new Font("Arial", 20);
         Label fromLabel = new Label("From: ");
