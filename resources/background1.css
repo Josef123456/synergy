@@ -126,7 +126,6 @@
 }
 .toggle-button {
     -fx-text-fill: antiquewhite;
-    -fx-font: bold;
     -fx-background-color: #3A3A3C;
     -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
 }
