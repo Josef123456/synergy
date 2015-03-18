@@ -1,7 +1,5 @@
 package synergy.views;
 
-import java.util.ArrayList;
-
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.event.ActionEvent;
@@ -17,13 +15,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import synergy.models.Photo;
 
+import java.util.ArrayList;
+
 /**
  * Created on 09/03/2015.
  * Codrin make it the way you like it. I prefer the "thumbnailpictures" to be in this class.
  */
 public class BottomArea extends VBox {
 
-    private Button gridViewBtn, fullViewBtn, deleteBtn, zoomMinusBtn, zoomPlusBtn, deselectBtn,
+    private Button deleteBtn, zoomMinusBtn, zoomPlusBtn, deselectBtn,
             selectBtn;
     private Label zoomLabel;
     private HBox zoomBox, rightBox, leftBox, selectBox;
@@ -36,12 +36,6 @@ public class BottomArea extends VBox {
 
     public void initBottomArea() {
         ToolBar bottomBar = new ToolBar();
-
-        gridViewBtn = new Button("Grid");
-        setupNodeStyle(gridViewBtn, "gridViewBtn");
-
-        fullViewBtn = new Button("Full");
-        setupNodeStyle(fullViewBtn, "fullViewBtn");
 
         zoomMinusBtn = new Button("-");
         setupNodeStyle(zoomMinusBtn, "zoomMinusBtn");
@@ -64,8 +58,6 @@ public class BottomArea extends VBox {
         setupNodeStyle(deleteBtn, "deleteBtn");
 
         leftBox = new HBox();
-        leftBox.getChildren().addAll(gridViewBtn, fullViewBtn);
-        leftBox.setAlignment(Pos.CENTER_LEFT);
         deleteBtn.setOnAction(event->{
             ArrayList<Photo> selectedPhotos = new ArrayList<> ();
 	        selectedPhotos.addAll (PhotoGrid.getSelectedPhotos ());
@@ -84,7 +76,7 @@ public class BottomArea extends VBox {
 
         zoomBox = new HBox(5);
         zoomBox.getChildren().addAll(zoomMinusBtn, zoomLabel, zoomPlusBtn);
-        zoomBox.setAlignment(Pos.CENTER);
+        zoomBox.setAlignment(Pos.CENTER_LEFT);
         zoomBox.setHgrow(zoomBox, Priority.ALWAYS);
 
         selectBox = new HBox();
