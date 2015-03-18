@@ -53,11 +53,11 @@ public class Main extends Application {
         bottomArea();
         addEventHandlers();
 
-        Scene scene = new Scene(root, 1100, 700);
+        Scene scene = new Scene(root, 1050, 800);
         primaryStage.setTitle("Instatag");
         primaryStage.setScene(scene);
         primaryStage.setMinHeight(500);
-        primaryStage.setMinWidth(600);
+        primaryStage.setMinWidth(1050);
         primaryStage.centerOnScreen();
         scene.getStylesheets().add("background1.css");
         primaryStage.show();
