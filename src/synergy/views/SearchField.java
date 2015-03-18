@@ -268,12 +268,17 @@ public class SearchField extends HBox {
 
 	    switch(selected) {
 		    case "Date": {
-			    finalInitialDate = finalEndDate = LocalDate.of (date.getYear (), date.getMonth (), date.getDayOfMonth ());
+			    if ( date != null ) {
+				    finalInitialDate = finalEndDate = LocalDate.of (date.getYear (), date.getMonth (), date.getDayOfMonth ());
+			    }
 			    break ;
 		    }
 		    case "Period": {
-			    finalInitialDate = LocalDate.of (initialDate.getYear (), initialDate.getMonth (), initialDate.getDayOfMonth ());
-			    finalEndDate = LocalDate.of (endDate.getYear (), endDate.getMonth (), endDate.getDayOfMonth ());
+			    //TODO: better handle this
+			    if ( initialDate != null && endDate != null ) {
+				    finalInitialDate = LocalDate.of (initialDate.getYear (), initialDate.getMonth (), initialDate.getDayOfMonth ());
+				    finalEndDate = LocalDate.of (endDate.getYear (), endDate.getMonth (), endDate.getDayOfMonth ());
+			    }
 			    break ;
 		    }
 		    case "Month": {
