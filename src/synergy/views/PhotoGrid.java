@@ -27,7 +27,7 @@ public class PhotoGrid extends GridView<Image> {
     private static ObservableList<Image> displayedImagesList;
     private static ArrayList<Task> tasks = new ArrayList<>();
     private TaggingArea taggingArea;
-    public static boolean displayingImported = false;
+    public static boolean displayingImported = true;
 
     public static ArrayList<Task> getTasks() {
         return tasks;
