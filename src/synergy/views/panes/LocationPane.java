@@ -1,5 +1,8 @@
 package synergy.views.panes;
 
+import java.util.ArrayList;
+
+import javafx.application.Platform;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
@@ -12,83 +15,101 @@ import synergy.views.PhotoGrid;
 import synergy.views.TaggingArea;
 import synergy.views.panes.base.BaseHorizontalPane;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  * Created by alexstoick on 3/18/15.
  */
 public class LocationPane extends BaseHorizontalPane {
 
-	private TaggingArea taggingArea;
-	private ToggleButton button1;
-	private ToggleButton button2;
+    private TaggingArea taggingArea;
+    private ToggleButton roomAbtn;
+    private ToggleButton roomBbtn;
 
-	public LocationPane (TaggingArea taggingArea) {
-		this.taggingArea = taggingArea;
-		setupLocationPane();
-	}
-
-
-	private void setupLocationPane () {
-		this.setSpacing (20);
-		getStyleClass ().add("grid");
-
-		HBox boxLocation = new HBox (5);
-		button1 = new ToggleButton ("RoomA");
-		button2 = new ToggleButton ("RoomB");
-		ToggleGroup toggleGroup = new ToggleGroup();
-		button1.setToggleGroup(toggleGroup);
-		button2.setToggleGroup (toggleGroup);
-
-		button1.setOnAction(event -> {
-			final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
-			Tag tag = new Tag(Tag.TagType.PLACE, button1.getText());
-			for (int i = 0; i < selectedPhotos.size(); ++i) {
-				selectedPhotos.get(i).addTag(tag);
-			}
-		});
-
-		button2.setOnAction (event -> {
-			final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
-			Tag tag = new Tag (Tag.TagType.PLACE, button2.getText ());
-			for ( int i = 0 ; i < selectedPhotos.size () ; ++i ) {
-				selectedPhotos.get (i).addTag (tag);
-			}
-		});
-
-		Text locationText = new Text (" Location:");
-		locationText.setId ("leftText");
-		locationText.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
-
-		boxLocation.getChildren ().addAll(button1, button2);
-		getChildren ().addAll(locationText, boxLocation);
-	}
+    public LocationPane(TaggingArea taggingArea) {
+        this.taggingArea = taggingArea;
+        setupLocationPane();
+    }
 
 
-	public void update() {
-		Set<Tag> tagSet = new HashSet<> ();
-		final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
-		for (int i = 0; i < selectedPhotos.size(); ++i) {
-			if(i == 0) {
-				tagSet.addAll (selectedPhotos.get (i).getLocationTags ());
-			} else{
-				tagSet.retainAll(selectedPhotos.get(i).getLocationTags());
-			}
-		}
-		System.out.println("List of location tags: " + tagSet);
-		Tag[] tagArray = tagSet.toArray(new Tag[tagSet.size()]);
+    private void setupLocationPane() {
+        this.setSpacing(20);
+        getStyleClass().add("grid");
 
-		button1.setSelected (false);
-		button2.setSelected (false);
-		if (tagArray.length > 0 ) {
-			Tag tag = tagArray[0];
-			if ( tag.getValue ().equals("RoomA" )) {
-				button1.setSelected (true);
-			} else if(tag.getValue().equals("RoomB")){
-				button2.setSelected (true);
-			}
-		}
-	}
+        HBox boxLocation = new HBox(5);
+        roomAbtn = new ToggleButton("RoomA");
+        roomBbtn = new ToggleButton("RoomB");
+        ToggleGroup toggleGroup = new ToggleGroup();
+        roomAbtn.setToggleGroup(toggleGroup);
+        roomBbtn.setToggleGroup(toggleGroup);
+
+        roomAbtn.setOnAction(event -> {
+            roomButtonAction(roomAbtn);
+        });
+
+        roomBbtn.setOnAction(event -> {
+            roomButtonAction(roomBbtn);
+        });
+
+        Text locationText = new Text(" Location:");
+        locationText.setId("leftText");
+        locationText.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+
+        boxLocation.getChildren().addAll(roomAbtn, roomBbtn);
+        getChildren().addAll(locationText, boxLocation);
+    }
+
+    public void roomButtonAction(ToggleButton roomButton) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                final ArrayList<Photo> selectedPhotos = PhotoGrid
+                        .getSelectedPhotos();
+                Tag tag = null;
+                boolean roomSelected = roomButton.isSelected();
+                if (roomSelected) {
+                    tag = new Tag(Tag.TagType.PLACE, roomButton.getText());
+                    for (Photo photo : selectedPhotos) {
+                        Tag locationTag = photo.getLocationTag();
+                        if (locationTag != null)
+                            photo.removeTag(photo.getLocationTag());
+                        photo.addTag(tag);
+                    }
+                } else {
+                    for (Photo photo : selectedPhotos) {
+                        photo.removeTag(photo.getLocationTag());
+                    }
+                }
+            }
+        });
+    }
+
+    public void update() {
+        ArrayList<Tag> tagArray = new ArrayList<>();
+        final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
+        for (Photo photo : selectedPhotos) {
+            Tag locationTag = photo.getLocationTag();
+            if (!(tagArray.contains(locationTag)) && locationTag != null)
+                tagArray.add(locationTag);
+        }
+
+        System.out.println("List of location tags: " + tagArray);
+        if (tagArray.size() > 0) {
+            boolean roomA = false;
+            boolean roomB = false;
+            for (Tag tag : tagArray) {
+
+                if (tag.getValue().equals("RoomA")) {
+                    roomAbtn.setSelected(true);
+                    roomA = true;
+                } else if (tag.getValue().equals("RoomB")) {
+                    roomBbtn.setSelected(true);
+                    roomB = true;
+                }
+                if (roomA && roomB) {
+                    roomAbtn.setSelected(false);
+                    roomBbtn.setSelected(false);
+                    break;
+                }
+            }
+        }
+    }
 }
