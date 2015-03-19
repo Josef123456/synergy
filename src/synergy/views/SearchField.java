@@ -11,11 +11,9 @@ import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.models.Tag;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Cham on 06/03/2015.
@@ -123,6 +121,16 @@ public class SearchField extends HBox {
                             public void updateItem(LocalDate item, boolean empty) {
                                 super.updateItem(item, empty);
                                 setMinSize(50, 50);
+
+                                String date = formatDate(item);
+
+                                //System.out.println(date);
+                                for(int i = 0; i < Photo.getUniqueDates().size(); i++){
+                                     if(date.toString().equals(new SimpleDateFormat("dd/MM/yyyy").format(Photo.getUniqueDates().get(i)))){
+                                         setStyle("-fx-background-color: #00c0cb;");
+                                     }
+                                }
+
                             }
                         };
                     }
@@ -136,6 +144,14 @@ public class SearchField extends HBox {
                             public void updateItem(LocalDate item, boolean empty) {
                                 super.updateItem(item, empty);
                                 setMinSize(50, 50);
+                                String date = formatDate(item);
+
+                                //System.out.println(date);
+                                for(int i = 0; i < Photo.getUniqueDates().size(); i++){
+                                    if(date.toString().equals(new SimpleDateFormat("dd/MM/yyyy").format(Photo.getUniqueDates().get(i)))){
+                                        setStyle("-fx-background-color: #00c0cb;");
+                                    }
+                                }
                                 if(initialDatePicker.getValue() == null){
                                     setDisable(true);
                                 } else
@@ -151,7 +167,7 @@ public class SearchField extends HBox {
                 };
         datePicker.setDayCellFactory(initialDateDayCellFactory);//this is not part of the period pane, I just added her so the datecellfactory has been initiated
         datePicker.setShowWeekNumbers(false);
-	    initialDatePicker.setDayCellFactory (initialDateDayCellFactory);
+	    initialDatePicker.setDayCellFactory(initialDateDayCellFactory);
 	    initialDatePicker.setMaxWidth(125);
 	    initialDatePicker.setShowWeekNumbers(false);
         initialDatePicker.setPromptText("dd/mm/yyyy");
@@ -159,9 +175,12 @@ public class SearchField extends HBox {
 	    endDatePicker.setMaxWidth(125);
 	    endDatePicker.setShowWeekNumbers(false);
         endDatePicker.setPromptText("dd/mm/yyyy");
+        for(int i = 0; i < Photo.getUniqueDates().size(); i++){
+            System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(Photo.getUniqueDates().get(i)));
+        }
 
         Font font = new Font("Arial", 20);
-        Label fromLabel = new Label("From: ");
+        Label fromLabel = new Label("From: k");
         fromLabel.setStyle("-fx-text-fill: antiquewhite");
         fromLabel.setFont(font);
         Label toLabel = new Label("To: ");
@@ -311,5 +330,23 @@ public class SearchField extends HBox {
         PhotoGrid.getPhotosGrid().setGridPhotos(photosFromDB);
         PhotoGrid.displayingImported = false;
 	    System.out.println("Photos from query: " + photosFromDB.size());
+    }
+    //formats the given date in the form of dd/mm/yyyy
+    private String formatDate(LocalDate item){
+        StringBuilder stringBuilder = new StringBuilder();
+        String dayOfMonth = String.valueOf(item.getDayOfMonth());
+        if(dayOfMonth.length() == 1){
+            stringBuilder.append("0" + dayOfMonth+ "/");
+        } else{
+            stringBuilder.append(dayOfMonth + "/");
+        }
+        String monthValue = String.valueOf(item.getMonthValue());
+        if(monthValue.length() == 1){
+            stringBuilder.append("0" + monthValue + "/");
+        } else{
+            stringBuilder.append(monthValue + "/");
+        }
+        stringBuilder.append(item.getYear());
+        return stringBuilder.toString();
     }
 }
