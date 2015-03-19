@@ -1,5 +1,6 @@
 package synergy.views;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import controlsfx.controlsfx.control.GridView;
@@ -120,7 +121,8 @@ public class BottomArea extends VBox {
                 PhotoGrid.getSelectedImages().clear();
                 PhotoGrid.getSelectedImages().addAll(PhotoGrid.getDisplayedImagesList());
                 PhotoGrid.getSelectedPhotos().clear();
-                PhotoGrid.getSelectedPhotos().addAll(PhotoGrid.getSelectedPhotos());
+                PhotoGrid.getSelectedPhotos().addAll(PhotoGrid.getDisplayedPhotos());
+
                 ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
             }
         });
