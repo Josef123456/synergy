@@ -59,6 +59,7 @@ public class BottomArea extends VBox {
 
         leftBox = new HBox();
         deleteBtn.setOnAction(event->{
+	        //TODO: FIX ME. awful design choice
             ArrayList<Photo> selectedPhotos = new ArrayList<> ();
 	        selectedPhotos.addAll (PhotoGrid.getSelectedPhotos ());
 	        ArrayList<Image> selectedImages = new ArrayList<> ();
