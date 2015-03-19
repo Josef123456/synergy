@@ -59,12 +59,14 @@ public class SuggestionsPane extends BaseVerticalPane {
 				}
 				((Button)event.getSource ()).setVisible (false);
 				update();
+				taggingArea.update();
 			});
 			boxSuggestion.getChildren ().add(buttonName);
 			childrenSuggestions.getChildren ().add(boxSuggestion);
 		}
 
 		getChildren ().add (childrenSuggestions);
+
 		System.out.println (suggestions.length);
 		if(suggestions.length == 0 ) {
 			setVisible (false);

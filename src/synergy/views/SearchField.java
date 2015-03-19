@@ -1,5 +1,6 @@
 package synergy.views;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -13,16 +14,21 @@ import synergy.models.Tag;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Cham on 06/03/2015.
  */
 public class SearchField extends HBox {
 
-    DatePicker datePicker;
+
     ComboBox dateCategories;
-    ComboBox months;
+    DatePicker datePicker;
+    HBox monthAndYear;
+    ComboBox months, years;
     StackPane stackCategories;
     DatePicker initialDatePicker, endDatePicker;
     HBox categoryAndItem;
@@ -35,6 +41,8 @@ public class SearchField extends HBox {
     HBox buttonPane; // This is where LocationA and LocationB button goes
     ToggleButton locationA, locationB;
     Button searchButton, addButton;
+
+    Button resetButton;
 
     Set<String> listOfSearch;
     private int minHeight;
@@ -54,12 +62,14 @@ public class SearchField extends HBox {
 
     public void setUpUI() {
         setUpTextFieldAndSearch();
-        setUpDatePicker();
+        setUpDatePickers();
         setUpLocationButtons ();
+        setUpResetButton();
 
         getChildren().add(categoryAndItem);
         getChildren().add(buttonPane);
         getChildren().add(queryFieldAndSearch);
+        getChildren().add(resetButton);
     }
 
     public void setUpTextFieldAndSearch() {
@@ -68,13 +78,14 @@ public class SearchField extends HBox {
         searchQueryButtons = new HBox();
 
         comboBox = new ComboBox();
+        comboBox.setMaxWidth(200);
         for (String childName : mockChildrenData) {
             comboBox.getItems().add(childName);
         }
         AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
         comboBox.setOnKeyReleased(autoComplete);
-        comboBox.setMaxWidth(Double.MAX_VALUE);
         queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
+        searchQueryButtons.setMaxWidth(Double.MAX_VALUE);
         addButton = new Button("+");
         searchButton = new Button("Search");
         EventHandler eventHandler = event -> {
@@ -91,7 +102,7 @@ public class SearchField extends HBox {
         queryFieldAndSearch.getChildren().add(searchButton);
     }
 
-    public void setUpDatePicker() {
+    public void setUpDatePickers() {
         datePicker = new DatePicker();
         categoryAndItem = new HBox();
         categoryAndItem.setSpacing(10);
@@ -104,8 +115,11 @@ public class SearchField extends HBox {
         updateCategories();
         dateCategories.setOnAction(event -> updateCategories());
         dateCategories.setStyle("-fx-text-fill: antiquewhite");
+
+        monthAndYear = new HBox();
         months = new ComboBox();
         months.getItems().addAll(arrayMonths);
+        years = new ComboBox();
 
         periodPane = new HBox();
         periodPane.setSpacing(5);
@@ -122,11 +136,8 @@ public class SearchField extends HBox {
                                 super.updateItem(item, empty);
                                 setMinSize(50, 50);
 
-                                String date = formatDate(item);
-
-                                //System.out.println(date);
                                 for(int i = 0; i < Photo.getUniqueDates().size(); i++){
-                                     if(date.toString().equals(new SimpleDateFormat("dd/MM/yyyy").format(Photo.getUniqueDates().get(i)))){
+                                     if(formatDate(item).equals(new SimpleDateFormat("dd/MM/yyyy").format(Photo.getUniqueDates().get(i)))){
                                          setStyle("-fx-background-color: #00c0cb;");
                                      }
                                 }
@@ -144,11 +155,9 @@ public class SearchField extends HBox {
                             public void updateItem(LocalDate item, boolean empty) {
                                 super.updateItem(item, empty);
                                 setMinSize(50, 50);
-                                String date = formatDate(item);
 
-                                //System.out.println(date);
                                 for(int i = 0; i < Photo.getUniqueDates().size(); i++){
-                                    if(date.toString().equals(new SimpleDateFormat("dd/MM/yyyy").format(Photo.getUniqueDates().get(i)))){
+                                    if(formatDate(item).equals(new SimpleDateFormat("dd/MM/yyyy").format(Photo.getUniqueDates().get(i)))){
                                         setStyle("-fx-background-color: #00c0cb;");
                                     }
                                 }
@@ -167,6 +176,7 @@ public class SearchField extends HBox {
                 };
         datePicker.setDayCellFactory(initialDateDayCellFactory);//this is not part of the period pane, I just added her so the datecellfactory has been initiated
         datePicker.setShowWeekNumbers(false);
+        datePicker.setMaxWidth(200);
 	    initialDatePicker.setDayCellFactory(initialDateDayCellFactory);
 	    initialDatePicker.setMaxWidth(125);
 	    initialDatePicker.setShowWeekNumbers(false);
@@ -175,9 +185,6 @@ public class SearchField extends HBox {
 	    endDatePicker.setMaxWidth(125);
 	    endDatePicker.setShowWeekNumbers(false);
         endDatePicker.setPromptText("dd/mm/yyyy");
-        for(int i = 0; i < Photo.getUniqueDates().size(); i++){
-            System.out.println(new SimpleDateFormat("dd/MM/yyyy").format(Photo.getUniqueDates().get(i)));
-        }
 
         Font font = new Font("Arial", 20);
         Label fromLabel = new Label("From: k");
@@ -201,7 +208,14 @@ public class SearchField extends HBox {
             stackCategories.getChildren().add(datePicker);
         } else if(dateCategories.getValue().equals("Month")){
             stackCategories.getChildren().clear();
-            stackCategories.getChildren().add(months);
+            Set<String> uniqueYears = new HashSet();
+            for(int i = 0; i < Photo.getUniqueDates().size(); i++){
+                uniqueYears.add(new SimpleDateFormat("yyyy").format(Photo.getUniqueDates().get(i)));
+            }
+            Object[] arrayYears = uniqueYears.toArray();
+            years.getItems().addAll(arrayYears);
+            monthAndYear.getChildren().addAll(months, years);
+            stackCategories.getChildren().add(monthAndYear);
         } else if(dateCategories.getValue().equals("Period")){
             stackCategories.getChildren().clear();
             stackCategories.getChildren().add(periodPane);
@@ -262,12 +276,33 @@ public class SearchField extends HBox {
         endDatePicker.setMinHeight (height);
         dateCategories.setMinHeight(height);
         months.setMinHeight(height);
+        years.setMinHeight(height);
         buttonPane.setMinHeight(height);
         searchButton.setMinHeight(height);
         comboBox.setMinHeight(height - 5);
         locationA.setMinHeight(height);
         locationB.setMinHeight(height);
         addButton.setMinHeight(height);
+        resetButton.setMinHeight(height);
+
+    }
+
+    public void setUpResetButton(){
+        resetButton = new Button("Reset");
+        resetButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                datePicker.getEditor().setText("");
+                initialDatePicker.getEditor().setText("");
+                endDatePicker.getEditor().setPromptText("");
+                months.setValue("");
+                searchQueryButtons.getChildren().clear();
+                listOfSearch.clear();
+                locationA.setSelected(false);
+                locationB.setSelected(false);
+                comboBox.getEditor().setText("");
+            }
+        });
     }
 
 
