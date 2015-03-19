@@ -153,8 +153,7 @@ public class Main extends Application {
                 for (File file : list) {
                     Photo photo = new Photo(file.toString());
                     photo.save();
-                    if (photosGrid.getDisplayedImagesMap().get(photo) == null)
-                        lastImported.add(photo);
+                    lastImported.add(photo);
                 }
                 if (photosGrid.displayingImported) {
                     photosGrid.addPhotosToGrid(lastImported);

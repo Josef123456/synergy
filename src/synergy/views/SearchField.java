@@ -363,8 +363,7 @@ public class SearchField extends HBox {
 	    );
 
         PhotoGrid.getPhotosGrid().setGridPhotos(photosFromDB);
-        PhotoGrid.displayingImported = false;
-	    System.out.println("Photos from query: " + photosFromDB.size());
+	    System.out.println("Photos from query: " + photosFromDB.size ());
     }
     //formats the given date in the form of dd/mm/yyyy
     private String formatDate(LocalDate item){
