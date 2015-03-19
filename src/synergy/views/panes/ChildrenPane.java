@@ -5,7 +5,6 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -88,7 +87,7 @@ public class ChildrenPane extends BaseVerticalPane {
 		}
 		AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
 		childrenComboBox.setOnKeyReleased (autoComplete);
-		ToggleButton addChildrenTagButton = new ToggleButton ("+");
+		Button addChildrenTagButton = new Button ("+");
 		addChildrenTagButton.setStyle ("-fx-text-fill: antiquewhite");
 		addChildrenTagButton.setStyle ("-fx-background-color: #595959");
 		addChildrenTagButton.setStyle ("-fx-text-fill: antiquewhite");

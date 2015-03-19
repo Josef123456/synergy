@@ -292,9 +292,9 @@ public class SearchField extends HBox {
         resetButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                datePicker.getEditor().setText("");
-                initialDatePicker.getEditor().setText("");
-                endDatePicker.getEditor().setPromptText("");
+                datePicker.setValue(null);
+                initialDatePicker.setValue(null);
+                endDatePicker.setValue(null);
                 months.setValue("");
                 searchQueryButtons.getChildren().clear();
                 listOfSearch.clear();
