@@ -7,10 +7,10 @@ import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
-import synergy.models.Photo;
 import org.apache.commons.imaging.*;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -22,17 +22,23 @@ public class Date {
 
 		File inputFile = new File(path);
 		JpegImageMetadata jpegMetadata = (JpegImageMetadata) Imaging.getMetadata(inputFile);
-		List<IImageMetadata.IImageMetadataItem> items = jpegMetadata.getItems ();
-		for ( int i = 0 ; i < items.size () ; i++ ) {
-			final IImageMetadata.IImageMetadataItem item = items.get (i);
-			String name = item.toString ().substring (0, item.toString ().indexOf (":"));
-			String values = item.toString ().substring (0);
-			if ( name.contains ("DateTimeOriginal") ) {
-				String dateAndTime = values.split ("\'")[ 1 ];
-				return dateAndTime;
+		if ( jpegMetadata != null ) {
+
+			List<IImageMetadata.IImageMetadataItem> items = jpegMetadata.getItems ();
+			for ( int i = 0 ; i < items.size () ; i++ ) {
+				final IImageMetadata.IImageMetadataItem item = items.get (i);
+				String name = item.toString ().substring (0, item.toString ().indexOf (":"));
+				String values = item.toString ().substring (0);
+				if ( name.contains ("DateTimeOriginal") ) {
+					String dateAndTime = values.split ("\'")[ 1 ];
+					return dateAndTime;
+				}
 			}
 		}
-		return null;
+
+		String s = LocalDateTime.now ().toString ().replace ("T", " ").replace ("-", ":");
+		s = s.substring (0, s.length () - 4);
+		return s;
 	}
 
 	public static String getTime(String path) throws IOException, ImageReadException, ImageWriteException {

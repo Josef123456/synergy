@@ -70,6 +70,11 @@ public class PhotoTest extends BaseTest{
 		assertEquals (1, photos.size());
 	}
 
+	@Test public void testPhotoWithoutDate() throws Exception {
+		Photo photo = new Photo("/Users/alexstoick/Desktop/ss.png");
+		photo.save();
+	}
+
 	@Test public void testGetPhotosForDatesAndRoomAndKid() throws Exception {
 		Photo photo = new Photo(FILE_PATH);
 		photo.save();
