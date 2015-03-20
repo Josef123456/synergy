@@ -79,16 +79,20 @@ public class PhotoGrid extends GridView<Image> {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                for (Thread thread : threads)
+                for (Thread thread : threads) {
                     thread.interrupt();
+                }
+                threads.clear();
                 displayedPhotosList.clear();
-                displayedPhotosList.addAll(photosToDisplay);
+                displayedImagesList.clear();
                 displayedImagesMap.clear();
                 selectedImages.clear();
                 selectedPhotos.clear();
-                displayedImagesList.clear();
-                if (((GridViewSkin) photosGrid.getSkin()) != null)
-                    ((GridViewSkin) photosGrid.getSkin()).updateGridViewItems();
+
+                displayedPhotosList.addAll(photosToDisplay);
+                GridViewSkin gridViewSkin = (GridViewSkin) photosGrid.getSkin();
+                if (gridViewSkin != null)
+                    (gridViewSkin).updateGridViewItems();
 
                 ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);
                 Thread thumbnailLoaderThread = new Thread(thumbnailLoaderTask);

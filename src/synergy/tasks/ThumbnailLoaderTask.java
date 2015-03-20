@@ -2,10 +2,15 @@ package synergy.tasks;
 
 import com.bric.image.jpeg.JPEGMetaData;
 
+import org.imgscalr.Scalr;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -37,14 +42,24 @@ public class ThumbnailLoaderTask extends Task {
 
     @Override
     protected Object call() throws Exception {
+        ArrayList<Photo> toEliminate = new ArrayList<>();
         for (Photo photo : photosToDisplay) {
             BufferedImage initialThumbNail = null;
             try {
                 initialThumbNail = JPEGMetaData.getThumbnail(new File(photo.getPath()));
+                if (initialThumbNail == null) {
+                    toEliminate.add(photo);
+                    initialThumbNail = ImageIO.read(new File(photo.getPath()));
+                    initialThumbNail = Scalr.resize(initialThumbNail, 750);
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            final WritableImage finalWi = WritableImageCreator.fromBufferedImage(initialThumbNail);
+
+            final WritableImage finalWi = WritableImageCreator.fromBufferedImage
+                    (initialThumbNail);
+            initialThumbNail.flush();
+            initialThumbNail = null;
 
             if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {
@@ -56,6 +71,7 @@ public class ThumbnailLoaderTask extends Task {
             }
             System.out.println("Loaded thumbnail for: " + photo.getPath());
         }
+        photosToDisplay.removeAll(toEliminate);
         FullResolutionPhotoLoaderTask qualityLoaderTask = new FullResolutionPhotoLoaderTask
                 (photosToDisplay);
         Thread qualityLoaderThread = new Thread(qualityLoaderTask);

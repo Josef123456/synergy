@@ -10,7 +10,6 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import controlsfx.controlsfx.control.GridView;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -29,7 +28,7 @@ public class FullResolutionPhotoLoaderTask extends Task {
     private ObservableList<Image> displayedImagesList;
     private HashMap<Photo, Image> displayedImagesMap;
     private ArrayList<Image> selectedImages;
-    private GridView<Image> photosGrid;
+    private PhotoGrid photosGrid;
     private Thread parentThread;
 
     public FullResolutionPhotoLoaderTask(List<Photo> photosToDisplay) {
@@ -40,7 +39,7 @@ public class FullResolutionPhotoLoaderTask extends Task {
         this.photosGrid = PhotoGrid.getPhotosGrid();
     }
 
-    public void setParentThread(Thread parentThread){
+    public void setParentThread(Thread parentThread) {
         this.parentThread = parentThread;
     }
 
@@ -53,9 +52,10 @@ public class FullResolutionPhotoLoaderTask extends Task {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            BufferedImage scaledImage = Scalr.resize(initialImage, 750);
+            initialImage = Scalr.resize(initialImage, 750);
+            final WritableImage finalWi = WritableImageCreator.fromBufferedImage(initialImage);
             initialImage.flush();
-            final WritableImage finalWi = WritableImageCreator.fromBufferedImage(scaledImage);
+            initialImage = null;
 
             if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {
@@ -66,6 +66,7 @@ public class FullResolutionPhotoLoaderTask extends Task {
                     if (i != -1)
                         selectedImages.set(i, finalWi);
                     ((GridViewSkin) photosGrid.getSkin()).updateGridViewItems();
+                    System.gc();
                 });
             } else {
                 return null;
