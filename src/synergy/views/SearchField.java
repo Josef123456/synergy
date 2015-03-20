@@ -96,7 +96,6 @@ public class SearchField extends HBox {
         addButton = new Button("+");
         searchButton = new Button("Search");
         EventHandler eventHandler = event -> {
-            System.out.println("IT DOESN'T WORK");
             addChildrenQuery((String) comboBox.getValue());
             updateChildrenQueries();
         };
@@ -104,13 +103,6 @@ public class SearchField extends HBox {
 
 
         addButton.setOnAction(eventHandler);
-        comboBox.setOnKeyTyped(new EventHandler<KeyEvent>() {
-            @Override
-            public void handle(KeyEvent event) {
-                System.out.println("FUCK OFF");
-            }
-        });
-
 	    searchButton.setOnAction (event -> updateSearchDatabase());
 
         queryFieldAndSearch.getChildren().add(searchQueryButtons);
