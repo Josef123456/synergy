@@ -1,6 +1,7 @@
 package synergy.views;
 
-import controlsfx.controlsfx.control.GridView;
+import java.util.ArrayList;
+
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,8 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import synergy.models.Photo;
-
-import java.util.ArrayList;
 
 /**
  * Created on 09/03/2015.
@@ -78,7 +77,7 @@ public class BottomArea extends VBox {
     }
 
     public void addEventHandlers() {
-        GridView photoGrid = PhotoGrid.getPhotosGrid();
+        PhotoGrid photoGrid = PhotoGrid.getPhotosGrid();
 
         zoomMinusBtn.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
             @Override
@@ -113,6 +112,7 @@ public class BottomArea extends VBox {
                 PhotoGrid.getSelectedPhotos().addAll(PhotoGrid.getDisplayedPhotos());
 
                 ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+                photoGrid.getTaggingArea().update();
 
                 SliderBar.counter = PhotoGrid.getSelectedImages().size();
 
@@ -125,11 +125,12 @@ public class BottomArea extends VBox {
                 PhotoGrid.getSelectedImages().clear();
                 PhotoGrid.getSelectedPhotos().clear();
                 ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+                photoGrid.getTaggingArea().update();
 
-                if (PhotoGrid.getSelectedImages().isEmpty() && SliderBar.counter >= 1) {
-                    SliderBar.hidePanel.play();
-                    SliderBar.counter = PhotoGrid.getSelectedImages().size();
-                }
+//                if (PhotoGrid.getSelectedImages().isEmpty() && SliderBar.counter >= 1) {
+//                    SliderBar.hidePanel.play();
+//                    SliderBar.counter = PhotoGrid.getSelectedImages().size();
+//                }
             }
         });
 

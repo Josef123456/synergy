@@ -28,6 +28,7 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
     @Override
     public GridCell<Image> call(GridView<Image> param) {
         final ImageGridCell newImageCell = new ImageGridCell();
+
         newImageCell.setOnMouseClicked(event -> {
             System.out.println("CLICKED");
             if (event.isShiftDown()) {
