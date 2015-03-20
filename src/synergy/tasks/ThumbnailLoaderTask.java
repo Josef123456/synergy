@@ -23,11 +23,16 @@ public class ThumbnailLoaderTask extends Task {
     private List<Photo> photosToDisplay;
     private ObservableList<Image> displayedImagesList;
     private HashMap<Photo, Image> displayedImagesMap;
+    private Thread parentThread;
 
     public ThumbnailLoaderTask(List<Photo> photosToDisplay) {
         this.photosToDisplay = photosToDisplay;
         this.displayedImagesList = PhotoGrid.getDisplayedImagesList();
         this.displayedImagesMap = PhotoGrid.getDisplayedImagesMap();
+    }
+
+    public void setParentThread(Thread parentThread) {
+        this.parentThread = parentThread;
     }
 
     @Override
@@ -41,7 +46,7 @@ public class ThumbnailLoaderTask extends Task {
             }
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage(initialThumbNail);
 
-            if (!this.isCancelled()) {
+            if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {
                     displayedImagesList.add(finalWi);
                     displayedImagesMap.put(photo, finalWi);
@@ -51,10 +56,13 @@ public class ThumbnailLoaderTask extends Task {
             }
             System.out.println("Loaded thumbnail for: " + photo.getPath());
         }
-        FullResolutionPhotoLoaderTask fullResolutionPhotoLoaderTask = new
-                FullResolutionPhotoLoaderTask(photosToDisplay);
-        PhotoGrid.getTasks().add(fullResolutionPhotoLoaderTask);
-        (fullResolutionPhotoLoaderTask).run();
+        FullResolutionPhotoLoaderTask qualityLoaderTask = new FullResolutionPhotoLoaderTask
+                (photosToDisplay);
+        Thread qualityLoaderThread = new Thread(qualityLoaderTask);
+        qualityLoaderTask.setParentThread(qualityLoaderThread);
+        PhotoGrid.getThreads().add(qualityLoaderThread);
+        qualityLoaderThread.setDaemon(true);
+        qualityLoaderThread.start();
         return null;
     }
 }

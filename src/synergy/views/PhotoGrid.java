@@ -9,7 +9,6 @@ import controlsfx.controlsfx.control.GridView;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import synergy.models.Photo;
 import synergy.tasks.ThumbnailLoaderTask;
@@ -25,12 +24,12 @@ public class PhotoGrid extends GridView<Image> {
     private static PhotoGrid photosGrid;
     private static HashMap<Photo, Image> displayedImagesMap = new HashMap<>();
     private static ObservableList<Image> displayedImagesList;
-    private static ArrayList<Task> tasks = new ArrayList<>();
+    private static ArrayList<Thread> threads = new ArrayList<>();
     private TaggingArea taggingArea;
     public static boolean displayingImported = true;
 
-    public static ArrayList<Task> getTasks() {
-        return tasks;
+    public static ArrayList<Thread> getThreads() {
+        return threads;
     }
 
     public static HashMap<Photo, Image> getDisplayedImagesMap() {
@@ -80,8 +79,8 @@ public class PhotoGrid extends GridView<Image> {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                for (Task task : tasks)
-                    task.cancel(true);
+                for (Thread thread : threads)
+                    thread.interrupt();
                 displayedPhotosList.clear();
                 displayedPhotosList.addAll(photosToDisplay);
                 displayedImagesMap.clear();
@@ -90,9 +89,13 @@ public class PhotoGrid extends GridView<Image> {
                 displayedImagesList.clear();
                 if (((GridViewSkin) photosGrid.getSkin()) != null)
                     ((GridViewSkin) photosGrid.getSkin()).updateGridViewItems();
-                Thread setPhotosThread = new Thread(new ThumbnailLoaderTask(photosToDisplay));
-                setPhotosThread.setDaemon(true);
-                setPhotosThread.start();
+
+                ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);
+                Thread thumbnailLoaderThread = new Thread(thumbnailLoaderTask);
+                thumbnailLoaderTask.setParentThread(thumbnailLoaderThread);
+                threads.add(thumbnailLoaderThread);
+                thumbnailLoaderThread.setDaemon(true);
+                thumbnailLoaderThread.start();
             }
         });
     }
@@ -100,8 +103,10 @@ public class PhotoGrid extends GridView<Image> {
     public void addPhotosToGrid(final List<Photo> photosToDisplay) {
         displayedPhotosList.addAll(photosToDisplay);
         ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);
-        tasks.add(thumbnailLoaderTask);
-        (thumbnailLoaderTask).run();
-
+        Thread thumbnailLoaderThread = new Thread(thumbnailLoaderTask);
+        thumbnailLoaderTask.setParentThread(thumbnailLoaderThread);
+        threads.add(thumbnailLoaderThread);
+        thumbnailLoaderThread.setDaemon(true);
+        thumbnailLoaderThread.start();
     }
 }

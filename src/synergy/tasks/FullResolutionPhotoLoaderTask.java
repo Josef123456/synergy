@@ -30,6 +30,7 @@ public class FullResolutionPhotoLoaderTask extends Task {
     private HashMap<Photo, Image> displayedImagesMap;
     private ArrayList<Image> selectedImages;
     private GridView<Image> photosGrid;
+    private Thread parentThread;
 
     public FullResolutionPhotoLoaderTask(List<Photo> photosToDisplay) {
         this.photosToDisplay = photosToDisplay;
@@ -37,6 +38,10 @@ public class FullResolutionPhotoLoaderTask extends Task {
         this.displayedImagesMap = PhotoGrid.getDisplayedImagesMap();
         this.selectedImages = PhotoGrid.getSelectedImages();
         this.photosGrid = PhotoGrid.getPhotosGrid();
+    }
+
+    public void setParentThread(Thread parentThread){
+        this.parentThread = parentThread;
     }
 
     @Override
@@ -52,7 +57,7 @@ public class FullResolutionPhotoLoaderTask extends Task {
             initialImage.flush();
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage(scaledImage);
 
-            if (!this.isCancelled()) {
+            if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {
                     Image toBeReplaced = displayedImagesMap.get(photo);
                     int i = displayedImagesList.indexOf(toBeReplaced);
