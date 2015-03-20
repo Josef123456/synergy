@@ -14,16 +14,12 @@ import synergy.models.Tag;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by Cham on 06/03/2015.
  */
 public class SearchField extends HBox {
-
 
     ComboBox dateCategories;
     DatePicker datePicker;
@@ -73,7 +69,6 @@ public class SearchField extends HBox {
     }
 
     public void setUpTextFieldAndSearch() {
-
         queryFieldAndSearch = new HBox();
         searchQueryButtons = new HBox();
 
@@ -241,11 +236,25 @@ public class SearchField extends HBox {
     }
 
     public void addChildrenQuery(String addedQuery) {
-        Set<String> hashSet = new HashSet<String>(Arrays.asList(mockChildrenData));
-        if (listOfSearch.contains(addedQuery)) {
-
-        } else if(hashSet.contains(addedQuery)){
-            listOfSearch.add((String) comboBox.getValue());
+        Set<String> hashSet = new HashSet<String>(Arrays.asList (mockChildrenData)){
+            public boolean contains(Object o){
+                String paramStr = (String)o;
+                for (String s : this) {
+                    if (paramStr.equalsIgnoreCase(s)) return true;
+                }
+                return false;
+            }
+        };
+        if(!listOfSearch.contains(addedQuery) && hashSet.contains(addedQuery)){
+            String toAdd = null; // The String to add to the list of search
+            Iterator iterator = hashSet.iterator();
+            while(iterator.hasNext()){
+                String s = (String) iterator.next();
+                if(s.equalsIgnoreCase(addedQuery)){
+                    toAdd = s;
+                }
+            }
+            listOfSearch.add(toAdd);
         }
     }
 

@@ -2,6 +2,7 @@ package synergy.views.panes;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,10 +19,7 @@ import synergy.views.PhotoGrid;
 import synergy.views.TaggingArea;
 import synergy.views.panes.base.BaseVerticalPane;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Created by alexstoick on 3/17/15.
@@ -59,11 +57,27 @@ public class ChildrenPane extends BaseVerticalPane {
 	}
 
 	private void addChildrenTag(String name){
-		Set<String> hashSet = new HashSet<>(Arrays.asList (kidsInDatabase));
+		String tagName = null;
+		Set<String> hashSet = new HashSet<String>(Arrays.asList (kidsInDatabase)){
+			public boolean contains(Object o){
+				String paramStr = (String)o;
+				for (String s : this) {
+					if (paramStr.equalsIgnoreCase(s)) return true;
+				}
+				return false;
+			}
+		};
 		if(hashSet.contains(name)){
+			Iterator iterator = hashSet.iterator();
+			while(iterator.hasNext()){
+				String s = (String) iterator.next();
+				if(s.equalsIgnoreCase(name)){
+					tagName = s;
+				}
+			}
 			childrenComboBox.getEditor().setText("");
 			final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
-			Tag tag = new Tag(Tag.TagType.KID, name);
+			Tag tag = new Tag(Tag.TagType.KID, tagName);
 			for (int i = 0; i < selectedPhotos.size(); ++i) {
 				selectedPhotos.get(i).addTag(tag);
 			}
@@ -118,8 +132,10 @@ public class ChildrenPane extends BaseVerticalPane {
 			final String tagValue = tagArray[i].getValue();
 
 			HBox hBox = new HBox();
+			hBox.setAlignment(Pos.CENTER);
 			Label label = new Label();
 			label.setText(tagValue);
+
 
 			Button removeButton = new Button("-");
 			removeButton.setOnAction(e -> {
