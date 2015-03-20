@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
@@ -62,6 +64,7 @@ public class SearchField extends HBox {
         setUpLocationButtons ();
         setUpResetButton();
 
+        setSpacing(10);
         getChildren().add(categoryAndItem);
         getChildren().add(buttonPane);
         getChildren().add(queryFieldAndSearch);
@@ -77,18 +80,37 @@ public class SearchField extends HBox {
         for (String childName : mockChildrenData) {
             comboBox.getItems().add(childName);
         }
-        AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
+        AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox){
+            public void handle(KeyEvent event){
+                super.handle(event);
+                System.out.println(event.getCode().toString());
+                if(event.getCode() == KeyCode.ENTER){
+                    addChildrenQuery((String) comboBox.getValue());
+                    updateChildrenQueries();
+                }
+            }
+        };
         comboBox.setOnKeyReleased(autoComplete);
         queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
         searchQueryButtons.setMaxWidth(Double.MAX_VALUE);
         addButton = new Button("+");
         searchButton = new Button("Search");
         EventHandler eventHandler = event -> {
+            System.out.println("IT DOESN'T WORK");
             addChildrenQuery((String) comboBox.getValue());
             updateChildrenQueries();
         };
 
+
+
         addButton.setOnAction(eventHandler);
+        comboBox.setOnKeyTyped(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                System.out.println("FUCK OFF");
+            }
+        });
+
 	    searchButton.setOnAction (event -> updateSearchDatabase());
 
         queryFieldAndSearch.getChildren().add(searchQueryButtons);
@@ -245,13 +267,14 @@ public class SearchField extends HBox {
                 return false;
             }
         };
-        if(!listOfSearch.contains(addedQuery) && hashSet.contains(addedQuery)){
+        if(addedQuery != null && !listOfSearch.contains(addedQuery) && hashSet.contains(addedQuery)){
             String toAdd = null; // The String to add to the list of search
             Iterator iterator = hashSet.iterator();
             while(iterator.hasNext()){
                 String s = (String) iterator.next();
                 if(s.equalsIgnoreCase(addedQuery)){
                     toAdd = s;
+                    break;
                 }
             }
             listOfSearch.add(toAdd);

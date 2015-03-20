@@ -73,6 +73,7 @@ public class ChildrenPane extends BaseVerticalPane {
 				String s = (String) iterator.next();
 				if(s.equalsIgnoreCase(name)){
 					tagName = s;
+					break;
 				}
 			}
 			childrenComboBox.getEditor().setText("");
