@@ -6,6 +6,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -76,13 +78,13 @@ public class ChildrenPane extends BaseVerticalPane {
 					break;
 				}
 			}
-			childrenComboBox.getEditor().setText("");
 			final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
 			Tag tag = new Tag(Tag.TagType.KID, tagName);
 			for (int i = 0; i < selectedPhotos.size(); ++i) {
 				selectedPhotos.get(i).addTag(tag);
 			}
 			taggingArea.update ();
+			childrenComboBox.getEditor().setText("");
 		}
 	}
 
@@ -112,14 +114,20 @@ public class ChildrenPane extends BaseVerticalPane {
 		childrenText.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
 
 		EventHandler childrenEventHandler = event -> {
-			//TODO: when the user press enter, add the tag
 			String name = childrenComboBox.getEditor().getText();
-			//TODO: Make sure the name is in the predefined ones.
 			addChildrenTag(name);
 		};
 		childrenComboBox.getEditor().setText ("");
 
+
 		addChildrenTagButton.setOnAction (childrenEventHandler);
+		childrenComboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) ->{
+			if(E.getCode() == KeyCode.ENTER){
+				System.out.println("It worked!");
+				String name = childrenComboBox.getEditor().getText();
+				addChildrenTag(name);
+			}
+		});
 		childrenPane.getChildren().addAll(childrenComboBox, addChildrenTagButton);
 
 		gridNorthern.add (childrenText, 0, 0);

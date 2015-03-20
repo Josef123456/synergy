@@ -80,16 +80,7 @@ public class SearchField extends HBox {
         for (String childName : mockChildrenData) {
             comboBox.getItems().add(childName);
         }
-        AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox){
-            public void handle(KeyEvent event){
-                super.handle(event);
-                System.out.println(event.getCode().toString());
-                if(event.getCode() == KeyCode.ENTER){
-                    addChildrenQuery((String) comboBox.getValue());
-                    updateChildrenQueries();
-                }
-            }
-        };
+        AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
         comboBox.setOnKeyReleased(autoComplete);
         queryFieldAndSearch.setHgrow(searchQueryButtons, Priority.ALWAYS);
         searchQueryButtons.setMaxWidth(Double.MAX_VALUE);
@@ -103,6 +94,13 @@ public class SearchField extends HBox {
 
 
         addButton.setOnAction(eventHandler);
+        comboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) ->{
+            if(E.getCode() == KeyCode.ENTER){
+                System.out.println("It worked!");
+                addChildrenQuery((String) comboBox.getValue());
+                updateChildrenQueries();
+            }
+        });
 	    searchButton.setOnAction (event -> updateSearchDatabase());
 
         queryFieldAndSearch.getChildren().add(searchQueryButtons);
@@ -270,6 +268,7 @@ public class SearchField extends HBox {
                 }
             }
             listOfSearch.add(toAdd);
+            comboBox.getEditor().setText("");
         }
     }
 
@@ -285,7 +284,6 @@ public class SearchField extends HBox {
             queryButton.setStyle("-fx-text-fill: antiquewhite");
             searchQueryButtons.getChildren().add(queryButton);
         }
-        comboBox.getEditor().setText("");
     }
 
     public ComboBox getComboBox() {
