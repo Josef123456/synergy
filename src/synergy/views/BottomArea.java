@@ -23,8 +23,8 @@ import java.util.ArrayList;
  */
 public class BottomArea extends VBox {
 
-    private Button deleteBtn, zoomMinusBtn, zoomPlusBtn, deselectBtn,
-            selectBtn;
+    private Button deleteBtn, zoomMinusBtn, zoomPlusBtn;
+    public static Button selectBtn, deselectBtn;
     private Label zoomLabel;
     private HBox zoomBox, rightBox, leftBox, selectBox;
 
@@ -113,6 +113,9 @@ public class BottomArea extends VBox {
                 PhotoGrid.getSelectedPhotos().addAll(PhotoGrid.getDisplayedPhotos());
 
                 ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+
+                SliderBar.counter = PhotoGrid.getSelectedImages().size();
+
             }
         });
 
@@ -122,20 +125,25 @@ public class BottomArea extends VBox {
                 PhotoGrid.getSelectedImages().clear();
                 PhotoGrid.getSelectedPhotos().clear();
                 ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+
+                if (PhotoGrid.getSelectedImages().isEmpty() && SliderBar.counter >= 1) {
+                    SliderBar.hidePanel.play();
+                    SliderBar.counter = PhotoGrid.getSelectedImages().size();
+                }
             }
         });
 
         deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                ArrayList<Photo> selectedPhotos = new ArrayList<> ();
-                selectedPhotos.addAll (PhotoGrid.getSelectedPhotos ());
-                ArrayList<Image> selectedImages = new ArrayList<> ();
-                selectedImages.addAll (PhotoGrid.getSelectedImages ());
+                ArrayList<Photo> selectedPhotos = new ArrayList<>();
+                selectedPhotos.addAll(PhotoGrid.getSelectedPhotos());
+                ArrayList<Image> selectedImages = new ArrayList<>();
+                selectedImages.addAll(PhotoGrid.getSelectedImages());
 
-                for (int i = 0 ; i < selectedPhotos.size(); i++){
+                for (int i = 0; i < selectedPhotos.size(); i++) {
                     Photo currentPhoto = selectedPhotos.get(i);
-                    PhotoGrid.getSelectedImages().remove(selectedImages.get (i));
+                    PhotoGrid.getSelectedImages().remove(selectedImages.get(i));
                     PhotoGrid.getDisplayedImagesList().remove(selectedImages.get(i));
                     PhotoGrid.getSelectedPhotos().remove(selectedPhotos.get(i));
                     currentPhoto.delete();

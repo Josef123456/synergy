@@ -39,7 +39,7 @@ public class Main extends Application {
     public static PhotoGrid photosGrid;
     private ObservableList<Image> displayedImagesList;
     public static BorderPane root;
-    private TaggingArea taggingArea;
+    public static TaggingArea taggingArea;
 
     public void start(final Stage primaryStage) {
         Main.primaryStage = primaryStage;

@@ -17,11 +17,11 @@ public class SliderBar extends VBox {
 
     private double expandedSize;
     private Pos flapbarLocation;
-    int counter;
+    public static int counter;
+    public static Animation showPanel, hidePanel;
 
 
-    public SliderBar(double expandedSize,  PhotoGrid photo, Pos location, TaggingArea area) {
-
+    public SliderBar(double expandedSize, PhotoGrid photo, Pos location, TaggingArea area) {
         setExpandedSize(expandedSize);
         setVisible(false);
 
@@ -38,7 +38,7 @@ public class SliderBar extends VBox {
 
             public void handle(MouseEvent event) {
 
-                final Animation hidePanel = new Transition() {
+                hidePanel = new Transition() {
                     {
                         setCycleDuration(Duration.millis(250));
                     }
@@ -57,7 +57,7 @@ public class SliderBar extends VBox {
                     }
                 });
 
-                final Animation showPanel = new Transition() {
+                showPanel = new Transition() {
                     {
                         setCycleDuration(Duration.millis(250));
                     }
@@ -79,22 +79,21 @@ public class SliderBar extends VBox {
                         && hidePanel.statusProperty().get() == Animation.Status.STOPPED) {
 
                     if (!(PhotoGrid.getSelectedImages().isEmpty())) {
-
-                           if (counter==0) {
-                               setVisible(true);
-                               showPanel.play();
-                           }
-
-                    }else if (PhotoGrid.getSelectedImages().isEmpty()){
+                        if (counter == 0) {
+                            setVisible(true);
+                            showPanel.play();
+                        }
+                    } else if (PhotoGrid.getSelectedImages().isEmpty()) {
                         hidePanel.play();
                     }
-                    counter= PhotoGrid.getSelectedImages().size();
-                    System.out.println(counter+"sef");
-
+                    counter = PhotoGrid.getSelectedImages().size();
+                    System.out.println(counter + "counter");
                 }
+
             }
         });
     }
+
     private void initPosition() {
         switch (flapbarLocation) {
             case BASELINE_RIGHT:
