@@ -1,7 +1,5 @@
 package synergy.views;
 
-import java.util.ArrayList;
-
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.event.ActionEvent;
@@ -16,6 +14,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import synergy.models.Photo;
+
+import java.util.ArrayList;
 
 /**
  * Created on 09/03/2015.
@@ -49,38 +49,20 @@ public class BottomArea extends VBox {
         zoomPlusBtn.setMinWidth(20);
 
         deselectBtn = new Button("Deselect All");
-        setupNodeStyle(deselectBtn, "deselectBtn");
+        setupNodeStyle(deselectBtn, "deselectButton");
 
         selectBtn = new Button("Select All");
-        setupNodeStyle(selectBtn, "selectBtn");
+        setupNodeStyle(selectBtn, "selectAllButton");
 
         deleteBtn = new Button("Delete");
         setupNodeStyle(deleteBtn, "deleteBtn");
-
-        leftBox = new HBox();
-        deleteBtn.setOnAction(event->{
-	        //TODO: FIX ME. awful design choice
-            ArrayList<Photo> selectedPhotos = new ArrayList<> ();
-	        selectedPhotos.addAll (PhotoGrid.getSelectedPhotos ());
-	        ArrayList<Image> selectedImages = new ArrayList<> ();
-	        selectedImages.addAll (PhotoGrid.getSelectedImages ());
-
-	        System.out.println(selectedPhotos.size());
-            for (int i = 0 ; i < selectedPhotos.size(); i++){
-	            Photo currentPhoto = selectedPhotos.get(i);
-                PhotoGrid.getSelectedImages().remove(selectedImages.get (i));
-                PhotoGrid.getDisplayedImagesList().remove(selectedImages.get(i));
-                PhotoGrid.getSelectedPhotos().remove(selectedPhotos.get(i));
-	            currentPhoto.delete();
-            }
-        });
 
         zoomBox = new HBox(5);
         zoomBox.getChildren().addAll(zoomMinusBtn, zoomLabel, zoomPlusBtn);
         zoomBox.setAlignment(Pos.CENTER_LEFT);
         zoomBox.setHgrow(zoomBox, Priority.ALWAYS);
 
-        selectBox = new HBox();
+        selectBox = new HBox(1);
         selectBox.getChildren().addAll(selectBtn, deselectBtn);
         selectBox.setAlignment(Pos.CENTER);
         selectBox.setHgrow(selectBox, Priority.ALWAYS);
@@ -90,7 +72,7 @@ public class BottomArea extends VBox {
         rightBox.setAlignment(Pos.CENTER_RIGHT);
         rightBox.setHgrow(rightBox, Priority.ALWAYS);
 
-        bottomBar.getItems().addAll(leftBox, zoomBox, selectBox, rightBox);
+        bottomBar.getItems().addAll(zoomBox, selectBox, rightBox);
 
         this.getChildren().addAll(bottomBar);
     }
@@ -129,6 +111,7 @@ public class BottomArea extends VBox {
                 PhotoGrid.getSelectedImages().addAll(PhotoGrid.getDisplayedImagesList());
                 PhotoGrid.getSelectedPhotos().clear();
                 PhotoGrid.getSelectedPhotos().addAll(PhotoGrid.getDisplayedPhotos());
+
                 ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
             }
         });
@@ -138,6 +121,25 @@ public class BottomArea extends VBox {
             public void handle(ActionEvent event) {
                 PhotoGrid.getSelectedImages().clear();
                 PhotoGrid.getSelectedPhotos().clear();
+                ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+            }
+        });
+
+        deleteBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ArrayList<Photo> selectedPhotos = new ArrayList<> ();
+                selectedPhotos.addAll (PhotoGrid.getSelectedPhotos ());
+                ArrayList<Image> selectedImages = new ArrayList<> ();
+                selectedImages.addAll (PhotoGrid.getSelectedImages ());
+
+                for (int i = 0 ; i < selectedPhotos.size(); i++){
+                    Photo currentPhoto = selectedPhotos.get(i);
+                    PhotoGrid.getSelectedImages().remove(selectedImages.get (i));
+                    PhotoGrid.getDisplayedImagesList().remove(selectedImages.get(i));
+                    PhotoGrid.getSelectedPhotos().remove(selectedPhotos.get(i));
+                    currentPhoto.delete();
+                }
                 ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
             }
         });

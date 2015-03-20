@@ -36,9 +36,9 @@ public class Main extends Application {
     private SearchField searchField;
     private ComboBox comboBox;
     private static Stage primaryStage;
-    private PhotoGrid photosGrid;
+    public static PhotoGrid photosGrid;
     private ObservableList<Image> displayedImagesList;
-    private BorderPane root;
+    public static BorderPane root;
     private TaggingArea taggingArea;
 
     public void start(final Stage primaryStage) {
@@ -69,22 +69,22 @@ public class Main extends Application {
         spacer = new Region();
         spacer.getStyleClass().setAll("spacer");
 
-        leftButtonsBox = new HBox();
+        leftButtonsBox = new HBox(1);
         leftButtonsBox.getStyleClass().setAll("button-bar");
         importBtn = new Button("Import");
-        setupButtonStyle(importBtn, "firstButton");
+        setupButtonStyle(importBtn, "importButton");
         exportBtn = new Button("Export");
-        setupButtonStyle(exportBtn, "secondButton");
+        setupButtonStyle(exportBtn, "exportButton");
         leftButtonsBox.getChildren().addAll(importBtn, exportBtn);
 
-        rightButtonsBox = new HBox();
+        rightButtonsBox = new HBox(1);
         rightButtonsBox.getStyleClass().setAll("button-bar");
 
         allPhotosBtn = new Button("Photos");
-        setupButtonStyle(allPhotosBtn, "firstButton");
+        setupButtonStyle(allPhotosBtn, "photosButton");
 
         printingViewBtn = new Button("Printing");
-        setupButtonStyle(printingViewBtn, "secondButton");
+        setupButtonStyle(printingViewBtn, "printingButton");
         printingViewBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -126,7 +126,9 @@ public class Main extends Application {
 
     public void rightArea() {
         taggingArea.update();
-        root.setRight(taggingArea);
+            SliderBar rightFlapBar = new SliderBar(300,photosGrid, Pos.BASELINE_RIGHT, taggingArea);
+            root.setRight(rightFlapBar);
+
     }
 
     public void bottomArea() {

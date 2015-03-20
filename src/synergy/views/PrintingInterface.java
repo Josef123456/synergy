@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
 import javafx.print.*;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
@@ -116,28 +115,17 @@ public class PrintingInterface extends Application {
         setupButtonStyle(cancelBtn, "firstButton");
         cancelBtn.setOnAction(event -> stage.close());
 
-        optionsBtn = new Button("Options");
-        setupButtonStyle(optionsBtn, "secondButton");
-        optionsBtn.setOnAction(event -> print(table));
-
         printBtn = new Button("Print");
         setupButtonStyle(printBtn, "fourthButton");
         printBtn.setOnAction(event -> {
-            PrinterJob job = PrinterJob.createPrinterJob();
-            if (job != null) {
-                boolean success = job.printPage(table);
-                if (success) {
-                    job.endJob();
-                }
-            }
+          print(table);
         });
-
         centerbox = new HBox();
         centerbox.getChildren().addAll(cancelBtn);
         centerbox.setAlignment(Pos.CENTER_LEFT);
 
         rightBox = new HBox();
-        rightBox.getChildren().addAll(optionsBtn, printBtn);
+        rightBox.getChildren().addAll(printBtn);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
 
         centerbox.getChildren().addAll(rightBox);
@@ -153,12 +141,8 @@ public class PrintingInterface extends Application {
         btn.setMinWidth(130);
     }
 
-    public void print(final Node node) {
-        Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.A4,
-                PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        PrinterJob job = PrinterJob.createPrinterJob(printer);
-        job.getJobSettings().setPageLayout(pageLayout);
+    public void print(Pane node) {
+        PrinterJob job = PrinterJob.createPrinterJob();
         final boolean print = job.showPrintDialog(null);
         if (job != null && print) {
             System.out.println(job.getJobSettings().getPageLayout());
