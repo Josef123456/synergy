@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class CSVParse {
 
-    public static List<List<String>> main(String args[]){
-        File csvData = new File("/home/sari/Desktop/smsdummy.txt");
+    public static List<List<String>> parseCSVFile(String path){
+        File csvData = new File(path);
         CSVParser csvParser = null;
         List<List<String>> toReturn = new ArrayList<>();
         try {
