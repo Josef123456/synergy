@@ -81,24 +81,28 @@ public class BottomArea extends VBox {
 	    addZoomPlusEventHandler (photoGrid);
 	    addSelectAllEventHandler (photoGrid);
 	    addDeselectAllEventHandler (photoGrid);
-	    addDeleteEventHandler ();
+	    addDeleteEventHandler (photoGrid);
     }
 
-	private void addDeleteEventHandler () {
+	private void addDeleteEventHandler (PhotoGrid photoGrid) {
 		deleteBtn.setOnAction(event -> {
-	        ArrayList<Photo> selectedPhotos = new ArrayList<>();
-	        selectedPhotos.addAll (PhotoGrid.getSelectedPhotos ());
 	        ArrayList<Image> selectedImages = new ArrayList<>();
-	        selectedImages.addAll(PhotoGrid.getSelectedImages());
+			selectedImages.addAll(PhotoGrid.getSelectedImages());
 
-	        for (int i = 0; i < selectedPhotos.size(); i++) {
-	            Photo currentPhoto = selectedPhotos.get(i);
-	            PhotoGrid.getSelectedImages().remove(selectedImages.get(i));
-	            PhotoGrid.getDisplayedImagesList().remove(selectedImages.get(i));
-	            PhotoGrid.getSelectedPhotos().remove(selectedPhotos.get(i));
-	            currentPhoto.delete();
-	        }
-	        ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+			ArrayList<Photo> selectedPhotos = new ArrayList<>();
+			selectedPhotos.addAll(PhotoGrid.getSelectedPhotos ());
+
+			PhotoGrid.getSelectedImages().clear ();
+			PhotoGrid.getSelectedPhotos ().clear ();
+
+			PhotoGrid.getDisplayedImagesList ().removeAll (selectedImages);
+			PhotoGrid.getDisplayedImagesMap ().keySet ().removeAll (selectedPhotos);
+
+			selectedPhotos.stream ().forEach (Photo::delete);
+			photoGrid.getTaggingArea().update();
+
+			SliderBar.hide();
+			((GridViewSkin) PhotoGrid.getPhotosGrid ().getSkin ()).updateGridViewItems ();
 	    });
 	}
 
@@ -109,30 +113,21 @@ public class BottomArea extends VBox {
 	        ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems ();
 	        photoGrid.getTaggingArea ().update ();
 
-	        if (PhotoGrid.getSelectedImages().isEmpty() && SliderBar.counter >= 1) {
-	            SliderBar.hidePanel.play();
-	            SliderBar.counter = PhotoGrid.getSelectedImages().size();
-	        }
+            SliderBar.hide();
 	    });
 	}
 
 	private void addSelectAllEventHandler (PhotoGrid photoGrid) {
 		selectBtn.setOnAction(event -> {
-	        /**
-	         * TODO: Fis this part with selectALL please
-	         */
-	        System.out.println (SliderBar.counter);
 	        PhotoGrid.getSelectedImages ().clear();
 	        PhotoGrid.getSelectedImages ().addAll(PhotoGrid.getDisplayedImagesList ());
 	        PhotoGrid.getSelectedPhotos().clear ();
 	        PhotoGrid.getSelectedPhotos ().addAll (PhotoGrid.getDisplayedPhotos ());
-	        while(SliderBar.counter==0){
-	            ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
-	            photoGrid.getTaggingArea().update();
 
-	            SliderBar.counter = PhotoGrid.getSelectedImages().size();
-	            SliderBar.showPanel.play();
-	        }
+            ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+            photoGrid.getTaggingArea().update();
+
+            SliderBar.show();
 	    });
 	}
 

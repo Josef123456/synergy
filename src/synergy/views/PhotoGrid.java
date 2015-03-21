@@ -76,31 +76,26 @@ public class PhotoGrid extends GridView<Image> {
         System.out.println("METHOD WAS CALLED WITH " + photosToDisplay.size() + " PHOTOS");
         for (Photo photo : photosToDisplay)
             System.out.println(photo.getDate());
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                for (Thread thread : threads) {
-                    thread.interrupt();
-                }
-                threads.clear();
-                displayedPhotosList.clear();
-                displayedImagesList.clear();
-                displayedImagesMap.clear();
-                selectedImages.clear();
-                selectedPhotos.clear();
+        Platform.runLater(() -> {
+	        threads.forEach (java.lang.Thread::interrupt);
+            threads.clear();
+            displayedPhotosList.clear ();
+            displayedImagesList.clear();
+            displayedImagesMap.clear();
+            selectedImages.clear();
+            selectedPhotos.clear();
 
-                displayedPhotosList.addAll(photosToDisplay);
-                GridViewSkin gridViewSkin = (GridViewSkin) photosGrid.getSkin();
-                if (gridViewSkin != null)
-                    (gridViewSkin).updateGridViewItems();
+            displayedPhotosList.addAll(photosToDisplay);
+            GridViewSkin gridViewSkin = (GridViewSkin) photosGrid.getSkin();
+            if (gridViewSkin != null)
+                (gridViewSkin).updateGridViewItems();
 
-                ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);
-                Thread thumbnailLoaderThread = new Thread(thumbnailLoaderTask);
-                thumbnailLoaderTask.setParentThread(thumbnailLoaderThread);
-                threads.add(thumbnailLoaderThread);
-                thumbnailLoaderThread.setDaemon(true);
-                thumbnailLoaderThread.start();
-            }
+            ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);
+            Thread thumbnailLoaderThread = new Thread(thumbnailLoaderTask);
+            thumbnailLoaderTask.setParentThread(thumbnailLoaderThread);
+            threads.add(thumbnailLoaderThread);
+            thumbnailLoaderThread.setDaemon(true);
+            thumbnailLoaderThread.start();
         });
     }
 
@@ -108,7 +103,7 @@ public class PhotoGrid extends GridView<Image> {
         displayedPhotosList.addAll(photosToDisplay);
         ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);
         Thread thumbnailLoaderThread = new Thread(thumbnailLoaderTask);
-        thumbnailLoaderTask.setParentThread(thumbnailLoaderThread);
+        thumbnailLoaderTask.setParentThread (thumbnailLoaderThread);
         threads.add(thumbnailLoaderThread);
         thumbnailLoaderThread.setDaemon(true);
         thumbnailLoaderThread.start();

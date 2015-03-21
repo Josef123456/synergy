@@ -5,6 +5,7 @@ import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.control.Slider;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
@@ -15,39 +16,38 @@ import javafx.util.Duration;
 
 public class SliderBar extends VBox {
 
-    private double expandedSize;
     private Pos flapBarLocation;
-    public static int counter;
     public static Animation showPanel, hidePanel;
+	private static boolean displayed = false;
 
+	public static boolean isDisplayed () {
+		return displayed;
+	}
 
-    public SliderBar(double expandedSize, PhotoGrid photo, Pos location, TaggingArea area) {
-        setExpandedSize(expandedSize);
-        setVisible(false);
+	public static void show() {
+		if ( !isDisplayed () ) {
+			displayed = true;
+			showPanel.play ();
+		}
+	}
+	public static void hide() {
+		if ( isDisplayed () ) {
+			displayed = false;
+			hidePanel.play ();
+		}
+	}
 
+	private static final double EXPANDED_SIZE = 300;
+
+	public SliderBar(Pos location, TaggingArea area) {
+		setVisible (true);
         if (location == null) {
             flapBarLocation = Pos.TOP_CENTER;
         }
         flapBarLocation = location;
-
         initPosition();
-
 	    setupAnimations ();
-
         getChildren().addAll(area);
-
-        photo.setOnMouseClicked(event -> {
-            if (!(PhotoGrid.getSelectedImages().isEmpty())) {
-                if (counter == 0) {
-                    showPanel.play();
-                    counter++;
-                }
-            } else if (PhotoGrid.getSelectedImages().isEmpty()) {
-                hidePanel.play();
-            }
-            counter = PhotoGrid.getSelectedImages().size();
-            System.out.println(counter + "counter");
-        });
     }
 
 	private void setupAnimations () {
@@ -58,12 +58,10 @@ public class SliderBar extends VBox {
 
 		    @Override
 		    protected void interpolate(double fraction) {
-		        final double size = getExpandedSize() * (1.0 - fraction);
+		        final double size = EXPANDED_SIZE * (1.0 - fraction);
 		        translateByPos(size);
 		    }
 		};
-
-		hidePanel.onFinishedProperty().set(actionEvent -> setVisible(false));
 
 		showPanel = new Transition() {
 		    {
@@ -72,9 +70,8 @@ public class SliderBar extends VBox {
 
 		    @Override
 		    protected void interpolate(double fraction) {
-		        final double size = getExpandedSize() * fraction;
+		        final double size = EXPANDED_SIZE * fraction;
 		        translateByPos(size);
-		        setVisible (true);
 		    }
 		};
 	}
@@ -94,15 +91,6 @@ public class SliderBar extends VBox {
                 setPrefWidth(size);
                 break;
         }
-    }
-
-    public double getExpandedSize() {
-        return expandedSize;
-    }
-
-
-    public void setExpandedSize(double expandedSize) {
-        this.expandedSize = expandedSize;
     }
 
 }

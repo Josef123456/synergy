@@ -55,7 +55,6 @@ public class FullResolutionPhotoLoaderTask extends Task {
             initialImage = Scalr.resize(initialImage, 750);
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage(initialImage);
             initialImage.flush();
-            initialImage = null;
 
             if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {

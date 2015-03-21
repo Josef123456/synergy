@@ -35,14 +35,13 @@ public class TaggingArea extends BorderPane {
 	    suggestionsPane.update ();
 	    datePane.update ();
         if(PhotoGrid.getSelectedImages().size() == 0){
-            this.setVisible(false);
+	        SliderBar.hide();
         } else{
-            this.setVisible(true);
+	        SliderBar.show();
         }
     }
 
     public TaggingArea() {
-
         setCenter (returnGridPane (locationPane, datePane, childrenPane, suggestionsPane ));
     }
 
