@@ -2,14 +2,6 @@ package synergy.views;
 
 
 import com.j256.ormlite.logger.LocalLog;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -29,12 +21,15 @@ import synergy.models.Photo;
 import synergy.models.Tag;
 import synergy.utilities.CSVGetter;
 
+import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.filechooser.FileSystemView;
 
 public class Main extends Application {
 
@@ -159,13 +154,14 @@ public class Main extends Application {
             };
 
             for(File f : File.listRoots()) {
-                if (fsv.getSystemTypeDescription(f).contentEquals("Removable Disk")) {
-                    System.out.println("Found removable disk at root " + f);
-                    removableDrive = f.toString();
-                } else {
-                    //No removable drive found
+                if(fsv.getSystemTypeDescription(f) != null) //so unix-like systems can continue without getting exception.
+                    if (fsv.getSystemTypeDescription(f).contentEquals("Removable Disk")) {
+                         System.out.println("Found removable disk at root " + f);
+                         removableDrive = f.toString();
+                    } else {
+                         //No removable drive found
+                    }
                 }
-            }
 
             if (list != null) {
                 for (File file : list) {
