@@ -66,6 +66,7 @@ public class SliderBar extends VBox {
                     protected void interpolate(double frac) {
                         final double size = getExpandedSize() * frac;
                         translateByPos(size);
+                        setVisible(true);
                     }
                 };
 
@@ -75,20 +76,18 @@ public class SliderBar extends VBox {
                     }
                 });
 
-                if (showPanel.statusProperty().get() == Animation.Status.STOPPED
-                        && hidePanel.statusProperty().get() == Animation.Status.STOPPED) {
-
                     if (!(PhotoGrid.getSelectedImages().isEmpty())) {
                         if (counter == 0) {
-                            setVisible(true);
+
                             showPanel.play();
+                            counter++;
                         }
                     } else if (PhotoGrid.getSelectedImages().isEmpty()) {
                         hidePanel.play();
                     }
                     counter = PhotoGrid.getSelectedImages().size();
                     System.out.println(counter + "counter");
-                }
+
 
             }
         });

@@ -1,7 +1,5 @@
 package synergy.views;
 
-import java.util.ArrayList;
-
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,6 +13,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import synergy.models.Photo;
+
+import java.util.ArrayList;
 
 /**
  * Created on 09/03/2015.
@@ -106,16 +106,24 @@ public class BottomArea extends VBox {
         selectBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
+                /**
+                 * TODO: Fis this part with selectALL please
+                 */
+                System.out.println(SliderBar.counter);
                 PhotoGrid.getSelectedImages().clear();
                 PhotoGrid.getSelectedImages().addAll(PhotoGrid.getDisplayedImagesList());
                 PhotoGrid.getSelectedPhotos().clear();
                 PhotoGrid.getSelectedPhotos().addAll(PhotoGrid.getDisplayedPhotos());
+                while(SliderBar.counter==0){
 
-                ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
-                photoGrid.getTaggingArea().update();
+                    ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
+                    photoGrid.getTaggingArea().update();
 
-                SliderBar.counter = PhotoGrid.getSelectedImages().size();
+                    SliderBar.counter = PhotoGrid.getSelectedImages().size();
+                    SliderBar.showPanel.play();
 
+                }
             }
         });
 
@@ -127,10 +135,10 @@ public class BottomArea extends VBox {
                 ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
                 photoGrid.getTaggingArea().update();
 
-//                if (PhotoGrid.getSelectedImages().isEmpty() && SliderBar.counter >= 1) {
-//                    SliderBar.hidePanel.play();
-//                    SliderBar.counter = PhotoGrid.getSelectedImages().size();
-//                }
+                if (PhotoGrid.getSelectedImages().isEmpty() && SliderBar.counter >= 1) {
+                    SliderBar.hidePanel.play();
+                    SliderBar.counter = PhotoGrid.getSelectedImages().size();
+                }
             }
         });
 
