@@ -18,6 +18,7 @@ import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import synergy.models.Photo;
+import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
 import synergy.views.PhotoGrid;
 
@@ -44,22 +45,22 @@ public class ThumbnailLoaderTask extends Task {
     protected Object call() throws Exception {
         ArrayList<Photo> toEliminate = new ArrayList<>();
         for (Photo photo : photosToDisplay) {
-            BufferedImage initialThumbNail = null;
+            BufferedImage initialThumbnail = null;
             try {
-                initialThumbNail = JPEGMetaData.getThumbnail(new File(photo.getPath()));
-                if (initialThumbNail == null) {
+                initialThumbnail = JPEGMetaData.getThumbnail(new File(photo.getPath()));
+                if (initialThumbnail == null) {
                     toEliminate.add(photo);
-                    initialThumbNail = ImageIO.read(new File(photo.getPath()));
-                    initialThumbNail = Scalr.resize(initialThumbNail, 750);
+                    initialThumbnail = ImageIO.read(new File(photo.getPath()));
+                    initialThumbnail = Scalr.resize (initialThumbnail, 250);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage
-                    (initialThumbNail);
-            initialThumbNail.flush();
-            initialThumbNail = null;
+                    (ImagePadder.padToSize (initialThumbnail,250,250));
+	        System.out.println ( "Height: " + finalWi.getHeight () + " Width:" + finalWi.getWidth () );
+            initialThumbnail.flush ();
 
             if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {
@@ -72,8 +73,7 @@ public class ThumbnailLoaderTask extends Task {
             System.out.println("Loaded thumbnail for: " + photo.getPath());
         }
         photosToDisplay.removeAll(toEliminate);
-        FullResolutionPhotoLoaderTask qualityLoaderTask = new FullResolutionPhotoLoaderTask
-                (photosToDisplay);
+        FullResolutionPhotoLoaderTask qualityLoaderTask = new FullResolutionPhotoLoaderTask(photosToDisplay);
         Thread qualityLoaderThread = new Thread(qualityLoaderTask);
         qualityLoaderTask.setParentThread(qualityLoaderThread);
         PhotoGrid.getThreads().add(qualityLoaderThread);

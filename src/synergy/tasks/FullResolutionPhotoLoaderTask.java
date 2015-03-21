@@ -2,6 +2,7 @@ package synergy.tasks;
 
 import org.imgscalr.Scalr;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import synergy.models.Photo;
+import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
 import synergy.views.PhotoGrid;
 
@@ -47,14 +49,19 @@ public class FullResolutionPhotoLoaderTask extends Task {
     protected Object call() throws Exception {
         for (Photo photo : photosToDisplay) {
             BufferedImage initialImage = null;
+
             try {
                 initialImage = ImageIO.read(new File(photo.getPath()));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            initialImage = Scalr.resize(initialImage, 750);
+
+            initialImage = Scalr.resize (initialImage, 750);
+	        initialImage = ImagePadder.padToSize (initialImage, 750, 750);
+
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage(initialImage);
             initialImage.flush();
+	        System.out.println ( "Height: " + finalWi.getHeight () + " Width:" + finalWi.getWidth () );
 
             if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {
