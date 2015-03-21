@@ -1,28 +1,11 @@
 package synergy.views;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.*;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.util.Callback;
-import synergy.models.Photo;
-import synergy.models.Tag;
 import synergy.views.panes.ChildrenPane;
 import synergy.views.panes.DatePane;
 import synergy.views.panes.LocationPane;
 import synergy.views.panes.QueryPane;
-
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.*;
 
 /**
  * Created by Cham on 06/03/2015.
