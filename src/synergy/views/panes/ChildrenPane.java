@@ -113,14 +113,12 @@ public class ChildrenPane extends HBox {
 		if (addedQuery != null && !listOfSearchedKids.contains(addedQuery) && hashSet.contains
 				(addedQuery)) {
 			String toAdd = null; // The String to add to the list of search
-			Iterator iterator = hashSet.iterator();
-			while (iterator.hasNext()) {
-				String s = (String) iterator.next();
-				if (s.equalsIgnoreCase(addedQuery)) {
-					toAdd = s;
-					break;
-				}
-			}
+            for (String s : hashSet) {
+                if (s.equalsIgnoreCase(addedQuery)) {
+                    toAdd = s;
+                    break;
+                }
+            }
 			listOfSearchedKids.add(toAdd);
 			comboBox.getEditor().setText("");
 		}

@@ -74,19 +74,17 @@ public class ChildrenPane extends BaseVerticalPane {
 			}
 		};
 		if(hashSet.contains(name)){
-			Iterator iterator = hashSet.iterator();
-			while(iterator.hasNext()){
-				String s = (String) iterator.next();
-				if(s.equalsIgnoreCase(name)){
-					tagName = s;
-					break;
-				}
-			}
+            for (String s : hashSet) {
+                if (s.equalsIgnoreCase(name)) {
+                    tagName = s;
+                    break;
+                }
+            }
 			final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
 			Tag tag = new Tag(Tag.TagType.KID, tagName);
-			for (int i = 0; i < selectedPhotos.size(); ++i) {
-				selectedPhotos.get(i).addTag(tag);
-			}
+            for (Photo selectedPhoto : selectedPhotos) {
+                selectedPhoto.addTag(tag);
+            }
 			taggingArea.update ();
 			childrenComboBox.getEditor().setText("");
 		}
@@ -141,26 +139,26 @@ public class ChildrenPane extends BaseVerticalPane {
 	}
 
 	private void updateTagList (ArrayList<Photo> selectedPhotos, Tag[] tagArray) {
-		for (int i = 0; i < tagArray.length; ++i) {
-			final String tagValue = tagArray[i].getValue();
+        for (Tag aTagArray : tagArray) {
+            final String tagValue = aTagArray.getValue();
 
-			HBox hBox = new HBox();
-			hBox.setAlignment(Pos.CENTER);
-			Label label = new Label();
-			label.setText(tagValue);
+            HBox hBox = new HBox();
+            hBox.setAlignment(Pos.CENTER);
+            Label label = new Label();
+            label.setText(tagValue);
 
 
-			Button removeButton = new Button("-");
-			removeButton.setOnAction(e -> {
-				Tag tag = new Tag(Tag.TagType.KID, tagValue);
-				for (int i1 = 0; i1 < selectedPhotos.size(); ++i1 ) {
-					selectedPhotos.get(i1).removeTag(tag);
-				}
-				taggingArea.update ();
-			});
-			hBox.getChildren().add(label);
-			hBox.getChildren().add(removeButton);
-			childrenTags.getChildren().add(hBox);
-		}
+            Button removeButton = new Button("-");
+            removeButton.setOnAction(e -> {
+                Tag tag = new Tag(Tag.TagType.KID, tagValue);
+                for (Photo selectedPhoto : selectedPhotos) {
+                    selectedPhoto.removeTag(tag);
+                }
+                taggingArea.update();
+            });
+            hBox.getChildren().add(label);
+            hBox.getChildren().add(removeButton);
+            childrenTags.getChildren().add(hBox);
+        }
 	}
 }
