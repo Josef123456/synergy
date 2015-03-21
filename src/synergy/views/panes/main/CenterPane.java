@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.main;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

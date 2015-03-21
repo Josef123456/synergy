@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.main;
 
 import synergy.views.BottomArea;
 import synergy.views.Main;

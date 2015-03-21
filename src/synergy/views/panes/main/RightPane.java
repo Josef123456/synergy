@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.main;
 
 import javafx.geometry.Pos;
 import synergy.views.Main;
