@@ -2,6 +2,14 @@ package synergy.views;
 
 
 import com.j256.ormlite.logger.LocalLog;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,6 +33,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.swing.filechooser.FileSystemView;
 
 public class Main extends Application {
 
@@ -141,8 +151,37 @@ public class Main extends Application {
             ArrayList<Photo> lastImported = new ArrayList<>();
             long t1 = System.currentTimeMillis();
 
+            FileSystemView fsv = FileSystemView.getFileSystemView();
+            String removableDrive = "";
+            CopyOption[] options = new CopyOption[]{
+                    StandardCopyOption.REPLACE_EXISTING,
+                    StandardCopyOption.COPY_ATTRIBUTES,
+            };
+
+            for(File f : File.listRoots()) {
+                if (fsv.getSystemTypeDescription(f).contentEquals("Removable Disk")) {
+                    System.out.println("Found removable disk at root " + f);
+                    removableDrive = f.toString();
+                } else {
+                    //No removable drive found
+                }
+            }
+
             if (list != null) {
                 for (File file : list) {
+                    Path filePath = file.toPath();
+                    String fileRoot = filePath.getRoot().toString();
+                        if(fileRoot.contentEquals(removableDrive)){
+                            String fileName = file.getName();
+                            System.out.println("File copied to output directory");
+                            Path inputDir = Paths.get(file.getPath());
+                            Path outputDir = Paths.get("photos\\" + fileName);
+                            try {
+                                java.nio.file.Files.copy(inputDir,outputDir, options);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     Photo photo = new Photo(file.toString());
                     photo.save();
                     if (photosGrid.getDisplayedImagesMap().get(photo) == null)
