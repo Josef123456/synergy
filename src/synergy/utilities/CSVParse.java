@@ -14,8 +14,8 @@ import java.util.List;
  */
 public class CSVParse {
 
-    public static List<List<String>> parseCSVFile(String path){
-        File csvData = new File(path);
+    public static List<List<String>> parseCSVFile(File file){
+        File csvData = file;
         CSVParser csvParser = null;
         List<List<String>> toReturn = new ArrayList<>();
         List<CSVRecord> listOfRecords = new ArrayList<>();
@@ -33,7 +33,6 @@ public class CSVParse {
             List<String> thisRecord = new ArrayList<>();
             System.out.println(split.length);
             if(split.length>=3) {
-                System.out.println(split[0] + " " + split[1] + " " + split[2]);
                 thisRecord.add(split[0]);thisRecord.add(split[1]);thisRecord.add(split[2]);
                 toReturn.add(thisRecord);
             }

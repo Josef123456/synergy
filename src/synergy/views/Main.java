@@ -5,8 +5,6 @@ import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +18,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
+import synergy.models.Tag;
+import synergy.utilities.CSVGetter;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,16 +28,10 @@ import java.util.List;
 
 public class Main extends Application {
 
-    private Button importBtn, exportBtn, allPhotosBtn, printingViewBtn;
-    private ToolBar toolBar;
-    private VBox topPane;
-    private HBox leftButtonsBox, rightButtonsBox;
-    private Region spacer;
-    private SearchField searchField;
-    private ComboBox comboBox;
+    private Button importBtn;
+    private Button importDBBtn;
     private static Stage primaryStage;
     public static PhotoGrid photosGrid;
-    private ObservableList<Image> displayedImagesList;
     public static BorderPane root;
     public static TaggingArea taggingArea;
 
@@ -64,37 +58,34 @@ public class Main extends Application {
     }
 
     public void topArea() {
-        topPane = new VBox();
-        toolBar = new ToolBar();
-        spacer = new Region();
+        VBox topPane = new VBox();
+        ToolBar toolBar = new ToolBar();
+        Region spacer = new Region();
         spacer.getStyleClass().setAll("spacer");
 
-        leftButtonsBox = new HBox(1);
+        HBox leftButtonsBox = new HBox(1);
         leftButtonsBox.getStyleClass().setAll("button-bar");
         importBtn = new Button("Import");
         setupButtonStyle(importBtn, "importButton");
-        exportBtn = new Button("Export");
-        setupButtonStyle(exportBtn, "exportButton");
-        leftButtonsBox.getChildren().addAll(importBtn, exportBtn);
+        importDBBtn = new Button("Import DataBase");
+        setupButtonStyle(importDBBtn, "exportButton");
+        leftButtonsBox.getChildren().addAll(importBtn, importDBBtn);
 
-        rightButtonsBox = new HBox(1);
+        HBox rightButtonsBox = new HBox(1);
         rightButtonsBox.getStyleClass().setAll("button-bar");
 
-        allPhotosBtn = new Button("Photos");
+        Button allPhotosBtn = new Button("Photos");
         setupButtonStyle(allPhotosBtn, "photosButton");
 
-        printingViewBtn = new Button("Printing");
+        Button printingViewBtn = new Button("Printing");
         setupButtonStyle(printingViewBtn, "printingButton");
-        printingViewBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Stage stage = new Stage();
-                PrintingInterface printer = new PrintingInterface();
-                try {
-                    printer.start(stage);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+        printingViewBtn.setOnAction(event -> {
+            Stage stage = new Stage();
+            PrintingInterface printer = new PrintingInterface();
+            try {
+                printer.start(stage);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
         rightButtonsBox.getChildren().addAll(allPhotosBtn, printingViewBtn);
@@ -104,8 +95,8 @@ public class Main extends Application {
         leftButtonsBox.getChildren().add(rightButtonsBox);
         HBox.setHgrow(leftButtonsBox, Priority.ALWAYS);
 
-        searchField = new SearchField(photosGrid);
-        comboBox = searchField.getComboBox();
+        SearchField searchField = new SearchField(photosGrid);
+        ComboBox comboBox = searchField.getComboBox();
         comboBox.getEditor().setId("searching");
         comboBox.getEditor().setFont(Font.font("Arial", FontPosture.ITALIC, 25));
         searchField.getDatePickerTextField().setId("searching");
@@ -119,15 +110,15 @@ public class Main extends Application {
     }
 
     public void centerArea() {
-        displayedImagesList = FXCollections.observableArrayList(new ArrayList<Image>());
+        ObservableList<Image> displayedImagesList = FXCollections.observableArrayList(new ArrayList<>());
         photosGrid = new PhotoGrid(displayedImagesList, taggingArea);
         root.setCenter(photosGrid);
     }
 
     public void rightArea() {
-        SliderBar rightFlapBar = new SliderBar(Pos.BASELINE_RIGHT,taggingArea);
+/*        SliderBar rightFlapBar = new SliderBar(Pos.BASELINE_RIGHT,taggingArea);
         root.setRight(rightFlapBar);
-	    taggingArea.update();
+	    taggingArea.update();*/
     }
 
     public void bottomArea() {
@@ -167,23 +158,33 @@ public class Main extends Application {
             }
             long t2 = System.currentTimeMillis();
             System.out.println(t2 - t1 + " milliseconds");
-            Thread refreshEngine = new Thread(() -> Engine.prepare());
+            Thread refreshEngine = new Thread(Engine::prepare);
             refreshEngine.setDaemon(true);
             refreshEngine.start();
         });
     }
 
-    public void addEventHandlerToExport() {
-        exportBtn.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+    public void addEventHandlerToImportDBButton() {
+        final FileChooser fileChooser = new FileChooser();
+        photosGrid.setGridPhotos(Photo.getAllPhotos());
+
+        importDBBtn.setOnAction(event -> {
+           File selectedFile = fileChooser.showOpenDialog(primaryStage);
+
+            if(selectedFile != null)
+            {
+                CSVGetter.getCSVData(selectedFile);
+                System.out.println(Tag.getAllPlacesTags()+"\n"+Tag.getAllChildrenTags());
             }
+            Thread refreshEngine = new Thread(Engine::prepare);
+            refreshEngine.setDaemon(true);
+            refreshEngine.start();
         });
     }
 
     public void addEventHandlers() {
         addEventHandlerToImport();
-        addEventHandlerToExport();
+        addEventHandlerToImportDBButton();
     }
 
     public static void main(String[] args) {

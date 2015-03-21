@@ -13,8 +13,7 @@ import java.util.List;
 public class EngineTest extends BaseTest {
 
 	@Test public void testSimpleDateEngine() throws Exception {
-		//do some shit
-		//assertEquals(0, 1);
+
         Photo p1 = new Photo("/home/sari/Photostest/1.jpg");
         Photo p2 = new Photo("/home/sari/Photostest/2.jpg");
         Photo p3 = new Photo("/home/sari/Photostest/3.jpg");

@@ -2,6 +2,7 @@ package synergy.utilities;
 
 import synergy.models.Tag;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -9,9 +10,9 @@ import java.util.List;
  */
 public class CSVGetter {
 
-    public static void getCSVData(String path){
+    public static void getCSVData(File file){
 
-        List<List<String>> parsedData = CSVParse.parseCSVFile(path);
+        List<List<String>> parsedData = CSVParse.parseCSVFile(file);
 
         for(List<String> entry : parsedData){
             new Tag(Tag.TagType.KID,entry.get(0)+" "+entry.get(1)).save();
