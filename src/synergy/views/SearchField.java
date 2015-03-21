@@ -2,6 +2,7 @@ package synergy.views;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
@@ -104,15 +105,13 @@ public class SearchField extends HBox {
         });
 	    searchButton.setOnAction (event -> updateSearchDatabase());
 
-        queryFieldAndSearch.getChildren().add(searchQueryButtons);
-        queryFieldAndSearch.getChildren().add(comboBox);
-        queryFieldAndSearch.getChildren().add(addButton);
-        queryFieldAndSearch.getChildren().add(searchButton);
+        queryFieldAndSearch.getChildren().addAll(searchQueryButtons, comboBox, addButton, searchButton);
     }
 
     public void setUpDatePickers() {
         datePicker = new DatePicker();
         categoryAndItem = new HBox();
+        categoryAndItem.setPadding(new Insets(0, 0, 0, 8));
         categoryAndItem.setSpacing(10);
         stackCategories = new StackPane();
 
@@ -202,13 +201,9 @@ public class SearchField extends HBox {
         Label toLabel = new Label("To: ");
         toLabel.setStyle("-fx-text-fill: #ffffff");
         toLabel.setFont(font);
-        periodPane.getChildren().add(fromLabel);
-        periodPane.getChildren().add(initialDatePicker);
-        periodPane.getChildren().add(toLabel);
-        periodPane.getChildren().add(endDatePicker);
 
-        categoryAndItem.getChildren().add(dateCategories);
-        categoryAndItem.getChildren().add(stackCategories);
+        periodPane.getChildren().addAll(fromLabel, initialDatePicker, toLabel, endDatePicker);
+        categoryAndItem.getChildren().addAll(dateCategories, stackCategories);
     }
 
     public void updateCategories() {

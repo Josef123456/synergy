@@ -1,9 +1,5 @@
 package synergy.views.panes.tagging;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-
 import javafx.scene.control.Label;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -11,6 +7,10 @@ import synergy.models.Photo;
 import synergy.views.PhotoGrid;
 import synergy.views.TaggingArea;
 import synergy.views.panes.base.BaseVerticalPane;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by alexstoick on 3/18/15.
@@ -29,7 +29,7 @@ public class DatePane extends BaseVerticalPane {
 		getStyleClass().add("grid");
 		dateLabel = new Label (buildDateString ());
 
-        dateLabel.setStyle("-fx-text-fill: antiquewhite");
+        dateLabel.setStyle("-fx-text-fill: #ffffff");
         dateLabel.setFont(Font.font("Arial", FontWeight.BOLD, 16));
         getChildren().addAll(dateLabel);
     }
@@ -41,7 +41,7 @@ public class DatePane extends BaseVerticalPane {
     private String buildDateString() {
         StringBuilder stringBuilder = new StringBuilder();
         ArrayList<Photo> photos = PhotoGrid.getSelectedPhotos();
-        stringBuilder.append("Date: ");
+        stringBuilder.append(" Date: ");
         if (photos.size() == 0) {
             return "";
         }

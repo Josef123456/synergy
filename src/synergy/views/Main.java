@@ -5,6 +5,7 @@ import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -64,6 +65,7 @@ public class Main extends Application {
 
     public void topArea() {
         VBox topPane = new VBox();
+        topPane.setPadding(new Insets(0, 0, 8, 0));
         ToolBar toolBar = new ToolBar();
         Region spacer = new Region();
         spacer.getStyleClass().setAll("spacer");
@@ -128,6 +130,7 @@ public class Main extends Application {
 
     public void bottomArea() {
         BottomArea bottomArea = new BottomArea();
+        bottomArea.setPadding(new Insets(8, 0, 0, 0));
         root.setBottom(bottomArea);
     }
 

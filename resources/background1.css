@@ -193,7 +193,7 @@
 .tool-bar {
     -fx-base: rgb(74, 75, 78);
     -fx-font-size: 12pt;
-    -fx-opacity: 80%;
+    -fx-opacity: 75%;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: .9em 0.416667em .9em 0.416667em;
 }
@@ -226,7 +226,7 @@
 
 .scroll-pane {
     -fx-background-color: transparent;
-    -fx-opacity: 80%;
+    -fx-opacity: 70%;
 }
 
 .toggle-button:selected {

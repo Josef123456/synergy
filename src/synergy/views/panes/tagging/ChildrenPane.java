@@ -105,9 +105,9 @@ public class ChildrenPane extends BaseVerticalPane {
 		AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
 		childrenComboBox.setOnKeyReleased (autoComplete);
 		Button addChildrenTagButton = new Button ("+");
-		addChildrenTagButton.setStyle ("-fx-text-fill: antiquewhite");
+		addChildrenTagButton.setStyle ("-fx-text-fill: #ffffff");
 		addChildrenTagButton.setStyle ("-fx-background-color: #595959");
-		addChildrenTagButton.setStyle ("-fx-text-fill: antiquewhite");
+		addChildrenTagButton.setStyle ("-fx-text-fill: #ffffff");
 
 		Text childrenText = new Text (" Children: ");
 		childrenText.setId ("leftText");

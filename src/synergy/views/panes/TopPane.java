@@ -1,7 +1,6 @@
 package synergy.views.panes;
 
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
@@ -21,6 +20,7 @@ import synergy.views.Main;
 import synergy.views.PhotoGrid;
 import synergy.views.PrintingInterface;
 import synergy.views.SearchField;
+
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
 import java.io.IOException;
@@ -182,7 +182,7 @@ public class TopPane extends VBox{
 	}
 
 	public void setupButtonStyle(Button btn, String buttonName) {
-		btn.setStyle("-fx-text-fill: antiquewhite");
+		btn.setStyle("-fx-text-fill: #ffffff");
 		btn.getStyleClass().add(buttonName);
 		btn.setMinWidth(130);
 	}

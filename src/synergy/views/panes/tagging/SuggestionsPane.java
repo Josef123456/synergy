@@ -39,8 +39,8 @@ public class SuggestionsPane extends BaseVerticalPane {
 		childrenSuggestions.setPrefWrapLength (4.0);
 		String[] suggestions = getSuggestions();
 		getChildren ().clear();
-		Label childrenSuggestionLabel = new Label ("Suggestions: ");
-		childrenSuggestionLabel.setStyle ("-fx-text-fill: antiquewhite");
+		Label childrenSuggestionLabel = new Label (" Suggestions: ");
+		childrenSuggestionLabel.setStyle ("-fx-text-fill: #ffffff");
 		childrenSuggestionLabel.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
 
 		System.out.println ("in updating suggestion");
@@ -50,7 +50,7 @@ public class SuggestionsPane extends BaseVerticalPane {
 			HBox boxSuggestion = new HBox ();
 			String suggestion = (suggestions[i]);
 			Button buttonName = new Button(suggestion + " +");
-			buttonName.setStyle("-fx-text-fill: antiquewhite");
+			buttonName.setStyle("-fx-text-fill: #ffffff");
 			buttonName.setOnAction(event -> {
 				final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos ();
 				Tag tag = new Tag(Tag.TagType.KID, suggestion);
