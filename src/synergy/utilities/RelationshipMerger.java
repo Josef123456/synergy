@@ -12,27 +12,25 @@ import java.util.List;
 public class RelationshipMerger {
 
     public static List<Relationship> mergeRelationshipLists(List<Relationship> list1, List<Relationship> list2){
-        List<Relationship> a = list1;
-        List<Relationship> b = list2;
-        Relationship c[] = new Relationship[a.size()+b.size()];
+        Relationship c[] = new Relationship[list1.size()+ list2.size()];
 
         int i = 0, j = 0, k = 0;
 
-        while (i < a.size() && j < b.size())
+        while (i < list1.size() && j < list2.size())
         {
-            if (a.get(i).getOccurrences() > b.get(j).getOccurrences())
-                c[k++] = a.get(i++);
+            if (list1.get(i).getOccurrences() > list2.get(j).getOccurrences())
+                c[k++] = list1.get(i++);
 
             else
-                c[k++] = b.get(j++);
+                c[k++] = list2.get(j++);
         }
 
-        while (i < a.size())
-            c[k++] = a.get(i++);
+        while (i < list1.size())
+            c[k++] = list1.get(i++);
 
 
-        while (j < b.size())
-            c[k++] = b.get(j++);
+        while (j < list2.size())
+            c[k++] = list2.get(j++);
 
         return new ArrayList<>(Arrays.asList(c));
     }

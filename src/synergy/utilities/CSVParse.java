@@ -16,7 +16,7 @@ public class CSVParse {
 
     public static List<List<String>> parseCSVFile(File file){
         File csvData = file;
-        CSVParser csvParser = null;
+        CSVParser csvParser;
         List<List<String>> toReturn = new ArrayList<>();
         List<CSVRecord> listOfRecords = new ArrayList<>();
         try {

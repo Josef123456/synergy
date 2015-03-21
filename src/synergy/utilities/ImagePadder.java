@@ -11,7 +11,7 @@ public class ImagePadder {
 
 
 	public static BufferedImage padToSize(BufferedImage initialImage, int height, int width) {
-		BufferedImage paddedImage = new BufferedImage(height, width, initialImage.getType());
+		BufferedImage paddedImage = new BufferedImage(width, height, initialImage.getType());
 		Graphics g = paddedImage.getGraphics();
 		g.setColor(new Color (29,30,30));
 		g.fillRect (0, 0, width, height);
