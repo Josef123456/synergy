@@ -1,26 +1,23 @@
 package synergy.tasks;
 
 import com.bric.image.jpeg.JPEGMetaData;
-
-import org.imgscalr.Scalr;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.imageio.ImageIO;
-
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import org.imgscalr.Scalr;
 import synergy.models.Photo;
 import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
 import synergy.views.PhotoGrid;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by alexstoick on 3/7/15.
@@ -48,18 +45,18 @@ public class ThumbnailLoaderTask extends Task {
             BufferedImage initialThumbnail = null;
             try {
                 initialThumbnail = JPEGMetaData.getThumbnail(new File(photo.getPath()));
-                if (initialThumbnail == null) {
-                    toEliminate.add(photo);
-                    initialThumbnail = ImageIO.read(new File(photo.getPath()));
-                    initialThumbnail = Scalr.resize (initialThumbnail, 250);
-                }
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+            if (initialThumbnail == null) {
+                toEliminate.add(photo);
+                initialThumbnail = ImageIO.read(new File(photo.getPath()));
+                initialThumbnail = Scalr.resize(initialThumbnail, 250);
             }
 
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage
                     (ImagePadder.padToSize (initialThumbnail,250,250));
-	        System.out.println ( "Height: " + finalWi.getHeight () + " Width:" + finalWi.getWidth () );
+	        System.out.println("Height: " + finalWi.getHeight() + " Width:" + finalWi.getWidth());
             initialThumbnail.flush ();
 
             if (!parentThread.isInterrupted()) {
