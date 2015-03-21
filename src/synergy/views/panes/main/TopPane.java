@@ -1,5 +1,6 @@
 package synergy.views.panes.main;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -38,6 +39,7 @@ public class TopPane extends VBox{
 	public TopPane (Stage stage) {
 		setupTopArea ();
 		this.stage = stage;
+		setPadding(new Insets (0, 0, 8, 0));
 		addEventHandlers();
 	}
 
