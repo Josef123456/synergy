@@ -18,16 +18,18 @@ public class CSVParse {
         File csvData = new File(path);
         CSVParser csvParser = null;
         List<List<String>> toReturn = new ArrayList<>();
+        List<CSVRecord> listOfRecords = new ArrayList<>();
         try {
             csvParser = CSVParser.parse(FileReader.readFile(csvData), CSVFormat.MYSQL);
-            //list = csvParser.getRecords();
+            listOfRecords = csvParser.getRecords();
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        for(CSVRecord csvRecord:csvParser){
-            String[] split = csvRecord.get(0).split(",");
+
+        for(int i = 1;i<listOfRecords.size();i++){
+            String[] split = listOfRecords.get(i).get(0).split(",");
             List<String> thisRecord = new ArrayList<>();
             System.out.println(split.length);
             if(split.length>=3) {

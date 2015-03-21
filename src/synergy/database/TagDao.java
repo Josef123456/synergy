@@ -92,6 +92,12 @@ public class TagDao {
 		return tagDao.query (qb.prepare ());
 	}
 
+    public List<Tag> getAllPlacesTags() throws SQLException{
+        QueryBuilder<Tag, Integer> qb = tagDao.queryBuilder();
+        qb.where().eq(Tag.COLUMN_TYPE,Tag.TagType.PLACE);
+        return tagDao.query(qb.prepare());
+    }
+
 	public List<Photo> getPhotosForTag(Tag tag) throws SQLException {
 		if (photosForTagQuery == null ) {
 			photosForTagQuery = makePhotosForTagQuery();

@@ -45,7 +45,15 @@ public class Tag {
 			e.printStackTrace ();
 		}
 	}
-
+    public static List<Tag> getAllPlacesTags(){
+        try {
+            return TagDao.getInstance ().getAllPlacesTags();
+        } catch ( SQLException e) {
+            System.err.println(e);
+            e.printStackTrace ();
+        }
+        return null;
+    }
 	public static List<Tag> getAllChildrenTags() {
 		try {
 			return TagDao.getInstance ().getAllChildrenTags();
