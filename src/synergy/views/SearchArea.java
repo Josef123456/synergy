@@ -12,10 +12,15 @@ import synergy.views.panes.QueryPane;
  */
 public class SearchArea extends HBox {
 
-	ChildrenPane childrenPane;
-	QueryPane queryPane;
-	LocationPane locationPane;
-	DatePane datePane;
+	private ChildrenPane childrenPane;
+	private QueryPane queryPane;
+	private LocationPane locationPane;
+	private DatePane datePane;
+
+    public SearchArea () {
+        setUpUI();
+	    getStyleClass().add("my-list-cell");
+    }
 
 	public ChildrenPane getChildrenPane () {
 		return childrenPane;
@@ -29,12 +34,7 @@ public class SearchArea extends HBox {
 		return datePane;
 	}
 
-    public SearchArea () {
-        setUpUI();
-	    getStyleClass().add("my-list-cell");
-    }
-
-    public void setUpUI() {
+    private void setUpUI() {
 	    childrenPane = new ChildrenPane ();
 	    datePane = new DatePane ();
         locationPane = new LocationPane ();
