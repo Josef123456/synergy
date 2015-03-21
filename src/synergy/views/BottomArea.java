@@ -1,8 +1,6 @@
 package synergy.views;
 
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -154,7 +152,7 @@ public class BottomArea extends VBox {
 	}
 
 	public void setupNodeStyle(Node node, String nodeName) {
-        node.setStyle("-fx-text-fill: antiquewhite");
+        node.setStyle("-fx-text-fill: #ffffff");
         node.getStyleClass().add(nodeName);
         if (node.getClass().equals(Button.class))
             ((Button) node).setMinWidth(130);

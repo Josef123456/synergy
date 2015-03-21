@@ -1,26 +1,31 @@
 /*background color*/
 .root {
-    -fx-background-color: rgb(39, 40, 40);
+    -fx-base: #696969;
+    -fx-background-image: url("backgroundImage.jpg");
 }
 
 #searching {
-    -fx-text-fill: antiquewhite;
-    -fx-background-color: #0C3338;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #696969;
+    -fx-opacity: 80%;
 }
 
 .combo-box .cell {
-    -fx-text-fill: antiquewhite;
+    -fx-text-fill: #ffffff;
+    -fx-opacity: 80%;
 }
 
 .my-list-cell {
-    -fx-text-fill: antiquewhite;
-    -fx-background-color: rgb(74, 75, 78);;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: rgb(74, 75, 78);
     -fx-base: #3A3A3C;
+    -fx-opacity: 80%;
 }
 
+/*button color*/
 .button {
     -fx-background-color: #3A3A3C;
-    -fx-text-fill: antiquewhite;
+    -fx-text-fill: #ffffff;
 }
 
 .button-bar .button.importButton {
@@ -73,97 +78,155 @@
     -fx-background-color: #3A3A3C;
 }
 
-.toggle-button{
-    -fx-background-color: rgb(39, 40, 40);
+.toggle-button {
+    /*-fx-background-color: rgb(39, 40, 40);*/
     -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 0;
 }
 
 /*hoovering buttons*/
 .button:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
 
 #searching:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
 
 .combo-box:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
 
 .button-bar .button.importButton:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
 
 .button-bar .button.exportButton:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
 
 .button-bar .button.photosButton:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
+
 .button-bar .button.printingButton:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
+
 .button-bar .button.selectAllButton:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
+
 .button-bar .button.deselectButton:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
 
 .button-bar .button.deleteBtn:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
 
 .button-bar .button.zoomMinusBtn:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
 
 .button-bar .button.zoomPlusBtn:hover {
-    -fx-background-color: #0C3338;
+    -fx-background-color: #696969;
 }
-.toggle-button:hover{
-    -fx-background-color: #0C3338;
+
+.toggle-button:hover {
+    -fx-background-color: #696969;
 }
+
+/*button pressed color*/
+.button:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+#searching:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.combo-box:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.zoomMinusBtn:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.zoomPlusBtn:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.importButton:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.exportButton:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.photosButton:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.printingButton:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.selectAllButton:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.deselectButton:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.button-bar .button.deleteBtn:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
+.toggle-button:pressed {
+    -fx-background-color: #B4B4B4;
+}
+
 .tool-bar {
     -fx-base: rgb(74, 75, 78);
     -fx-font-size: 12pt;
+    -fx-opacity: 80%;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: .9em 0.416667em .9em 0.416667em;
-    -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
 }
 
 .grid {
     -fx-base: rgb(74, 75, 78);
-    -fx-background-color: #3A3A3C;
+    -fx-background-color: rgb(74, 75, 78);
+-fx-opacity: 80%;
     -fx-background-radius: 5.0;
     -fx-background-insets: 0.0 5.0 0.0 5.0;
-    -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
     -fx-padding: 10;
     -fx-hgap: 10;
     -fx-vgap: 10;
 }
 
 .hbox {
-
+    -fx-opacity: 80%;
     -fx-padding: 15;
     -fx-spacing: 10;
 }
 
 #leftText {
-    -fx-fill: antiquewhite;
+    -fx-fill: #ffffff;
 }
 
 .toggle-button {
-    -fx-text-fill: antiquewhite;
+    -fx-text-fill: #ffffff;
     -fx-background-color: #3A3A3C;
-    -fx-effect: dropshadow(two-pass-box, black, 5, .2, 0, 0);
 }
 
 .scroll-pane {
     -fx-background-color: transparent;
+    -fx-opacity: 80%;
 }
 
 .toggle-button:selected {

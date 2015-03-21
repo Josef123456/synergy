@@ -136,7 +136,7 @@ public class PrintingInterface extends Application {
     }
 
     public void setupButtonStyle(Button btn, String buttonName) {
-        btn.setStyle("-fx-text-fill: antiquewhite");
+        btn.setStyle("-fx-text-fill: #ffffff");
         btn.getStyleClass().add(buttonName);
         btn.setMinWidth(130);
     }

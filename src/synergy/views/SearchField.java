@@ -121,7 +121,7 @@ public class SearchField extends HBox {
         dateCategories.setValue(arrayCategories[0]);
         updateCategories();
         dateCategories.setOnAction(event -> updateCategories());
-        dateCategories.setStyle("-fx-text-fill: antiquewhite");
+        dateCategories.setStyle("-fx-text-fill: #ffffff");
 
         monthAndYear = new HBox();
         months = new ComboBox();
@@ -197,10 +197,10 @@ public class SearchField extends HBox {
 
         Font font = new Font("Arial", 20);
         Label fromLabel = new Label("From: k");
-        fromLabel.setStyle("-fx-text-fill: antiquewhite");
+        fromLabel.setStyle("-fx-text-fill: #ffffff");
         fromLabel.setFont(font);
         Label toLabel = new Label("To: ");
-        toLabel.setStyle("-fx-text-fill: antiquewhite");
+        toLabel.setStyle("-fx-text-fill: #ffffff");
         toLabel.setFont(font);
         periodPane.getChildren().add(fromLabel);
         periodPane.getChildren().add(initialDatePicker);
@@ -284,7 +284,7 @@ public class SearchField extends HBox {
                 updateChildrenQueries();
             });
             queryButton.setMinHeight(minHeight);
-            queryButton.setStyle("-fx-text-fill: antiquewhite");
+            queryButton.setStyle("-fx-text-fill: #ffffff");
             searchQueryButtons.getChildren().add(queryButton);
         }
     }
