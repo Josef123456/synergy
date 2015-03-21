@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.tagging;
 
 import java.util.ArrayList;
 
@@ -20,12 +20,10 @@ import synergy.views.panes.base.BaseHorizontalPane;
  */
 public class LocationPane extends BaseHorizontalPane {
 
-    private TaggingArea taggingArea;
     private ToggleButton roomAbtn;
     private ToggleButton roomBbtn;
 
-    public LocationPane(TaggingArea taggingArea) {
-        this.taggingArea = taggingArea;
+    public LocationPane () {
         setupLocationPane();
     }
 
@@ -58,25 +56,22 @@ public class LocationPane extends BaseHorizontalPane {
     }
 
     public void roomButtonAction(ToggleButton roomButton) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                final ArrayList<Photo> selectedPhotos = PhotoGrid
-                        .getSelectedPhotos();
-                Tag tag = null;
-                boolean roomSelected = roomButton.isSelected();
-                if (roomSelected) {
-                    tag = new Tag(Tag.TagType.PLACE, roomButton.getText());
-                    for (Photo photo : selectedPhotos) {
-                        Tag locationTag = photo.getLocationTag();
-                        if (locationTag != null)
-                            photo.removeTag(photo.getLocationTag());
-                        photo.addTag(tag);
-                    }
-                } else {
-                    for (Photo photo : selectedPhotos) {
+        Platform.runLater(() -> {
+            final ArrayList<Photo> selectedPhotos = PhotoGrid
+                    .getSelectedPhotos ();
+            Tag tag = null;
+            boolean roomSelected = roomButton.isSelected();
+            if (roomSelected) {
+                tag = new Tag(Tag.TagType.PLACE, roomButton.getText());
+                for (Photo photo : selectedPhotos) {
+                    Tag locationTag = photo.getLocationTag();
+                    if (locationTag != null)
                         photo.removeTag(photo.getLocationTag());
-                    }
+                    photo.addTag(tag);
+                }
+            } else {
+                for (Photo photo : selectedPhotos) {
+                    photo.removeTag(photo.getLocationTag());
                 }
             }
         });

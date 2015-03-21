@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.tagging;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

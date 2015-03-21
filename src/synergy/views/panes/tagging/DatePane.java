@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.tagging;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
