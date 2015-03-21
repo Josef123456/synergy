@@ -1,7 +1,3 @@
-.root {
-    -fx-background-color: -dark-black;
-}
-
 #background {
     -light-black: rgb(74, 75, 78);
     -dark-highlight: rgb(87, 89, 92);
@@ -9,10 +5,14 @@
     -darkest-black: rgb(5, 5, 5);
     -mid-gray: rgb(216, 222, 227);
 }
+/*background color*/
+.root {
+    -fx-background-color: rgb(39, 40, 40);
+}
 
 #searching {
     -fx-text-fill: antiquewhite;
-    -fx-background-color: #3A3A3C;
+    -fx-background-color: #0C3338;
 }
 
 .combo-box .cell {
@@ -21,8 +21,8 @@
 
 .my-list-cell {
     -fx-text-fill: antiquewhite;
-    -fx-background-color: #3A3A3C;
-    -fx-base: -light-black;
+    -fx-background-color: -light-black;
+    -fx-base: #3A3A3C;
 }
 
 .button {
@@ -80,7 +80,7 @@
     -fx-background-color: #3A3A3C;
 }
 
-.toggle-button toggleButton {
+.toggle-button{
     -fx-background-color: -dark-black;
     -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 0;
@@ -88,50 +88,52 @@
 
 /*hoovering buttons*/
 .button:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 
 #searching:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 
 .combo-box:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 
 .button-bar .button.importButton:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 
 .button-bar .button.exportButton:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 
 .button-bar .button.photosButton:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 .button-bar .button.printingButton:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 .button-bar .button.selectAllButton:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 .button-bar .button.deselectButton:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 
 .button-bar .button.deleteBtn:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 
 .button-bar .button.zoomMinusBtn:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
 
 .button-bar .button.zoomPlusBtn:hover {
-    -fx-background-color: rgba(235, 235, 235, 0.7);
+    -fx-background-color: #0C3338;
 }
-
+.toggle-button:hover{
+    -fx-background-color: #0C3338;
+}
 .tool-bar {
     -fx-base: -light-black;
     -fx-font-size: 12pt;
@@ -152,7 +154,7 @@
 }
 
 .hbox {
-    /*-fx-background-color: transparent;*/
+
     -fx-padding: 15;
     -fx-spacing: 10;
 }
@@ -174,3 +176,4 @@
 .toggle-button:selected {
     -fx-background-color: #bbb;
 }
+

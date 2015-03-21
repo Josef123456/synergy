@@ -1,24 +1,9 @@
 package synergy.views;
 
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DateCell;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
@@ -28,6 +13,10 @@ import javafx.scene.text.Font;
 import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.models.Tag;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.*;
 
 /**
  * Created by Cham on 06/03/2015.
@@ -128,7 +117,6 @@ public class SearchField extends HBox {
         stackCategories = new StackPane();
 
         dateCategories = new ComboBox();
-        dateCategories.setId("searching");
         dateCategories.getItems().addAll(arrayCategories);
         dateCategories.setValue(arrayCategories[0]);
         updateCategories();
