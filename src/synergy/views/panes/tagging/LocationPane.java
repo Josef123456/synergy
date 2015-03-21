@@ -87,24 +87,23 @@ public class LocationPane extends BaseHorizontalPane {
         }
 
         System.out.println("List of location tags: " + tagArray);
+	    roomAbtn.setSelected(false);
+	    roomBbtn.setSelected(false);
         if (tagArray.size() > 0) {
-            boolean roomA = false;
-            boolean roomB = false;
+            int roomA = 0;
+            int roomB = 0 ;
             for (Tag tag : tagArray) {
-
                 if (tag.getValue().equals("RoomA")) {
-                    roomAbtn.setSelected(true);
-                    roomA = true;
+                    ++ roomA;
                 } else if (tag.getValue().equals("RoomB")) {
-                    roomBbtn.setSelected(true);
-                    roomB = true;
-                }
-                if (roomA && roomB) {
-                    roomAbtn.setSelected(false);
-                    roomBbtn.setSelected(false);
-                    break;
+                    ++roomB;
                 }
             }
+	        if ( roomA == selectedPhotos.size() ) {
+		        roomAbtn.setSelected (true);
+	        } else if ( roomB == selectedPhotos.size () ) {
+		        roomBbtn.setSelected (true);
+	        }
         }
     }
 }

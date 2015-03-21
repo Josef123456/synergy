@@ -30,6 +30,7 @@ public class SliderBar extends VBox {
 		if ( isDisplayed () ) {
 //			displayed = false;
 //			hidePanel.play ();
+			Main.taggingArea.getLocationPane().update ();
 		}
 	}
 
@@ -43,8 +44,8 @@ public class SliderBar extends VBox {
         flapBarLocation = location;
         initPosition();
 	    setupAnimations ();
-        getChildren().addAll(area);
-        show();
+        getChildren ().addAll(area);
+		show();
     }
 
 	private void setupAnimations () {

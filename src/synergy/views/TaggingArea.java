@@ -41,7 +41,11 @@ public class TaggingArea extends BorderPane {
         }
     }
 
-    public TaggingArea() {
+	public BaseHorizontalPane getLocationPane () {
+		return locationPane;
+	}
+
+	public TaggingArea() {
         setCenter (returnGridPane (locationPane, datePane, childrenPane, suggestionsPane));
     }
 
