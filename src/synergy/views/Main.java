@@ -2,12 +2,6 @@ package synergy.views;
 
 
 import com.j256.ormlite.logger.LocalLog;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,17 +13,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -131,10 +126,9 @@ public class Main extends Application {
 
     public void rightArea() {
         taggingArea.update();
-        root.setRight(taggingArea);
-//            SliderBar rightFlapBar = new SliderBar(300,photosGrid, Pos.BASELINE_RIGHT,
-// taggingArea);
-//            root.setRight(rightFlapBar);
+//        root.setRight(taggingArea);
+        SliderBar rightFlapBar = new SliderBar(300, photosGrid, Pos.BASELINE_RIGHT,taggingArea);
+        root.setRight(rightFlapBar);
 
     }
 

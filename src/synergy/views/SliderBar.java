@@ -16,7 +16,7 @@ import javafx.util.Duration;
 public class SliderBar extends VBox {
 
     private double expandedSize;
-    private Pos flapbarLocation;
+    private Pos flapBarLocation;
     public static int counter;
     public static Animation showPanel, hidePanel;
 
@@ -26,76 +26,61 @@ public class SliderBar extends VBox {
         setVisible(false);
 
         if (location == null) {
-            flapbarLocation = Pos.TOP_CENTER;
+            flapBarLocation = Pos.TOP_CENTER;
         }
-        flapbarLocation = location;
+        flapBarLocation = location;
 
         initPosition();
 
+	    setupAnimations ();
+
         getChildren().addAll(area);
 
-        photo.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            public void handle(MouseEvent event) {
-
-                hidePanel = new Transition() {
-                    {
-                        setCycleDuration(Duration.millis(250));
-                    }
-
-                    @Override
-                    protected void interpolate(double frac) {
-                        final double size = getExpandedSize() * (1.0 - frac);
-                        translateByPos(size);
-                    }
-                };
-
-                hidePanel.onFinishedProperty().set(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                        setVisible(false);
-                    }
-                });
-
-                showPanel = new Transition() {
-                    {
-                        setCycleDuration(Duration.millis(250));
-                    }
-
-                    @Override
-                    protected void interpolate(double frac) {
-                        final double size = getExpandedSize() * frac;
-                        translateByPos(size);
-                    }
-                };
-
-                showPanel.onFinishedProperty().set(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent actionEvent) {
-                    }
-                });
-
-                if (showPanel.statusProperty().get() == Animation.Status.STOPPED
-                        && hidePanel.statusProperty().get() == Animation.Status.STOPPED) {
-
-                    if (!(PhotoGrid.getSelectedImages().isEmpty())) {
-                        if (counter == 0) {
-                            setVisible(true);
-                            showPanel.play();
-                        }
-                    } else if (PhotoGrid.getSelectedImages().isEmpty()) {
-                        hidePanel.play();
-                    }
-                    counter = PhotoGrid.getSelectedImages().size();
-                    System.out.println(counter + "counter");
+        photo.setOnMouseClicked(event -> {
+            if (!(PhotoGrid.getSelectedImages().isEmpty())) {
+                if (counter == 0) {
+                    showPanel.play();
+                    counter++;
                 }
-
+            } else if (PhotoGrid.getSelectedImages().isEmpty()) {
+                hidePanel.play();
             }
+            counter = PhotoGrid.getSelectedImages().size();
+            System.out.println(counter + "counter");
         });
     }
 
-    private void initPosition() {
-        switch (flapbarLocation) {
+	private void setupAnimations () {
+		hidePanel = new Transition () {
+		    {
+		        setCycleDuration(Duration.millis (250));
+		    }
+
+		    @Override
+		    protected void interpolate(double fraction) {
+		        final double size = getExpandedSize() * (1.0 - fraction);
+		        translateByPos(size);
+		    }
+		};
+
+		hidePanel.onFinishedProperty().set(actionEvent -> setVisible(false));
+
+		showPanel = new Transition() {
+		    {
+		        setCycleDuration(Duration.millis(250));
+		    }
+
+		    @Override
+		    protected void interpolate(double fraction) {
+		        final double size = getExpandedSize() * fraction;
+		        translateByPos(size);
+		        setVisible (true);
+		    }
+		};
+	}
+
+	private void initPosition() {
+        switch (flapBarLocation) {
             case BASELINE_RIGHT:
                 setPrefWidth(0);
                 setMinWidth(0);
@@ -104,7 +89,7 @@ public class SliderBar extends VBox {
     }
 
     private void translateByPos(double size) {
-        switch (flapbarLocation) {
+        switch (flapBarLocation) {
             case BASELINE_RIGHT:
                 setPrefWidth(size);
                 break;
