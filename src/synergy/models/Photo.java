@@ -77,8 +77,7 @@ public class Photo {
 
     public List<Tag> getTags() {
         try {
-            List<Tag> tags = PhotoDao.getInstance().getTagsForPhoto(this);
-            return tags;
+            return PhotoDao.getInstance().getTagsForPhoto(this);
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
@@ -118,12 +117,10 @@ public class Photo {
             List<Photo> photos = PhotoDao.getInstance().getAllPhotos();
             List<Photo> photosToRemove = new ArrayList<>();
 
-            for(Photo p : photos){
-                if(! new File(p.getPath()).exists()){
-                    photosToRemove.add(p);
-                    p.delete();
-                }
-            }
+            photos.stream().filter(p -> !new File(p.getPath()).exists()).forEach(p -> {
+                photosToRemove.add(p);
+                p.delete();
+            });
             photos.removeAll(photosToRemove);
             return photos;
         } catch (Exception e) {
@@ -230,10 +227,8 @@ public class Photo {
 
         Photo photo = (Photo) o;
 
-        if (ID != photo.ID) return false;
-        if (path != null ? !path.equals(photo.path) : photo.path != null) return false;
+        return ID == photo.ID && !(path != null ? !path.equals(photo.path) : photo.path != null);
 
-        return true;
     }
 
     @Override

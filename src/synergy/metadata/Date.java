@@ -25,15 +25,13 @@ public class Date {
 		if ( jpegMetadata != null ) {
 
 			List<IImageMetadata.IImageMetadataItem> items = jpegMetadata.getItems ();
-			for ( int i = 0 ; i < items.size () ; i++ ) {
-				final IImageMetadata.IImageMetadataItem item = items.get (i);
-				String name = item.toString ().substring (0, item.toString ().indexOf (":"));
-				String values = item.toString ().substring (0);
-				if ( name.contains ("DateTimeOriginal") ) {
-					String dateAndTime = values.split ("\'")[ 1 ];
-					return dateAndTime;
-				}
-			}
+            for (final IImageMetadata.IImageMetadataItem item : items) {
+                String name = item.toString().substring(0, item.toString().indexOf(":"));
+                String values = item.toString().substring(0);
+                if (name.contains("DateTimeOriginal")) {
+                    return values.split("\'")[1];
+                }
+            }
 		}
 
 		String s = LocalDateTime.now ().toString ().replace ("T", " ").replace ("-", ":");

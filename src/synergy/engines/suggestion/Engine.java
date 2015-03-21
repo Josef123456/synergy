@@ -46,10 +46,7 @@ public class Engine {
         List<Tag> dateTags = SimpleDateEngine.suggest(p);
         List<Tag> uniqueDateTags = new ArrayList<>();
         if(dateTags != null)
-            for(Tag t:dateTags){
-                if(!uniqueDateTags.contains(t) && !p.getChildTags().contains(t))
-                    uniqueDateTags.add(t);
-            }
+            dateTags.stream().filter(t -> !uniqueDateTags.contains(t) && !p.getChildTags().contains(t)).forEach(uniqueDateTags::add);
 
         return uniqueDateTags;
 

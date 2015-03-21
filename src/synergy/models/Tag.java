@@ -121,17 +121,14 @@ public class Tag {
 
 	@Override
 	public boolean equals (Object o) {
-		if ( this == o ) return true;
-		if ( !(o instanceof Tag) ) return false;
+        if (this == o) return true;
+        if (!(o instanceof Tag)) return false;
 
-		Tag tag = (Tag) o;
+        Tag tag = (Tag) o;
 
-		if ( ID != tag.ID ) return false;
-		if ( type != tag.type ) return false;
-		if ( !value.equals (tag.value) ) return false;
+        return ID == tag.ID && type == tag.type && value.equals(tag.value);
 
-		return true;
-	}
+    }
 
 
 }

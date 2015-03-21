@@ -3,10 +3,9 @@ package synergy.metadata;
 /**
  * Created by Amit on 07/02/2015.
  */
-import java.util.List;
-
-
-import org.apache.commons.imaging.*;
+import org.apache.commons.imaging.ImageReadException;
+import org.apache.commons.imaging.ImageWriteException;
+import org.apache.commons.imaging.Imaging;
 import org.apache.commons.imaging.common.IImageMetadata;
 import org.apache.commons.imaging.common.IImageMetadata.IImageMetadataItem;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
@@ -16,16 +15,12 @@ import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputDirectory;
 import org.apache.commons.imaging.formats.tiff.write.TiffOutputSet;
 import org.apache.commons.imaging.util.IoUtils;
-
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-
-import synergy.utilities.TagEncoder;
 import synergy.models.Photo;
 import synergy.models.Tag;
+import synergy.utilities.TagEncoder;
+
+import java.io.*;
+import java.util.List;
 
 public class MetaData {
 
@@ -42,8 +37,7 @@ public class MetaData {
             final JpegImageMetadata jpegMetadata = (JpegImageMetadata) metadata;
             final List<IImageMetadataItem> items = jpegMetadata.getItems();
 
-            for (int i = 0; i < items.size(); i++) {
-                final IImageMetadataItem item = items.get(i);
+            for (final IImageMetadataItem item : items) {
                 name = item.toString().substring(0, item.toString().indexOf(":"));
                 values = item.toString();
                 //Only print out 'UserComment' tag and its values

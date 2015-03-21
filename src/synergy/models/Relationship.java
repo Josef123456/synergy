@@ -59,9 +59,7 @@ public class Relationship {
     }
 
     public boolean contains(Tag kid){
-        if(this.getKid1().equals(kid) || this.getKid2().equals(kid))
-            return true;
-        return false;
+        return this.getKid1().equals(kid) || this.getKid2().equals(kid);
     }
 
     public int getID() {
