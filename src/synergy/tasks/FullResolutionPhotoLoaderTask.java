@@ -60,7 +60,11 @@ public class FullResolutionPhotoLoaderTask extends Task {
                 Platform.runLater(() -> {
                     Image toBeReplaced = displayedImagesMap.get(photo);
                     int i = displayedImagesList.indexOf(toBeReplaced);
-                    displayedImagesList.set(i, finalWi);
+                    try {
+                        displayedImagesList.set(i, finalWi);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("Photo " + photo.getPath() + " was deleted!");
+                    }
                     i = selectedImages.indexOf(toBeReplaced);
                     if (i != -1)
                         selectedImages.set(i, finalWi);
