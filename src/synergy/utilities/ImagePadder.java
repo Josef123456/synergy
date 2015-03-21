@@ -18,19 +18,11 @@ public class ImagePadder {
 
 		int imageHeight = initialImage.getHeight ();
 		int imageWidth = initialImage.getWidth ();
+        int padHeight = height - imageHeight;
+        int padWidth = width - imageWidth;
 
-		if ( imageHeight < height ) {
-			// Pad height
-			int totalPad = height - imageHeight ;
-			g.drawImage (initialImage, 0, totalPad/2, null);
-			g.dispose();
-		} else {
-			// Pad width
-			int totalPad = width - imageWidth ;
-			g.drawImage (initialImage,totalPad/2, 0,null);
-			g.dispose();
-		}
-
+        g.drawImage(initialImage,padWidth/2,padHeight/2,null);
+        g.dispose();
 		return paddedImage;
 	}
 
