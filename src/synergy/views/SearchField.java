@@ -238,9 +238,9 @@ public class SearchField extends HBox {
     public void setUpLocationButtons() {
         buttonPane = new HBox();
         ToggleGroup toggleGroup = new ToggleGroup();
-        locationA = new ToggleButton("Room A");
+        locationA = new ToggleButton("RoomA");
         locationA.setMinWidth(50);
-        locationB = new ToggleButton("Room B");
+        locationB = new ToggleButton("RoomB");
         locationB.setMinWidth(50);
         locationA.setToggleGroup(toggleGroup);
         locationB.setToggleGroup(toggleGroup);
@@ -390,10 +390,11 @@ public class SearchField extends HBox {
                 finalInitialDate, finalEndDate, roomTag, kidTag
         );
 
-        if (!(finalEndDate == null && finalEndDate == null && roomTag == null && kidTag == null))
-            PhotoGrid.displayingImported = false;
-        else
-            PhotoGrid.displayingImported = true;
+        if (!(finalEndDate == null && finalEndDate == null && roomTag == null && kidTag == null)) {
+	        PhotoGrid.displayingImported = false;
+        } else {
+	        PhotoGrid.displayingImported = true;
+        }
 
         PhotoGrid.getPhotosGrid().setGridPhotos(photosFromDB);
 
