@@ -3,14 +3,11 @@ package synergy.views.panes.main;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
@@ -20,7 +17,7 @@ import synergy.utilities.CSVGetter;
 import synergy.views.Main;
 import synergy.views.PhotoGrid;
 import synergy.views.PrintingInterface;
-import synergy.views.SearchField;
+import synergy.views.SearchArea;
 
 import javax.swing.filechooser.FileSystemView;
 import java.io.File;
@@ -85,17 +82,10 @@ public class TopPane extends VBox{
 		leftButtonsBox.getChildren ().add (rightButtonsBox);
 		HBox.setHgrow (leftButtonsBox, Priority.ALWAYS);
 
-		SearchField searchField = new SearchField (Main.photosGrid);
-		ComboBox comboBox = searchField.getComboBox ();
-		comboBox.getEditor ().setId ("searching");
-		comboBox.getEditor ().setFont (Font.font ("Arial", FontPosture.ITALIC, 25));
-		searchField.getDatePickerTextField ().setId ("searching");
-		searchField.getDatePickerTextField ().setFont (Font.font ("Arial", FontPosture.ITALIC, 25));
-
-		searchField.setAllMinHeight (45);
+		SearchArea searchArea = new SearchArea ();
 
 		toolBar.getItems ().addAll (leftButtonsBox, rightButtonsBox);
-		getChildren ().addAll (toolBar, searchField);
+		getChildren ().addAll (toolBar, searchArea);
 		Main.root.setTop (this);
 	}
 
