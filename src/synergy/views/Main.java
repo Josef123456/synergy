@@ -126,9 +126,9 @@ public class Main extends Application {
     }
 
     public void rightArea() {
-/*        SliderBar rightFlapBar = new SliderBar(Pos.BASELINE_RIGHT,taggingArea);
+        SliderBar rightFlapBar = new SliderBar(Pos.BASELINE_RIGHT,taggingArea);
         root.setRight(rightFlapBar);
-	    taggingArea.update();*/
+	    taggingArea.update();
     }
 
     public void bottomArea() {
