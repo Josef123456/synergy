@@ -55,7 +55,7 @@ public class LocationPane extends BaseHorizontalPane {
         getChildren().addAll(locationText, boxLocation);
     }
 
-    public void roomButtonAction(ToggleButton roomButton) {
+    private void roomButtonAction(ToggleButton roomButton) {
         Platform.runLater(() -> {
             final ArrayList<Photo> selectedPhotos = PhotoGrid
                     .getSelectedPhotos ();

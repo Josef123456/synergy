@@ -34,7 +34,7 @@ public class QueryPane extends HBox{
 		getChildren ().addAll(searchButton, resetButton);
 	}
 
-	public void setUpResetButton() {
+	private void setUpResetButton() {
 		resetButton = new Button("Reset");
 		resetButton.setOnAction(event -> {
 			searchArea.getDatePane ().resetAll();
@@ -47,11 +47,9 @@ public class QueryPane extends HBox{
 	private LocalDate finalInitialDate = null;
 	private LocalDate finalEndDate = null;
 
-	public void updateSearchDatabase() {
-
+	private void updateSearchDatabase() {
 		computeSelectedDates();
 		Tag roomTag = computeRoomTag();
-
 		Tag kidTag = computeKidTag();
 
 		System.out.println("final init date: " + finalInitialDate);
@@ -67,7 +65,6 @@ public class QueryPane extends HBox{
 		}
 
 		PhotoGrid.getPhotosGrid().setGridPhotos(photosFromDB);
-
 		System.out.println("Photos from query: " + photosFromDB.size());
 	}
 

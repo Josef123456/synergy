@@ -43,7 +43,7 @@ public class TopPane extends VBox{
 	private Button importBtn;
 	private Button importDBBtn;
 
-	public void setupTopArea () {
+	private void setupTopArea () {
 		ToolBar toolBar = new ToolBar ();
 		Region spacer = new Region ();
 		spacer.getStyleClass ().setAll ("spacer");
@@ -89,7 +89,7 @@ public class TopPane extends VBox{
 		Main.root.setTop (this);
 	}
 
-	public void addEventHandlers() {
+	private void addEventHandlers() {
 		addEventHandlerToImport();
 		addEventHandlerToImportDBButton();
 	}
@@ -173,7 +173,7 @@ public class TopPane extends VBox{
 		});
 	}
 
-	public void setupButtonStyle(Button btn, String buttonName) {
+	private void setupButtonStyle(Button btn, String buttonName) {
 		btn.setStyle("-fx-text-fill: #ffffff");
 		btn.getStyleClass().add(buttonName);
 		btn.setMinWidth(130);

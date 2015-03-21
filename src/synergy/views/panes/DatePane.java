@@ -32,6 +32,8 @@ public class DatePane extends HBox {
 	private ComboBox months, years;
 	private StackPane stackCategories;
 	private DatePicker initialDatePicker, endDatePicker;
+	private HBox monthAndYear;
+	private HBox periodPane;
 
 	public DatePane () {
 		setUpDatePickers ();
@@ -70,11 +72,7 @@ public class DatePane extends HBox {
 		return dateCategories;
 	}
 
-	private HBox monthAndYear;
-	private HBox periodPane;
-
-
-	public void setUpDatePickers() {
+	private void setUpDatePickers() {
 		singleDatePicker = new DatePicker ();
 		setPadding (new Insets (0, 0, 0, 8));
 		setSpacing(10);
@@ -128,7 +126,7 @@ public class DatePane extends HBox {
 		getChildren ().addAll(dateCategories, stackCategories);
 	}
 
-	public void updateCategories() {
+	private void updateCategories() {
 		if (dateCategories.getValue().equals("Date")) {
 			stackCategories.getChildren().clear();
 			stackCategories.getChildren().add(singleDatePicker);

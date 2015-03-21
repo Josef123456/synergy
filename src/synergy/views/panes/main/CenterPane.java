@@ -13,7 +13,7 @@ public class CenterPane {
 		setupCenterArea ();
 	}
 
-	public void setupCenterArea() {
+	private void setupCenterArea() {
 		ObservableList<Image> displayedImagesList = FXCollections.observableArrayList (new ArrayList<> ());
 		Main.photosGrid = new PhotoGrid (displayedImagesList, Main.taggingArea);
 		Main.root.setCenter (Main.photosGrid);

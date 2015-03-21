@@ -55,7 +55,7 @@ public class ChildrenPane extends HBox {
 	}
 
 
-	public void setUpTextFieldAndSearch() {
+	private void setUpTextFieldAndSearch() {
 		searchQueryButtons = new HBox();
 
 		comboBox = new ComboBox ();
@@ -86,7 +86,7 @@ public class ChildrenPane extends HBox {
 		getChildren ().addAll(searchQueryButtons, comboBox, addButton);
 	}
 
-	public void updateChildrenQueries() {
+	private void updateChildrenQueries() {
 		searchQueryButtons.getChildren().clear();
 		for (String query : listOfSearchedKids ) {
 			Button queryButton = new Button(query + " - ");

@@ -31,7 +31,7 @@ public class LocationPane extends HBox {
 		return locationB;
 	}
 
-	public void setUpLocationButtons() {
+	private void setUpLocationButtons() {
 		ToggleGroup toggleGroup = new ToggleGroup();
 		locationA = new ToggleButton ("RoomA");
 		locationA.setMinWidth(50);
@@ -43,5 +43,4 @@ public class LocationPane extends HBox {
 		getChildren ().add(locationA);
 		getChildren ().add(locationB);
 	}
-
 }
