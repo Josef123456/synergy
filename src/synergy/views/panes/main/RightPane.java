@@ -10,7 +10,7 @@ public class RightPane {
 	}
 
 	private void setupRightPane () {
-		SliderBar rightFlapBar = new SliderBar (Pos.BASELINE_RIGHT, Main.taggingArea);
+		SliderBar rightFlapBar = new SliderBar (Pos.TOP_LEFT, Main.taggingArea);
 		Main.root.setRight (rightFlapBar);
 		Main.taggingArea.update ();
 	}

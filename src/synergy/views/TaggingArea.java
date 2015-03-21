@@ -26,8 +26,6 @@ public class TaggingArea extends BorderPane {
 	private BaseVerticalPane suggestionsPane = new SuggestionsPane (this);
 	private BaseHorizontalPane locationPane = new LocationPane ();
 	private BaseVerticalPane datePane = new DatePane (this);
-    private static final double BLUR_AMOUNT = 60;
-    private static final Effect frostEffect = new BoxBlur(BLUR_AMOUNT, BLUR_AMOUNT, 3);
 
     public void update(){
         childrenPane.update();
@@ -50,28 +48,9 @@ public class TaggingArea extends BorderPane {
     }
 
     private VBox returnGridPane(Pane box1, Pane box2, Pane box3, Pane box4) {
-
-        VBox hb = freeze(Main.root);
+	    VBox hb = new VBox (10);
         hb.getStyleClass().add("hbox");
         hb.getChildren().addAll(box1, box2, box3, box4);
         return hb;
-    }
-
-    private VBox freeze(Node background) {
-        Image frostImage = background.snapshot(
-                new SnapshotParameters(),
-                null
-        );
-        ImageView frost = new ImageView(frostImage);
-
-
-        Pane frostPane = new Pane(frost);
-        frostPane.setEffect(frostEffect);
-
-        VBox frostView = new VBox(
-                frostPane
-        );
-
-        return frostView;
     }
 }

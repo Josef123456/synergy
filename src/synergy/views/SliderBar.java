@@ -21,31 +21,33 @@ public class SliderBar extends VBox {
 	}
 
 	public static void show() {
+		System.out.println ("showing");
 		if ( !isDisplayed () ) {
 			displayed = true;
-			showPanel.play ();
+			hidePanel.play ();
 		}
 	}
 	public static void hide() {
+		System.out.println ("hiding");
 		if ( isDisplayed () ) {
-//			displayed = false;
-//			hidePanel.play ();
+			displayed = false;
+			showPanel.play ();
 			Main.taggingArea.getLocationPane().update ();
 		}
 	}
 
-	private static final double EXPANDED_SIZE = 300;
+	private static final double EXPANDED_SIZE = 350;
 
 	public SliderBar(Pos location, TaggingArea area) {
-		setVisible (true);
         if (location == null) {
-            flapBarLocation = Pos.TOP_CENTER;
+            flapBarLocation = Pos.BOTTOM_RIGHT;
         }
         flapBarLocation = location;
         initPosition();
 	    setupAnimations ();
         getChildren ().addAll(area);
-		show();
+		hide();
+//		show();
     }
 
 	private void setupAnimations () {
@@ -57,7 +59,9 @@ public class SliderBar extends VBox {
 		    @Override
 		    protected void interpolate(double fraction) {
 		        final double size = EXPANDED_SIZE * (1.0 - fraction);
-		        translateByPos(size);
+//		        translateByPos(size);
+			    setTranslateX (size);
+//			    setVisible (false);
 		    }
 		};
 
@@ -68,8 +72,9 @@ public class SliderBar extends VBox {
 
 		    @Override
 		    protected void interpolate(double fraction) {
-		        final double size = EXPANDED_SIZE * fraction;
-		        translateByPos(size);
+			    final double size = EXPANDED_SIZE * fraction;
+			    setTranslateX (size);
+			    setVisible (true);
 		    }
 		};
 	}
