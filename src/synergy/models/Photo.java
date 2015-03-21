@@ -2,20 +2,15 @@ package synergy.models;
 
 import com.j256.ormlite.field.DatabaseField;
 import com.j256.ormlite.table.DatabaseTable;
-
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import synergy.database.PhotoDao;
 import synergy.engines.suggestion.Engine;
 import synergy.metadata.MetaData;
+
+import java.io.File;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by alexstoick on 2/6/15.
@@ -120,7 +115,17 @@ public class Photo {
 
     public static List<Photo> getAllPhotos() {
         try {
-            return PhotoDao.getInstance().getAllPhotos();
+            List<Photo> photos = PhotoDao.getInstance().getAllPhotos();
+            List<Photo> photosToRemove = new ArrayList<>();
+
+            for(Photo p : photos){
+                if(! new File(p.getPath()).exists()){
+                    photosToRemove.add(p);
+                    p.delete();
+                }
+            }
+            photos.removeAll(photosToRemove);
+            return photos;
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
