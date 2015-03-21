@@ -60,7 +60,7 @@ public class MetaData {
 
     }
 
-    public void changeExifMetadata(Photo photo) throws IOException, ImageReadException, ImageWriteException {
+    public static void changeExifMetadata(Photo photo) throws IOException, ImageReadException, ImageWriteException {
 	    final File inputFile = new File(photo.getPath ());
         OutputStream os = null;
         boolean canThrow = false;

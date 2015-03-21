@@ -58,10 +58,10 @@ public class DatePane extends BaseVerticalPane {
             }
         }
 
-        String firstPhotoDate = new SimpleDateFormat("d MMM 20YY").format(firstDate);
+        String firstPhotoDate = new SimpleDateFormat("d MMM 20yy").format(firstDate);
         stringBuilder.append(firstPhotoDate);
         if (photos.size() > 1) {
-            String lastPhotoDate = new SimpleDateFormat("d MMM 20YY").format(lastDate);
+            String lastPhotoDate = new SimpleDateFormat("d MMM 20yy").format(lastDate);
             if (!firstPhotoDate.equals(lastPhotoDate)) {
                 stringBuilder.append(" - " + lastPhotoDate);
             }

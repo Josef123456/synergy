@@ -11,9 +11,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import synergy.database.PhotoDao;
 import synergy.engines.suggestion.Engine;
+import synergy.metadata.MetaData;
 
 /**
  * Created by alexstoick on 2/6/15.
@@ -94,17 +96,9 @@ public class Photo {
     }
 
     public List<List<Relationship>> getRelationshipsForAllTags() {
-        List<List<Relationship>> toReturn = new ArrayList<>();
         List<Tag> tagsForPhoto = this.getChildTags();
 
-        if (tagsForPhoto == null)
-            return null;
-
-        for (Tag t : tagsForPhoto) {
-            toReturn.add(t.getRelationshipsForTagSortedByOccurrences());
-        }
-
-        return toReturn;
+	    return tagsForPhoto.stream ().map (Tag::getRelationshipsForTagSortedByOccurrences).collect (Collectors.toList ());
     }
 
     public Tag getLocationTag() {
@@ -121,12 +115,7 @@ public class Photo {
 
     public List<Tag> getChildTags() {
         List<Tag> allTags = getTags();
-        List<Tag> childTags = new ArrayList<>();
-        for (Tag tag : allTags) {
-            if (tag.getType() == Tag.TagType.KID)
-                childTags.add(tag);
-        }
-        return childTags;
+        return allTags.stream ().filter (tag -> tag.getType () == Tag.TagType.KID).collect (Collectors.toList ());
     }
 
     public static List<Photo> getAllPhotos() {
@@ -145,8 +134,13 @@ public class Photo {
         PhotoTag photoTag = new PhotoTag(this, tag);
         photoTag.save();
         System.out.println("adding: " + photoTag);
+	    try {
+		    MetaData.changeExifMetadata (this);
+	    } catch ( Exception e ) {
+		    System.err.println (e);
+		    e.printStackTrace ();
+	    }
         if (!this.getChildTags().isEmpty() && tag.getType() == Tag.TagType.KID) {
-            //TODO: make sure we don't get relationships between (KID1,KID1)
             for (Tag t : this.getChildTags()) {
                 new Relationship(tag, t);
             }
@@ -160,14 +154,11 @@ public class Photo {
         photoTag.save();
         photoTag.destroy();
         List<Relationship> relList = tag.getRelationshipsForTagSortedByOccurrences();
-        for (Relationship r : relList) {
-            if (this.getChildTags().contains(r.getPartner(tag))) {
-                System.out.println("Occurrences before: " + r);
-                r.decreaseOccurrences();
-                System.out.println("Occurrences after: " + r);
-            }
-
-        }
+	    relList.stream ().filter (r -> this.getChildTags ().contains (r.getPartner (tag))).forEach (r -> {
+		    System.out.println ("Occurrences before: " + r);
+		    r.decreaseOccurrences ();
+		    System.out.println ("Occurrences after: " + r);
+	    });
     }
 
     public static ArrayList<Date> getUniqueDates() {
@@ -179,7 +170,7 @@ public class Photo {
                 Date tmpDate = new Date(date.getYear(), date.getMonth(), date.getDate());
                 datesSet.add(tmpDate);
             }
-            return new ArrayList<Date>(Arrays.asList(datesSet.toArray(new Date[datesSet.size()
+            return new ArrayList<>(Arrays.asList(datesSet.toArray(new Date[datesSet.size()
                     ])));
         } catch (Exception e) {
             System.err.println(e);
