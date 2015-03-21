@@ -35,6 +35,7 @@ public class DatePane extends HBox {
 
 	public DatePane () {
 		setUpDatePickers ();
+		setAlignment (Pos.CENTER);
 		getStyleClass().add("my-list-cell");
 	}
 
@@ -87,6 +88,7 @@ public class DatePane extends HBox {
 		dateCategories.setStyle("-fx-text-fill: #ffffff");
 
 		monthAndYear = new HBox();
+		monthAndYear.setAlignment (Pos.CENTER);
 		months = new ComboBox();
 		months.getItems().addAll(arrayMonths);
 		years = new ComboBox();

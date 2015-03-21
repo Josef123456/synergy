@@ -1,6 +1,7 @@
 package synergy.views.panes;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
@@ -27,6 +28,20 @@ public class ChildrenPane extends HBox {
 	private int height = 50 ;
 	private Set<String> listOfSearchedKids;
 
+	private String[] mockChildrenData = {"alex", "cham", "codrin", "sari", "josef", "amit",
+			"mike", "tobi"};
+
+	public ChildrenPane () {
+		getStyleClass().add("my-list-cell");
+		setAlignment (Pos.CENTER);
+		setUpTextFieldAndSearch();
+		listOfSearchedKids = new HashSet<>();
+		comboBox.setMinHeight(height - 5);
+		comboBox.getEditor ().setId ("searching");
+		comboBox.getEditor ().setFont (Font.font ("Arial", FontPosture.ITALIC, 25));
+		addButton.setMinHeight(height);
+	}
+
 	public void resetAll() {
 		searchQueryButtons.getChildren().clear();
 		listOfSearchedKids.clear();
@@ -37,18 +52,6 @@ public class ChildrenPane extends HBox {
 		return listOfSearchedKids;
 	}
 
-	private String[] mockChildrenData = {"alex", "cham", "codrin", "sari", "josef", "amit",
-			"mike", "tobi"};
-
-	public ChildrenPane () {
-		getStyleClass().add("my-list-cell");
-		setUpTextFieldAndSearch();
-		listOfSearchedKids = new HashSet<>();
-		comboBox.setMinHeight(height - 5);
-		comboBox.getEditor ().setId ("searching");
-		comboBox.getEditor ().setFont (Font.font ("Arial", FontPosture.ITALIC, 25));
-		addButton.setMinHeight(height);
-	}
 
 	public void setUpTextFieldAndSearch() {
 		searchQueryButtons = new HBox();

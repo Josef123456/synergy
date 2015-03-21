@@ -1,5 +1,6 @@
 package synergy.views.panes;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
@@ -13,6 +14,7 @@ public class LocationPane extends HBox {
 
 	public LocationPane () {
 		getStyleClass().add("my-list-cell");
+		setAlignment (Pos.CENTER);
 		setUpLocationButtons ();
 	}
 

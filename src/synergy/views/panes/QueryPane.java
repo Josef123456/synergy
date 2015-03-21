@@ -1,5 +1,6 @@
 package synergy.views.panes;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
@@ -22,6 +23,7 @@ public class QueryPane extends HBox{
 
 	public QueryPane (SearchArea searchArea) {
 		this.searchArea = searchArea;
+		setAlignment (Pos.CENTER);
 		setUpResetButton();
 		getStyleClass().add("my-list-cell");
 		Button searchButton = new Button ("Search");
