@@ -38,12 +38,6 @@ public class Main extends Application {
         root.setId("background");
         taggingArea = new TaggingArea();
 
-
-		new CenterPane ();
-		new RightPane ();
-		new BottomPane ();
-		System.out.println(photosGrid==null);
-		new TopPane (photosGrid, primaryStage);
         Scene scene = new Scene(root, 1050, 800);
         primaryStage.setTitle("Instatag");
         primaryStage.setScene(scene);
@@ -51,6 +45,11 @@ public class Main extends Application {
         primaryStage.setMinWidth(1050);
         primaryStage.centerOnScreen();
         scene.getStylesheets().add("background1.css");
+		new TopPane (primaryStage);
+		new CenterPane ();
+		new RightPane ();
+		new BottomPane ();
+		photosGrid.setGridPhotos(Photo.getAllPhotos ());
         primaryStage.show();
     }
 

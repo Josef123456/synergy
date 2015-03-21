@@ -33,12 +33,10 @@ import java.util.List;
 
 public class TopPane extends VBox{
 
-	PhotoGrid photosGrid;
 	Stage stage;
 
-	public TopPane (PhotoGrid photosGrid, Stage stage) {
+	public TopPane (Stage stage) {
 		setupTopArea ();
-		this.photosGrid = photosGrid;
 		this.stage = stage;
 		addEventHandlers();
 	}
@@ -106,8 +104,7 @@ public class TopPane extends VBox{
 
 	private void addEventHandlerToImport() {
 		final FileChooser fileChooser = new FileChooser();
-		System.out.println(photosGrid == null);
-		photosGrid.setGridPhotos(Photo.getAllPhotos ());
+
 
 		importBtn.setOnAction(event -> {
 			List<File> list = fileChooser.showOpenMultipleDialog(stage);
@@ -152,10 +149,10 @@ public class TopPane extends VBox{
 						lastImported.add(photo);
 				}
 				if ( PhotoGrid.displayingImported ) {
-					photosGrid.addPhotosToGrid(lastImported);
+					PhotoGrid.addPhotosToGrid (lastImported);
 				} else {
 					PhotoGrid.displayingImported = true;
-					photosGrid.setGridPhotos(lastImported);
+					PhotoGrid.setGridPhotos(lastImported);
 				}
 				System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
 			}
@@ -169,7 +166,6 @@ public class TopPane extends VBox{
 
 	private void addEventHandlerToImportDBButton() {
 		final FileChooser fileChooser = new FileChooser();
-		photosGrid.setGridPhotos(Photo.getAllPhotos());
 
 		importDBBtn.setOnAction(event -> {
 			File selectedFile = fileChooser.showOpenDialog(stage);

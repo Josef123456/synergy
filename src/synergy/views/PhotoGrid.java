@@ -72,7 +72,7 @@ public class PhotoGrid extends GridView<Image> {
         this.setCellWidth(300);
     }
 
-    public void setGridPhotos(List<Photo> photosToDisplay) {
+    public static void setGridPhotos(List<Photo> photosToDisplay) {
         System.out.println("METHOD WAS CALLED WITH " + photosToDisplay.size() + " PHOTOS");
         for (Photo photo : photosToDisplay)
             System.out.println(photo.getDate());
@@ -99,7 +99,7 @@ public class PhotoGrid extends GridView<Image> {
         });
     }
 
-    public void addPhotosToGrid(final List<Photo> photosToDisplay) {
+    public static void addPhotosToGrid(final List<Photo> photosToDisplay) {
         displayedPhotosList.addAll(photosToDisplay);
         ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);
         Thread thumbnailLoaderThread = new Thread(thumbnailLoaderTask);
