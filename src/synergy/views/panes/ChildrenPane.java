@@ -10,12 +10,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import synergy.models.Tag;
 import synergy.views.AutoCompleteComboBoxListener;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by alexstoick on 3/21/15.
@@ -28,10 +27,12 @@ public class ChildrenPane extends HBox {
 	private int height = 50 ;
 	private Set<String> listOfSearchedKids;
 
-	private String[] mockChildrenData = {"alex", "cham", "codrin", "sari", "josef", "amit",
-			"mike", "tobi"};
+	private List<String> childrenData;
 
 	public ChildrenPane () {
+        childrenData = new ArrayList<>();
+        List<Tag> allTags = Tag.getAllChildrenTags();
+        childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
 		getStyleClass().add("my-list-cell");
 		setAlignment (Pos.CENTER);
 		setUpTextFieldAndSearch();
@@ -40,6 +41,7 @@ public class ChildrenPane extends HBox {
 		comboBox.getEditor ().setId ("searching");
 		comboBox.getEditor ().setFont (Font.font ("Arial", FontPosture.ITALIC, 25));
 		addButton.setMinHeight(height);
+
 	}
 
 	public void resetAll() {
@@ -58,7 +60,7 @@ public class ChildrenPane extends HBox {
 
 		comboBox = new ComboBox ();
 		comboBox.setMaxWidth(200);
-		for (String childName : mockChildrenData) {
+		for (String childName : childrenData) {
 			comboBox.getItems().add(childName);
 		}
 		AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
@@ -99,7 +101,7 @@ public class ChildrenPane extends HBox {
 	}
 
 	private void addChildrenQuery(String addedQuery) {
-		Set<String> hashSet = new HashSet<String> (Arrays.asList (mockChildrenData)) {
+		Set<String> hashSet = new HashSet<String> (childrenData) {
 			public boolean contains(Object o) {
 				String paramStr = (String) o;
 				for (String s : this) {

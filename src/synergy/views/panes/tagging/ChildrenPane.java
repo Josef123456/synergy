@@ -22,6 +22,7 @@ import synergy.views.TaggingArea;
 import synergy.views.panes.base.BaseVerticalPane;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by alexstoick on 3/17/15.
@@ -30,11 +31,14 @@ public class ChildrenPane extends BaseVerticalPane {
 
 	private FlowPane childrenTags;
 	private ComboBox<CharSequence> childrenComboBox;
-	String[] kidsInDatabase = { "alex", "cham", "codrin", "sari", "josef", "amit", "mike", "tobi"};
+    private List<String> childrenData;
 	private TaggingArea taggingArea;
 	//Tag.getAllChildrenTags().stream ().map (Tag::getValue).collect(Collectors.toList ());
 
 	public ChildrenPane(TaggingArea taggingArea) {
+        childrenData = new ArrayList<>();
+        List<Tag> allTags = Tag.getAllChildrenTags();
+        childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
 		this.taggingArea = taggingArea;
 		setupChildrenPane ();
 	}
@@ -60,7 +64,7 @@ public class ChildrenPane extends BaseVerticalPane {
 
 	private void addChildrenTag(String name){
 		String tagName = null;
-		Set<String> hashSet = new HashSet<String>(Arrays.asList (kidsInDatabase)){
+		Set<String> hashSet = new HashSet<String>(childrenData){
 			public boolean contains(Object o){
 				String paramStr = (String)o;
 				for (String s : this) {
@@ -99,7 +103,7 @@ public class ChildrenPane extends BaseVerticalPane {
 		HBox childrenPane = new HBox (10);
 		childrenComboBox = new ComboBox<> ();
 		childrenComboBox.setId("searching");
-		for (String childrenNames : kidsInDatabase ) {
+		for (String childrenNames : childrenData ) {
 			childrenComboBox.getItems ().add(childrenNames);
 		}
 		AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
