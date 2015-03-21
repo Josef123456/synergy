@@ -2,11 +2,7 @@ package synergy.views;
 
 import javafx.animation.Animation;
 import javafx.animation.Transition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.control.Slider;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -32,8 +28,8 @@ public class SliderBar extends VBox {
 	}
 	public static void hide() {
 		if ( isDisplayed () ) {
-			displayed = false;
-			hidePanel.play ();
+//			displayed = false;
+//			hidePanel.play ();
 		}
 	}
 
@@ -48,6 +44,7 @@ public class SliderBar extends VBox {
         initPosition();
 	    setupAnimations ();
         getChildren().addAll(area);
+        show();
     }
 
 	private void setupAnimations () {
