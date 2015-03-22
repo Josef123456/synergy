@@ -80,7 +80,7 @@ public class QueryPane extends HBox{
 
 		String selected = (String) searchArea.getDatePane ().
 				getDateCategories ().getSelectionModel ().getSelectedItem();
-
+		finalInitialDate = finalEndDate = null;
 		switch (selected) {
 			case "Date": {
 				if (date != null) {
