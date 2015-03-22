@@ -1,6 +1,8 @@
 package synergy.views.panes.tagging;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javafx.application.Platform;
 import javafx.scene.control.ToggleButton;
@@ -78,13 +80,12 @@ public class LocationPane extends BaseHorizontalPane {
     }
 
     public void update() {
-        ArrayList<Tag> tagArray = new ArrayList<>();
+
         final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
-        for (Photo photo : selectedPhotos) {
-            Tag locationTag = photo.getLocationTag();
-            if (!(tagArray.contains(locationTag)) && locationTag != null)
-                tagArray.add(locationTag);
-        }
+	    List<Tag> tagArray = selectedPhotos.stream ().
+			    map (Photo::getLocationTag).
+			    filter (t -> t != null).
+			    collect (Collectors.toList ());
 
         System.out.println("List of location tags: " + tagArray);
 	    roomAbtn.setSelected(false);
