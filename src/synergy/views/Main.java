@@ -4,6 +4,7 @@ package synergy.views;
 import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
@@ -37,6 +38,7 @@ public class Main extends Application {
 	    new BottomPane ();
 	    photosGrid.setGridPhotos(Photo.getAllPhotos ());
         primaryStage.show();
+        primaryStage.getIcons().add(new Image("logo.png"));
         SliderBar.show();
         SliderBar.hide();
         System.out.println("THIS IS MAIN!");
