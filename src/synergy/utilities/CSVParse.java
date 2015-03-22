@@ -10,10 +10,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by sari on 21/03/15.
+ * Class that uses CSVParser to parse a csv file.
  */
 public class CSVParse {
-
+    /**
+     * Parses CSV file.
+     * @param file Input CSV file.
+     * @return A list of entries, with every entry containing a list of data.
+     */
     public static List<List<String>> parseCSVFile(File file){
         File csvData = file;
         CSVParser csvParser;

@@ -4,11 +4,15 @@ import java.io.BufferedReader;
 import java.io.File;
 
 /**
- * Created by sari on 21/03/15.
+ * Class to make reading from a file easier.
  */
 public class FileReader {
 
-
+    /**
+     * The file is read and its contents returned.
+     * @param file The file to be read.
+     * @return The contents of the file as a String.
+     */
     public static String readFile(File file){
         try {
             BufferedReader br = new BufferedReader(new java.io.FileReader(file));
