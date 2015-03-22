@@ -3,7 +3,7 @@
 /*background color*/
 .root {
     -fx-base: #696969;
-    -fx-background-image: url("background.jpg");
+    -fx-background-image: url("../images/background.jpg");
 }
 
 /*toolbar styling*/

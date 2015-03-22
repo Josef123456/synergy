@@ -56,7 +56,7 @@ public class PrintingInterface extends Application {
 
         Scene scene = new Scene(main, pageLayout.getPrintableWidth() + 30, pageLayout
                 .getPrintableHeight() + 100);
-        scene.getStylesheets().add("background1.css");
+        scene.getStylesheets().add("css/background1.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Print");
         primaryStage.initStyle(StageStyle.UNDECORATED);
@@ -172,7 +172,6 @@ public class PrintingInterface extends Application {
     }
 
     public boolean print(Node node) {
-
 
         if (job != null && job.showPrintDialog(main.getScene().getWindow())) {
             System.out.println("JOB SETTINGS " + job.getJobSettings());

@@ -31,14 +31,14 @@ public class Main extends Application {
         primaryStage.setMinHeight(500);
         primaryStage.setMinWidth(1050);
         primaryStage.centerOnScreen();
-        scene.getStylesheets().add("background1.css");
+        scene.getStylesheets().add("css/background1.css");
 	    new TopPane (primaryStage);
 	    new CenterPane ();
 	    new RightPane ();
 	    new BottomPane ();
 	    photosGrid.setGridPhotos(Photo.getAllPhotos ());
+        primaryStage.getIcons().add(new Image("images/logo.png"));
         primaryStage.show();
-        primaryStage.getIcons().add(new Image("logo.png"));
         SliderBar.show();
         SliderBar.hide();
         System.out.println("THIS IS MAIN!");
