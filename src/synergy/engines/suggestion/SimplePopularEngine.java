@@ -10,13 +10,17 @@ import java.util.List;
 
 
 /**
- * engine for the tag suggestion by overall popularity.
- * RETURN TOP N RELATIONSHIPS(PAIR TAG)
+ * Engine for suggesting tags by relationships.
  */
-public class SimplePopularEngine {
 
+class SimplePopularEngine {
 
-    public static List<Tag> suggest(Photo p){
+    /**
+     * Suggests tags by looking at the relationships of the tags found in the photo.
+     * @param p Photo to suggest tags for.
+     * @return Suggested tags.
+     */
+    protected static List<Tag> suggest(Photo p){
         List<Tag> tagsInPhoto = p.getChildTags();
 
         List<List<Relationship>> listRelationshipsForTags = new ArrayList<>();
@@ -40,8 +44,6 @@ public class SimplePopularEngine {
 	            }
             }
         }
-        System.out.println("SimplePopularEngine SUGGESTING: "+toReturn);
-        System.out.println("SimplePopularEngine SORTED RELATIONSHIPS: "+sortedRelationships);
         return toReturn;
     }
 }

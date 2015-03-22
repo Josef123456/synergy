@@ -10,16 +10,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 /**
- * Created by sari on 27/02/15.
+ * Class that handles suggestions by date.
  */
-public class SimpleDateEngine {
+class SimpleDateEngine {
     /**
-     * This method finds the nearest photo that contains tags and returns the contained tags.
+     * This method finds the nearest photo in time that contains tags and returns the contained tags.
      *
-     * @param p
-     * @return
+     * @param p Photo to suggest tags for.
+     * @return Suggested tags.
      */
-    public static List<Tag> suggest(final Photo p){
+    protected static List<Tag> suggest(final Photo p){
         Photo photoFoundOnRight = null;
         Photo photoFoundOnLeft = null;
         final ExecutorService service = Executors.newFixedThreadPool(1);
@@ -104,9 +104,8 @@ public class SimpleDateEngine {
 
     }
 
-    /**
+    /*
      * Finds the closest tagged photo on the right of this photo(future or past depending on the order it was sorted).
-     * @return
      */
     private static Photo findTaggedPhotoOnRight(Photo p){
 
@@ -126,9 +125,8 @@ public class SimpleDateEngine {
         return null; // nothing was found
     }
 
-    /**
-     *  Finds the closest tagged photo on the left of this photo(future or past depending on the order it was sorted)
-     * @return
+    /*
+     * Finds the closest tagged photo on the left of this photo(future or past depending on the order it was sorted)
      */
     private static Photo findTaggedPhotoOnLeft(Photo p){
 

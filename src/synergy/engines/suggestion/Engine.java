@@ -6,7 +6,9 @@ import synergy.models.Tag;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * This class handles the usage of the SimpleDateEngine and SimplePopularEngine. This class should be prepared before getting suggestions.
+ */
 public class Engine {
 
     public static List<Photo> historicalPhotos;
@@ -14,11 +16,11 @@ public class Engine {
     /**
      *Method takes a photo and returns a list of possible tags.
      *
-     *This is the main suggestion method and it should be the only one used at anytime during the development process. The method that will be called by this method will be changed in time
-     *so to avoid any confusion just use this one.
+     *This is the main suggestion method and it should be the only one used at anytime. The methods that will be called and the way they are called will be changed in time
+     *so to avoid any confusion this one should be the only one that is used externally.
      *
-     * @param p
-     * @return
+     * @param p The photo that we want tags suggested for
+     * @return Returns a list of suggested Tags.
      */
     public static List<Tag> suggest(Photo p){
 
@@ -36,7 +38,7 @@ public class Engine {
     }
 
     /**
-     * Prepares the engine by fetching the required data.
+     * Prepares the engine by fetching the required data from the database.
      */
     public static void prepare(){
         historicalPhotos = Photo.getAllPhotos(); // fetches all photos from database to be analysed.
