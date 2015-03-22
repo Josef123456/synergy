@@ -25,6 +25,7 @@ public class Main extends Application {
         root.setId("background");
         taggingArea = new TaggingArea();
 
+        getClass().getResource("images/logo.png");
         Scene scene = new Scene(root, 1050, 800);
         primaryStage.setTitle("Instatag");
         primaryStage.setScene(scene);

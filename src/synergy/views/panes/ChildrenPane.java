@@ -63,7 +63,7 @@ public class ChildrenPane extends HBox {
 
 	private void setUpTextFieldAndSearch() {
 		searchQueryButtons = new HBox();
-
+searchQueryButtons.setAlignment(Pos.CENTER);
 		comboBox = new ComboBox ();
 		comboBox.setMaxWidth(230);
 		for (String childName : childrenData) {
