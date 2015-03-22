@@ -155,7 +155,7 @@ public class BottomArea extends VBox {
         node.setStyle("-fx-text-fill: #ffffff");
         node.getStyleClass().add(nodeName);
         if (node.getClass().equals(Button.class))
-            ((Button) node).setMinWidth(130);
+            ((Button) node).setMinWidth(160);
     }
 
 }

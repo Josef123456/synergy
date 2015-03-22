@@ -1,17 +1,58 @@
+/*This background1.css file sets the style of the UI*/
+
 /*background color*/
 .root {
     -fx-base: #696969;
-    -fx-background-image: url("backgroundImage.jpg");
+    -fx-background-image: url("background.jpg");
+}
+
+/*toolbar styling*/
+.tool-bar {
+    -fx-base: rgb(74, 75, 78);
+    -fx-font-size: 12pt;
+    -fx-opacity: 75%;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: .9em 0.416667em .9em 0.416667em;
+}
+
+.grid {
+    -fx-base: rgb(74, 75, 78);
+    -fx-background-color: rgb(74, 75, 78);
+    -fx-opacity: 80%;
+    -fx-background-radius: 5.0;
+    -fx-background-insets: 0.0 5.0 0.0 5.0;
+    -fx-padding: 10;
+    -fx-hgap: 10;
+    -fx-vgap: 10;
+}
+
+.hbox {
+    -fx-opacity: 80%;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+}
+
+#leftText {
+    -fx-fill: #ffffff;
+}
+
+.toggle-button {
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #3A3A3C;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #bbb;
+}
+
+.combo-box .cell {
+    -fx-text-fill: #ffffff;
+    -fx-opacity: 80%;
 }
 
 #searching {
     -fx-text-fill: #ffffff;
     -fx-background-color: #696969;
-    -fx-opacity: 80%;
-}
-
-.combo-box .cell {
-    -fx-text-fill: #ffffff;
     -fx-opacity: 80%;
 }
 
@@ -34,19 +75,13 @@
     -fx-background-radius: 3 0 0 3, 2 0 0 2, 2 0 0 2;
 }
 
-.button-bar .button.photosButton {
-    -fx-background-color: #3A3A3C;
-    -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
-    -fx-background-radius: 3 0 0 3, 2 0 0 2, 2 0 0 2;
-}
-
 .button-bar .button.selectAllButton {
     -fx-background-color: #3A3A3C;
     -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 3 0 0 3, 2 0 0 2, 2 0 0 2;
 }
 
-.button-bar .button.exportButton {
+.button-bar .button.importDbbtn {
     -fx-background-color: #3A3A3C;
     -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 0 3 3 0, 0 2 2 0, 0 2 2 0;
@@ -55,7 +90,7 @@
 .button-bar .button.printingButton {
     -fx-background-color: #3A3A3C;
     -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
-    -fx-background-radius: 0 3 3 0, 0 2 2 0, 0 2 2 0;
+    -fx-background-radius: 3 3 3 3, 2 2 2 2, 2 2 2 2;
 }
 
 .button-bar .button.deselectButton {
@@ -79,7 +114,6 @@
 }
 
 .toggle-button {
-    /*-fx-background-color: rgb(39, 40, 40);*/
     -fx-background-insets: 0, 1 1 1 0, 2 1 1 1;
     -fx-background-radius: 0;
 }
@@ -101,11 +135,7 @@
     -fx-background-color: #696969;
 }
 
-.button-bar .button.exportButton:hover {
-    -fx-background-color: #696969;
-}
-
-.button-bar .button.photosButton:hover {
+.button-bar .button.importDbbtn:hover {
     -fx-background-color: #696969;
 }
 
@@ -162,11 +192,7 @@
     -fx-background-color: #B4B4B4;
 }
 
-.button-bar .button.exportButton:pressed {
-    -fx-background-color: #B4B4B4;
-}
-
-.button-bar .button.photosButton:pressed {
+.button-bar .button.importDbbtn:pressed {
     -fx-background-color: #B4B4B4;
 }
 
@@ -189,47 +215,3 @@
 .toggle-button:pressed {
     -fx-background-color: #B4B4B4;
 }
-
-.tool-bar {
-    -fx-base: rgb(74, 75, 78);
-    -fx-font-size: 12pt;
-    -fx-opacity: 75%;
-    -fx-background-insets: 0, 0 0 1 0;
-    -fx-padding: .9em 0.416667em .9em 0.416667em;
-}
-
-.grid {
-    -fx-base: rgb(74, 75, 78);
-    -fx-background-color: rgb(74, 75, 78);
--fx-opacity: 80%;
-    -fx-background-radius: 5.0;
-    -fx-background-insets: 0.0 5.0 0.0 5.0;
-    -fx-padding: 10;
-    -fx-hgap: 10;
-    -fx-vgap: 10;
-}
-
-.hbox {
-    -fx-opacity: 80%;
-    -fx-padding: 15;
-    -fx-spacing: 10;
-}
-
-#leftText {
-    -fx-fill: #ffffff;
-}
-
-.toggle-button {
-    -fx-text-fill: #ffffff;
-    -fx-background-color: #3A3A3C;
-}
-
-.scroll-pane {
-    -fx-background-color: transparent;
-    -fx-opacity: 70%;
-}
-
-.toggle-button:selected {
-    -fx-background-color: #bbb;
-}
-

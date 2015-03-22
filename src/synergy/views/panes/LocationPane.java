@@ -16,6 +16,7 @@ public class LocationPane extends HBox {
 		getStyleClass().add("my-list-cell");
 		setAlignment (Pos.CENTER);
 		setUpLocationButtons ();
+        setSpacing(1);
 	}
 
 	public void resetAll() {

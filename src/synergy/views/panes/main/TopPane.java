@@ -54,15 +54,13 @@ public class TopPane extends VBox{
 		setupButtonStyle(importBtn, "importButton");
 
 		importDBBtn = new Button ("Import DataBase");
-		setupButtonStyle (importDBBtn, "importButton");
+		setupButtonStyle (importDBBtn, "importDbbtn");
 
 		leftButtonsBox.getChildren ().addAll (importBtn, importDBBtn);
 
 		HBox rightButtonsBox = new HBox (1);
+        rightButtonsBox.setPadding(new Insets(0,50,0,0));
 		rightButtonsBox.getStyleClass ().setAll ("button-bar");
-
-		Button allPhotosBtn = new Button ("Photos");
-		setupButtonStyle (allPhotosBtn, "photosButton");
 
 		Button printingViewBtn = new Button ("Printing");
 		setupButtonStyle (printingViewBtn, "printingButton");
@@ -75,7 +73,7 @@ public class TopPane extends VBox{
 				e.printStackTrace ();
 			}
 		});
-		rightButtonsBox.getChildren ().addAll (allPhotosBtn, printingViewBtn);
+		rightButtonsBox.getChildren ().addAll (printingViewBtn);
 
 		leftButtonsBox.setAlignment (Pos.CENTER_LEFT);
 		rightButtonsBox.setAlignment (Pos.CENTER_RIGHT);
@@ -176,6 +174,6 @@ public class TopPane extends VBox{
 	private void setupButtonStyle(Button btn, String buttonName) {
 		btn.setStyle("-fx-text-fill: #ffffff");
 		btn.getStyleClass().add(buttonName);
-		btn.setMinWidth(130);
+		btn.setMinWidth(160);
 	}
 }

@@ -1,5 +1,6 @@
 package synergy.views.panes;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
@@ -25,8 +26,11 @@ public class QueryPane extends HBox{
 		this.searchArea = searchArea;
 		setAlignment (Pos.CENTER);
 		setUpResetButton();
+        setPadding(new Insets(0,57,0,10));
 		getStyleClass().add("my-list-cell");
 		Button searchButton = new Button ("Search");
+        searchButton.setMinWidth(80);
+        setSpacing(1);
 		searchButton.setOnAction (event -> updateSearchDatabase ());
 		int height = 50;
 		searchButton.setMinHeight (height);
@@ -36,7 +40,8 @@ public class QueryPane extends HBox{
 
 	private void setUpResetButton() {
 		resetButton = new Button("Reset");
-		resetButton.setOnAction(event -> {
+        resetButton.setMinWidth(80);
+        resetButton.setOnAction(event -> {
 			searchArea.getDatePane ().resetAll();
 			searchArea.getLocationPane ().resetAll();
 			searchArea.getChildrenPane ().resetAll();

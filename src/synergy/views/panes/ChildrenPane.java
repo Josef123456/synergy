@@ -1,6 +1,7 @@
 package synergy.views.panes;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -10,10 +11,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
 import synergy.models.Tag;
 import synergy.views.AutoCompleteComboBoxListener;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -31,6 +36,7 @@ public class ChildrenPane extends HBox {
 
 	public ChildrenPane () {
         childrenData = new ArrayList<>();
+        setPadding(new Insets(0,0,0,50));
         List<Tag> allTags = Tag.getAllChildrenTags();
         childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
 		getStyleClass().add("my-list-cell");
@@ -59,7 +65,7 @@ public class ChildrenPane extends HBox {
 		searchQueryButtons = new HBox();
 
 		comboBox = new ComboBox ();
-		comboBox.setMaxWidth(200);
+		comboBox.setMaxWidth(230);
 		for (String childName : childrenData) {
 			comboBox.getItems().add(childName);
 		}
@@ -67,6 +73,8 @@ public class ChildrenPane extends HBox {
 		comboBox.setOnKeyReleased(autoComplete);
 		setHgrow (this, Priority.ALWAYS);
 		addButton = new Button ("+");
+        addButton.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+
 
 		EventHandler eventHandler = event -> {
 			addChildrenQuery((String) comboBox.getValue());

@@ -1,11 +1,5 @@
 package synergy.views;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.controlsfx.control.cell.ImageGridCell;
 import javafx.application.Application;
@@ -23,17 +17,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import synergy.models.Photo;
 import synergy.utilities.WritableImageCreator;
+
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Josef on 09/03/2015.
@@ -66,7 +59,7 @@ public class PrintingInterface extends Application {
         scene.getStylesheets().add("background1.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Print");
-        primaryStage.initStyle(StageStyle.UNDECORATED);
+//        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
