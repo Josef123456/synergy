@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.print.JobSettings;
@@ -20,11 +21,11 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import synergy.models.Photo;
+import org.imgscalr.Scalr;
+import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
 
-import javax.imageio.ImageIO;
-import java.io.File;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -79,6 +80,7 @@ public class PrintingInterface extends Application {
 
         gridPhotos.setCellWidth(300);
         gridPhotos.setCellHeight(300);
+        /*
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
@@ -86,6 +88,21 @@ public class PrintingInterface extends Application {
                     try {
                         printImages.add(WritableImageCreator.fromBufferedImage(ImageIO
                                 .read(new File(photo.getPath()))));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+*/
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                for (Image image: PhotoGrid.getSelectedImages()) {
+                    try {
+                        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+                        bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage,300),(int)gridPhotos.getCellHeight(),(int)gridPhotos.getCellWidth(),new java.awt.Color(255,255,255));
+                        printImages.add(WritableImageCreator.fromBufferedImage(bufferedImage));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

@@ -13,6 +13,7 @@ import synergy.utilities.WritableImageCreator;
 import synergy.views.PhotoGrid;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -55,7 +56,7 @@ public class ThumbnailLoaderTask extends Task {
             }
 
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage
-                    (ImagePadder.padToSize (initialThumbnail,250,250));
+                    (ImagePadder.padToSize (initialThumbnail,250,250,new Color(29,30,30)));
 	        System.out.println("Height: " + finalWi.getHeight() + " Width:" + finalWi.getWidth());
             initialThumbnail.flush ();
 
