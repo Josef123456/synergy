@@ -100,6 +100,7 @@ public class TopPane extends VBox{
 			List<File> list = fileChooser.showOpenMultipleDialog(stage);
 			ArrayList<Photo> lastImported = new ArrayList<>();
 			long t1 = System.currentTimeMillis();
+			Photo photo;
 
 			FileSystemView fsv = FileSystemView.getFileSystemView();
 			String removableDrive = "";
@@ -132,9 +133,12 @@ public class TopPane extends VBox{
 						} catch (IOException e) {
 							e.printStackTrace();
 						}
+					 	photo = new Photo(outputDir.toString());
+						photo.save();
+					} else {
+						photo = new Photo(file.toString());
+						photo.save();
 					}
-					Photo photo = new Photo(file.toString());
-					photo.save();
 					if ( PhotoGrid.getDisplayedImagesMap ().get(photo) == null)
 						lastImported.add(photo);
 				}
