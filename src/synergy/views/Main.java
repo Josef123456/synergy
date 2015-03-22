@@ -3,6 +3,10 @@ package synergy.views;
 
 import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;

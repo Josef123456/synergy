@@ -1,25 +1,39 @@
 package synergy.views;
 
-import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.geometry.Pos;
-import javafx.print.*;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ToolBar;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.*;
-import javafx.scene.transform.Scale;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import synergy.models.Photo;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
+import controlsfx.controlsfx.control.GridView;
+import controlsfx.controlsfx.control.cell.ImageGridCell;
+import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
+import javafx.print.JobSettings;
+import javafx.print.PageLayout;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.ToolBar;
+import javafx.scene.image.Image;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import synergy.models.Photo;
+import synergy.utilities.WritableImageCreator;
 
 /**
  * Created by Josef on 09/03/2015.
@@ -27,24 +41,28 @@ import java.util.ArrayList;
 public class PrintingInterface extends Application {
 
     private BorderPane main;
-    private ToolBar toolBar, toolbarBottom;
-    private Region spacer;
-    private HBox leftButtonsBox, centerbox, rightBox;
-    private Button portraitBtn, landscapeBtn, cancelBtn, optionsBtn, printBtn;
+    private ToolBar toolbarBottom;
+    private HBox leftBox, rightBox;
+    private Button cancelBtn, printBtn, zoomPlusBtn, zoomMinusBtn;
     private Stage stage;
-    private Pane table;
+    private GridView gridPhotos;
+    ObservableList<Image> printImages;
+    PrinterJob job;
+    JobSettings jobSettings;
+    PageLayout pageLayout;
 
     public void start(Stage primaryStage) throws IOException {
         this.stage = primaryStage;
         main = new BorderPane();
         main.setId("background");
+
+        setupPrintJob();
         setupCenter();
-
-        setTopUI();
-
         setupBottom();
+        addEventHandlers();
 
-        Scene scene = new Scene(main, 800, 700);
+        Scene scene = new Scene(main, pageLayout.getPrintableWidth() + 30, pageLayout
+                .getPrintableHeight() + 100);
         scene.getStylesheets().add("background1.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Print");
@@ -53,102 +71,133 @@ public class PrintingInterface extends Application {
         primaryStage.show();
     }
 
-    private void setTopUI() {
-
-        toolBar = new ToolBar();
-        spacer = new Region();
-        spacer.getStyleClass().setAll("spacer");
-
-        leftButtonsBox = new HBox();
-        leftButtonsBox.getStyleClass().setAll("button-bar");
-        portraitBtn = new Button("Portrait");
-        setupButtonStyle(portraitBtn, "firstButton");
-        portraitBtn.setOnAction(event -> {
-            Printer printer = Printer.getDefaultPrinter();
-            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-            double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
-            double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
-            table.getTransforms().add(new Scale(scaleX, scaleY));
-        });
-        landscapeBtn = new Button("Landscape");
-        landscapeBtn.setOnAction(event -> {
-            Printer printer = Printer.getDefaultPrinter();
-            PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.LANDSCAPE, Printer.MarginType.DEFAULT);
-            double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
-            double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
-            table.getTransforms().add(new Scale(scaleX, scaleY));
-        });
-        setupButtonStyle(landscapeBtn, "secondButton");
-        leftButtonsBox.getChildren().addAll(portraitBtn, landscapeBtn);
-        leftButtonsBox.setAlignment(Pos.CENTER);
-        HBox.setHgrow(leftButtonsBox, Priority.ALWAYS);
-
-        toolBar.getItems().addAll(leftButtonsBox);
-        main.setTop(toolBar);
+    private void setupPrintJob() {
+        job = PrinterJob.createPrinterJob();
+        job.showPageSetupDialog(null);
+        jobSettings = job.getJobSettings();
+        pageLayout = jobSettings.getPageLayout();
     }
 
     private void setupCenter() throws IOException {
-        table = new Pane();
-        ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();
-        StringBuilder sb = new StringBuilder();
-        for ( Photo photo : selectedPhotos ) {
-            sb.append (photo.getPath ());
-        }
-        BufferedImage bufferedImage= ImageIO.read(new File(""+sb));
-        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-        ImageView iv1 = new ImageView();
-        iv1.isSmooth();
-        iv1.setImage(image);
-        table.getChildren().add(iv1);
-        Printer printer = Printer.getDefaultPrinter();
-        PageLayout pageLayout = printer.createPageLayout(Paper.NA_LETTER, PageOrientation.PORTRAIT, Printer.MarginType.DEFAULT);
-        double scaleX = pageLayout.getPrintableWidth() / table.getBoundsInParent().getWidth();
-        double scaleY = pageLayout.getPrintableHeight() / table.getBoundsInParent().getHeight();
-        table.getTransforms().add(new Scale(scaleX, scaleY));
+        printImages = FXCollections.observableArrayList(new ArrayList<Image>());
 
-        main.setCenter(table);
+        gridPhotos = new GridView(printImages);
+        gridPhotos.setCellFactory(gridView -> new ImageGridCell());
+
+        gridPhotos.setCellWidth(300);
+        gridPhotos.setCellHeight(300);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                for (Photo photo : PhotoGrid.getSelectedPhotos()) {
+                    try {
+                        printImages.add(WritableImageCreator.fromBufferedImage(ImageIO
+                                .read(new File(photo.getPath()))));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        gridPhotos.setMinWidth(pageLayout.getPrintableWidth());
+        gridPhotos.setMaxWidth(pageLayout.getPrintableWidth());
+        gridPhotos.setMinHeight(pageLayout.getPrintableHeight());
+        gridPhotos.setMaxHeight(pageLayout.getPrintableHeight());
+        gridPhotos.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+        main.setCenter(gridPhotos);
     }
 
     private void setupBottom() {
+        VBox bottomBox = new VBox();
         toolbarBottom = new ToolBar();
+
         cancelBtn = new Button("Cancel");
-        setupButtonStyle(cancelBtn, "firstButton");
+        setupNodeStyle(cancelBtn, "cancelButton");
         cancelBtn.setOnAction(event -> stage.close());
 
+        zoomMinusBtn = new Button("-");
+        setupNodeStyle(zoomMinusBtn, "zoomMinusBtn");
+        zoomMinusBtn.setMinWidth(20);
+
+        Label zoomLabel = new Label("Zoom");
+        setupNodeStyle(zoomLabel, "zoomLabel");
+
+        zoomPlusBtn = new Button("+");
+        setupNodeStyle(zoomPlusBtn, "zoomPlusBtn");
+        zoomPlusBtn.setMinWidth(20);
+
         printBtn = new Button("Print");
-        setupButtonStyle(printBtn, "fourthButton");
+        setupNodeStyle(printBtn, "printButton");
         printBtn.setOnAction(event -> {
-          print(table);
+            print(main.getCenter());
         });
-        centerbox = new HBox();
-        centerbox.getChildren().addAll(cancelBtn);
-        centerbox.setAlignment(Pos.CENTER_LEFT);
+
+        HBox zoomBox = new HBox(5);
+        zoomBox.getChildren().addAll(zoomMinusBtn, zoomLabel, zoomPlusBtn);
+        zoomBox.setAlignment(Pos.CENTER);
+        zoomBox.setHgrow(zoomBox, Priority.ALWAYS);
+
+        leftBox = new HBox();
+        leftBox.getChildren().addAll(cancelBtn);
+        leftBox.setAlignment(Pos.CENTER_LEFT);
 
         rightBox = new HBox();
-        rightBox.getChildren().addAll(printBtn);
+        rightBox.getChildren().add(printBtn);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
 
-        centerbox.getChildren().addAll(rightBox);
-        HBox.setHgrow(centerbox, Priority.ALWAYS);
-
-        toolbarBottom.getItems().addAll(centerbox, rightBox);
-        main.setBottom(toolbarBottom);
+        toolbarBottom.getItems().addAll(leftBox, zoomBox, rightBox);
+        bottomBox.getChildren().add(toolbarBottom);
+        main.setBottom(bottomBox);
     }
 
-    public void setupButtonStyle(Button btn, String buttonName) {
-        btn.setStyle("-fx-text-fill: #ffffff");
-        btn.getStyleClass().add(buttonName);
-        btn.setMinWidth(130);
+    public void setupNodeStyle(Node node, String nodeName) {
+        node.setStyle("-fx-text-fill: antiquewhite");
+        node.getStyleClass().add(nodeName);
+        if (node.getClass().equals(Button.class))
+            ((Button) node).setMinWidth(130);
     }
 
-    public void print(Pane node) {
-        PrinterJob job = PrinterJob.createPrinterJob();
-        final boolean print = job.showPrintDialog(null);
-        if (job != null && print) {
-            System.out.println(job.getJobSettings().getPageLayout());
-            boolean success = job.printPage(node);
-            if (success)
+    private void addEventHandlers() {
+        zoomMinusBtn.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                double cellWidth = gridPhotos.getCellWidth();
+                double cellHeight = gridPhotos.getCellHeight();
+                if (cellWidth > 100 & cellHeight > 100) {
+                    gridPhotos.setCellWidth(cellWidth - 100);
+                    gridPhotos.setCellHeight(cellHeight - 100);
+                }
+            }
+        });
+
+        zoomPlusBtn.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                double cellWidth = gridPhotos.getCellWidth();
+                double cellHeight = gridPhotos.getCellHeight();
+                if (cellWidth < 900 & cellHeight < 900) {
+                    gridPhotos.setCellWidth(cellWidth + 100);
+                    gridPhotos.setCellHeight(cellHeight + 100);
+                }
+            }
+        });
+    }
+
+    public boolean print(Node node) {
+
+
+        if (job != null && job.showPrintDialog(main.getScene().getWindow())) {
+            System.out.println("JOB SETTINGS " + job.getJobSettings());
+
+            if (job.printPage(node)) {
                 job.endJob();
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
         }
     }
 }

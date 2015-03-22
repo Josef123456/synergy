@@ -30,7 +30,6 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
         final ImageGridCell newImageCell = new ImageGridCell();
 
         newImageCell.setOnMouseClicked(event -> {
-            System.out.println("CLICKED");
             if (event.isShiftDown()) {
                 int lastSelectedIndex = lastSelectedCell.getIndex();
                 System.out.println(lastSelectedIndex);
