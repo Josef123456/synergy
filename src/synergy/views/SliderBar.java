@@ -46,7 +46,7 @@ public class SliderBar extends VBox {
         initPosition();
 	    setupAnimations ();
         getChildren ().addAll(area);
-		hide();
+	//	hide();
 //		show();
     }
 

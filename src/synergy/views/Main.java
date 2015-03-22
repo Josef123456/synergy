@@ -3,12 +3,8 @@ package synergy.views;
 
 import com.j256.ormlite.logger.LocalLog;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
@@ -41,6 +37,9 @@ public class Main extends Application {
 	    new BottomPane ();
 	    photosGrid.setGridPhotos(Photo.getAllPhotos ());
         primaryStage.show();
+        SliderBar.show();
+        SliderBar.hide();
+        System.out.println("THIS IS MAIN!");
     }
 
     public static void main(String[] args) {
