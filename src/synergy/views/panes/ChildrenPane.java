@@ -26,110 +26,112 @@ import java.util.stream.Collectors;
  */
 public class ChildrenPane extends HBox {
 
-	private ComboBox comboBox;
-	private Button addButton;
-	private HBox searchQueryButtons;
-	private int height = 50 ;
-	private Set<String> listOfSearchedKids;
+    private ComboBox comboBox;
+    private Button addButton;
+    private HBox searchQueryButtons;
+    private int height = 50;
+    private Set<String> listOfSearchedKids;
 
-	private List<String> childrenData;
+    private List<String> childrenData;
 
-	public ChildrenPane () {
+    public ChildrenPane() {
         childrenData = new ArrayList<>();
-        setPadding(new Insets(0,0,0,50));
+        setPadding(new Insets(0, 0, 0, 50));
         List<Tag> allTags = Tag.getAllChildrenTags();
         childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
-		getStyleClass().add("my-list-cell");
-		setAlignment (Pos.CENTER);
-		setUpTextFieldAndSearch();
-		listOfSearchedKids = new HashSet<>();
-		comboBox.setMinHeight(height - 5);
-		comboBox.getEditor ().setId ("searching");
-		comboBox.getEditor ().setFont (Font.font ("Arial", FontPosture.ITALIC, 25));
-		addButton.setMinHeight(height);
+        getStyleClass().add("my-list-cell");
+        setAlignment(Pos.CENTER);
+        setUpTextFieldAndSearch();
+        listOfSearchedKids = new HashSet<>();
+        comboBox.setMinHeight(height - 5);
+        comboBox.getEditor().setId("searching");
+        comboBox.getEditor().setFont(Font.font("Arial", FontPosture.ITALIC, 25));
+        addButton.setMinHeight(height);
 
-	}
+    }
 
-	public void resetAll() {
-		searchQueryButtons.getChildren().clear();
-		listOfSearchedKids.clear();
-		comboBox.getEditor().setText("");
-	}
+    public void resetAll() {
+        searchQueryButtons.getChildren().clear();
+        listOfSearchedKids.clear();
+        comboBox.getEditor().setText("");
+    }
 
-	public Set<String> getListOfSearchedKids () {
-		return listOfSearchedKids;
-	}
+    public Set<String> getListOfSearchedKids() {
+        return listOfSearchedKids;
+    }
 
 
-	private void setUpTextFieldAndSearch() {
-		searchQueryButtons = new HBox();
-searchQueryButtons.setAlignment(Pos.CENTER);
-		comboBox = new ComboBox ();
-		comboBox.setMaxWidth(230);
-		for (String childName : childrenData) {
-			comboBox.getItems().add(childName);
-		}
-		AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
-		comboBox.setOnKeyReleased(autoComplete);
-		setHgrow (this, Priority.ALWAYS);
-		addButton = new Button ("+");
+    private void setUpTextFieldAndSearch() {
+        searchQueryButtons = new HBox();
+        searchQueryButtons.setAlignment(Pos.CENTER);
+        comboBox = new ComboBox();
+        comboBox.setMaxWidth(280);
+        comboBox.setMinWidth(280);
+        for (String childName : childrenData) {
+            comboBox.getItems().add(childName);
+        }
+        AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
+        comboBox.setOnKeyReleased(autoComplete);
+        setHgrow(this, Priority.ALWAYS);
+        addButton = new Button("+");
         addButton.setFont(Font.font("Arial", FontWeight.BOLD, 15));
 
 
-		EventHandler eventHandler = event -> {
-			addChildrenQuery((String) comboBox.getValue());
-			updateChildrenQueries();
-		};
-		addButton.setOnAction(eventHandler);
+        EventHandler eventHandler = event -> {
+            addChildrenQuery((String) comboBox.getValue());
+            updateChildrenQueries();
+        };
+        addButton.setOnAction(eventHandler);
 
-		comboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) ->{
-			if(E.getCode() == KeyCode.ENTER){
-				System.out.println("It worked!");
-				addChildrenQuery((String) comboBox.getValue());
-				updateChildrenQueries();
-			}
-		});
+        comboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) -> {
+            if (E.getCode() == KeyCode.ENTER) {
+                System.out.println("It worked!");
+                addChildrenQuery((String) comboBox.getValue());
+                updateChildrenQueries();
+            }
+        });
 
+        setPadding(new Insets(0,50,0,0));
+        setSpacing(1);
+        getChildren().addAll(searchQueryButtons, comboBox, addButton);
+    }
 
-		getChildren ().addAll(searchQueryButtons, comboBox, addButton);
-	}
+    private void updateChildrenQueries() {
+        searchQueryButtons.getChildren().clear();
+        for (String query : listOfSearchedKids) {
+            Button queryButton = new Button(query + " - ");
+            queryButton.setOnAction(event -> {
+                listOfSearchedKids.remove(query);
+                updateChildrenQueries();
+            });
+            queryButton.setMinHeight(height);
+            queryButton.setStyle("-fx-text-fill: #ffffff");
+            searchQueryButtons.getChildren().add(queryButton);
+        }
+    }
 
-	private void updateChildrenQueries() {
-		searchQueryButtons.getChildren().clear();
-		for (String query : listOfSearchedKids ) {
-			Button queryButton = new Button(query + " - ");
-			queryButton.setOnAction(event -> {
-				listOfSearchedKids.remove (query);
-				updateChildrenQueries();
-			});
-			queryButton.setMinHeight(height);
-			queryButton.setStyle("-fx-text-fill: #ffffff");
-			searchQueryButtons.getChildren().add(queryButton);
-		}
-	}
-
-	private void addChildrenQuery(String addedQuery) {
-		Set<String> hashSet = new HashSet<String> (childrenData) {
-			public boolean contains(Object o) {
-				String paramStr = (String) o;
-				for (String s : this) {
-					if (paramStr.equalsIgnoreCase(s)) return true;
-				}
-				return false;
-			}
-		};
-		if (addedQuery != null && !listOfSearchedKids.contains(addedQuery) && hashSet.contains
-				(addedQuery)) {
-			String toAdd = null; // The String to add to the list of search
+    private void addChildrenQuery(String addedQuery) {
+        Set<String> hashSet = new HashSet<String>(childrenData) {
+            public boolean contains(Object o) {
+                String paramStr = (String) o;
+                for (String s : this) {
+                    if (paramStr.equalsIgnoreCase(s)) return true;
+                }
+                return false;
+            }
+        };
+        if (addedQuery != null && !listOfSearchedKids.contains(addedQuery) && hashSet.contains
+                (addedQuery)) {
+            String toAdd = null; // The String to add to the list of search
             for (String s : hashSet) {
                 if (s.equalsIgnoreCase(addedQuery)) {
                     toAdd = s;
                     break;
                 }
             }
-			listOfSearchedKids.add(toAdd);
-			comboBox.getEditor().setText("");
-		}
-	}
+            listOfSearchedKids.add(toAdd);
+            comboBox.getEditor().setText("");
+        }
+    }
 
 }
