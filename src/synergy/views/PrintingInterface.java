@@ -20,6 +20,7 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.imgscalr.Scalr;
 import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
@@ -58,7 +59,7 @@ public class PrintingInterface extends Application {
         scene.getStylesheets().add("background1.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Print");
-//        primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
