@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
 import javafx.print.JobSettings;
 import javafx.print.PageLayout;
@@ -95,17 +94,14 @@ public class PrintingInterface extends Application {
             }
         });
 */
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                for (Image image: PhotoGrid.getSelectedImages()) {
-                    try {
-                        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-                        bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage,300),(int)gridPhotos.getCellHeight(),(int)gridPhotos.getCellWidth(),new java.awt.Color(255,255,255));
-                        printImages.add(WritableImageCreator.fromBufferedImage(bufferedImage));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        Platform.runLater(() -> {
+            for (Image image: PhotoGrid.getSelectedImages()) {
+                try {
+                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+                    bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage,(int)gridPhotos.getCellWidth()),(int)gridPhotos.getCellHeight(),(int)gridPhotos.getCellWidth(),new java.awt.Color(255,255,255));
+                    printImages.add(WritableImageCreator.fromBufferedImage(bufferedImage));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -169,27 +165,21 @@ public class PrintingInterface extends Application {
     }
 
     private void addEventHandlers() {
-        zoomMinusBtn.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                double cellWidth = gridPhotos.getCellWidth();
-                double cellHeight = gridPhotos.getCellHeight();
-                if (cellWidth > 100 & cellHeight > 100) {
-                    gridPhotos.setCellWidth(cellWidth - 100);
-                    gridPhotos.setCellHeight(cellHeight - 100);
-                }
+        zoomMinusBtn.setOnAction(event -> {
+            double cellWidth = gridPhotos.getCellWidth();
+            double cellHeight = gridPhotos.getCellHeight();
+            if (cellWidth > 100 & cellHeight > 100) {
+                gridPhotos.setCellWidth(cellWidth - 100);
+                gridPhotos.setCellHeight(cellHeight - 100);
             }
         });
 
-        zoomPlusBtn.setOnAction(new javafx.event.EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                double cellWidth = gridPhotos.getCellWidth();
-                double cellHeight = gridPhotos.getCellHeight();
-                if (cellWidth < 900 & cellHeight < 900) {
-                    gridPhotos.setCellWidth(cellWidth + 100);
-                    gridPhotos.setCellHeight(cellHeight + 100);
-                }
+        zoomPlusBtn.setOnAction(event -> {
+            double cellWidth = gridPhotos.getCellWidth();
+            double cellHeight = gridPhotos.getCellHeight();
+            if (cellWidth < 900 & cellHeight < 900) {
+                gridPhotos.setCellWidth(cellWidth + 100);
+                gridPhotos.setCellHeight(cellHeight + 100);
             }
         });
     }
