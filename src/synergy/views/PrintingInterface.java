@@ -185,6 +185,7 @@ public class PrintingInterface extends Application {
 
             if (job.printPage(node)) {
                 job.endJob();
+                stage.close();
                 return true;
             } else {
                 return false;
