@@ -34,9 +34,8 @@ import java.util.ArrayList;
 public class PrintingInterface extends Application {
 
     private BorderPane main;
-    private ToolBar toolbarBottom;
-    private HBox leftBox, rightBox;
-    private Button cancelBtn, printBtn, zoomPlusBtn, zoomMinusBtn;
+    private Button zoomPlusBtn;
+    private Button zoomMinusBtn;
     private Stage stage;
     private GridView gridPhotos;
     ObservableList<Image> printImages;
@@ -79,26 +78,13 @@ public class PrintingInterface extends Application {
 
         gridPhotos.setCellWidth(300);
         gridPhotos.setCellHeight(300);
-        /*
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                for (Photo photo : PhotoGrid.getSelectedPhotos()) {
-                    try {
-                        printImages.add(WritableImageCreator.fromBufferedImage(ImageIO
-                                .read(new File(photo.getPath()))));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-*/
+
         Platform.runLater(() -> {
             for (Image image: PhotoGrid.getSelectedImages()) {
                 try {
                     BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-                    bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage,(int)gridPhotos.getCellWidth()),(int)gridPhotos.getCellHeight(),(int)gridPhotos.getCellWidth(),new java.awt.Color(255,255,255));
+                    bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage,(int)gridPhotos.getCellWidth()),
+                            (int)gridPhotos.getCellHeight(),(int)gridPhotos.getCellWidth(),new java.awt.Color(255,255,255));
                     printImages.add(WritableImageCreator.fromBufferedImage(bufferedImage));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -116,9 +102,9 @@ public class PrintingInterface extends Application {
 
     private void setupBottom() {
         VBox bottomBox = new VBox();
-        toolbarBottom = new ToolBar();
+        ToolBar toolbarBottom = new ToolBar();
 
-        cancelBtn = new Button("Cancel");
+        Button cancelBtn = new Button("Cancel");
         setupNodeStyle(cancelBtn, "cancelButton");
         cancelBtn.setOnAction(event -> stage.close());
 
@@ -133,7 +119,7 @@ public class PrintingInterface extends Application {
         setupNodeStyle(zoomPlusBtn, "zoomPlusBtn");
         zoomPlusBtn.setMinWidth(20);
 
-        printBtn = new Button("Print");
+        Button printBtn = new Button("Print");
         setupNodeStyle(printBtn, "printButton");
         printBtn.setOnAction(event -> {
             print(main.getCenter());
@@ -144,11 +130,11 @@ public class PrintingInterface extends Application {
         zoomBox.setAlignment(Pos.CENTER);
         zoomBox.setHgrow(zoomBox, Priority.ALWAYS);
 
-        leftBox = new HBox();
+        HBox leftBox = new HBox();
         leftBox.getChildren().addAll(cancelBtn);
         leftBox.setAlignment(Pos.CENTER_LEFT);
 
-        rightBox = new HBox();
+        HBox rightBox = new HBox();
         rightBox.getChildren().add(printBtn);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
 

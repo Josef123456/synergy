@@ -26,29 +26,24 @@
  */
 package controlsfx.controlsfx.dialog;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javafx.beans.binding.DoubleBinding;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 
-import org.controlsfx.DialogResources;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CommandLinksDialog extends Dialog<ButtonType> {
     
@@ -160,7 +155,7 @@ public class CommandLinksDialog extends Dialog<ButtonType> {
         }; 
         setDialogPane(dialogPane);
         
-        setTitle(DialogResources.getString("Dialog.info.title")); //$NON-NLS-1$
+       // setTitle(DialogResources.getString("Dialog.info.title")); //$NON-NLS-1$
         dialogPane.getStyleClass().add("command-links-dialog"); //$NON-NLS-1$
         dialogPane.getStylesheets().add(getClass().getResource("dialogs.css").toExternalForm()); //$NON-NLS-1$
         dialogPane.getStylesheets().add(getClass().getResource("commandlink.css").toExternalForm()); //$NON-NLS-1$
