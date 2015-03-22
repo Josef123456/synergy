@@ -3,7 +3,7 @@
 /*background color*/
 .root {
     -fx-base: #696969;
-    -fx-background-image: url("../images/background3.png");
+    -fx-background-image: url("../images/zwartevilt.png");
 }
 
 /*toolbar styling*/

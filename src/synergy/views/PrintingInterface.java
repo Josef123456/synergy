@@ -1,12 +1,20 @@
 package synergy.views;
 
+import org.imgscalr.Scalr;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.controlsfx.control.cell.ImageGridCell;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
 import javafx.print.JobSettings;
 import javafx.print.PageLayout;
@@ -17,17 +25,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.imgscalr.Scalr;
+import synergy.models.Photo;
 import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
-
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by Josef on 09/03/2015.
@@ -81,11 +90,12 @@ public class PrintingInterface extends Application {
         gridPhotos.setCellHeight(300);
 
         Platform.runLater(() -> {
-            for (Image image: PhotoGrid.getSelectedImages()) {
+            for (Photo photo : PhotoGrid.getSelectedPhotos()) {
                 try {
-                    BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
-                    bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage,(int)gridPhotos.getCellWidth()),
-                            (int)gridPhotos.getCellHeight(),(int)gridPhotos.getCellWidth(),new java.awt.Color(255,255,255));
+                    BufferedImage bufferedImage = ImageIO.read(new File(photo.getPath()));
+                    bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage, (int)
+                                    gridPhotos.getCellWidth()), (int) gridPhotos.getCellHeight(),
+                            (int) gridPhotos.getCellWidth(), java.awt.Color.WHITE);
                     printImages.add(WritableImageCreator.fromBufferedImage(bufferedImage));
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -156,8 +166,8 @@ public class PrintingInterface extends Application {
             double cellWidth = gridPhotos.getCellWidth();
             double cellHeight = gridPhotos.getCellHeight();
             if (cellWidth > 100 & cellHeight > 100) {
-                gridPhotos.setCellWidth(cellWidth - 100);
-                gridPhotos.setCellHeight(cellHeight - 100);
+                gridPhotos.setCellWidth(cellWidth - 50);
+                gridPhotos.setCellHeight(cellHeight - 50);
             }
         });
 
@@ -165,8 +175,8 @@ public class PrintingInterface extends Application {
             double cellWidth = gridPhotos.getCellWidth();
             double cellHeight = gridPhotos.getCellHeight();
             if (cellWidth < 900 & cellHeight < 900) {
-                gridPhotos.setCellWidth(cellWidth + 100);
-                gridPhotos.setCellHeight(cellHeight + 100);
+                gridPhotos.setCellWidth(cellWidth + 50);
+                gridPhotos.setCellHeight(cellHeight + 50);
             }
         });
     }
