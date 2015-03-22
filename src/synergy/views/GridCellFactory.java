@@ -72,17 +72,18 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
         Image selectedImage = imageCell.getItem();
         int selectedImageIndex = PhotoGrid.getDisplayedImagesList().indexOf(selectedImage);
         if (imageCell.getBorder() == null) {
-            PhotoGrid.getSelectedPhotos().add(PhotoGrid.getDisplayedPhotos().get(selectedImageIndex));
+            PhotoGrid.getSelectedPhotos().add(PhotoGrid.getDisplayedPhotos().get
+                    (selectedImageIndex));
             PhotoGrid.getSelectedImages().add(selectedImage);
 
             BorderStroke[] borderStrokeArray = new BorderStroke[4];
             for (int i = 0; i < 4; i++)
-                borderStrokeArray[i] = new BorderStroke(Color
-                        .BLUE, BorderStrokeStyle.SOLID, null, BorderStroke.MEDIUM,
-                        new Insets(-5, -5, -5, -5));
+                borderStrokeArray[i] = new BorderStroke(Color.WHITE, BorderStrokeStyle.SOLID,
+                        null, BorderStroke.THICK, new Insets(-10, -10, -10, -10));
             imageCell.setBorder(new Border(borderStrokeArray));
         } else {
-            PhotoGrid.getSelectedPhotos().remove(PhotoGrid.getDisplayedPhotos().get(selectedImageIndex));
+            PhotoGrid.getSelectedPhotos().remove(PhotoGrid.getDisplayedPhotos().get
+                    (selectedImageIndex));
             PhotoGrid.getSelectedImages().remove(selectedImage);
             imageCell.setBorder(null);
         }

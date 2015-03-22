@@ -39,6 +39,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderStroke;
 import javafx.scene.layout.BorderStrokeStyle;
+import javafx.scene.paint.Color;
 import synergy.views.PhotoGrid;
 
 public class GridRowSkin<T> extends CellSkinBase<GridRow<T>, BehaviorBase<GridRow<T>>> {
@@ -114,9 +115,9 @@ public class GridRowSkin<T> extends CellSkinBase<GridRow<T>, BehaviorBase<GridRo
                         if (cell.getBorder() == null) {
                             BorderStroke[] borderStrokeArray = new BorderStroke[4];
                             for (int i = 0; i < 4; i++) {
-                                borderStrokeArray[i] = new BorderStroke(javafx.scene.paint.Color
-                                        .BLUE, BorderStrokeStyle.SOLID, null, BorderStroke.MEDIUM,
-                                        new Insets(-5, -5, -5, -5));
+                                borderStrokeArray[i] = new BorderStroke(Color.WHITE,
+                                        BorderStrokeStyle.SOLID, null, BorderStroke.THICK, new
+                                        Insets(-10, -10, -10, -10));
                             }
                             cell.setBorder(new Border(borderStrokeArray));
                         }
