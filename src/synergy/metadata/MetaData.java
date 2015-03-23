@@ -17,6 +17,7 @@ import synergy.models.Tag;
 import synergy.utilities.TagEncoder;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -28,15 +29,13 @@ import java.util.List;
 
 public class MetaData {
 
-    public IImageMetadata metadata = null;
-    public String name, values, userComment;
-
-    /**
+	/**
      * Attempts to retrieve & list the metadata attributes of a given File
      * @param file File object that is to be read from
      * @return void
      */
-    public void getMetaData(File file) {
+    private static String[] getMetaData(File file) {
+	    IImageMetadata metadata = null;
         try {
             metadata = Imaging.getMetadata(file);
         } catch (ImageReadException | IOException e) {
@@ -47,18 +46,34 @@ public class MetaData {
             final List<IImageMetadataItem> items = jpegMetadata.getItems();
 
             for (final IImageMetadataItem item : items) {
-                name = item.toString().substring(0, item.toString().indexOf(":"));
-                values = item.toString();
-                if (values.contains("")) {
-                    userComment = values;
-                    System.out.println(userComment);
+	            String x = item.toString ();
+	            String name = x.substring (0, x.indexOf (":"));
+	            if ( name.contains ("UserComment")) {
+		            return x.substring(x.indexOf(":")+3, x.length ()).split("\\|");
                 }
             }
         } else {
             System.out.println("Not a jpg file");
         }
-
+	    return new String[0];
     }
+
+	public static List<Tag> getTagsForFile(String path) {
+		File file = new File(path);
+		String[] stringTags = getMetaData (file);
+		List<Tag> tags = new ArrayList<> ();
+		for ( int i = 0 ; i < stringTags.length -1 ; ++ i) {
+			String[] parts = stringTags[i].split(":");
+			System.out.println (parts[0] + " " + parts[1]);
+			if ( parts[0].equals("PLACE") ) {
+				tags.add( new Tag(Tag.TagType.PLACE, parts[1]));
+			}
+			if ( parts[0].equals("KID") ) {
+				tags.add( new Tag(Tag.TagType.KID, parts[1]));
+			}
+		}
+		return tags;
+	}
 
     /**
      *This method is used to change an 'Exif Tag' of a specific photo object
@@ -122,19 +137,4 @@ public class MetaData {
         }
 
     }
-
-    /**
-     * Encodes an array of tags into a single string object
-     * this method allows the tags to be written to a metadata field
-     * @param tags
-     * @return String of all the photo's tags
-     */
-	private String encodeTags(Tag[] tags) {
-		String result = "";
-		for( Tag tag: tags) {
-			result += tag.getType () + " ";
-		}
-		return "";
-	}
-
 }

@@ -57,6 +57,8 @@ public class Photo {
             int minute = Integer.parseInt(timeParts[1]);
             int second = Integer.parseInt(timeParts[2]);
             this.date = new Date(year - 1900, month - 1, day, hour, minute, second);
+	        List<Tag> tags = MetaData.getTagsForFile(path);
+	        tags.forEach (t -> this.addTag (t));
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
@@ -188,6 +190,11 @@ public class Photo {
         return null;
     }
 
+	/**
+	 * Add the {@link synergy.models.Tag} to the list of tags associated with the photo. This also
+	 * creates a new {@link synergy.models.PhotoTag} that marks the relationship.
+	 * @param tag the tag that has to be added to the photo.
+	 */
     public void addTag(Tag tag) {
         this.save();
         tag.save();
@@ -207,6 +214,11 @@ public class Photo {
         }
     }
 
+	/**
+	 * Removes the {@link synergy.models.Tag} from this photo. Also removes the {@link synergy.models.PhotoTag} that
+	 * is associated with this.
+	 * @param tag
+	 */
     public void removeTag(Tag tag) {
         this.save();
         tag.save();
