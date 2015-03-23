@@ -1,6 +1,10 @@
 package synergy.views;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.application.Platform;
@@ -8,10 +12,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import synergy.models.Photo;
 import synergy.tasks.ThumbnailLoaderTask;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by iHack1337 on 3/2/2015.
@@ -72,6 +72,11 @@ public class PhotoGrid extends GridView<Image> {
         this.setCellWidth(300);
     }
 
+    /**
+     * This method is responsible for setting the photos in the grid to be the list given as a
+     * paramaneter.
+     * @param photosToDisplay
+     */
     public static void setGridPhotos(List<Photo> photosToDisplay) {
         System.out.println("METHOD WAS CALLED WITH " + photosToDisplay.size() + " PHOTOS");
         for (Photo photo : photosToDisplay)
@@ -99,6 +104,10 @@ public class PhotoGrid extends GridView<Image> {
         });
     }
 
+    /**
+     * This method adds the given list of photos to the grid.
+     * @param photosToDisplay
+     */
     public static void addPhotosToGrid(final List<Photo> photosToDisplay) {
         displayedPhotosList.addAll(photosToDisplay);
         ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);

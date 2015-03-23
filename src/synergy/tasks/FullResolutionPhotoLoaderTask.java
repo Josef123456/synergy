@@ -23,7 +23,8 @@ import synergy.utilities.WritableImageCreator;
 import synergy.views.PhotoGrid;
 
 /**
- * Created by alexstoick on 3/7/15.
+ * This is the Task used to load quality photos to replace the thumbnails that are initially
+ * added to the grid for efficiency reasons.
  */
 public class FullResolutionPhotoLoaderTask extends Task {
     private List<Photo> photosToDisplay;

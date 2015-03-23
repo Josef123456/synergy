@@ -14,7 +14,7 @@ import javafx.util.Callback;
 import synergy.models.Photo;
 
 /**
- * Created by alexstoick on 3/14/15.
+ *  This is the class responsible for the creation of the grid cells
  */
 public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image>> {
 
@@ -25,8 +25,13 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
         this.photoGrid = photoGrid;
     }
 
+    /**
+     * This method creates the ImageGridCell and sets its mouse listener needed for selection
+     * @param gridView
+     * @return GridCell<Image>
+     */
     @Override
-    public GridCell<Image> call(GridView<Image> param) {
+    public GridCell<Image> call(GridView<Image> gridView) {
         final ImageGridCell newImageCell = new ImageGridCell();
 
         newImageCell.setOnMouseClicked(event -> {
@@ -68,6 +73,10 @@ public class GridCellFactory implements Callback<GridView<Image>, GridCell<Image
         return newImageCell;
     }
 
+    /**
+     * This method is responsible for setting the selection of the cell
+     * @param imageCell
+     */
     public void setCellSelection(ImageGridCell imageCell) {
         Image selectedImage = imageCell.getItem();
         int selectedImageIndex = PhotoGrid.getDisplayedImagesList().indexOf(selectedImage);

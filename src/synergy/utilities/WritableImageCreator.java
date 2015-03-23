@@ -1,12 +1,12 @@
 package synergy.utilities;
 
+import java.awt.image.BufferedImage;
+
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-import java.awt.image.BufferedImage;
-
 /**
- * Created by alexstoick on 3/7/15.
+ * Class used to create a WritableImage from a buffered image.
  */
 public class WritableImageCreator {
 

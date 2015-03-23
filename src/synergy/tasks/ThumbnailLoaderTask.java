@@ -24,7 +24,7 @@ import synergy.utilities.WritableImageCreator;
 import synergy.views.PhotoGrid;
 
 /**
- * Created by alexstoick on 3/7/15.
+ * This is the task used to add the thumbnails of photos to the grid.
  */
 public class ThumbnailLoaderTask extends Task {
     private List<Photo> photosToDisplay;
