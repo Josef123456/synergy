@@ -29,7 +29,7 @@ public class ChildrenPane extends HBox {
     private Button addButton;
     private HBox searchQueryButtons;
     private int height = 50;
-    private Set<String> listOfSearchedKids;
+    private Set<String> listOfSearchedKids = new HashSet<>();
     private List<String> childrenData;
 
     public ChildrenPane() {
@@ -39,12 +39,10 @@ public class ChildrenPane extends HBox {
         getStyleClass().add ("my-list-cell");
         setAlignment (Pos.CENTER);
         setUpTextFieldAndSearch ();
-        listOfSearchedKids = new HashSet<>();
         comboBox.setMinHeight(height - 5);
         comboBox.getEditor().setId ("searching");
         comboBox.getEditor().setFont (Font.font ("Arial", FontPosture.ITALIC, 25));
         addButton.setMinHeight (height);
-
     }
 
     public void resetAll() {
@@ -71,7 +69,6 @@ public class ChildrenPane extends HBox {
         setHgrow (this, Priority.ALWAYS);
         addButton = new Button("+");
         addButton.setFont (Font.font ("Arial", FontWeight.BOLD, 15));
-
 
         EventHandler eventHandler = event -> {
             addChildrenQuery((String) comboBox.getValue());
