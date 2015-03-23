@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * Contains the date of the photo(s) seleted in the form of a label
  * Created by alexstoick on 3/18/15.
  */
 public class DatePane extends BaseVerticalPane {
@@ -20,6 +21,10 @@ public class DatePane extends BaseVerticalPane {
     private TaggingArea taggingArea;
     private Label dateLabel;
 
+    /**
+     * Calls {@link #setupDatePane()} that builds the gui
+     * @param taggingArea the parent pane of this class
+     */
 	public DatePane(TaggingArea taggingArea) {
 		this.taggingArea = taggingArea;
 		setupDatePane ();
@@ -34,6 +39,9 @@ public class DatePane extends BaseVerticalPane {
         getChildren().addAll(dateLabel);
     }
 
+    /**
+     * updates the label with the date of the photos
+     */
     public void update() {
         dateLabel.setText(buildDateString());
     }
