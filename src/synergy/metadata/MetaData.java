@@ -1,8 +1,5 @@
 package synergy.metadata;
 
-/**
- * Created by Amit on 07/02/2015.
- */
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.ImageWriteException;
 import org.apache.commons.imaging.Imaging;
@@ -22,14 +19,26 @@ import synergy.utilities.TagEncoder;
 import java.io.*;
 import java.util.List;
 
+/**
+ * This class allows manipulation and reading of MetaData from
+ * images of the JPEG format and that format only.
+ *
+ * @author Amit Patel
+ */
+
 public class MetaData {
 
     public IImageMetadata metadata = null;
     public String name, values, userComment;
 
-    public void getMetaData(File f) {
+    /**
+     * Attempts to retrieve & list the metadata attributes of a given File
+     * @param file File object that is to be read from
+     * @return void
+     */
+    public void getMetaData(File file) {
         try {
-            metadata = Imaging.getMetadata(f);
+            metadata = Imaging.getMetadata(file);
         } catch (ImageReadException | IOException e) {
             System.out.println("File not found");
         }
@@ -40,12 +49,9 @@ public class MetaData {
             for (final IImageMetadataItem item : items) {
                 name = item.toString().substring(0, item.toString().indexOf(":"));
                 values = item.toString();
-                //Only print out 'UserComment' tag and its values
-                //Remove string to return all meta-data tags
                 if (values.contains("")) {
                     userComment = values;
                     System.out.println(userComment);
-
                 }
             }
         } else {
@@ -54,6 +60,17 @@ public class MetaData {
 
     }
 
+    /**
+     *This method is used to change an 'Exif Tag' of a specific photo object
+     *the photo must be of JPEG format in order to have this tag
+     *
+     *
+     * @param photo
+     * @throws IOException on input error
+     * @throws ImageReadException failed to read the image
+     * @throws ImageWriteException failed to write to the image
+     * @return void
+     */
     public static void changeExifMetadata(Photo photo) throws IOException, ImageReadException, ImageWriteException {
 	    final File inputFile = new File(photo.getPath ());
         OutputStream os = null;
@@ -106,6 +123,12 @@ public class MetaData {
 
     }
 
+    /**
+     * Encodes an array of tags into a single string object
+     * this method allows the tags to be written to a metadata field
+     * @param tags
+     * @return String of all the photo's tags
+     */
 	private String encodeTags(Tag[] tags) {
 		String result = "";
 		for( Tag tag: tags) {
