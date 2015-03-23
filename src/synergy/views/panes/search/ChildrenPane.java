@@ -48,7 +48,7 @@ public class ChildrenPane extends HBox {
     public void resetAll() {
         searchQueryButtons.getChildren().clear();
         listOfSearchedKids.clear();
-        comboBox.getEditor().setText("");
+	    comboBox.getEditor().setText(null);
     }
 
     public Set<String> getListOfSearchedKids() {
@@ -93,7 +93,8 @@ public class ChildrenPane extends HBox {
             Button queryButton = new Button(query + " - ");
             queryButton.setOnAction(event -> {
                 listOfSearchedKids.remove(query);
-                updateChildrenQueries();
+	            System.out.println (listOfSearchedKids.size ());
+	            updateChildrenQueries();
             });
             queryButton.setMinHeight(height);
             queryButton.setStyle("-fx-text-fill: #ffffff");
@@ -103,7 +104,8 @@ public class ChildrenPane extends HBox {
 
     private void addChildrenQuery() {
 	    String addedQuery = (String) comboBox.getValue() ;
-        Set<String> hashSet = new HashSet<String>(childrenData) {
+	    System.out.println (addedQuery);
+	    Set<String> hashSet = new HashSet<String>(childrenData) {
             public boolean contains(Object o) {
                 String paramStr = (String) o;
                 for (String s : this) {
@@ -122,7 +124,7 @@ public class ChildrenPane extends HBox {
                 }
             }
             listOfSearchedKids.add(toAdd);
-            comboBox.getEditor().setText("");
+            comboBox.getEditor().setText (null);
         }
     }
 

@@ -62,8 +62,11 @@ public class ChildrenPane extends BaseVerticalPane {
 	}
 
 	private void addChildrenTag(){
-		String name = AutoCompleteUtil.getComboBoxValue(childrenComboBox);
+		String name = AutoCompleteUtil.getComboBoxValue (childrenComboBox);
 		String tagName = null;
+		if(name == null) {
+			return ;
+		}
 		Set<String> hashSet = new HashSet<String>(childrenData){
 			public boolean contains(Object o){
 				String paramStr = (String)o;
@@ -104,7 +107,7 @@ public class ChildrenPane extends BaseVerticalPane {
 		for (String childrenNames : childrenData ) {
 			childrenComboBox.getItems ().add(childrenNames);
 		}
-		AutoCompleteUtil.autoCompleteComboBox(childrenComboBox, AutoCompleteUtil.AutoCompleteMode.STARTS_WITH);
+		AutoCompleteUtil.autoCompleteComboBox (childrenComboBox, AutoCompleteUtil.AutoCompleteMode.STARTS_WITH);
 		Button addChildrenTagButton = new Button ("+");
 		addChildrenTagButton.setStyle ("-fx-text-fill: #ffffff");
 		addChildrenTagButton.setStyle ("-fx-background-color: #595959");
