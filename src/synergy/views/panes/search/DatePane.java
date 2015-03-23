@@ -11,6 +11,9 @@ import synergy.views.panes.search.date.MonthAndYearPane;
 import synergy.views.panes.search.date.PeriodDatePane;
 
 /**
+ * This pane holds the date part of the query. It is composed of 2 subcomponents:
+ * {@link synergy.views.panes.search.date.MonthAndYearPane} and {@link synergy.views.panes.search.date.PeriodDatePane}.
+ * It also contains a plain date picker, for the single date.
  * Created by alexstoick on 3/21/15.
  */
 public class DatePane extends HBox {
@@ -22,10 +25,13 @@ public class DatePane extends HBox {
 	private MonthAndYearPane monthAndYear = new MonthAndYearPane ();
 	private PeriodDatePane periodPane = new PeriodDatePane ();
 
+	/**
+	 * Constructor setups up basic HBox properties and calls {@link #setupDatePickers()}
+	 */
 	public DatePane () {
-		setUpDatePickers ();
 		setAlignment (Pos.CENTER);
 		getStyleClass().add("my-list-cell");
+		setupDatePickers ();
 	}
 
 	public void resetAll() {
@@ -34,26 +40,51 @@ public class DatePane extends HBox {
 		monthAndYear.reset();
 	}
 
+	/**
+	 *
+	 * @return the {@link javafx.scene.control.ComboBox} that displays the months.
+	 */
 	public ComboBox getMonths () {
 		return monthAndYear.getMonths ();
 	}
 
+	/**
+	 *
+	 * @return the {@link javafx.scene.control.ComboBox} that displays the years.
+	 */
 	public ComboBox getYears () {
 		return monthAndYear.getYears ();
 	}
 
+
+	/**
+	 *
+	 * @return the single day {@link javafx.scene.control.DatePicker}
+	 */
 	public DatePicker getSingleDatePicker () {
 		return singleDatePicker;
 	}
 
+	/**
+	 *
+	 * @return the initial {@link javafx.scene.control.DatePicker} in the period pane
+	 */
 	public DatePicker getInitialDatePicker () {
 		return periodPane.getInitialDatePicker ();
 	}
 
+	/**
+	 *
+	 * @return the final {@link javafx.scene.control.DatePicker} in the period pane
+	 */
 	public DatePicker getEndDatePicker () {
 		return periodPane.getEndDatePicker ();
 	}
 
+	/**
+	 *
+	 * @return the {@link javafx.scene.control.ComboBox} that holds the type of the date
+	 */
 	public ComboBox getDateCategories () {
 		return dateCategories;
 	}
@@ -67,7 +98,7 @@ public class DatePane extends HBox {
 		dateCategories.setStyle("-fx-text-fill: #ffffff");
 	}
 
-	private void setUpDatePickers() {
+	private void setupDatePickers () {
 		singleDatePicker = new DatePicker ();
 		singleDatePicker.setDayCellFactory (new InitialDateCellFactory ());
 		singleDatePicker.setShowWeekNumbers (false);

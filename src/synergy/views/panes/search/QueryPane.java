@@ -15,6 +15,8 @@ import synergy.views.PhotoGrid;
 import synergy.views.SearchArea;
 
 /**
+ * Generates an HBox which contains 2 buttons: search & reset. These buttons use the information from the rest of the
+ * SearchArea to create the right query for the database.
  * Created by alexstoick on 3/21/15.
  */
 public class QueryPane extends HBox {
@@ -24,6 +26,10 @@ public class QueryPane extends HBox {
 	private LocalDate finalInitialDate = null;
 	private LocalDate finalEndDate = null;
 
+	/**
+	 * Constructor for the QueryPane. This generates a HBox which is then displayed within SearchArea
+	 * @param searchArea the area in which the pane will be displayed. This is used for triggering button actions
+	 */
     public QueryPane(SearchArea searchArea) {
         this.searchArea = searchArea;
         setAlignment(Pos.CENTER);
