@@ -14,6 +14,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * This class is the main model of the application. This is tightly connected to {@link synergy.database.PhotoDao}
+ * and it abstracts away the database layer. This facilitates an easy integration for the front-end team that only
+ * works with this object.
+ * The class has a few annotations that work with our database library ormLite. The {@value #COLUMN_PATH},
+ * {@value #COLUMN_DATE}, {@value #_ID} are the names of the column in the database. There is also a unique
+ * constraint on the path, which makes sure that we can't import the same photo twice.
+ *
  * Created by alexstoick on 2/6/15.
  */
 @DatabaseTable(tableName = "photos")
@@ -33,6 +40,11 @@ public class Photo {
     public Photo() {
     }
 
+	/**
+	 * Instantiates a photo using the path. It also sets the date of the photo by opening the file
+	 * and parsing the date the photo was taken at.
+	 * @param path the path of the file we want to instantiate.
+	 */
     public Photo(String path) {
         this.path = path;
         try {
@@ -51,6 +63,10 @@ public class Photo {
         }
     }
 
+	/**
+	 * This method pushes the object into the database. After calling this, the object is saved and the {@link #ID}
+	 * field is populated.
+	 */
     public void save() {
         try {
             PhotoDao.getInstance().createOrUpdate(this);
@@ -60,22 +76,42 @@ public class Photo {
         }
     }
 
+	/**
+	 *
+	 * @return {@link java.lang.String} with the path of the photo.
+	 */
     public String getPath() {
         return path;
     }
 
+	/**
+	 *
+	 * @return {@link int} with the database ID of the photo.
+	 */
     public int getID() {
         return ID;
     }
 
+	/**
+	 *
+	 * @return {@link java.util.Date} of the current photo.
+	 */
     public Date getDate() {
         return date;
     }
 
+	/**
+	 * Sets the database ID of this photo.
+	 * @param ID
+	 */
     public void setID(int ID) {
         this.ID = ID;
     }
 
+	/**
+	 *
+	 * @return an array of {@link synergy.models.Tag} that are associated with this photo.
+	 */
     public List<Tag> getTags() {
         try {
             return PhotoDao.getInstance().getTagsForPhoto(this);
@@ -86,16 +122,29 @@ public class Photo {
         return null;
     }
 
+	/**
+	 * Using the {@link synergy.engines.suggestion.Engine} we generate suggestions for this photo.
+	 * @return an array of suggested {@link synergy.models.Tag}
+	 */
     public List<Tag> getSuggestedTags() {
         return Engine.suggest(this);
     }
 
+	/**
+	 * This returns the {@link synergy.models.Relationship} for each {@link synergy.models.Tag} that is associated with
+	 * this photo.
+	 * @return a list of {@link synergy.models.Relationship}
+	 */
     public List<List<Relationship>> getRelationshipsForAllTags() {
         List<Tag> tagsForPhoto = this.getChildTags();
 
 	    return tagsForPhoto.stream ().map (Tag::getRelationshipsForTagSortedByOccurrences).collect (Collectors.toList ());
     }
 
+	/**
+	 * Get the location associated with this photo. (RoomA/RoomB)
+	 * @return a {@link synergy.models.Tag} that represents the location
+	 */
     public Tag getLocationTag() {
         List<Tag> allTags = getTags();
         Tag locationTag = null;
@@ -108,11 +157,19 @@ public class Photo {
         return locationTag;
     }
 
+	/**
+	 *
+	 * @return a {@link java.util.List} of {@link synergy.models.Tag} that are the kids tagged in the photo
+	 */
     public List<Tag> getChildTags() {
         List<Tag> allTags = getTags();
         return allTags.stream ().filter (tag -> tag.getType () == Tag.TagType.KID).collect (Collectors.toList ());
     }
 
+	/**
+	 * This method is used to display all of the available photos in the database.
+	 * @return a {@link java.util.List} of {@link synergy.models.Photo}
+	 */
     public static List<Photo> getAllPhotos() {
         try {
             List<Photo> photos = PhotoDao.getInstance().getAllPhotos();
