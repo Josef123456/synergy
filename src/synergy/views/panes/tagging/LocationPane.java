@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * Contains 2 toggle buttons that allows the users to tag with them
  * Created by alexstoick on 3/18/15.
  */
 public class LocationPane extends BaseHorizontalPane {
@@ -24,6 +25,9 @@ public class LocationPane extends BaseHorizontalPane {
     private ToggleButton roomAbtn;
     private ToggleButton roomBbtn;
 
+    /**
+     * Sets up the UI with 2 toggle buttons
+     */
     public LocationPane () {
         setupLocationPane();
     }
@@ -78,6 +82,9 @@ public class LocationPane extends BaseHorizontalPane {
         });
     }
 
+    /**
+     * updates and tags the selected photos with whichever togglebutton is clicked
+     */
     public void update() {
 
         final ArrayList<Photo> selectedPhotos = PhotoGrid.getSelectedPhotos();

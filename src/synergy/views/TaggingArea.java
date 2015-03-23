@@ -24,6 +24,9 @@ public class TaggingArea extends BorderPane {
 	private BaseHorizontalPane locationPane = new LocationPane ();
 	private BaseVerticalPane datePane = new DatePane (this);
 
+    /**
+     * updates all of the fields(children/locaiton/suggest/datePane) based on the data
+     */
     public void update(){
         childrenPane.update();
         locationPane.update ();
@@ -36,10 +39,17 @@ public class TaggingArea extends BorderPane {
         }
     }
 
+    /**
+     *
+     * @return the locationPane
+     */
 	public BaseHorizontalPane getLocationPane () {
 		return locationPane;
 	}
 
+    /**
+     * creates the UI for the tagging area
+     */
 	public TaggingArea() {
         setCenter (returnGridPane (locationPane, datePane, childrenPane, suggestionsPane));
     }

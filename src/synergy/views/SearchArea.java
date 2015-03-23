@@ -9,6 +9,7 @@ import synergy.views.panes.search.LocationPane;
 import synergy.views.panes.search.QueryPane;
 
 /**
+ * This search area contains all the panes - the children/query/location/date pane that allows that user to search
  * Created by Cham on 06/03/2015.
  */
 public class SearchArea extends FlowPane {
@@ -18,19 +19,34 @@ public class SearchArea extends FlowPane {
     private LocationPane locationPane;
     private DatePane datePane;
 
+    /**
+     * sets up the ui of the search area
+     */
     public SearchArea() {
         setUpUI();
         getStyleClass().add("my-list-cell");
     }
 
+    /**
+     *
+     * @return the children pane
+     */
     public ChildrenPane getChildrenPane() {
         return childrenPane;
     }
 
+    /**
+     *
+     * @return the location pane
+     */
     public LocationPane getLocationPane() {
         return locationPane;
     }
 
+    /**
+     *
+     * @return the date pane
+     */
     public DatePane getDatePane() {
         return datePane;
     }

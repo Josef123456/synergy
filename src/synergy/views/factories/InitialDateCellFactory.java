@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * A datecellfactory that formats the cells in the initialdatecell datepicker
  * Created by alexstoick on 3/21/15.
  */
 public class InitialDateCellFactory extends BaseDateCellFactory implements Callback<DatePicker, DateCell> {

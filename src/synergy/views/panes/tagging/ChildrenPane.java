@@ -28,6 +28,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * This class is a user interface that allows the user to tag children.
+ * It contains a combobox, buttons and a list of queries
  * Created by alexstoick on 3/17/15.
  */
 public class ChildrenPane extends BaseVerticalPane {
@@ -37,11 +39,18 @@ public class ChildrenPane extends BaseVerticalPane {
     private List<String> childrenData = Tag.getAllChildrenTags().stream().map(Tag::getValue).collect (Collectors.toList ());
 	private TaggingArea taggingArea;
 
+	/**
+	 *
+	 * @param taggingArea the parent pane
+	 */
 	public ChildrenPane(TaggingArea taggingArea) {
 		this.taggingArea = taggingArea;
 		setupChildrenPane ();
 	}
 
+	/**
+	 * Updates the list of queries with all the tags of the selected photo
+	 */
 	public void update() {
 		childrenTags.getChildren().clear();
 		Set<Tag> tagSet = new HashSet<> ();

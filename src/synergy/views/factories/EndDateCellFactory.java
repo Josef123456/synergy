@@ -11,11 +11,16 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
+ * A datecell that formats the cells in the enddatecell datepicker
  * Created by alexstoick on 3/21/15.
  */
 public class EndDateCellFactory extends BaseDateCellFactory implements Callback<DatePicker, DateCell> {
 	DatePicker initialDatePicker;
 
+	/**
+	 *
+	 * @param initialDatePicker the end datepicker
+	 */
 	public EndDateCellFactory (DatePicker initialDatePicker) {
 		this.initialDatePicker = initialDatePicker;
 	}

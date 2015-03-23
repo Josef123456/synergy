@@ -7,6 +7,10 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * This class is responsible for setting up an auto-complete feature for a given combobox
+ * @param <T>
+ */
 public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
 
     private ComboBox comboBox;
@@ -15,6 +19,10 @@ public class AutoCompleteComboBoxListener<T> implements EventHandler<KeyEvent> {
     private boolean moveCaretToPos = false;
     private int caretPos;
 
+    /**
+     * this adds a listener to the combobox that autocompletes the word based on the list inside the combobox itself
+     * @param comboBox the combobox that you want the autocomplete feature one
+     */
     public AutoCompleteComboBoxListener(final ComboBox comboBox) {
         this.comboBox = comboBox;
         sb = new StringBuilder();

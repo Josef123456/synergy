@@ -18,12 +18,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
+ * This class contains the suggestion UI, where the user can add the suggested names based on the algorithm set.
  * Created by alexstoick on 3/18/15.
  */
 public class SuggestionsPane extends BaseVerticalPane {
 
 	private TaggingArea taggingArea;
 
+	/**
+	 * sets up the basic gui of the suggestion pane
+	 * @param taggingArea the parent pane of this class
+	 */
 	public SuggestionsPane (TaggingArea taggingArea) {
 		this.taggingArea = taggingArea;
 		setupSuggestionPane ();
@@ -33,6 +38,9 @@ public class SuggestionsPane extends BaseVerticalPane {
 		getStyleClass().add("grid");
 	}
 
+	/**
+	 * this updates the suggestions based on the photo(s) selected
+	 */
 	public void update() {
 		FlowPane childrenSuggestions = new FlowPane (10, 10);
 		childrenSuggestions.setPadding (new Insets (10, 10, 10, 10));
