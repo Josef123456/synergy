@@ -190,6 +190,11 @@ public class Photo {
         return null;
     }
 
+	/**
+	 * Add the {@link synergy.models.Tag} to the list of tags associated with the photo. This also
+	 * creates a new {@link synergy.models.PhotoTag} that marks the relationship.
+	 * @param tag the tag that has to be added to the photo.
+	 */
     public void addTag(Tag tag) {
         this.save();
         tag.save();
