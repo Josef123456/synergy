@@ -71,13 +71,15 @@ public class TopPane extends VBox{
 		Button printingViewBtn = new Button ("Printing");
 		setupButtonStyle (printingViewBtn, "printingButton");
 		printingViewBtn.setOnAction (event -> {
-			Stage stage = new Stage ();
-			PrintingInterface printer = new PrintingInterface ();
-			try {
-				printer.start (stage);
-			} catch (IOException e) {
-				e.printStackTrace ();
-			}
+            if(!PhotoGrid.getSelectedImages().isEmpty()) {
+                Stage stage = new Stage();
+                PrintingInterface printer = new PrintingInterface();
+                try {
+                    printer.start(stage);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
 		});
 		rightButtonsBox.getChildren ().addAll (printingViewBtn);
 
