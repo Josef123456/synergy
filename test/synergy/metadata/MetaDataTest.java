@@ -1,33 +1,24 @@
 package synergy.metadata;
 
-import junit.framework.TestCase;
+
 import org.apache.commons.imaging.ImageReadException;
 import org.apache.commons.imaging.ImageWriteException;
-
-import java.io.File;
+import org.junit.Test;
+import synergy.models.BaseTest;
+import synergy.models.Photo;
 import java.io.IOException;
 
 /**
  * Created by Amit on 19/02/2015.
  */
-public class MetaDataTest extends TestCase {
+public class MetaDataTest extends BaseTest {
 
+    @Test
     public void testMetaData() throws ImageWriteException, ImageReadException, IOException {
-
         MetaData image = new MetaData();
 
-        //Original file used for modifying
-        //"C:\Users\Amit\Pictures\testcamimage.jpg"`
+	    new Photo (FILE_PATH).save();
 
-        File inputFile = new File("/photos\\testcamimage.jpg");
-
-        //image.changeExifMetadata(inputFile);
-        image.getMetaData(inputFile);
-
-        assertNotNull(image.values);
-        assertNotNull(image.metadata);
-
+	    System.out.println ("$$" + image.getTagsForFile (FILE_PATH));
     }
-
-
 }

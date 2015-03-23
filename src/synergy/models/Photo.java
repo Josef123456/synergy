@@ -57,6 +57,8 @@ public class Photo {
             int minute = Integer.parseInt(timeParts[1]);
             int second = Integer.parseInt(timeParts[2]);
             this.date = new Date(year - 1900, month - 1, day, hour, minute, second);
+	        List<Tag> tags = MetaData.getTagsForFile(path);
+	        tags.forEach (t -> this.addTag (t));
         } catch (Exception e) {
             System.err.println(e);
             e.printStackTrace();
