@@ -1,7 +1,9 @@
 package synergy.views.panes.search;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javafx.geometry.Insets;
@@ -29,6 +31,8 @@ public class DatePane extends HBox {
     private DatePicker singleDatePicker,initialDatePicker, endDatePicker;
 	private StackPane stackCategories;
 	private HBox monthAndYear, periodPane;
+
+	static final Object[] uniqueYears = Photo.getUniqueYears();
 
 	public DatePane () {
 		setUpDatePickers ();
@@ -127,12 +131,10 @@ public class DatePane extends HBox {
 			stackCategories.getChildren().add(singleDatePicker);
 		} else if (dateCategories.getValue().equals("Month")) {
 			stackCategories.getChildren().clear();
-			Set<String> uniqueYears = new HashSet ();
-			for (int i = 0; i < Photo.getUniqueDates().size(); i++) {
-				uniqueYears.add(new SimpleDateFormat("yyyy").format(Photo.getUniqueDates().get(i)));
+			if ( years.getItems ().size () == 0 ) {
+				years.getItems ().addAll (uniqueYears);
 			}
-			Object[] arrayYears = uniqueYears.toArray();
-			years.getItems().addAll(arrayYears);
+			monthAndYear.getChildren ().clear();
 			monthAndYear.getChildren().addAll(months, years);
 			stackCategories.getChildren().add(monthAndYear);
 		} else if (dateCategories.getValue().equals("Period")) {

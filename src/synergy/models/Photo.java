@@ -8,6 +8,7 @@ import synergy.metadata.MetaData;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -180,6 +181,15 @@ public class Photo {
         }
         return null;
     }
+
+	public static Object[] getUniqueYears() {
+		List<Date> uniqueDates = getUniqueDates ();
+		Set<String> uniqueYears = new HashSet ();
+		for ( Date uniqueDate : uniqueDates ) {
+			uniqueYears.add (new SimpleDateFormat ("yyyy").format (uniqueDate));
+		}
+		return uniqueYears.toArray ();
+	}
 
     public static List<Photo> getPhotosForDate(Date date) {
         try {
