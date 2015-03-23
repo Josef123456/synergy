@@ -1,14 +1,5 @@
 package synergy.views;
 
-import org.imgscalr.Scalr;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.controlsfx.control.cell.ImageGridCell;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
@@ -28,17 +19,19 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import org.imgscalr.Scalr;
 import synergy.models.Photo;
 import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by Josef on 09/03/2015.
@@ -117,7 +110,7 @@ public class PrintingInterface extends Application {
                     BufferedImage bufferedImage = ImageIO.read(new File(photo.getPath()));
                     bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage, (int)
                                     gridPhotos.getCellWidth()), (int) gridPhotos.getCellHeight(),
-                            (int) gridPhotos.getCellWidth(), java.awt.Color.BLACK);
+                            (int) gridPhotos.getCellWidth(), java.awt.Color.WHITE);
                     final WritableImage paddedWritableImage = WritableImageCreator
                             .fromBufferedImage(bufferedImage);
                     bufferedImage.flush();
