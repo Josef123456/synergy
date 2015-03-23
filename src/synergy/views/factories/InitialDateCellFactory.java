@@ -7,8 +7,6 @@ import synergy.models.Photo;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Created by alexstoick on 3/21/15.
@@ -21,8 +19,8 @@ public class InitialDateCellFactory extends BaseDateCellFactory implements Callb
 			public void updateItem (LocalDate item, boolean empty) {
 				super.updateItem (item, empty);
 				setMinSize (50, 50);
-				for ( int i = 0 ; i < uniqueDates.size () ; i++ ) {
-					if ( formatDate (item).equals (new SimpleDateFormat ("dd/MM/yyyy").format (uniqueDates.get (i))) ) {
+				for ( int i = 0 ; i < Photo.getUniqueDates().size () ; i++ ) {
+					if ( formatDate (item).equals (new SimpleDateFormat ("dd/MM/yyyy").format (Photo.getUniqueDates().get (i))) ) {
 						setStyle ("-fx-background-color: #00c0cb;");
 					}
 				}
