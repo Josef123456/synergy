@@ -21,7 +21,11 @@ import synergy.views.PhotoGrid;
 import synergy.views.TaggingArea;
 import synergy.views.panes.base.BaseVerticalPane;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Created by alexstoick on 3/17/15.
@@ -33,13 +37,12 @@ public class ChildrenPane extends BaseVerticalPane {
     private List<String> childrenData;
 	private TaggingArea taggingArea;
 	//Tag.getAllChildrenTags().stream ().map (Tag::getValue).collect(Collectors.toList ());
-	String[] mockChildrenData = {"CHAM", "TOBI", "BILLY", "MIKE"};
+
 
 	public ChildrenPane(TaggingArea taggingArea) {
         childrenData = new ArrayList<>();
         List<Tag> allTags = Tag.getAllChildrenTags();
-        //childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
-		childrenData.addAll(Arrays.asList(mockChildrenData));
+        childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
 		this.taggingArea = taggingArea;
 		setupChildrenPane ();
 	}
