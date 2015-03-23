@@ -154,12 +154,12 @@ public class TopPane extends VBox{
 					PhotoGrid.displayingImported = true;
 					PhotoGrid.setGridPhotos(lastImported);
 				}
+				searchArea.getDatePane().resetAll();
+				searchArea.getLocationPane().resetAll();
+				searchArea.getChildrenPane().resetAll();
 				System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
 			}
 
-			searchArea.getDatePane().resetAll();
-			searchArea.getLocationPane().resetAll();
-			searchArea.getChildrenPane().resetAll();
 			long t2 = System.currentTimeMillis();
 			System.out.println(t2 - t1 + " milliseconds");
 			Thread refreshEngine = new Thread(Engine::prepare);
