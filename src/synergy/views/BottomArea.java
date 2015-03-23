@@ -96,7 +96,7 @@ public class BottomArea extends VBox {
             PhotoGrid.getSelectedImages().clear();
             PhotoGrid.getSelectedPhotos().clear();
 
-	        PhotoGrid.getDisplayedPhotos ().removeAll(selectedPhotos);
+            PhotoGrid.getDisplayedPhotos().removeAll(selectedPhotos);
             PhotoGrid.getDisplayedImagesList().removeAll(selectedImages);
             PhotoGrid.getDisplayedImagesMap().keySet().removeAll(selectedPhotos);
 
@@ -129,7 +129,8 @@ public class BottomArea extends VBox {
             ((GridViewSkin) PhotoGrid.getPhotosGrid().getSkin()).updateGridViewItems();
             photoGrid.getTaggingArea().update();
 
-            SliderBar.show();
+            if (PhotoGrid.getDisplayedImagesList().size() > 0)
+                SliderBar.show();
         });
     }
 

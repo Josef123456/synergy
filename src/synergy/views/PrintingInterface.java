@@ -1,5 +1,14 @@
 package synergy.views;
 
+import org.imgscalr.Scalr;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.controlsfx.control.cell.ImageGridCell;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
@@ -18,7 +27,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -28,22 +36,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import org.imgscalr.Scalr;
 import synergy.models.Photo;
 import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
 /**
  * Created by Josef on 09/03/2015.
  * The PrintingInterface provides the feature of printing.
- * By selecting the printing button in the Main class, the user can select a picture and print the image.
+ * By selecting the printing button in the Main class, the user can select a picture and print
+ * the image.
  * Multiple photos and printing in portrait or landscape mode can be done using this class.
  */
 public class PrintingInterface extends Application {
@@ -70,6 +71,7 @@ public class PrintingInterface extends Application {
         Scene scene = new Scene(main, pageLayout.getPrintableWidth() + 30, pageLayout
                 .getPrintableHeight() + 100);
         scene.getStylesheets().add("css/background1.css");
+        stage.setResizable(false);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Print");
         primaryStage.centerOnScreen();
@@ -78,7 +80,9 @@ public class PrintingInterface extends Application {
 
     private void setupPrintJob() {
         job = PrinterJob.createPrinterJob();
-        job.showPageSetupDialog(null);
+        if (!job.showPageSetupDialog(null)) {
+            stage.close();
+        }
         jobSettings = job.getJobSettings();
         pageLayout = jobSettings.getPageLayout();
     }
@@ -86,7 +90,6 @@ public class PrintingInterface extends Application {
     private void setupCenter() throws IOException {
 
         printImages = FXCollections.observableArrayList(new ArrayList<Image>());
-
         gridPhotos = new GridView(printImages);
         gridPhotos.setCellFactory(gridView -> new ImageGridCell());
 
