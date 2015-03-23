@@ -16,13 +16,12 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import synergy.models.Photo;
 import synergy.models.Tag;
-import synergy.views.AutoCompleteComboBoxListener;
+import synergy.views.AutoCompleteUtil;
 import synergy.views.PhotoGrid;
 import synergy.views.TaggingArea;
 import synergy.views.panes.base.BaseVerticalPane;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by alexstoick on 3/17/15.
@@ -34,11 +33,13 @@ public class ChildrenPane extends BaseVerticalPane {
     private List<String> childrenData;
 	private TaggingArea taggingArea;
 	//Tag.getAllChildrenTags().stream ().map (Tag::getValue).collect(Collectors.toList ());
+	String[] mockChildrenData = {"CHAM", "TOBI", "BILLY", "MIKE"};
 
 	public ChildrenPane(TaggingArea taggingArea) {
         childrenData = new ArrayList<>();
         List<Tag> allTags = Tag.getAllChildrenTags();
-        childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
+        //childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
+		childrenData.addAll(Arrays.asList(mockChildrenData));
 		this.taggingArea = taggingArea;
 		setupChildrenPane ();
 	}
@@ -104,8 +105,7 @@ public class ChildrenPane extends BaseVerticalPane {
 		for (String childrenNames : childrenData ) {
 			childrenComboBox.getItems ().add(childrenNames);
 		}
-		AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
-		childrenComboBox.setOnKeyReleased (autoComplete);
+		AutoCompleteUtil.autoCompleteComboBox(childrenComboBox, AutoCompleteUtil.AutoCompleteMode.STARTS_WITH);
 		Button addChildrenTagButton = new Button ("+");
 		addChildrenTagButton.setStyle ("-fx-text-fill: #ffffff");
 		addChildrenTagButton.setStyle ("-fx-background-color: #595959");
@@ -123,8 +123,8 @@ public class ChildrenPane extends BaseVerticalPane {
 
 
 		addChildrenTagButton.setOnAction (childrenEventHandler);
-		childrenComboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) ->{
-			if(E.getCode() == KeyCode.ENTER){
+		childrenComboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) -> {
+			if (E.getCode() == KeyCode.ENTER) {
 				System.out.println("It worked!");
 				String name = childrenComboBox.getEditor().getText();
 				addChildrenTag(name);
