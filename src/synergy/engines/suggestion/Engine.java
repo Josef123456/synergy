@@ -23,18 +23,22 @@ public class Engine {
      * @return Returns a list of suggested Tags.
      */
     public static List<Tag> suggest(Photo p){
-
+        List<Tag> popularTags;
         if( p.getChildTags().isEmpty() ){
             return getUniqueDates(p);
         }
         else{
-            List<Tag> popularTags = SimplePopularEngine.suggest(p);
+            popularTags = SimplePopularEngine.suggest(p);
             if(popularTags.isEmpty()){
                 return getUniqueDates(p);
             }
         }
-
-        return SimplePopularEngine.suggest(p);
+        List<Tag> toReturn = new ArrayList<>();
+        int i = 0;
+        while ( i<popularTags.size() && i<10){
+            toReturn.add(popularTags.get(i++));
+        }
+        return toReturn;
     }
 
     /**
