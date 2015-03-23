@@ -85,7 +85,7 @@ public class PhotoTest extends BaseTest{
 		LocalDate fromDate = LocalDate.of (photoDate.getYear ()+1900, photoDate.getMonth ()+1, photoDate.getDate ());
 
 		System.out.println(photoDate + " %%% " );
-		List<Photo> photos = Photo.getPhotosForDatesAndRoomAndKid (toDate, fromDate, null, null);
+		List<Photo> photos = Photo.getPhotosForDatesAndRoomAndKids (toDate, fromDate, null, null);
 		assertEquals (1 , photos.size ());
 
 		Tag t = new Tag(Tag.TagType.KID, "Sari");
@@ -93,25 +93,34 @@ public class PhotoTest extends BaseTest{
 
 		photo.addTag (t);
 
-		photos = Photo.getPhotosForDatesAndRoomAndKid (toDate, fromDate, null, t);
+		List<Tag> tags = new ArrayList<> ();
+		tags.add(t);
+
+		photos = Photo.getPhotosForDatesAndRoomAndKids (toDate, fromDate, null, tags);
 		assertEquals (1 , photos.size ());
 
-		photos = Photo.getPhotosForDatesAndRoomAndKid (null, null, null, t);
+		photos = Photo.getPhotosForDatesAndRoomAndKids (null, null, null, tags);
 		assertEquals (1 , photos.size ());
 
 		photo.removeTag (t);
 
-		photos = Photo.getPhotosForDatesAndRoomAndKid (toDate, fromDate, null, t);
+		photos = Photo.getPhotosForDatesAndRoomAndKids (toDate, fromDate, null, tags);
 		assertEquals (0, photos.size ());
 
 		photo.addTag (t);
 		photo.addTag (t1);
 
-		photos = Photo.getPhotosForDatesAndRoomAndKid (null, null, t1, t);
+		photos = Photo.getPhotosForDatesAndRoomAndKids (null, null, t1, tags);
 		assertEquals (1 , photos.size ());
 
-		photos = Photo.getPhotosForDatesAndRoomAndKid (null, null, t1, null);
+		photos = Photo.getPhotosForDatesAndRoomAndKids (null, null, t1, null);
 		assertEquals (1 , photos.size ());
+
+		Tag t2 = new Tag(Tag.TagType.KID, "Alex");
+		photo.addTag (t2);
+
+		photos = Photo.getPhotosForDatesAndRoomAndKids (null, null, null, tags);
+		assertEquals(1, photos.size());
 	}
 
 }

@@ -258,17 +258,17 @@ public class Photo {
         return null;
     }
 
-    public static List<Photo> getPhotosForDatesAndRoomAndKid(LocalDate fromDate, LocalDate
-            toDate, Tag room, Tag kid) {
+    public static List<Photo> getPhotosForDatesAndRoomAndKids (LocalDate fromDate, LocalDate
+		    toDate, Tag room, List<Tag> kids) {
         if (room != null) {
             room.save();
         }
-        if (kid != null) {
-            kid.save();
+        if (kids != null) {
+	        kids.forEach (synergy.models.Tag::save);
         }
         try {
             return PhotoDao.getInstance().getPhotosForDatesAndRoomAndKid(fromDate, toDate, room,
-                    kid);
+		            kids);
         } catch (SQLException e) {
             System.err.println(e);
             e.printStackTrace();

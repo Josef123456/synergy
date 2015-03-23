@@ -74,7 +74,7 @@ public class PhotoDao {
 		photoDao.delete (photo);
 	}
 
-	public List<Photo>getPhotosForDatesAndRoomAndKid(LocalDate fromDate, LocalDate toDate, Tag room, Tag kid)
+	public List<Photo>getPhotosForDatesAndRoomAndKid(LocalDate fromDate, LocalDate toDate, Tag room, List<Tag> kids)
 			throws SQLException {
 		QueryBuilder<Photo, Integer> qb = photoDao.queryBuilder ();
 		Where where = qb.where ();
@@ -96,9 +96,11 @@ public class PhotoDao {
 			++ count ;
 			kidTag ++ ;
 		}
-		if ( kid != null ) {
-			makePhotoForTagQuery (where);
-			++ count ;
+		if ( kids != null ) {
+			for ( int i = 0 ; i < kids.size (); ++ i ) {
+				makePhotoForTagQuery (where);
+			}
+			count += kids.size();
 		}
 		System.out.println(where);
 		System.out.println(count);
@@ -109,10 +111,12 @@ public class PhotoDao {
 			if ( room != null ) {
 				preparedQuery.setArgumentHolderValue (roomTag, room);
 			}
-			if ( kid != null ) {
-				preparedQuery.setArgumentHolderValue (kidTag, kid);
+			if ( kids != null ) {
+				for(Tag kid: kids) {
+					preparedQuery.setArgumentHolderValue (kidTag++, kid);
+				}
 			}
-			System.out.println ("++" + qb.prepareStatementString());
+			System.out.println ("PHOTO DAO: QUERY:::" + qb.prepareStatementString());
 			return photoDao.query (preparedQuery);
 		}
 	}

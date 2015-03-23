@@ -3,6 +3,7 @@ package synergy.views.panes.search;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -58,15 +59,15 @@ public class QueryPane extends HBox {
     private void updateSearchDatabase() {
         computeSelectedDates();
         Tag roomTag = computeRoomTag();
-        Tag kidTag = computeKidTag();
+        List<Tag> kidTags = computeKidTag();
 
         System.out.println("QUERY PANE: final init date: " + finalInitialDate);
         System.out.println("QUERY PANE: final end date: " + finalEndDate);
-        List<Photo> photosFromDB = Photo.getPhotosForDatesAndRoomAndKid(
-                finalInitialDate, finalEndDate, roomTag, kidTag
+        List<Photo> photosFromDB = Photo.getPhotosForDatesAndRoomAndKids (
+		        finalInitialDate, finalEndDate, roomTag, kidTags
         );
 
-        if (!(finalEndDate == null && finalEndDate == null && roomTag == null && kidTag == null)) {
+        if (!(finalEndDate == null && finalEndDate == null && roomTag == null && kidTags == null)) {
             PhotoGrid.displayingImported = false;
         } else {
             PhotoGrid.displayingImported = true;
@@ -120,14 +121,12 @@ public class QueryPane extends HBox {
         }
     }
 
-    private Tag computeKidTag() {
+    private List<Tag> computeKidTag() {
         Set<String> listOfSearchedField = searchArea.getChildrenPane().getListOfSearchedKids();
-
-        if (listOfSearchedField.size() > 0) {
-            String kid1 = listOfSearchedField.iterator().next();
-            return new Tag(Tag.TagType.KID, kid1);
-        }
-        return null;
+	    if(listOfSearchedField.size() == 0 ) {
+		    return null;
+	    }
+	    return listOfSearchedField.stream ().map (name -> new Tag (Tag.TagType.KID, name)).collect (Collectors.toList ());
     }
 
     private Tag computeRoomTag() {
