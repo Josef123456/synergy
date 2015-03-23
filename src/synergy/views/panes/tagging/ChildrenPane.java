@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class ChildrenPane extends BaseVerticalPane {
 
 	private FlowPane childrenTags;
-	private ComboBox<CharSequence> childrenComboBox;
+	private ComboBox<String> childrenComboBox;
     private List<String> childrenData = Tag.getAllChildrenTags().stream().map(Tag::getValue).collect (Collectors.toList ());
 	private TaggingArea taggingArea;
 
@@ -62,7 +62,7 @@ public class ChildrenPane extends BaseVerticalPane {
 	}
 
 	private void addChildrenTag(){
-		String name = childrenComboBox.getEditor().getText();
+		String name = AutoCompleteUtil.getComboBoxValue(childrenComboBox);
 		String tagName = null;
 		Set<String> hashSet = new HashSet<String>(childrenData){
 			public boolean contains(Object o){

@@ -61,9 +61,9 @@ public class AutoCompleteUtil {
 
                 ObservableList<T> list = FXCollections.observableArrayList();
                 for (T aData : data) {
-                    if (mode.equals(AutoCompleteMode.STARTS_WITH) && aData.toString().toLowerCase().startsWith(comboBox.getEditor().getText().toLowerCase())) {
+                    if (comboBox.getEditor().getText() != null && mode.equals(AutoCompleteMode.STARTS_WITH) && aData.toString().toLowerCase().startsWith(comboBox.getEditor().getText().toLowerCase())) {
                         list.add(aData);
-                    } else if (mode.equals(AutoCompleteMode.CONTAINING) && aData.toString().toLowerCase().contains(comboBox.getEditor().getText().toLowerCase())) {
+                    } else if (comboBox.getEditor().getText() != null && mode.equals(AutoCompleteMode.CONTAINING) && aData.toString().toLowerCase().contains(comboBox.getEditor().getText().toLowerCase())) {
                         list.add(aData);
                     }
                 }
@@ -74,7 +74,9 @@ public class AutoCompleteUtil {
                 if (!moveCaretToPos) {
                     caretPos = -1;
                 }
-                moveCaret(t.length());
+                if(t != null) {
+                    moveCaret(t.length());
+                }
                 if (!list.isEmpty()) {
                     comboBox.show();
                 }
