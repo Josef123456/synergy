@@ -12,7 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import synergy.models.Tag;
-import synergy.views.AutoCompleteUtil;
+import synergy.views.panes.AutoCompleteComboBoxListener;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -79,7 +79,8 @@ public class ChildrenPane extends HBox {
         for (String childName : childrenData) {
             comboBox.getItems().add(childName);
         }
-        AutoCompleteUtil.autoCompleteComboBox(comboBox, AutoCompleteUtil.AutoCompleteMode.STARTS_WITH);
+        AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
+        comboBox.setOnKeyReleased (autoComplete);
         setHgrow (this, Priority.ALWAYS);
         addButton = new Button("+");
         addButton.setFont (Font.font ("Arial", FontWeight.BOLD, 15));
@@ -121,7 +122,7 @@ public class ChildrenPane extends HBox {
     }
 
     private void addChildrenQuery() {
-	    String addedQuery = (String) AutoCompleteUtil.getComboBoxValue(comboBox); ;
+	    String addedQuery = (String) comboBox.getValue(); ;
 	    System.out.println (addedQuery);
 	    Set<String> hashSet = new HashSet<String>(childrenData) {
             public boolean contains(Object o) {

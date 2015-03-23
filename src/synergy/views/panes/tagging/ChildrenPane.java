@@ -16,9 +16,9 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import synergy.models.Photo;
 import synergy.models.Tag;
-import synergy.views.AutoCompleteUtil;
 import synergy.views.PhotoGrid;
 import synergy.views.TaggingArea;
+import synergy.views.panes.AutoCompleteComboBoxListener;
 import synergy.views.panes.base.BaseVerticalPane;
 
 import java.util.ArrayList;
@@ -62,7 +62,7 @@ public class ChildrenPane extends BaseVerticalPane {
 	}
 
 	private void addChildrenTag(){
-		String name = AutoCompleteUtil.getComboBoxValue (childrenComboBox);
+		String name = (String) childrenComboBox.getValue();
 		String tagName = null;
 		if(name == null) {
 			return ;
@@ -107,7 +107,8 @@ public class ChildrenPane extends BaseVerticalPane {
 		for (String childrenNames : childrenData ) {
 			childrenComboBox.getItems ().add(childrenNames);
 		}
-		AutoCompleteUtil.autoCompleteComboBox (childrenComboBox, AutoCompleteUtil.AutoCompleteMode.STARTS_WITH);
+		AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(childrenComboBox);
+		childrenComboBox.setOnKeyReleased (autoComplete);
 		Button addChildrenTagButton = new Button ("+");
 		addChildrenTagButton.setStyle ("-fx-text-fill: #ffffff");
 		addChildrenTagButton.setStyle ("-fx-background-color: #595959");
