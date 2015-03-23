@@ -278,6 +278,7 @@ public class Photo {
 
     public void delete() {
         try {
+            this.getChildTags().forEach(this::removeTag);
             PhotoDao.getInstance().delete(this);
 //			File f = new File(path);
 //			f.delete();
