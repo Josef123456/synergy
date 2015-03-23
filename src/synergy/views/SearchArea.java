@@ -41,7 +41,7 @@ public class SearchArea extends FlowPane {
         locationPane = new LocationPane();
         queryPane = new QueryPane(this);
 
-        setPadding (new Insets (1, 135, 1, 0));
+        setPadding (new Insets (1, 0, 1, 0));
         setAlignment(Pos.CENTER);
         setHgap(10);
         getChildren().addAll(datePane, locationPane, childrenPane, queryPane);
