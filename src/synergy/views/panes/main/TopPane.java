@@ -1,16 +1,5 @@
 package synergy.views.panes.main;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.CopyOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.swing.filechooser.FileSystemView;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -25,10 +14,17 @@ import synergy.engines.suggestion.Engine;
 import synergy.models.Photo;
 import synergy.models.Tag;
 import synergy.utilities.CSVGetter;
-import synergy.views.Main;
-import synergy.views.PhotoGrid;
-import synergy.views.PrintingInterface;
-import synergy.views.SearchArea;
+import synergy.views.*;
+
+import javax.swing.filechooser.FileSystemView;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The TopPane class is a VBox that consist of two parts.
@@ -50,6 +46,7 @@ public class TopPane extends VBox{
 
 	private Button importBtn;
 	private Button importDBBtn;
+	private SearchArea searchArea;
 
 	private void setupTopArea () {
 		ToolBar toolBar = new ToolBar ();
@@ -89,7 +86,7 @@ public class TopPane extends VBox{
 		leftButtonsBox.getChildren ().add (rightButtonsBox);
 		HBox.setHgrow (leftButtonsBox, Priority.ALWAYS);
 
-		SearchArea searchArea = new SearchArea ();
+		searchArea = new SearchArea ();
 
 		toolBar.getItems ().addAll (leftButtonsBox, rightButtonsBox);
 		getChildren ().addAll (toolBar, searchArea);
@@ -159,6 +156,10 @@ public class TopPane extends VBox{
 				}
 				System.out.println("Number of files imported: " + Photo.getAllPhotos().size());
 			}
+
+			searchArea.getDatePane().resetAll();
+			searchArea.getLocationPane().resetAll();
+			searchArea.getChildrenPane().resetAll();
 			long t2 = System.currentTimeMillis();
 			System.out.println(t2 - t1 + " milliseconds");
 			Thread refreshEngine = new Thread(Engine::prepare);
