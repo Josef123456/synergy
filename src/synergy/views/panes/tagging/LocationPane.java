@@ -1,9 +1,5 @@
 package synergy.views.panes.tagging;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import javafx.application.Platform;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
@@ -14,8 +10,11 @@ import javafx.scene.text.Text;
 import synergy.models.Photo;
 import synergy.models.Tag;
 import synergy.views.PhotoGrid;
-import synergy.views.TaggingArea;
 import synergy.views.panes.base.BaseHorizontalPane;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by alexstoick on 3/18/15.
@@ -35,8 +34,8 @@ public class LocationPane extends BaseHorizontalPane {
         getStyleClass().add("grid");
 
         HBox boxLocation = new HBox(5);
-        roomAbtn = new ToggleButton("RoomA");
-        roomBbtn = new ToggleButton("RoomB");
+        roomAbtn = new ToggleButton("Baby Room");
+        roomBbtn = new ToggleButton("Main Room");
         ToggleGroup toggleGroup = new ToggleGroup();
         roomAbtn.setToggleGroup(toggleGroup);
         roomBbtn.setToggleGroup(toggleGroup);
@@ -94,9 +93,9 @@ public class LocationPane extends BaseHorizontalPane {
             int roomA = 0;
             int roomB = 0 ;
             for (Tag tag : tagArray) {
-                if (tag.getValue().equals("RoomA")) {
+                if (tag.getValue().equals("Baby Room")) {
                     ++ roomA;
-                } else if (tag.getValue().equals("RoomB")) {
+                } else if (tag.getValue().equals("Main Room")) {
                     ++roomB;
                 }
             }
