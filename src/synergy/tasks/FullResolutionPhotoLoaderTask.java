@@ -62,7 +62,6 @@ public class FullResolutionPhotoLoaderTask extends Task {
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage(initialImage);
             initialImage.flush();
             initialImage = null;
-            System.out.println("Height: " + finalWi.getHeight() + " Width:" + finalWi.getWidth());
 
             if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {

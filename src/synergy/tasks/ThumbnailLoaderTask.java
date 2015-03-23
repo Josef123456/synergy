@@ -60,7 +60,6 @@ public class ThumbnailLoaderTask extends Task {
 
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage
                     (ImagePadder.padToSize(initialThumbnail, 250, 250, new Color(29, 30, 30)));
-            System.out.println("Height: " + finalWi.getHeight() + " Width:" + finalWi.getWidth());
             initialThumbnail.flush();
 
             if (!parentThread.isInterrupted()) {
