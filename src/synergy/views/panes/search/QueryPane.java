@@ -58,6 +58,7 @@ public class QueryPane extends HBox {
 
     private void updateSearchDatabase() {
         computeSelectedDates();
+	    triggerNameUpdate();
         Tag roomTag = computeRoomTag();
         List<Tag> kidTags = computeKidTag();
 
@@ -77,6 +78,9 @@ public class QueryPane extends HBox {
         System.out.println("Photos from query: " + photosFromDB.size());
     }
 
+	private void triggerNameUpdate() {
+		searchArea.getChildrenPane ().addAndUpdateChildren();
+	}
     private void computeSelectedDates() {
         LocalDate date = searchArea.getDatePane().getSingleDatePicker().getValue();
         LocalDate initialDate = searchArea.getDatePane().getInitialDatePicker().getValue();

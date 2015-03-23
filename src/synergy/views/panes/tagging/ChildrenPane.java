@@ -34,15 +34,10 @@ public class ChildrenPane extends BaseVerticalPane {
 
 	private FlowPane childrenTags;
 	private ComboBox<CharSequence> childrenComboBox;
-    private List<String> childrenData;
+    private List<String> childrenData = Tag.getAllChildrenTags().stream().map(Tag::getValue).collect (Collectors.toList ());
 	private TaggingArea taggingArea;
-	//Tag.getAllChildrenTags().stream ().map (Tag::getValue).collect(Collectors.toList ());
-
 
 	public ChildrenPane(TaggingArea taggingArea) {
-        childrenData = new ArrayList<>();
-        List<Tag> allTags = Tag.getAllChildrenTags();
-        childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
 		this.taggingArea = taggingArea;
 		setupChildrenPane ();
 	}
@@ -66,7 +61,8 @@ public class ChildrenPane extends BaseVerticalPane {
 		}
 	}
 
-	private void addChildrenTag(String name){
+	private void addChildrenTag(){
+		String name = childrenComboBox.getEditor().getText();
 		String tagName = null;
 		Set<String> hashSet = new HashSet<String>(childrenData){
 			public boolean contains(Object o){
@@ -118,19 +114,14 @@ public class ChildrenPane extends BaseVerticalPane {
 		childrenText.setId ("leftText");
 		childrenText.setFont (Font.font ("Arial", FontWeight.BOLD, 16));
 
-		EventHandler childrenEventHandler = event -> {
-			String name = childrenComboBox.getEditor().getText();
-			addChildrenTag(name);
-		};
+		EventHandler childrenEventHandler = event -> addChildrenTag();
 		childrenComboBox.getEditor().setText ("");
 
 
 		addChildrenTagButton.setOnAction (childrenEventHandler);
-		childrenComboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) -> {
-			if (E.getCode() == KeyCode.ENTER) {
-				System.out.println("It worked!");
-				String name = childrenComboBox.getEditor().getText();
-				addChildrenTag(name);
+		childrenComboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) ->{
+			if(E.getCode() == KeyCode.ENTER){
+				addChildrenTag();
 			}
 		});
 		childrenPane.getChildren().addAll(childrenComboBox, addChildrenTagButton);

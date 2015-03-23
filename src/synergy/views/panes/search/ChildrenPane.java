@@ -69,21 +69,23 @@ public class ChildrenPane extends HBox {
         addButton = new Button("+");
         addButton.setFont (Font.font ("Arial", FontWeight.BOLD, 15));
 
-        EventHandler eventHandler = event -> {
-            addChildrenQuery((String) comboBox.getValue());
-            updateChildrenQueries();
-        };
+        EventHandler eventHandler = event -> addAndUpdateChildren ();
         addButton.setOnAction (eventHandler);
         comboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) -> {
             if (E.getCode() == KeyCode.ENTER) {
                 System.out.println("It worked!");
-                addChildrenQuery((String) comboBox.getValue());
+                addChildrenQuery();
                 updateChildrenQueries();
             }
         });
         setSpacing(1);
         getChildren().addAll(searchQueryButtons, comboBox, addButton);
     }
+
+	public void addAndUpdateChildren() {
+		addChildrenQuery();
+		updateChildrenQueries();
+	}
 
     private void updateChildrenQueries() {
         searchQueryButtons.getChildren().clear();
@@ -99,7 +101,8 @@ public class ChildrenPane extends HBox {
         }
     }
 
-    private void addChildrenQuery(String addedQuery) {
+    private void addChildrenQuery() {
+	    String addedQuery = (String) comboBox.getValue() ;
         Set<String> hashSet = new HashSet<String>(childrenData) {
             public boolean contains(Object o) {
                 String paramStr = (String) o;
@@ -122,4 +125,5 @@ public class ChildrenPane extends HBox {
             comboBox.getEditor().setText("");
         }
     }
+
 }
