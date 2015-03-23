@@ -57,10 +57,10 @@ public class TopPane extends VBox{
 		HBox leftButtonsBox = new HBox (1);
         leftButtonsBox.setPadding(new Insets(0,0,0,35));
 		leftButtonsBox.getStyleClass ().setAll ("button-bar");
-		importBtn = new Button ("Import");
+		importBtn = new Button ("Import Photos");
 		setupButtonStyle(importBtn, "importButton");
 
-		importDBBtn = new Button ("Import DataBase");
+		importDBBtn = new Button ("Import Database");
 		setupButtonStyle (importDBBtn, "importDbbtn");
 
 		leftButtonsBox.getChildren ().addAll (importBtn, importDBBtn);
