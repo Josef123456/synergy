@@ -214,6 +214,11 @@ public class Photo {
         }
     }
 
+	/**
+	 * Removes the {@link synergy.models.Tag} from this photo. Also removes the {@link synergy.models.PhotoTag} that
+	 * is associated with this.
+	 * @param tag
+	 */
     public void removeTag(Tag tag) {
         this.save();
         tag.save();
