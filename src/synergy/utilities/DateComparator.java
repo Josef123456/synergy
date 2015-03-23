@@ -14,7 +14,7 @@ public class DateComparator {
      * @param target
      * @param p1
      * @param p2
-     * @return
+     * @return Closest {@link synergy.models.Photo} to the date of the target Photo.
      */
     public static Photo getClosestPhoto(Photo target, Photo p1, Photo p2){
         Date targetDate = target.getDate();

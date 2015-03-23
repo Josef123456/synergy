@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class RelationshipMerger {
     /**
-     * Merges two sorted lists of relationships into one sorted list.
+     * Merges two sorted lists of {@link synergy.models.Relationship} into one sorted list.
      * @param list1 List to be merged.
      * @param list2 List to be merged.
      * @return A list of merged list1 and list2.

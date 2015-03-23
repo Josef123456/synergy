@@ -11,7 +11,7 @@ public class FileReader {
     /**
      * The file is read and its contents returned.
      * @param file The file to be read.
-     * @return The contents of the file as a String.
+     * @return The contents of the file as a {@link java.lang.String}.
      */
     public static String readFile(File file){
         try {

@@ -16,7 +16,7 @@ public class CSVParse {
     /**
      * Parses CSV file.
      * @param file Input CSV file.
-     * @return A list of entries, with every entry containing a list of data.
+     * @return a {@link java.util.List} of entries, with every entry containing a list of data.
      */
     public static List<List<String>> parseCSVFile(File file){
         File csvData = file;
