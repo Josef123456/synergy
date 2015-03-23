@@ -1,14 +1,5 @@
 package synergy.views;
 
-import org.imgscalr.Scalr;
-
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
-
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.controlsfx.control.cell.ImageGridCell;
 import javafx.application.Application;
@@ -25,33 +16,37 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.imgscalr.Scalr;
 import synergy.models.Photo;
 import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 /**
  * Created by Josef on 09/03/2015.
+ * The PrintingInterface provides the feature of printing.
+ * By selecting the printing button in the Main class, the user can select a picture and print the image.
+ * Multiple photos and printing in portrait or landscape mode can be done using this class.
  */
 public class PrintingInterface extends Application {
 
     private BorderPane main;
-    private Button zoomPlusBtn;
-    private Button zoomMinusBtn;
+    private Button zoomPlusBtn, zoomMinusBtn;
     private Stage stage;
     private GridView gridPhotos;
-    ObservableList<Image> printImages;
-    PrinterJob job;
-    JobSettings jobSettings;
-    PageLayout pageLayout;
+    private ObservableList<Image> printImages;
+    private PrinterJob job;
+    private JobSettings jobSettings;
+    private PageLayout pageLayout;
 
     public void start(Stage primaryStage) throws IOException {
         this.stage = primaryStage;

@@ -1,10 +1,6 @@
 package synergy.views;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.application.Platform;
@@ -12,6 +8,10 @@ import javafx.collections.ObservableList;
 import javafx.scene.image.Image;
 import synergy.models.Photo;
 import synergy.tasks.ThumbnailLoaderTask;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by iHack1337 on 3/2/2015.
@@ -77,9 +77,9 @@ public class PhotoGrid extends GridView<Image> {
         for (Photo photo : photosToDisplay)
             System.out.println(photo.getDate());
         Platform.runLater(() -> {
-	        threads.forEach (java.lang.Thread::interrupt);
+            threads.forEach(java.lang.Thread::interrupt);
             threads.clear();
-            displayedPhotosList.clear ();
+            displayedPhotosList.clear();
             displayedImagesList.clear();
             displayedImagesMap.clear();
             selectedImages.clear();
@@ -103,7 +103,7 @@ public class PhotoGrid extends GridView<Image> {
         displayedPhotosList.addAll(photosToDisplay);
         ThumbnailLoaderTask thumbnailLoaderTask = new ThumbnailLoaderTask(photosToDisplay);
         Thread thumbnailLoaderThread = new Thread(thumbnailLoaderTask);
-        thumbnailLoaderTask.setParentThread (thumbnailLoaderThread);
+        thumbnailLoaderTask.setParentThread(thumbnailLoaderThread);
         threads.add(thumbnailLoaderThread);
         thumbnailLoaderThread.setDaemon(true);
         thumbnailLoaderThread.start();

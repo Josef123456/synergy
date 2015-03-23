@@ -7,7 +7,10 @@ import synergy.views.Main;
 import synergy.views.PhotoGrid;
 
 import java.util.ArrayList;
-
+/**
+ * The CenterPane class creates a new instance of the PhotoGrid class with the list of images
+ * and sets it to the center of the Main class.
+ */
 public class CenterPane {
 	public CenterPane () {
 		setupCenterArea ();

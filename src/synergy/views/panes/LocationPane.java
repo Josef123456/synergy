@@ -10,7 +10,7 @@ import javafx.scene.layout.HBox;
  */
 public class LocationPane extends HBox {
 
-	ToggleButton locationA, locationB;
+	private ToggleButton locationA, locationB;
 
 	public LocationPane () {
 		getStyleClass().add("my-list-cell");

@@ -1,23 +1,20 @@
 package synergy.views;
 
-import javafx.scene.Node;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.effect.BoxBlur;
-import javafx.scene.effect.Effect;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import synergy.views.panes.base.BaseHorizontalPane;
+import synergy.views.panes.base.BaseVerticalPane;
 import synergy.views.panes.tagging.ChildrenPane;
 import synergy.views.panes.tagging.DatePane;
 import synergy.views.panes.tagging.LocationPane;
 import synergy.views.panes.tagging.SuggestionsPane;
-import synergy.views.panes.base.BaseHorizontalPane;
-import synergy.views.panes.base.BaseVerticalPane;
 
 /**
  * Created by Josef on 07/03/2015.
+ * The TaggingArea class includes the main features of tagging.
+ * One can tag according to rooms and names.
+ * The date and suggestions are displayed respectively to the pictures selected.
  */
 
 public class TaggingArea extends BorderPane {

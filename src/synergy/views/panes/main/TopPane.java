@@ -29,6 +29,13 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The TopPane class is a VBox that consist of two parts.
+ * The first part of this class contains a HBox that has
+ * buttons with the functionality of importing, importing to the database and printing.
+ * The second part of the VBox is a HBox,as well, which includes features such as searching;
+ * Searching by room a or room b, searching by the names and has a DatePicker which lets the user search by time as well.
+ */
 public class TopPane extends VBox{
 
 	Stage stage;
@@ -53,7 +60,7 @@ public class TopPane extends VBox{
 		importBtn = new Button ("Import");
 		setupButtonStyle(importBtn, "importButton");
 
-		importDBBtn = new Button ("Import DataBase");
+		importDBBtn = new Button ("Import Database");
 		setupButtonStyle (importDBBtn, "importDbbtn");
 
 		leftButtonsBox.getChildren ().addAll (importBtn, importDBBtn);

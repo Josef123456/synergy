@@ -1,5 +1,6 @@
 package synergy.views;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import synergy.views.panes.ChildrenPane;
@@ -12,36 +13,37 @@ import synergy.views.panes.QueryPane;
  */
 public class SearchArea extends HBox {
 
-	private ChildrenPane childrenPane;
-	private QueryPane queryPane;
-	private LocationPane locationPane;
-	private DatePane datePane;
+    private ChildrenPane childrenPane;
+    private QueryPane queryPane;
+    private LocationPane locationPane;
+    private DatePane datePane;
 
-    public SearchArea () {
+    public SearchArea() {
         setUpUI();
-	    getStyleClass().add("my-list-cell");
+        getStyleClass().add("my-list-cell");
     }
 
-	public ChildrenPane getChildrenPane () {
-		return childrenPane;
-	}
+    public ChildrenPane getChildrenPane() {
+        return childrenPane;
+    }
 
-	public LocationPane getLocationPane () {
-		return locationPane;
-	}
+    public LocationPane getLocationPane() {
+        return locationPane;
+    }
 
-	public DatePane getDatePane () {
-		return datePane;
-	}
+    public DatePane getDatePane() {
+        return datePane;
+    }
 
     private void setUpUI() {
-	    childrenPane = new ChildrenPane ();
-	    datePane = new DatePane ();
-        locationPane = new LocationPane ();
-	    queryPane = new QueryPane (this);
+        childrenPane = new ChildrenPane();
+        datePane = new DatePane();
+        locationPane = new LocationPane();
+        queryPane = new QueryPane(this);
 
+        setPadding(new Insets(1, 135, 1, 0));
+        setAlignment(Pos.CENTER);
         setSpacing(10);
-	    setAlignment (Pos.CENTER);
-	    getChildren ().addAll(datePane, locationPane, childrenPane, queryPane);
+        getChildren().addAll(datePane, locationPane, childrenPane, queryPane);
     }
 }

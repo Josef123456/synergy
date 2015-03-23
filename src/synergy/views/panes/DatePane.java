@@ -23,17 +23,12 @@ import java.util.Set;
  */
 public class DatePane extends HBox {
 
-	String[] arrayMonths = {"January", "February", "March", "April", "May", "June", "July",
-			"August", "September", "October", "November", "December"};
-	String[] arrayCategories = {"Date", "Month", "Period"};
-
-	private ComboBox dateCategories;
-	private DatePicker singleDatePicker;
-	private ComboBox months, years;
+	private String[] arrayMonths = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
+	private String[] arrayCategories = {"Date", "Month", "Period"};
+    private ComboBox dateCategories, months, years;
+    private DatePicker singleDatePicker,initialDatePicker, endDatePicker;
 	private StackPane stackCategories;
-	private DatePicker initialDatePicker, endDatePicker;
-	private HBox monthAndYear;
-	private HBox periodPane;
+	private HBox monthAndYear, periodPane;
 
 	public DatePane () {
 		setUpDatePickers ();
@@ -96,9 +91,9 @@ public class DatePane extends HBox {
 		periodPane.setAlignment(Pos.CENTER);
 		initialDatePicker = new DatePicker();
 		endDatePicker = new DatePicker();
-		final Callback<DatePicker, DateCell> initialDateDayCellFactory = new InitialDateCellFactory ();
 
-		final Callback<DatePicker, DateCell> endDateDayCellFactory = new EndDateCellFactory (initialDatePicker);
+        final Callback<DatePicker, DateCell> initialDateDayCellFactory = new InitialDateCellFactory ();
+        final Callback<DatePicker, DateCell> endDateDayCellFactory = new EndDateCellFactory (initialDatePicker);
 
 		singleDatePicker.setDayCellFactory (initialDateDayCellFactory);
 		singleDatePicker.setShowWeekNumbers (false);

@@ -1,7 +1,6 @@
 package synergy.views.panes;
 
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -31,12 +30,10 @@ public class ChildrenPane extends HBox {
     private HBox searchQueryButtons;
     private int height = 50;
     private Set<String> listOfSearchedKids;
-
     private List<String> childrenData;
 
     public ChildrenPane() {
         childrenData = new ArrayList<>();
-        setPadding(new Insets(0, 0, 0, 50));
         List<Tag> allTags = Tag.getAllChildrenTags();
         childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
         getStyleClass().add("my-list-cell");
@@ -60,13 +57,12 @@ public class ChildrenPane extends HBox {
         return listOfSearchedKids;
     }
 
-
     private void setUpTextFieldAndSearch() {
         searchQueryButtons = new HBox();
         searchQueryButtons.setAlignment(Pos.CENTER);
         comboBox = new ComboBox();
-        comboBox.setMaxWidth(280);
-        comboBox.setMinWidth(280);
+        comboBox.setMaxWidth(260);
+        comboBox.setMinWidth(260);
         for (String childName : childrenData) {
             comboBox.getItems().add(childName);
         }
@@ -90,8 +86,6 @@ public class ChildrenPane extends HBox {
                 updateChildrenQueries();
             }
         });
-
-        setPadding(new Insets(0,50,0,0));
         setSpacing(1);
         getChildren().addAll(searchQueryButtons, comboBox, addButton);
     }
@@ -133,5 +127,4 @@ public class ChildrenPane extends HBox {
             comboBox.getEditor().setText("");
         }
     }
-
 }
