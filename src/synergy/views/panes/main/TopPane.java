@@ -2,6 +2,7 @@ package synergy.views.panes.main;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
@@ -179,11 +180,17 @@ public class TopPane extends VBox{
 			if(selectedFile != null)
 			{
 				CSVGetter.getCSVData (selectedFile);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Restart application");
+                alert.setHeaderText("Please restart the application");
+                alert.setContentText("To apply changes, please restart the program");
+                alert.showAndWait();
 				System.out.println(Tag.getAllPlacesTags ()+"\n"+Tag.getAllChildrenTags());
+
+                Thread refreshEngine = new Thread(Engine::prepare);
+                refreshEngine.setDaemon(true);
+                refreshEngine.start();
 			}
-			Thread refreshEngine = new Thread(Engine::prepare);
-			refreshEngine.setDaemon(true);
-			refreshEngine.start();
 		});
 	}
 
