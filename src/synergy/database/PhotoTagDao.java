@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by alexstoick on 2/7/15.
+ * Data access object class for {@link synergy.models.PhotoTag}
  */
 public class PhotoTagDao {
 	private static PhotoTagDao ourInstance = new PhotoTagDao ();
@@ -47,6 +47,10 @@ public class PhotoTagDao {
 
 	}
 
+    /**
+     * Drops the database table.
+     * @throws SQLException
+     */
 	public void dropTable() throws SQLException {
 		TableUtils.dropTable (connection, PhotoTag.class, true );
 		TableUtils.createTableIfNotExists (connection, PhotoTag.class);

@@ -13,11 +13,16 @@ import synergy.models.Tag;
 import java.sql.SQLException;
 import java.util.List;
 
-
+/**
+ * Data access object class for {@link synergy.models.Relationship}
+ */
 public class RelationshipDao {
     private static RelationshipDao ourInstance = new RelationshipDao ();
     private static PreparedQuery<Tag> tagsForPhotoQuery = null;
-
+    /**
+     * Get the instance of the singleton.
+     * @return The instance of this class.
+     */
     public static RelationshipDao getInstance() {
         return ourInstance;
     }
@@ -36,6 +41,11 @@ public class RelationshipDao {
         }
     }
 
+    /**
+     * Get all the relationships for a {@link synergy.models.Tag}.
+     * @return A {@link java.util.List} list of {@link synergy.models.Photo}
+     * @throws SQLException
+     */
 	public List<Relationship> getRelationshipForTags( Tag tag1 , Tag tag2 ) throws SQLException {
 		QueryBuilder<Relationship, Integer> qb = relationshipDao.queryBuilder ();
 		Where where = qb.where();

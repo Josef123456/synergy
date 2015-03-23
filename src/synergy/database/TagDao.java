@@ -15,7 +15,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 /**
- * Created by alexstoick on 2/7/15.
+ * Data access object class for {@link synergy.models.Photo}
  */
 public class TagDao {
 	private static TagDao ourInstance = new TagDao ();
