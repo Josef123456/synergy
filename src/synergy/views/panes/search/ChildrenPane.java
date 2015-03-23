@@ -21,6 +21,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
+ * This class is a user interface that allows the users to search for a specific child tag.
+ * It contains:
+ * A list of queries from the user
+ * A ComboBox with all the children's names taken from the database
+ * A button that allows the users to add the query
  * Created by alexstoick on 3/21/15.
  */
 public class ChildrenPane extends HBox {
@@ -32,6 +37,9 @@ public class ChildrenPane extends HBox {
     private Set<String> listOfSearchedKids = new HashSet<>();
     private List<String> childrenData;
 
+    /**
+     * Creates an instance of the class children pane with the basic features. It instantiates the values of the combobox
+     */
     public ChildrenPane() {
         childrenData = new ArrayList<>();
         List<Tag> allTags = Tag.getAllChildrenTags();
@@ -45,12 +53,19 @@ public class ChildrenPane extends HBox {
         addButton.setMinHeight (height);
     }
 
+    /**
+     * Resets all the fields and clears all the queries
+     */
     public void resetAll() {
         searchQueryButtons.getChildren().clear();
         listOfSearchedKids.clear();
 	    comboBox.getEditor().setText(null);
     }
 
+    /**
+     *
+     * @return a {@link java.util.Set} of strings that contains all of the queries
+     */
     public Set<String> getListOfSearchedKids() {
         return listOfSearchedKids;
     }
@@ -82,6 +97,9 @@ public class ChildrenPane extends HBox {
         getChildren().addAll(searchQueryButtons, comboBox, addButton);
     }
 
+    /**
+     * Adds what's currently in the field and updates the queries if there are any changes
+     */
 	public void addAndUpdateChildren() {
 		addChildrenQuery();
 		updateChildrenQueries();
@@ -103,7 +121,7 @@ public class ChildrenPane extends HBox {
     }
 
     private void addChildrenQuery() {
-	    String addedQuery = (String) comboBox.getValue() ;
+	    String addedQuery = (String) AutoCompleteUtil.getComboBoxValue(comboBox); ;
 	    System.out.println (addedQuery);
 	    Set<String> hashSet = new HashSet<String>(childrenData) {
             public boolean contains(Object o) {
