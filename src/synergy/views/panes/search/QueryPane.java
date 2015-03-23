@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import synergy.models.Photo;
@@ -20,6 +21,8 @@ public class QueryPane extends HBox {
 
     private Button resetButton;
     private SearchArea searchArea;
+	private LocalDate finalInitialDate = null;
+	private LocalDate finalEndDate = null;
 
     public QueryPane(SearchArea searchArea) {
         this.searchArea = searchArea;
@@ -46,16 +49,13 @@ public class QueryPane extends HBox {
         });
     }
 
-    private LocalDate finalInitialDate = null;
-    private LocalDate finalEndDate = null;
-
     private void updateSearchDatabase() {
         computeSelectedDates();
         Tag roomTag = computeRoomTag();
         Tag kidTag = computeKidTag();
 
-        System.out.println("final init date: " + finalInitialDate);
-        System.out.println("final end date: " + finalEndDate);
+        System.out.println("QUERY PANE: final init date: " + finalInitialDate);
+        System.out.println("QUERY PANE: final end date: " + finalEndDate);
         List<Photo> photosFromDB = Photo.getPhotosForDatesAndRoomAndKid(
                 finalInitialDate, finalEndDate, roomTag, kidTag
         );
@@ -66,7 +66,7 @@ public class QueryPane extends HBox {
             PhotoGrid.displayingImported = true;
         }
 
-        PhotoGrid.getPhotosGrid().setGridPhotos(photosFromDB);
+        PhotoGrid.setGridPhotos (photosFromDB);
         System.out.println("Photos from query: " + photosFromDB.size());
     }
 
@@ -87,7 +87,6 @@ public class QueryPane extends HBox {
                 break;
             }
             case "Period": {
-                //TODO: better handle this
                 if (initialDate != null && endDate != null) {
                     finalInitialDate = LocalDate.of(initialDate.getYear(), initialDate.getMonth()
                             , initialDate.getDayOfMonth());
@@ -97,10 +96,19 @@ public class QueryPane extends HBox {
                 break;
             }
             case "Month": {
-                //TODO: fix this
                 System.out.println("assign these");
-                System.out.println(searchArea.getDatePane().getMonths().getSelectionModel().getSelectedItem());
-                System.out.println(searchArea.getDatePane().getYears().getSelectionModel().getSelectedItem());
+	            SelectionModel monthsSelectionModel = searchArea.getDatePane ().getMonths().getSelectionModel();
+	            SelectionModel yearsSelectionModel = searchArea.getDatePane ().getYears ().getSelectionModel ();
+
+	            System.out.println ( "$$$$$" + monthsSelectionModel.getSelectedIndex () +
+			            " " + yearsSelectionModel.getSelectedIndex ());
+
+	            if ( monthsSelectionModel.getSelectedIndex () > -1 && yearsSelectionModel.getSelectedIndex () > -1 ) {
+		            int selectedMonth = monthsSelectionModel.getSelectedIndex ()+1;
+		            int selectedYear = Integer.parseInt ((String)yearsSelectionModel.getSelectedItem ());
+		            finalInitialDate = LocalDate.of (selectedYear, selectedMonth, 1);
+		            finalEndDate = LocalDate.of (selectedYear, selectedMonth + 1, 1);
+	            }
                 break;
             }
         }

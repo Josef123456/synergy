@@ -31,6 +31,7 @@ public class DatePane extends HBox {
 	public void resetAll() {
 		singleDatePicker.setValue(null);
 		periodPane.reset();
+		monthAndYear.reset();
 	}
 
 	public ComboBox getMonths () {
