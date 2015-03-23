@@ -3,10 +3,10 @@ package synergy.views;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.FlowPane;
-import synergy.views.panes.ChildrenPane;
-import synergy.views.panes.DatePane;
-import synergy.views.panes.LocationPane;
-import synergy.views.panes.QueryPane;
+import synergy.views.panes.search.ChildrenPane;
+import synergy.views.panes.search.DatePane;
+import synergy.views.panes.search.LocationPane;
+import synergy.views.panes.search.QueryPane;
 
 /**
  * Created by Cham on 06/03/2015.
@@ -41,7 +41,7 @@ public class SearchArea extends FlowPane {
         locationPane = new LocationPane();
         queryPane = new QueryPane(this);
 
-        setPadding(new Insets(1, 135, 1, 0));
+        setPadding (new Insets (1, 135, 1, 0));
         setAlignment(Pos.CENTER);
         setHgap(10);
         getChildren().addAll(datePane, locationPane, childrenPane, queryPane);

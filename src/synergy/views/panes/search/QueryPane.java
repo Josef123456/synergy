@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.search;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -25,15 +25,15 @@ public class QueryPane extends HBox {
         this.searchArea = searchArea;
         setAlignment(Pos.CENTER);
         setUpResetButton();
-        getStyleClass().add("my-list-cell");
+        getStyleClass().add ("my-list-cell");
         Button searchButton = new Button("Search");
         searchButton.setMinWidth(80);
-        setSpacing(1);
-        searchButton.setOnAction(event -> updateSearchDatabase());
+        setSpacing (1);
+        searchButton.setOnAction (event -> updateSearchDatabase ());
         int height = 50;
         searchButton.setMinHeight(height);
         resetButton.setMinHeight(height);
-        getChildren().addAll(searchButton, resetButton);
+        getChildren().addAll (searchButton, resetButton);
     }
 
     private void setUpResetButton() {
@@ -76,7 +76,7 @@ public class QueryPane extends HBox {
         LocalDate endDate = searchArea.getDatePane().getEndDatePicker().getValue();
 
         String selected = (String) searchArea.getDatePane().
-                getDateCategories().getSelectionModel().getSelectedItem();
+                getDateCategories ().getSelectionModel().getSelectedItem();
         finalInitialDate = finalEndDate = null;
         switch (selected) {
             case "Date": {
@@ -92,7 +92,7 @@ public class QueryPane extends HBox {
                     finalInitialDate = LocalDate.of(initialDate.getYear(), initialDate.getMonth()
                             , initialDate.getDayOfMonth());
                     finalEndDate = LocalDate.of(endDate.getYear(), endDate.getMonth(), endDate
-                            .getDayOfMonth());
+                            .getDayOfMonth ());
                 }
                 break;
             }

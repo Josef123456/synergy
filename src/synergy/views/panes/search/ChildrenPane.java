@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.search;
 
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -36,14 +36,14 @@ public class ChildrenPane extends HBox {
         childrenData = new ArrayList<>();
         List<Tag> allTags = Tag.getAllChildrenTags();
         childrenData.addAll(allTags.stream().map(Tag::getValue).collect(Collectors.toList()));
-        getStyleClass().add("my-list-cell");
-        setAlignment(Pos.CENTER);
-        setUpTextFieldAndSearch();
+        getStyleClass().add ("my-list-cell");
+        setAlignment (Pos.CENTER);
+        setUpTextFieldAndSearch ();
         listOfSearchedKids = new HashSet<>();
         comboBox.setMinHeight(height - 5);
-        comboBox.getEditor().setId("searching");
-        comboBox.getEditor().setFont(Font.font("Arial", FontPosture.ITALIC, 25));
-        addButton.setMinHeight(height);
+        comboBox.getEditor().setId ("searching");
+        comboBox.getEditor().setFont (Font.font ("Arial", FontPosture.ITALIC, 25));
+        addButton.setMinHeight (height);
 
     }
 
@@ -68,16 +68,16 @@ public class ChildrenPane extends HBox {
         }
         AutoCompleteComboBoxListener autoComplete = new AutoCompleteComboBoxListener(comboBox);
         comboBox.setOnKeyReleased(autoComplete);
-        setHgrow(this, Priority.ALWAYS);
+        setHgrow (this, Priority.ALWAYS);
         addButton = new Button("+");
-        addButton.setFont(Font.font("Arial", FontWeight.BOLD, 15));
+        addButton.setFont (Font.font ("Arial", FontWeight.BOLD, 15));
 
 
         EventHandler eventHandler = event -> {
             addChildrenQuery((String) comboBox.getValue());
             updateChildrenQueries();
         };
-        addButton.setOnAction(eventHandler);
+        addButton.setOnAction (eventHandler);
 
         comboBox.getEditor().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent E) -> {
             if (E.getCode() == KeyCode.ENTER) {

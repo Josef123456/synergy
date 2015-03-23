@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.search;
 
 import java.text.SimpleDateFormat;
 import java.util.HashSet;

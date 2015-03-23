@@ -1,4 +1,4 @@
-package synergy.views.panes;
+package synergy.views.panes.search;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.ToggleButton;
