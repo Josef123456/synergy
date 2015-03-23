@@ -60,7 +60,7 @@ public class TopPane extends VBox{
 		importBtn = new Button ("Import");
 		setupButtonStyle(importBtn, "importButton");
 
-		importDBBtn = new Button ("Import Database");
+		importDBBtn = new Button ("Import DataBase");
 		setupButtonStyle (importDBBtn, "importDbbtn");
 
 		leftButtonsBox.getChildren ().addAll (importBtn, importDBBtn);

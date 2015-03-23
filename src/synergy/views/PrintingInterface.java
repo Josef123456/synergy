@@ -2,10 +2,12 @@ package synergy.views;
 
 import controlsfx.controlsfx.control.GridView;
 import controlsfx.controlsfx.control.cell.ImageGridCell;
+import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.print.JobSettings;
 import javafx.print.PageLayout;
@@ -17,6 +19,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.image.WritableImage;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -63,7 +72,6 @@ public class PrintingInterface extends Application {
         scene.getStylesheets().add("css/background1.css");
         primaryStage.setScene(scene);
         primaryStage.setTitle("Print");
-        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.centerOnScreen();
         primaryStage.show();
     }
@@ -76,6 +84,7 @@ public class PrintingInterface extends Application {
     }
 
     private void setupCenter() throws IOException {
+
         printImages = FXCollections.observableArrayList(new ArrayList<Image>());
 
         gridPhotos = new GridView(printImages);
@@ -84,27 +93,46 @@ public class PrintingInterface extends Application {
         gridPhotos.setCellWidth(300);
         gridPhotos.setCellHeight(300);
 
-        Platform.runLater(() -> {
-            for (Photo photo : PhotoGrid.getSelectedPhotos()) {
-                try {
-                    BufferedImage bufferedImage = ImageIO.read(new File(photo.getPath()));
-                    bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage, (int)
-                                    gridPhotos.getCellWidth()), (int) gridPhotos.getCellHeight(),
-                            (int) gridPhotos.getCellWidth(), java.awt.Color.WHITE);
-                    printImages.add(WritableImageCreator.fromBufferedImage(bufferedImage));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+        startPhotoLoading();
 
         gridPhotos.setMinWidth(pageLayout.getPrintableWidth());
         gridPhotos.setMaxWidth(pageLayout.getPrintableWidth());
         gridPhotos.setMinHeight(pageLayout.getPrintableHeight());
         gridPhotos.setMaxHeight(pageLayout.getPrintableHeight());
-        gridPhotos.setBackground(new Background(new BackgroundFill(Color.WHITE, null, null)));
+        gridPhotos.setBackground(new Background(new BackgroundFill(Color.WHITE, null,
+                null)));
         main.setCenter(gridPhotos);
     }
+
+    private void startPhotoLoading() {
+        Thread loadPrintingImages = new Thread(new Task() {
+            @Override
+            protected Object call() throws Exception {
+
+                for (Photo photo : PhotoGrid.getSelectedPhotos()) {
+
+                    BufferedImage bufferedImage = ImageIO.read(new File(photo.getPath()));
+                    bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage, (int)
+                                    gridPhotos.getCellWidth()), (int) gridPhotos.getCellHeight(),
+                            (int) gridPhotos.getCellWidth(), java.awt.Color.BLACK);
+                    final WritableImage paddedWritableImage = WritableImageCreator
+                            .fromBufferedImage(bufferedImage);
+                    bufferedImage.flush();
+                    bufferedImage = null;
+
+                    Platform.runLater(() -> {
+                        printImages.add(paddedWritableImage);
+                        ((GridViewSkin) gridPhotos.getSkin()).updateGridViewItems();
+                        System.gc();
+                    });
+                }
+                return null;
+            }
+        });
+        loadPrintingImages.setDaemon(true);
+        loadPrintingImages.start();
+    }
+
 
     private void setupBottom() {
         VBox bottomBox = new VBox();
@@ -112,7 +140,11 @@ public class PrintingInterface extends Application {
 
         Button cancelBtn = new Button("Cancel");
         setupNodeStyle(cancelBtn, "cancelButton");
-        cancelBtn.setOnAction(event -> stage.close());
+        cancelBtn.setOnAction(event -> {
+            printImages = null;
+            System.gc();
+            stage.close();
+        });
 
         zoomMinusBtn = new Button("-");
         setupNodeStyle(zoomMinusBtn, "zoomMinusBtn");
@@ -183,6 +215,8 @@ public class PrintingInterface extends Application {
 
             if (job.printPage(node)) {
                 job.endJob();
+                printImages = null;
+                System.gc();
                 stage.close();
                 return true;
             } else {

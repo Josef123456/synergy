@@ -1,24 +1,27 @@
 package synergy.tasks;
 
 import com.bric.image.jpeg.JPEGMetaData;
-import javafx.application.Platform;
-import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
-import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
-import org.imgscalr.Scalr;
-import synergy.models.Photo;
-import synergy.utilities.ImagePadder;
-import synergy.utilities.WritableImageCreator;
-import synergy.views.PhotoGrid;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+import org.imgscalr.Scalr;
+
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import javafx.application.Platform;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.scene.image.Image;
+import javafx.scene.image.WritableImage;
+import synergy.models.Photo;
+import synergy.utilities.ImagePadder;
+import synergy.utilities.WritableImageCreator;
+import synergy.views.PhotoGrid;
 
 /**
  * Created by alexstoick on 3/7/15.
@@ -56,9 +59,9 @@ public class ThumbnailLoaderTask extends Task {
             }
 
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage
-                    (ImagePadder.padToSize (initialThumbnail,250,250,new Color(29,30,30)));
-	        System.out.println("Height: " + finalWi.getHeight() + " Width:" + finalWi.getWidth());
-            initialThumbnail.flush ();
+                    (ImagePadder.padToSize(initialThumbnail, 250, 250, new Color(29, 30, 30)));
+            System.out.println("Height: " + finalWi.getHeight() + " Width:" + finalWi.getWidth());
+            initialThumbnail.flush();
 
             if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {
@@ -71,7 +74,8 @@ public class ThumbnailLoaderTask extends Task {
             System.out.println("Loaded thumbnail for: " + photo.getPath());
         }
         photosToDisplay.removeAll(toEliminate);
-        FullResolutionPhotoLoaderTask qualityLoaderTask = new FullResolutionPhotoLoaderTask(photosToDisplay);
+        FullResolutionPhotoLoaderTask qualityLoaderTask = new FullResolutionPhotoLoaderTask
+                (photosToDisplay);
         Thread qualityLoaderThread = new Thread(qualityLoaderTask);
         qualityLoaderTask.setParentThread(qualityLoaderThread);
         PhotoGrid.getThreads().add(qualityLoaderThread);

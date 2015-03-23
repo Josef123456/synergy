@@ -1,24 +1,26 @@
 package synergy.tasks;
 
+import org.imgscalr.Scalr;
+
+import java.awt.Color;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import javax.imageio.ImageIO;
+
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import org.imgscalr.Scalr;
 import synergy.models.Photo;
 import synergy.utilities.ImagePadder;
 import synergy.utilities.WritableImageCreator;
 import synergy.views.PhotoGrid;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by alexstoick on 3/7/15.
@@ -54,12 +56,13 @@ public class FullResolutionPhotoLoaderTask extends Task {
                 e.printStackTrace();
             }
 
-            initialImage = Scalr.resize (initialImage, 750);
-	        initialImage = ImagePadder.padToSize (initialImage, 750, 750, new Color(29,30,30));
+            initialImage = Scalr.resize(initialImage, 750);
+            initialImage = ImagePadder.padToSize(initialImage, 750, 750, new Color(29, 30, 30));
 
             final WritableImage finalWi = WritableImageCreator.fromBufferedImage(initialImage);
             initialImage.flush();
-	        System.out.println ( "Height: " + finalWi.getHeight () + " Width:" + finalWi.getWidth () );
+            initialImage = null;
+            System.out.println("Height: " + finalWi.getHeight() + " Width:" + finalWi.getWidth());
 
             if (!parentThread.isInterrupted()) {
                 Platform.runLater(() -> {
@@ -74,6 +77,7 @@ public class FullResolutionPhotoLoaderTask extends Task {
                     if (i != -1)
                         selectedImages.set(i, finalWi);
                     ((GridViewSkin) photosGrid.getSkin()).updateGridViewItems();
+                    toBeReplaced = null;
                     System.gc();
                 });
             } else {
