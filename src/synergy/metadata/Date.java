@@ -14,10 +14,24 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Created by Amit on 25/02/2015.
+ * This class allows the 'date' field of a jpeg image
+ * to read and written to.
+ *
+ * @author Amit Patel
+ * @author Alexandru Stoica
  */
 public class Date {
 
+	/**
+	 * This method is used to retrieve the date and time of
+	 * a given file by passing the path of the file to it.
+	 *
+	 * @param path Path of the file to be read from
+	 * @return String This returns a formatted version of the date and time
+	 * @throws IOException input error
+	 * @throws ImageReadException
+	 * @throws ImageWriteException
+	 */
 	private static String getDateAndTime(String path) throws IOException, ImageReadException, ImageWriteException {
 
 		File inputFile = new File(path);
@@ -39,13 +53,42 @@ public class Date {
 		return s;
 	}
 
+	/**
+	 * This method is used to return only the time that a photo was taken.
+	 *
+	 * @param path Path of the file
+	 * @return String returns time of the file
+	 * @throws IOException
+	 * @throws ImageReadException
+	 * @throws ImageWriteException
+	 */
 	public static String getTime(String path) throws IOException, ImageReadException, ImageWriteException {
 		return getDateAndTime (path).split (" ")[1];
 	}
+
+	/**
+	 * This method is used to retrieve the date of a photo
+	 *
+	 * @param path Path of the file
+	 * @return String date of the file
+	 * @throws IOException
+	 * @throws ImageReadException
+	 * @throws ImageWriteException
+	 */
 	public static String getDate(String path) throws IOException, ImageReadException, ImageWriteException {
 		return getDateAndTime (path).split (" ")[0];
 	}
 
+	/**
+	 * This method change's the date of a given file, with
+	 * the date that is passed as a parameter.
+	 * @param path Path of the file
+	 * @param newDate The date that is to be set for the file
+	 * @throws IOException
+	 * @throws ImageReadException
+	 * @throws ImageWriteException
+	 * @return void
+	 */
     public static void changeDate(String path, String newDate) throws IOException, ImageReadException, ImageWriteException {
 
         OutputStream os;
