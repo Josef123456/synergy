@@ -1,5 +1,16 @@
 package synergy.views.panes.main;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.CopyOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.filechooser.FileSystemView;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -18,16 +29,6 @@ import synergy.views.Main;
 import synergy.views.PhotoGrid;
 import synergy.views.PrintingInterface;
 import synergy.views.SearchArea;
-
-import javax.swing.filechooser.FileSystemView;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.CopyOption;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The TopPane class is a VBox that consist of two parts.
@@ -56,6 +57,7 @@ public class TopPane extends VBox{
 		spacer.getStyleClass ().setAll ("spacer");
 
 		HBox leftButtonsBox = new HBox (1);
+        leftButtonsBox.setPadding(new Insets(0,0,0,35));
 		leftButtonsBox.getStyleClass ().setAll ("button-bar");
 		importBtn = new Button ("Import");
 		setupButtonStyle(importBtn, "importButton");
@@ -66,7 +68,7 @@ public class TopPane extends VBox{
 		leftButtonsBox.getChildren ().addAll (importBtn, importDBBtn);
 
 		HBox rightButtonsBox = new HBox (1);
-        rightButtonsBox.setPadding(new Insets(0,50,0,0));
+        rightButtonsBox.setPadding(new Insets(0,35,0,0));
 		rightButtonsBox.getStyleClass ().setAll ("button-bar");
 
 		Button printingViewBtn = new Button ("Printing");

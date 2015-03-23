@@ -1,5 +1,9 @@
 package synergy.views.panes;
 
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
@@ -8,10 +12,6 @@ import synergy.models.Photo;
 import synergy.models.Tag;
 import synergy.views.PhotoGrid;
 import synergy.views.SearchArea;
-
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Created by alexstoick on 3/21/15.

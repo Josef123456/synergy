@@ -1,5 +1,9 @@
 package synergy.views.panes;
 
+import java.text.SimpleDateFormat;
+import java.util.HashSet;
+import java.util.Set;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.ComboBox;
@@ -13,10 +17,6 @@ import javafx.util.Callback;
 import synergy.models.Photo;
 import synergy.views.factories.EndDateCellFactory;
 import synergy.views.factories.InitialDateCellFactory;
-
-import java.text.SimpleDateFormat;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by alexstoick on 3/21/15.

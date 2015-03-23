@@ -2,7 +2,7 @@ package synergy.views;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.FlowPane;
 import synergy.views.panes.ChildrenPane;
 import synergy.views.panes.DatePane;
 import synergy.views.panes.LocationPane;
@@ -11,7 +11,7 @@ import synergy.views.panes.QueryPane;
 /**
  * Created by Cham on 06/03/2015.
  */
-public class SearchArea extends HBox {
+public class SearchArea extends FlowPane {
 
     private ChildrenPane childrenPane;
     private QueryPane queryPane;
@@ -43,7 +43,7 @@ public class SearchArea extends HBox {
 
         setPadding(new Insets(1, 135, 1, 0));
         setAlignment(Pos.CENTER);
-        setSpacing(10);
+        setHgap(10);
         getChildren().addAll(datePane, locationPane, childrenPane, queryPane);
     }
 }

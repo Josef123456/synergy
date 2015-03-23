@@ -1,6 +1,9 @@
 package synergy.views;
 
+import java.util.ArrayList;
+
 import controlsfx.impl.org.controlsfx.skin.GridViewSkin;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -11,8 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import synergy.models.Photo;
-
-import java.util.ArrayList;
 
 /**
  * Created on 09/03/2015.
@@ -53,6 +54,7 @@ public class BottomArea extends VBox {
         setupNodeStyle(deleteBtn, "deleteBtn");
 
         HBox zoomBox = new HBox(5);
+        zoomBox.setPadding(new Insets(0, 0, 0, 35));
         zoomBox.getChildren().addAll(zoomMinusBtn, zoomLabel, zoomPlusBtn);
         zoomBox.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(zoomBox, Priority.ALWAYS);
@@ -63,6 +65,7 @@ public class BottomArea extends VBox {
         HBox.setHgrow(selectBox, Priority.ALWAYS);
 
         HBox rightBox = new HBox();
+        rightBox.setPadding(new Insets(0, 35, 0, 0));
         rightBox.getChildren().add(deleteBtn);
         rightBox.setAlignment(Pos.CENTER_RIGHT);
         HBox.setHgrow(rightBox, Priority.ALWAYS);
