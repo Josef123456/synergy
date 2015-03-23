@@ -96,6 +96,7 @@ public class BottomArea extends VBox {
             PhotoGrid.getSelectedImages().clear();
             PhotoGrid.getSelectedPhotos().clear();
 
+	        PhotoGrid.getDisplayedPhotos ().removeAll(selectedPhotos);
             PhotoGrid.getDisplayedImagesList().removeAll(selectedImages);
             PhotoGrid.getDisplayedImagesMap().keySet().removeAll(selectedPhotos);
 
