@@ -99,15 +99,8 @@ public class DatePane extends HBox {
 		singleDatePicker.setShowWeekNumbers (false);
 		singleDatePicker.setMaxWidth (200);
 
-		initialDatePicker.setDayCellFactory(initialDateDayCellFactory);
-		initialDatePicker.setMaxWidth(125);
-		initialDatePicker.setShowWeekNumbers(false);
-		initialDatePicker.setPromptText("dd/mm/yyyy");
-
-		endDatePicker.setDayCellFactory(endDateDayCellFactory);
-		endDatePicker.setMaxWidth(125);
-		endDatePicker.setShowWeekNumbers(false);
-		endDatePicker.setPromptText("dd/mm/yyyy");
+		formatDatePicker (initialDatePicker, initialDateDayCellFactory);
+		formatDatePicker (endDatePicker, endDateDayCellFactory);
 
 		Font font = new Font("Arial", 20);
 		Label fromLabel = new Label("From: ");
@@ -119,6 +112,13 @@ public class DatePane extends HBox {
 
 		periodPane.getChildren().addAll(fromLabel, initialDatePicker, toLabel, endDatePicker);
 		getChildren ().addAll(dateCategories, stackCategories);
+	}
+
+	private void formatDatePicker(DatePicker datePicker, Callback<DatePicker, DateCell> factory){
+		datePicker.setDayCellFactory(factory);
+		datePicker.setMaxWidth(125);
+		datePicker.setShowWeekNumbers(false);
+		datePicker.setPromptText("dd/mm/yyyy");
 	}
 
 	private void updateCategories() {
