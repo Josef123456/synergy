@@ -117,7 +117,7 @@ public class PrintingInterface extends Application {
                     BufferedImage bufferedImage = ImageIO.read(new File(photo.getPath()));
                     bufferedImage = ImagePadder.padToSize(Scalr.resize(bufferedImage, (int)
                                     gridPhotos.getCellWidth()), (int) gridPhotos.getCellHeight(),
-                            (int) gridPhotos.getCellWidth(), java.awt.Color.BLACK);
+                            (int) gridPhotos.getCellWidth(), java.awt.Color.WHITE);
                     final WritableImage paddedWritableImage = WritableImageCreator
                             .fromBufferedImage(bufferedImage);
                     bufferedImage.flush();
