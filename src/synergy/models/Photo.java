@@ -225,6 +225,12 @@ public class Photo {
         PhotoTag photoTag = new PhotoTag(this, tag);
         photoTag.save();
         photoTag.destroy();
+	    try {
+		    MetaData.changeExifMetadata (this);
+	    } catch ( Exception e ) {
+		    System.err.println (e);
+		    e.printStackTrace ();
+	    }
         List<Relationship> relList = tag.getRelationshipsForTagSortedByOccurrences();
 	    relList.stream ().filter (r -> this.getChildTags ().contains (r.getPartner (tag))).forEach (r -> {
 		    System.out.println ("Occurrences before: " + r);
