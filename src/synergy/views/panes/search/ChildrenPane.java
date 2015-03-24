@@ -112,6 +112,8 @@ public class ChildrenPane extends HBox {
             Button queryButton = new Button(query + " - ");
             queryButton.setOnAction(event -> {
                 listOfSearchedKids.remove(query);
+	            comboBox.getEditor().setText (null);
+	            comboBox.setValue (null);
 	            System.out.println (listOfSearchedKids.size ());
 	            updateChildrenQueries();
             });
@@ -122,8 +124,8 @@ public class ChildrenPane extends HBox {
     }
 
     private void addChildrenQuery() {
-	    String addedQuery = (String) comboBox.getValue(); ;
-	    System.out.println (addedQuery);
+	    String addedQuery = (String) comboBox.getValue();
+	    System.out.println ("$$$$$" + addedQuery);
 	    Set<String> hashSet = new HashSet<String>(childrenData) {
             public boolean contains(Object o) {
                 String paramStr = (String) o;
@@ -144,6 +146,7 @@ public class ChildrenPane extends HBox {
             }
             listOfSearchedKids.add(toAdd);
             comboBox.getEditor().setText (null);
+	        comboBox.setValue (null);
         }
     }
 
