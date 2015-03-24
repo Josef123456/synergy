@@ -11,7 +11,7 @@ import synergy.models.Photo;
 public class MonthAndYearPane extends HBox {
 
 	private static final String[] MONTHS = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
-	private static final Object[] YEARS = Photo.getUniqueYears ();
+	private static final Object[] YEARS = {"2014","2015", "2016"};//Photo.getUniqueYears ();
 	private ComboBox months, years;
 
 
